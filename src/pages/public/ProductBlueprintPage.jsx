@@ -1,18 +1,26 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import useLanguage from "../../hooks/useLanguage";
 import { publicApi } from "../../services/publicApi";
 
 export default function ProductBlueprintPage() {
   const { slug } = useParams();
+  const { language } = useLanguage();
+
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
 
-    (async () => {
+    async function loadProduct() {
       try {
-        const data = await publicApi.getProductBlueprintBySlug(slug);
+        setLoading(true);
+
+        const data = await publicApi.getProductBlueprintBySlug(slug, {
+          language: language || "EN",
+        });
+
         if (active) {
           setProduct(data);
         }
@@ -25,54 +33,97 @@ export default function ProductBlueprintPage() {
           setLoading(false);
         }
       }
-    })();
+    }
+
+    loadProduct();
 
     return () => {
       active = false;
     };
-  }, [slug]);
+  }, [slug, language]);
 
   if (loading) {
     return (
-      <section className="mx-auto max-w-5xl px-4 py-16 text-sm text-slate-500">
-        Loading product...
-      </section>
+      <div className="page">
+        <main className="page__main">
+          <div className="container text-center py-48">
+            <div className="loading">Loading product...</div>
+          </div>
+        </main>
+      </div>
     );
   }
 
   if (!product) {
     return (
-      <section className="mx-auto max-w-5xl px-4 py-16">
-        <div className="rounded-2xl border border-dashed border-slate-300 p-8 text-sm text-slate-500 dark:border-slate-700">
-          Product not found.
-        </div>
-      </section>
+      <div className="page">
+        <main className="page__main">
+          <div className="container">
+            <div className="error-state-card">Product not found.</div>
+          </div>
+        </main>
+      </div>
     );
   }
 
   return (
-    <section className="mx-auto max-w-5xl px-4 py-16">
-      <h1 className="text-3xl font-bold tracking-tight">
-        {product.title ?? product.name ?? "Untitled Product"}
-      </h1>
+    <div className="page">
+      <main className="page__main">
+        <div
+          className="container py-48"
+          style={{ maxWidth: "1024px", margin: "0 auto" }}
+        >
+          {product.heroImageUrl ? (
+            <img
+              src={product.heroImageUrl}
+              alt={product.title || "Product"}
+              className="mb-32 w-full rounded-xl object-cover"
+              style={{ height: "320px" }}
+            />
+          ) : null}
 
-      <p className="mt-4 text-base leading-7 text-slate-600 dark:text-slate-400">
-        {product.description ??
-          product.summary ??
-          product.shortDescription ??
-          "No product description available."}
-      </p>
+          <h1 className="text-3xl font-bold mb-16">
+            {product.title ?? "Untitled Product"}
+          </h1>
 
-      {Array.isArray(product.features) && product.features.length > 0 ? (
-        <div className="mt-8">
-          <h2 className="text-lg font-semibold">Features</h2>
-          <ul className="mt-4 list-disc space-y-2 pl-6 text-sm text-slate-600 dark:text-slate-400">
-            {product.features.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
+          <p className="text-base leading-relaxed text-soft mb-32">
+            {product.summary ?? "No product summary available."}
+          </p>
+
+          {product.challengeStatement ? (
+            <div className="card p-24 mb-24">
+              <h2 className="text-xl font-bold mb-12">Challenge</h2>
+              <p className="text-sm leading-relaxed text-soft">
+                {product.challengeStatement}
+              </p>
+            </div>
+          ) : null}
+
+          {product.solutionOverview ? (
+            <div className="card p-24 mb-24">
+              <h2 className="text-xl font-bold mb-12">Solution</h2>
+              <p className="text-sm leading-relaxed text-soft">
+                {product.solutionOverview}
+              </p>
+            </div>
+          ) : null}
+
+          {product.featureHighlights ? (
+            <div className="card p-24 mb-24">
+              <h2 className="text-xl font-bold mb-12">Feature Highlights</h2>
+              <p className="text-sm leading-relaxed text-soft">
+                {product.featureHighlights}
+              </p>
+            </div>
+          ) : null}
+
+          <div className="mt-40">
+            <Link to="/products" className="btn btn--outline">
+              ← Back to products
+            </Link>
+          </div>
         </div>
-      ) : null}
-    </section>
+      </main>
+    </div>
   );
 }

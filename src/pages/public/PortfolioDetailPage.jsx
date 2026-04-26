@@ -1,18 +1,26 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import useLanguage from "../../hooks/useLanguage";
 import { publicApi } from "../../services/publicApi";
 
 export default function PortfolioDetailPage() {
   const { slug } = useParams();
+  const { language } = useLanguage();
+
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
 
-    (async () => {
+    async function loadProject() {
       try {
-        const data = await publicApi.getPortfolioProjectBySlug(slug);
+        setLoading(true);
+
+        const data = await publicApi.getPortfolioProjectBySlug(slug, {
+          language: language || "EN",
+        });
+
         if (active) {
           setProject(data);
         }
@@ -25,54 +33,90 @@ export default function PortfolioDetailPage() {
           setLoading(false);
         }
       }
-    })();
+    }
+
+    loadProject();
 
     return () => {
       active = false;
     };
-  }, [slug]);
+  }, [slug, language]);
 
   if (loading) {
     return (
-      <section className="mx-auto max-w-5xl px-4 py-16 text-sm text-slate-500">
-        Loading project...
-      </section>
+      <div className="page">
+        <main className="page__main">
+          <div className="container text-center py-48">
+            <div className="loading">Loading project...</div>
+          </div>
+        </main>
+      </div>
     );
   }
 
   if (!project) {
     return (
-      <section className="mx-auto max-w-5xl px-4 py-16">
-        <div className="rounded-2xl border border-dashed border-slate-300 p-8 text-sm text-slate-500 dark:border-slate-700">
-          Project not found.
-        </div>
-      </section>
+      <div className="page">
+        <main className="page__main">
+          <div className="container">
+            <div className="error-state-card">Project not found.</div>
+          </div>
+        </main>
+      </div>
     );
   }
 
   return (
-    <section className="mx-auto max-w-5xl px-4 py-16">
-      <h1 className="text-3xl font-bold tracking-tight">
-        {project.title ?? project.name ?? "Untitled Project"}
-      </h1>
+    <div className="page">
+      <main className="page__main">
+        <div
+          className="container py-48"
+          style={{ maxWidth: "1024px", margin: "0 auto" }}
+        >
+          {project.coverImageUrl ? (
+            <img
+              src={project.coverImageUrl}
+              alt={project.title || "Project"}
+              className="mb-32 w-full rounded-xl object-cover"
+              style={{ height: "320px" }}
+            />
+          ) : null}
 
-      <p className="mt-4 text-base leading-7 text-slate-600 dark:text-slate-400">
-        {project.description ??
-          project.summary ??
-          project.shortDescription ??
-          "No project description available."}
-      </p>
+          <div className="d-flex flex-wrap gap-8 mb-16 text-sm text-primary">
+            {project.projectType ? <span>{project.projectType}</span> : null}
+            {project.clientIndustry ? (
+              <span>{project.clientIndustry}</span>
+            ) : null}
+          </div>
 
-      {Array.isArray(project.highlights) && project.highlights.length > 0 ? (
-        <div className="mt-8">
-          <h2 className="text-lg font-semibold">Highlights</h2>
-          <ul className="mt-4 list-disc space-y-2 pl-6 text-sm text-slate-600 dark:text-slate-400">
-            {project.highlights.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
+          <h1 className="text-3xl font-bold mb-16">
+            {project.title ?? "Untitled Project"}
+          </h1>
+
+          <p className="text-base leading-relaxed text-soft mb-32">
+            {project.description ??
+              project.summary ??
+              "No project description available."}
+          </p>
+
+          {project.liveUrl && project.liveUrl !== "#" ? (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="btn btn--primary mb-40"
+            >
+              Visit project
+            </a>
+          ) : null}
+
+          <div className="mt-40">
+            <Link to="/portfolio" className="btn btn--outline">
+              ← Back to portfolio
+            </Link>
+          </div>
         </div>
-      ) : null}
-    </section>
+      </main>
+    </div>
   );
 }

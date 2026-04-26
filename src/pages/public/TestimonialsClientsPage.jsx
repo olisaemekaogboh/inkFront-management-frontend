@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
+import useLanguage from "../../hooks/useLanguage";
 import { publicApi } from "../../services/publicApi";
 
 export default function TestimonialsClientsPage() {
+  const { language } = useLanguage();
+
   const [testimonials, setTestimonials] = useState([]);
   const [clientLogos, setClientLogos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -9,11 +12,23 @@ export default function TestimonialsClientsPage() {
   useEffect(() => {
     let active = true;
 
-    (async () => {
+    async function loadClientContent() {
       try {
+        setLoading(true);
+
         const [testimonialData, logoData] = await Promise.all([
-          publicApi.getTestimonials(),
-          publicApi.getClientLogos(),
+          publicApi.getTestimonials({
+            language: language || "EN",
+            featuredOnly: false,
+            page: 0,
+            size: 12,
+          }),
+          publicApi.getClientLogos({
+            language: language || "EN",
+            featuredOnly: false,
+            page: 0,
+            size: 12,
+          }),
         ]);
 
         if (active) {
@@ -32,76 +47,106 @@ export default function TestimonialsClientsPage() {
           setLoading(false);
         }
       }
-    })();
+    }
+
+    loadClientContent();
 
     return () => {
       active = false;
     };
-  }, []);
+  }, [language]);
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-16">
-      <h1 className="text-3xl font-bold tracking-tight">
-        Clients & Testimonials
-      </h1>
-      <p className="mt-3 max-w-2xl text-slate-600 dark:text-slate-400">
-        Feedback from client engagements and trusted organizations we have
-        supported.
-      </p>
+    <div className="page">
+      <main className="page__main">
+        <section className="page-section bg-gradient-to-br from-primary/5 to-secondary/5">
+          <div className="container">
+            <div className="max-w-3xl mx-auto">
+              <span className="hero__badge">Testimonials</span>
+              <h1 className="text-3xl font-bold mt-16 mb-12">
+                Clients & Testimonials
+              </h1>
+              <p className="text-md text-soft">
+                Feedback from client engagements and trusted organizations we
+                have supported.
+              </p>
+            </div>
+          </div>
+        </section>
 
-      {loading ? (
-        <div className="mt-10 text-sm text-slate-500">
-          Loading client content...
-        </div>
-      ) : (
-        <>
-          <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {testimonials.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-slate-300 p-8 text-sm text-slate-500 dark:border-slate-700">
-                No testimonials available yet.
-              </div>
+        <section className="page-section">
+          <div className="container">
+            {loading ? (
+              <div className="loading">Loading client content...</div>
             ) : (
-              testimonials.map((item, index) => (
-                <article
-                  key={item.id ?? index}
-                  className="rounded-2xl border border-slate-200 p-6 shadow-sm dark:border-slate-800"
-                >
-                  <p className="text-sm leading-7 text-slate-600 dark:text-slate-400">
-                    {item.quote ??
-                      item.content ??
-                      item.testimonial ??
-                      "No testimonial text."}
-                  </p>
-                  <div className="mt-4 text-sm font-semibold">
-                    {item.clientName ?? item.authorName ?? "Anonymous Client"}
-                  </div>
-                </article>
-              ))
+              <>
+                <div className="grid grid-cols-2 gap-24">
+                  {testimonials.length === 0 ? (
+                    <div className="empty-state col-span-2">
+                      No testimonials available yet.
+                    </div>
+                  ) : (
+                    testimonials.map((item, index) => (
+                      <article key={item.id ?? index} className="card p-24">
+                        <div className="text-6xl mb-16 opacity-30">"</div>
+                        <p className="text-md leading-relaxed text-soft mb-20">
+                          “{item.quote ?? "No testimonial text."}”
+                        </p>
+
+                        <div className="border-t border-border pt-16">
+                          <div className="font-semibold">
+                            {item.clientName ?? "Anonymous Client"}
+                          </div>
+                          <div className="text-xs text-muted mt-4">
+                            {[item.clientRole, item.organization]
+                              .filter(Boolean)
+                              .join(" • ")}
+                          </div>
+                        </div>
+                      </article>
+                    ))
+                  )}
+                </div>
+
+                <div className="mt-48">
+                  <h2 className="text-lg font-bold mb-24">Client logos</h2>
+
+                  {clientLogos.length === 0 ? (
+                    <div className="empty-state">
+                      No client logos available yet.
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-4 gap-16">
+                      {clientLogos.map((logo, index) => (
+                        <a
+                          key={logo.id ?? index}
+                          href={logo.websiteUrl || "#"}
+                          target={logo.websiteUrl ? "_blank" : undefined}
+                          rel={logo.websiteUrl ? "noreferrer" : undefined}
+                          className="card p-20 text-center text-decoration-none"
+                        >
+                          {logo.logoUrl ? (
+                            <img
+                              src={logo.logoUrl}
+                              alt={logo.name || "Client logo"}
+                              className="mx-auto h-12 max-w-full object-contain"
+                              loading="lazy"
+                            />
+                          ) : (
+                            <span className="text-muted">
+                              {logo.name ?? "Client"}
+                            </span>
+                          )}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </>
             )}
           </div>
-
-          <div className="mt-14">
-            <h2 className="text-lg font-semibold">Client logos</h2>
-
-            {clientLogos.length === 0 ? (
-              <div className="mt-4 rounded-2xl border border-dashed border-slate-300 p-8 text-sm text-slate-500 dark:border-slate-700">
-                No client logos available yet.
-              </div>
-            ) : (
-              <div className="mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {clientLogos.map((logo, index) => (
-                  <div
-                    key={logo.id ?? index}
-                    className="rounded-2xl border border-slate-200 p-5 text-sm dark:border-slate-800"
-                  >
-                    {logo.name ?? logo.title ?? "Client"}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </>
-      )}
-    </section>
+        </section>
+      </main>
+    </div>
   );
 }

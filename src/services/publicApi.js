@@ -92,48 +92,51 @@ export const unwrapPagedApiResponse = (response) => {
 
 export const publicApi = {
   async getServices(params = {}) {
-    const response = await http.get("/api/public/services", { params });
+    const response = await http.get("/public/services", { params });
     return unwrapApiResponse(response);
   },
 
   async getPortfolioProjects(params = {}) {
-    const response = await http.get("/api/public/portfolio-projects", {
+    const response = await http.get("/public/portfolio-projects", {
       params,
     });
     return unwrapPagedApiResponse(response);
   },
 
   async getPortfolioProjectBySlug(slug, params = {}) {
-    const response = await http.get(`/api/public/portfolio-projects/${slug}`, {
+    const response = await http.get(`/public/portfolio-projects/${slug}`, {
       params,
     });
+
     const data = unwrapApiResponse(response);
     return Array.isArray(data) ? null : data;
   },
 
   async getProductBlueprints(params = {}) {
-    const response = await http.get("/api/public/product-blueprints", {
+    const response = await http.get("/public/product-blueprints", {
       params,
     });
+
     return unwrapPagedApiResponse(response);
   },
 
   async getProductBlueprintBySlug(slug, params = {}) {
-    const response = await http.get(`/api/public/product-blueprints/${slug}`, {
+    const response = await http.get(`/public/product-blueprints/${slug}`, {
       params,
     });
+
     const data = unwrapApiResponse(response);
     return Array.isArray(data) ? null : data;
   },
 
   async getTestimonials(params = {}) {
-    const response = await http.get("/api/public/testimonials", { params });
+    const response = await http.get("/public/testimonials", { params });
     return unwrapApiResponse(response);
   },
 
   async getClientLogos(params = {}) {
     try {
-      const response = await http.get("/api/public/client-logos", { params });
+      const response = await http.get("/public/client-logos", { params });
       return unwrapApiResponse(response);
     } catch {
       return [];
@@ -142,9 +145,22 @@ export const publicApi = {
 
   async getHomepageSections(params = {}) {
     try {
-      const response = await http.get("/api/public/homepage-sections", {
+      const response = await http.get("/public/homepage-sections", {
         params,
       });
+
+      return unwrapApiResponse(response);
+    } catch {
+      return [];
+    }
+  },
+
+  async getHeroSections(params = {}) {
+    try {
+      const response = await http.get("/public/hero-sections", {
+        params,
+      });
+
       return unwrapApiResponse(response);
     } catch {
       return [];
