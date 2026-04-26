@@ -1,122 +1,87 @@
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import useLanguage from "../../hooks/useLanguage";
-import { portfolioService } from "../../services/portfolioService";
-import PageHeader from "../../components/common/PageHeader";
-import Container from "../../components/common/Container";
-import LoadingSpinner from "../../components/common/LoadingSpinner";
-import ErrorState from "../../components/common/ErrorState";
-import EmptyState from "../../components/common/EmptyState";
-import PortfolioGridSection from "../../components/sections/PortfolioGridSection";
+import { publicApi } from "../../services/publicApi";
 
 export default function PortfolioListPage() {
-  const { language, t } = useLanguage();
-  const [search, setSearch] = useState("");
-  const [state, setState] = useState({
-    loading: true,
-    error: "",
-    data: [],
+  const [page, setPage] = useState({
+    content: [],
+    totalPages: 0,
+    page: 0,
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
 
-    async function loadProjects() {
-      if (!language) {
-        if (active) {
-          setState({
-            loading: false,
-            error: "Language is not available",
-            data: [],
-          });
-        }
-        return;
-      }
-
-      if (active) {
-        setState((current) => ({
-          ...current,
-          loading: true,
-          error: "",
-        }));
-      }
-
+    (async () => {
       try {
-        const response = await portfolioService.getProjects({
-          language,
+        const response = await publicApi.getPortfolioProjects({
           page: 0,
-          size: 24,
-          search: search.trim() || undefined,
+          size: 12,
         });
-
-        const projects = Array.isArray(response)
-          ? response
-          : Array.isArray(response?.content)
-            ? response.content
-            : [];
-
         if (active) {
-          setState({
-            loading: false,
-            error: "",
-            data: projects,
-          });
+          setPage(response);
         }
-      } catch (error) {
+      } catch {
         if (active) {
-          setState({
-            loading: false,
-            error: error?.message || "Failed to load projects",
-            data: [],
-          });
+          setPage({ content: [], totalPages: 0, page: 0 });
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
         }
       }
-    }
-
-    loadProjects();
+    })();
 
     return () => {
       active = false;
     };
-  }, [language, search]);
+  }, []);
+
+  const projects = Array.isArray(page.content) ? page.content : [];
 
   return (
-    <>
-      <PageHeader
-        title={t("pages.portfolio.title")}
-        subtitle={t("pages.portfolio.subtitle")}
-      />
+    <section className="mx-auto max-w-7xl px-4 py-16">
+      <h1 className="text-3xl font-bold tracking-tight">Portfolio</h1>
+      <p className="mt-3 max-w-2xl text-slate-600 dark:text-slate-400">
+        Selected work, case studies, and launches from our recent engagements.
+      </p>
 
-      <section className="page-section page-section-compact">
-        <Container>
-          <div className="toolbar-panel">
-            <input
-              type="search"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder={t("pages.portfolio.searchPlaceholder")}
-              aria-label={t("pages.portfolio.searchPlaceholder")}
-            />
-          </div>
-        </Container>
-      </section>
+      {loading ? (
+        <div className="mt-10 text-sm text-slate-500">Loading portfolio...</div>
+      ) : projects.length === 0 ? (
+        <div className="mt-10 rounded-2xl border border-dashed border-slate-300 p-8 text-sm text-slate-500 dark:border-slate-700">
+          No portfolio projects available yet.
+        </div>
+      ) : (
+        <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {projects.map((project, index) => (
+            <article
+              key={project.id ?? project.slug ?? index}
+              className="rounded-2xl border border-slate-200 p-6 shadow-sm dark:border-slate-800"
+            >
+              <h2 className="text-xl font-semibold">
+                {project.title ?? project.name ?? "Untitled Project"}
+              </h2>
+              <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
+                {project.summary ??
+                  project.shortDescription ??
+                  project.description ??
+                  "Project summary unavailable."}
+              </p>
 
-      {state.loading ? (
-        <LoadingSpinner label={t("states.loadingPage")} />
-      ) : null}
-
-      {state.error ? <ErrorState message={state.error} /> : null}
-
-      {!state.loading && !state.error && state.data.length === 0 ? (
-        <EmptyState title={t("states.emptyPortfolio")} />
-      ) : null}
-
-      {!state.loading && !state.error && state.data.length > 0 ? (
-        <PortfolioGridSection
-          projects={state.data}
-          title={t("sections.portfolio.title")}
-          description={t("sections.portfolio.description")}
-        />
-      ) : null}
-    </>
+              {project.slug ? (
+                <Link
+                  to={`/portfolio/${project.slug}`}
+                  className="mt-4 inline-flex text-sm font-medium text-blue-600"
+                >
+                  View project
+                </Link>
+              ) : null}
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
   );
 }

@@ -1,95 +1,78 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import useLanguage from "../../hooks/useLanguage";
-import useFetchOnMount from "../../hooks/useFetchOnMount";
-import { portfolioService } from "../../services/portfolioService";
-import LoadingSpinner from "../../components/common/LoadingSpinner";
-import ErrorState from "../../components/common/ErrorState";
-import Container from "../../components/common/Container";
-import CTASection from "../../components/sections/CTASection";
+import { publicApi } from "../../services/publicApi";
 
 export default function PortfolioDetailPage() {
   const { slug } = useParams();
-  const { language, t } = useLanguage();
+  const [project, setProject] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const project = useFetchOnMount(
-    () => portfolioService.getProjectBySlug(slug, { language }),
-    [slug, language],
-  );
+  useEffect(() => {
+    let active = true;
 
-  if (project.loading) {
-    return <LoadingSpinner label={t("states.loadingPage")} />;
+    (async () => {
+      try {
+        const data = await publicApi.getPortfolioProjectBySlug(slug);
+        if (active) {
+          setProject(data);
+        }
+      } catch {
+        if (active) {
+          setProject(null);
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <section className="mx-auto max-w-5xl px-4 py-16 text-sm text-slate-500">
+        Loading project...
+      </section>
+    );
   }
 
-  if (project.error) {
-    return <ErrorState message={project.error} />;
+  if (!project) {
+    return (
+      <section className="mx-auto max-w-5xl px-4 py-16">
+        <div className="rounded-2xl border border-dashed border-slate-300 p-8 text-sm text-slate-500 dark:border-slate-700">
+          Project not found.
+        </div>
+      </section>
+    );
   }
-
-  const data = project.data || {};
 
   return (
-    <>
-      <section className="page-section">
-        <Container>
-          <article className="detail-shell">
-            <header className="detail-hero">
-              <div className="detail-hero-copy">
-                <span className="detail-meta">
-                  {data.projectType || t("pages.portfolio.detailLabel")}
-                </span>
-                <h1>{data.title}</h1>
-                <p>{data.summary}</p>
-              </div>
+    <section className="mx-auto max-w-5xl px-4 py-16">
+      <h1 className="text-3xl font-bold tracking-tight">
+        {project.title ?? project.name ?? "Untitled Project"}
+      </h1>
 
-              {data.coverImageUrl ? (
-                <div className="detail-media-card">
-                  <img src={data.coverImageUrl} alt={data.title} />
-                </div>
-              ) : null}
-            </header>
+      <p className="mt-4 text-base leading-7 text-slate-600 dark:text-slate-400">
+        {project.description ??
+          project.summary ??
+          project.shortDescription ??
+          "No project description available."}
+      </p>
 
-            <div className="detail-content-grid">
-              <section className="content-panel">
-                <h2>{t("pages.portfolio.overviewTitle")}</h2>
-                <p>{data.description || t("states.emptyGeneric")}</p>
-              </section>
-
-              <aside className="content-panel">
-                <h2>{t("pages.portfolio.projectInfoTitle")}</h2>
-                <dl className="detail-meta-list">
-                  <div>
-                    <dt>{t("pages.portfolio.clientIndustry")}</dt>
-                    <dd>{data.clientIndustry || t("states.notAvailable")}</dd>
-                  </div>
-                  <div>
-                    <dt>{t("pages.portfolio.projectType")}</dt>
-                    <dd>{data.projectType || t("states.notAvailable")}</dd>
-                  </div>
-                </dl>
-
-                {data.liveUrl ? (
-                  <a
-                    className="btn btn-primary"
-                    href={data.liveUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {t("pages.portfolio.visitProject")}
-                  </a>
-                ) : null}
-              </aside>
-            </div>
-          </article>
-        </Container>
-      </section>
-
-      <CTASection
-        title={t("cta.portfolio.title")}
-        description={t("cta.portfolio.description")}
-        primaryLabel={t("common.contactUs")}
-        primaryTo="/contact"
-        secondaryLabel={t("common.backToList")}
-        secondaryTo="/portfolio"
-      />
-    </>
+      {Array.isArray(project.highlights) && project.highlights.length > 0 ? (
+        <div className="mt-8">
+          <h2 className="text-lg font-semibold">Highlights</h2>
+          <ul className="mt-4 list-disc space-y-2 pl-6 text-sm text-slate-600 dark:text-slate-400">
+            {project.highlights.map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+    </section>
   );
 }

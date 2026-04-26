@@ -1,0 +1,231 @@
+/* layout.css - Layout components */
+
+/* Page Layout */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page__main {
+  flex: 1;
+}
+
+/* Admin Layout */
+.admin {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+.admin__sidebar {
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  padding: var(--space-xl);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.admin__sidebar-brand {
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.admin__sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.admin__sidebar-link {
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-soft);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  font-weight: var(--font-medium);
+}
+
+.admin__sidebar-link:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.admin__sidebar-link--active {
+  background: var(--gradient-primary);
+  color: white;
+}
+
+.admin__main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin__topbar {
+  padding: var(--space-md) var(--space-xl);
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-elevate);
+  backdrop-filter: var(--blur-sm);
+}
+
+.admin__topbar-copy h1 {
+  margin: 0;
+  font-size: var(--text-lg);
+}
+
+.admin__topbar-copy p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.admin__topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.admin__content {
+  padding: var(--space-xl);
+  min-width: 0;
+}
+
+/* Dashboard Layout */
+.dashboard__header {
+  margin-bottom: var(--space-xl);
+}
+
+.dashboard__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.dashboard__stat-card {
+  padding: var(--space-lg);
+}
+
+/* Grid Layouts */
+.layout-grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.layout-grid--2cols {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.layout-grid--3cols {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.layout-grid--4cols {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.layout-grid--sidebar {
+  grid-template-columns: 280px 1fr;
+}
+
+/* Container Variations */
+.container-sm {
+  max-width: 640px;
+}
+
+.container-md {
+  max-width: 768px;
+}
+
+.container-lg {
+  max-width: 1024px;
+}
+
+.container-xl {
+  max-width: 1280px;
+}
+
+/* Footer Layout */
+.footer {
+  margin-top: auto;
+  padding: var(--space-2xl) 0;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-xl);
+}
+
+.footer__section h3 {
+  margin-bottom: var(--space-lg);
+}
+
+.footer__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.footer__link {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.footer__link:hover {
+  color: var(--color-primary);
+}
+
+/* Responsive Layouts */
+@media (max-width: 1024px) {
+  .admin {
+    grid-template-columns: 1fr;
+  }
+  
+  .admin__sidebar {
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .layout-grid--sidebar {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .layout-grid--2cols,
+  .layout-grid--3cols,
+  .layout-grid--4cols {
+    grid-template-columns: 1fr;
+  }
+  
+  .admin__topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .admin__content {
+    padding: var(--space-lg);
+  }
+  
+  .footer__grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}

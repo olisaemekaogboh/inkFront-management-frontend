@@ -14,6 +14,7 @@ import TestimonialsClientsPage from "../pages/public/TestimonialsClientsPage";
 import ContactPage from "../pages/public/ContactPage";
 import NotFoundPage from "../pages/public/NotFoundPage";
 import AdminDashboardPage from "../pages/admin/AdminDashboardPage";
+import AdminResourcePage from "../pages/admin/AdminResourcePage";
 import LoginPage from "../pages/auth/LoginPage";
 
 function AppRoutes() {
@@ -34,8 +35,70 @@ function AppRoutes() {
 
       <Route element={<ProtectedRoute />}>
         <Route element={<AdminRoute />}>
-          <Route element={<AdminLayout />}>
-            <Route path="/admin" element={<AdminDashboardPage />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboardPage />} />
+            <Route
+              path="services"
+              element={<AdminResourcePage resourceKey="services" />}
+            />
+            <Route
+              path="portfolio-projects"
+              element={<AdminResourcePage resourceKey="portfolioProjects" />}
+            />
+            <Route
+              path="product-blueprints"
+              element={<AdminResourcePage resourceKey="productBlueprints" />}
+            />
+            <Route
+              path="testimonials"
+              element={<AdminResourcePage resourceKey="testimonials" />}
+            />
+            <Route
+              path="client-logos"
+              element={<AdminResourcePage resourceKey="clientLogos" />}
+            />
+            <Route
+              path="homepage-sections"
+              element={<AdminResourcePage resourceKey="homepageSections" />}
+            />
+            <Route
+              path="contact-submissions"
+              element={<AdminResourcePage resourceKey="contactSubmissions" />}
+            />
+            <Route
+              path="newsletter-subscribers"
+              element={
+                <AdminResourcePage resourceKey="newsletterSubscribers" />
+              }
+            />
+            <Route
+              path="translations"
+              element={<AdminResourcePage resourceKey="translations" />}
+            />
+            <Route
+              path="site-settings"
+              element={<AdminResourcePage resourceKey="siteSettings" />}
+            />
+            <Route
+              path="navigation-items"
+              element={<AdminResourcePage resourceKey="navigationItems" />}
+            />
+            <Route
+              path="social-links"
+              element={<AdminResourcePage resourceKey="socialLinks" />}
+            />
+            <Route
+              path="media-assets"
+              element={<AdminResourcePage resourceKey="mediaAssets" />}
+            />
+            <Route
+              path="faqs"
+              element={<AdminResourcePage resourceKey="faqs" />}
+            />
+            <Route
+              path="categories"
+              element={<AdminResourcePage resourceKey="categories" />}
+            />
           </Route>
         </Route>
       </Route>

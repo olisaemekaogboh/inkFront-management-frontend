@@ -1,92 +1,78 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import useLanguage from "../../hooks/useLanguage";
-import useFetchOnMount from "../../hooks/useFetchOnMount";
-import { productBlueprintService } from "../../services/productBlueprintService";
-import LoadingSpinner from "../../components/common/LoadingSpinner";
-import ErrorState from "../../components/common/ErrorState";
-import Container from "../../components/common/Container";
-import CTASection from "../../components/sections/CTASection";
+import { publicApi } from "../../services/publicApi";
 
 export default function ProductBlueprintPage() {
   const { slug } = useParams();
-  const { language, t } = useLanguage();
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const blueprint = useFetchOnMount(
-    () => productBlueprintService.getProductBlueprintBySlug(slug, { language }),
-    [slug, language],
-  );
+  useEffect(() => {
+    let active = true;
 
-  if (blueprint.loading) {
-    return <LoadingSpinner label={t("states.loadingPage")} />;
+    (async () => {
+      try {
+        const data = await publicApi.getProductBlueprintBySlug(slug);
+        if (active) {
+          setProduct(data);
+        }
+      } catch {
+        if (active) {
+          setProduct(null);
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <section className="mx-auto max-w-5xl px-4 py-16 text-sm text-slate-500">
+        Loading product...
+      </section>
+    );
   }
 
-  if (blueprint.error) {
-    return <ErrorState message={blueprint.error} />;
+  if (!product) {
+    return (
+      <section className="mx-auto max-w-5xl px-4 py-16">
+        <div className="rounded-2xl border border-dashed border-slate-300 p-8 text-sm text-slate-500 dark:border-slate-700">
+          Product not found.
+        </div>
+      </section>
+    );
   }
-
-  const data = blueprint.data || {};
-  const features = data.features || data.productFeatures || [];
 
   return (
-    <>
-      <section className="page-section">
-        <Container>
-          <article className="detail-shell">
-            <header className="detail-hero">
-              <div className="detail-hero-copy">
-                <span className="detail-meta">
-                  {t("pages.products.detailLabel")}
-                </span>
-                <h1>{data.title}</h1>
-                <p>{data.summary}</p>
-              </div>
+    <section className="mx-auto max-w-5xl px-4 py-16">
+      <h1 className="text-3xl font-bold tracking-tight">
+        {product.title ?? product.name ?? "Untitled Product"}
+      </h1>
 
-              {data.heroImageUrl ? (
-                <div className="detail-media-card">
-                  <img src={data.heroImageUrl} alt={data.title} />
-                </div>
-              ) : null}
-            </header>
+      <p className="mt-4 text-base leading-7 text-slate-600 dark:text-slate-400">
+        {product.description ??
+          product.summary ??
+          product.shortDescription ??
+          "No product description available."}
+      </p>
 
-            <div className="detail-stack">
-              <section className="content-panel">
-                <h2>{t("pages.blueprint.challenge")}</h2>
-                <p>{data.challengeStatement || t("states.emptyGeneric")}</p>
-              </section>
-
-              <section className="content-panel">
-                <h2>{t("pages.blueprint.solution")}</h2>
-                <p>{data.solutionOverview || t("states.emptyGeneric")}</p>
-              </section>
-
-              <section className="content-panel">
-                <h2>{t("pages.blueprint.features")}</h2>
-                {features.length > 0 ? (
-                  <ul className="feature-list">
-                    {features.map((feature) => (
-                      <li key={feature.id || feature.title}>
-                        <h3>{feature.title}</h3>
-                        <p>{feature.description}</p>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>{data.featureHighlights || t("states.emptyGeneric")}</p>
-                )}
-              </section>
-            </div>
-          </article>
-        </Container>
-      </section>
-
-      <CTASection
-        title={t("cta.products.title")}
-        description={t("cta.products.description")}
-        primaryLabel={t("common.contactUs")}
-        primaryTo="/contact"
-        secondaryLabel={t("common.backToList")}
-        secondaryTo="/products"
-      />
-    </>
+      {Array.isArray(product.features) && product.features.length > 0 ? (
+        <div className="mt-8">
+          <h2 className="text-lg font-semibold">Features</h2>
+          <ul className="mt-4 list-disc space-y-2 pl-6 text-sm text-slate-600 dark:text-slate-400">
+            {product.features.map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+    </section>
   );
 }

@@ -1,9 +1,7 @@
 import axios from "axios";
 
 function getCookieValue(name) {
-  if (typeof document === "undefined") {
-    return null;
-  }
+  if (typeof document === "undefined") return null;
 
   const match = document.cookie
     .split("; ")
@@ -12,20 +10,34 @@ function getCookieValue(name) {
   return match ? decodeURIComponent(match.split("=")[1]) : null;
 }
 
+const rawBaseUrl =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
+
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: rawBaseUrl.replace(/\/$/, ""),
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-apiClient.interceptors.request.use((config) => {
-  const method = (config.method || "get").toLowerCase();
-  const unsafeMethods = ["post", "put", "patch", "delete"];
+async function ensureCsrfToken() {
+  let token = getCookieValue("XSRF-TOKEN");
 
-  if (unsafeMethods.includes(method)) {
-    const csrfToken = getCookieValue("XSRF-TOKEN");
+  if (!token) {
+    await apiClient.get("/csrf");
+    token = getCookieValue("XSRF-TOKEN");
+  }
+
+  return token;
+}
+
+apiClient.interceptors.request.use(async (config) => {
+  const method = (config.method || "get").toLowerCase();
+
+  if (["post", "put", "patch", "delete"].includes(method)) {
+    const csrfToken = await ensureCsrfToken();
+
     if (csrfToken) {
       config.headers["X-XSRF-TOKEN"] = csrfToken;
     }
@@ -45,18 +57,18 @@ apiClient.interceptors.response.use(
     const isLoginRequest =
       requestUrl.includes("/auth/login") ||
       requestUrl.includes("/auth/register");
-    const isPublicRequest = requestUrl.includes("/public/");
-    const isCsrfRequest = requestUrl.includes("/auth/csrf");
     const isCurrentUserRequest = requestUrl.includes("/auth/me");
+    const isPublicRequest = requestUrl.includes("/public/");
+    const isCsrfRequest = requestUrl.includes("/csrf");
 
     if (
       status === 401 &&
       !originalRequest._retry &&
       !isRefreshRequest &&
       !isLoginRequest &&
+      !isCurrentUserRequest &&
       !isPublicRequest &&
-      !isCsrfRequest &&
-      !isCurrentUserRequest
+      !isCsrfRequest
     ) {
       originalRequest._retry = true;
 

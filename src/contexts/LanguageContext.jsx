@@ -1,63 +1,116 @@
 import { createContext, useEffect, useMemo, useState } from "react";
-import {
-  DEFAULT_LANGUAGE,
-  LANGUAGE_STORAGE_KEY,
-  SUPPORTED_LANGUAGES,
-} from "../i18n/languages";
-import { messages } from "../i18n/messages";
-import { interpolate, resolveTranslation } from "../i18n/translate";
 
 export const LanguageContext = createContext(null);
 
-function getStoredLanguage() {
-  if (typeof window === "undefined") {
-    return DEFAULT_LANGUAGE;
-  }
+const LANGUAGE_OPTIONS = [
+  { code: "EN", label: "English" },
+  { code: "IG", label: "Igbo" },
+  { code: "HA", label: "Hausa" },
+  { code: "YO", label: "Yoruba" },
+];
 
-  const stored = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
-  const isSupported = SUPPORTED_LANGUAGES.some((item) => item.code === stored);
+const translations = {
+  EN: {
+    nav: {
+      home: "Home",
+      about: "About",
+      services: "Services",
+      portfolio: "Portfolio",
+      products: "Products",
+      clients: "Clients",
+      contact: "Contact",
+      login: "Login",
+      register: "Register",
+      dashboard: "Dashboard",
+      logout: "Logout",
+    },
+  },
+  IG: {
+    nav: {
+      home: "Ụlọ",
+      about: "Gbasara anyị",
+      services: "Ọrụ",
+      portfolio: "Ọrụ anyị",
+      products: "Ngwaahịa",
+      clients: "Ndị ahịa",
+      contact: "Kpọtụrụ",
+      login: "Banye",
+      register: "Debanye aha",
+      dashboard: "Dashboard",
+      logout: "Pụọ",
+    },
+  },
+  HA: {
+    nav: {
+      home: "Gida",
+      about: "Game da mu",
+      services: "Ayyuka",
+      portfolio: "Ayyukanmu",
+      products: "Kayayyaki",
+      clients: "Abokan ciniki",
+      contact: "Tuntuɓe mu",
+      login: "Shiga",
+      register: "Yi rajista",
+      dashboard: "Dashboard",
+      logout: "Fita",
+    },
+  },
+  YO: {
+    nav: {
+      home: "Ile",
+      about: "Nipa wa",
+      services: "Iṣẹ",
+      portfolio: "Awọn iṣẹ wa",
+      products: "Ọja",
+      clients: "Onibara",
+      contact: "Kan si wa",
+      login: "Wọle",
+      register: "Forukọsilẹ",
+      dashboard: "Dashboard",
+      logout: "Jade",
+    },
+  },
+};
 
-  return isSupported ? stored : DEFAULT_LANGUAGE;
+function getNestedValue(object, path) {
+  return path.split(".").reduce((current, key) => current?.[key], object);
 }
 
 export function LanguageProvider({ children }) {
-  const [language, setLanguageState] = useState(getStoredLanguage);
+  const [language, setLanguage] = useState(() => {
+    const saved = localStorage.getItem("language");
+    return LANGUAGE_OPTIONS.some((item) => item.code === saved) ? saved : "EN";
+  });
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
-    }
-
-    document.documentElement.setAttribute("lang", language.toLowerCase());
+    localStorage.setItem("language", language);
   }, [language]);
 
-  const setLanguage = (nextLanguage) => {
-    const isSupported = SUPPORTED_LANGUAGES.some(
-      (item) => item.code === nextLanguage,
-    );
-    if (isSupported) {
-      setLanguageState(nextLanguage);
+  const changeLanguage = (nextLanguage) => {
+    if (LANGUAGE_OPTIONS.some((item) => item.code === nextLanguage)) {
+      setLanguage(nextLanguage);
     }
   };
 
-  const t = (key, values = {}) => {
-    const activeMessages = messages[language] || messages[DEFAULT_LANGUAGE];
-    const fallbackMessages = messages[DEFAULT_LANGUAGE];
-
-    const resolved =
-      resolveTranslation(activeMessages, key) ??
-      resolveTranslation(fallbackMessages, key) ??
-      key;
-
-    return interpolate(resolved, values);
+  const t = (key, fallback = key) => {
+    return (
+      getNestedValue(translations[language], key) ||
+      getNestedValue(translations.EN, key) ||
+      fallback
+    );
   };
 
   const value = useMemo(
     () => ({
       language,
-      setLanguage,
-      supportedLanguages: SUPPORTED_LANGUAGES,
+      setLanguage: changeLanguage,
+      changeLanguage,
       t,
+
+      languages: LANGUAGE_OPTIONS.map((item) => item.code),
+      languageOptions: LANGUAGE_OPTIONS,
+      supportedLanguages: LANGUAGE_OPTIONS,
+      availableLanguages: LANGUAGE_OPTIONS,
     }),
     [language],
   );

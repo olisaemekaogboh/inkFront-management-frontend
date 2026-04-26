@@ -1,0 +1,56 @@
+/* theme-dark.css - Dark theme variables */
+[data-theme="dark"] {
+  /* Primary colors (adjusted for dark bg) */
+  --color-primary-50: #081d3b;
+  --color-primary-100: #0f2b52;
+  --color-primary-200: #163d6e;
+  --color-primary-300: #1e5290;
+  --color-primary-400: #256bb8;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #60a5fa;
+  --color-primary-700: #93c5fd;
+  --color-primary-800: #bfdbfe;
+  --color-primary-900: #eff6ff;
+  
+  --color-primary: var(--color-primary-500);
+  --color-primary-hover: var(--color-primary-400);
+  --color-primary-active: var(--color-primary-600);
+  --color-primary-contrast: #0f172a;
+
+  /* Neutral colors (dark mode) */
+  --color-gray-900: #f9fafb;
+  --color-gray-800: #f3f4f6;
+  --color-gray-700: #e5e7eb;
+  --color-gray-600: #d1d5db;
+  --color-gray-500: #9ca3af;
+  --color-gray-400: #6b7280;
+  --color-gray-300: #4b5563;
+  --color-gray-200: #374151;
+  --color-gray-100: #1f2937;
+  --color-gray-50: #111827;
+
+  /* Semantic colors */
+  --color-bg: #0f172a;
+  --color-bg-elevated: #1e293b;
+  --color-surface: #1e293b;
+  --color-surface-hover: #334155;
+  --color-surface-active: #475569;
+  
+  --color-text: var(--color-gray-900);
+  --color-text-soft: var(--color-gray-700);
+  --color-text-muted: var(--color-gray-500);
+  
+  --color-border: var(--color-gray-200);
+  --color-border-strong: var(--color-gray-300);
+  
+  --color-overlay: rgb(0 0 0 / 0.7);
+  --color-navbar-bg: rgb(15 23 42 / 0.9);
+
+  /* Shadows (dark mode) */
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.3);
+
+  color-scheme: dark;
+}

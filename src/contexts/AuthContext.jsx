@@ -9,81 +9,112 @@ import { authService } from "../services/authService";
 
 export const AuthContext = createContext(null);
 
+const extractUser = (payload) => {
+  if (!payload) return null;
+
+  if (payload.user) return payload.user;
+  if (payload.data?.user) return payload.data.user;
+  if (payload.data && typeof payload.data === "object") return payload.data;
+
+  return null;
+};
+
+const extractAuthenticated = (payload, user) => {
+  if (!payload) return false;
+
+  if (payload.authenticated === true) return true;
+  if (payload.data?.authenticated === true) return true;
+
+  return Boolean(user?.email || user?.id);
+};
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [authChecking, setAuthChecking] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [googleLoginAvailable] = useState(true);
 
-  const bootstrapAuth = useCallback(async () => {
+  const refreshCurrentUser = useCallback(async () => {
+    setLoading(true);
+
     try {
-      await authService.bootstrapCsrf();
-      const currentUser = await authService.getCurrentUser();
-      setUser(currentUser);
+      const payload = await authService.me();
+
+      console.log("AUTH /me response:", payload);
+
+      const nextUser = extractUser(payload);
+      const nextAuthenticated = extractAuthenticated(payload, nextUser);
+
+      setUser(nextAuthenticated ? nextUser : null);
+      setAuthenticated(nextAuthenticated);
+
+      return nextAuthenticated ? nextUser : null;
     } catch (error) {
-      // This is expected for guests who are not logged in.
+      console.log("AUTH /me failed:", error?.response?.status, error?.message);
+
       setUser(null);
+      setAuthenticated(false);
+      return null;
     } finally {
-      setAuthChecking(false);
+      setLoading(false);
+    }
+  }, []);
+
+  const login = useCallback(
+    async (payload) => {
+      const response = await authService.login(payload);
+      await refreshCurrentUser();
+      return response;
+    },
+    [refreshCurrentUser],
+  );
+
+  const register = useCallback(
+    async (payload) => {
+      const response = await authService.register(payload);
+      await refreshCurrentUser();
+      return response;
+    },
+    [refreshCurrentUser],
+  );
+
+  const logout = useCallback(async () => {
+    try {
+      await authService.logout();
+    } finally {
+      setUser(null);
+      setAuthenticated(false);
+      setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    bootstrapAuth();
-  }, [bootstrapAuth]);
+    refreshCurrentUser();
+  }, [refreshCurrentUser]);
 
-  const login = useCallback(async (payload) => {
-    await authService.bootstrapCsrf();
-    const response = await authService.login(payload);
-    setUser(response.user);
-    return response;
-  }, []);
-
-  const register = useCallback(async (payload) => {
-    await authService.bootstrapCsrf();
-    const response = await authService.register(payload);
-    setUser(response.user);
-    return response;
-  }, []);
-
-  const logout = useCallback(async () => {
-    try {
-      await authService.bootstrapCsrf();
-      await authService.logout();
-    } finally {
-      setUser(null);
-    }
-  }, []);
-
-  const refreshProfile = useCallback(async () => {
-    const currentUser = await authService.getCurrentUser();
-    setUser(currentUser);
-    return currentUser;
-  }, []);
-
-  const value = useMemo(() => {
-    const roles = user?.roles || [];
-
-    return {
+  const value = useMemo(
+    () => ({
       user,
-      authChecking,
-      isAuthenticated: Boolean(user),
-      roles,
-      isAdmin: roles.includes("ROLE_ADMIN"),
+      authenticated,
+      isAuthenticated: authenticated,
+      loading,
+      googleLoginAvailable,
       login,
       register,
       logout,
-      refreshProfile,
-      setUser,
-      bootstrapAuth,
-    };
-  }, [
-    user,
-    authChecking,
-    login,
-    register,
-    logout,
-    refreshProfile,
-    bootstrapAuth,
-  ]);
+      refreshCurrentUser,
+    }),
+    [
+      user,
+      authenticated,
+      loading,
+      googleLoginAvailable,
+      login,
+      register,
+      logout,
+      refreshCurrentUser,
+    ],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
