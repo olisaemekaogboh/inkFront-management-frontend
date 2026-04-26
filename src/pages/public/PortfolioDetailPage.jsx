@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { motion } from "framer-motion";
 import useLanguage from "../../hooks/useLanguage";
 import { publicApi } from "../../services/publicApi";
 import "../../styles/publicPremium.css";
@@ -14,37 +13,32 @@ function text(...values) {
 export default function PortfolioDetailPage() {
   const { slug } = useParams();
   const { language, t } = useLanguage();
-
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
-
     async function loadProject() {
       try {
         setLoading(true);
-
         const data = await publicApi.getPortfolioProjectBySlug(slug, {
           language: language || "EN",
         });
-
         if (active) setProject(data);
-      } catch {
+      } catch (err) {
+        console.error("Failed to load project:", err);
         if (active) setProject(null);
       } finally {
         if (active) setLoading(false);
       }
     }
-
     loadProject();
-
     return () => {
       active = false;
     };
   }, [slug, language]);
 
-  if (loading) {
+  if (loading)
     return (
       <main className="premium-public-page">
         <section className="premium-section">
@@ -54,19 +48,21 @@ export default function PortfolioDetailPage() {
         </section>
       </main>
     );
-  }
-
-  if (!project) {
+  if (!project)
     return (
       <main className="premium-public-page">
         <section className="premium-section">
           <div className="premium-container">
-            <div className="premium-empty-card">Project not found.</div>
+            <div className="premium-empty-card">
+              <strong>Project not found</strong>
+              <Link to="/portfolio" style={{ display: "block", marginTop: 16 }}>
+                ← Back to portfolio
+              </Link>
+            </div>
           </div>
         </section>
       </main>
     );
-  }
 
   const title = text(project.title, project.name, "Untitled Project");
   const description = text(
@@ -74,66 +70,41 @@ export default function PortfolioDetailPage() {
     project.summary,
     "No project description available.",
   );
-
   const imageUrl = text(
     project.coverImageUrl,
     project.imageUrl,
     project.thumbnailUrl,
   );
+  const tag = text(project.projectType, project.clientIndustry, "Case Study");
 
   return (
     <main className="premium-public-page">
       <section className="premium-detail-hero">
         <div className="premium-container premium-detail-grid">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65 }}
-          >
-            <span className="premium-eyebrow">
-              {project.projectType || project.clientIndustry || "Case Study"}
-            </span>
-
+          <div>
+            <span className="premium-eyebrow">{tag}</span>
             <h1>{title}</h1>
             <p>{description}</p>
-
             <div className="premium-actions">
-              {project.liveUrl && project.liveUrl !== "#" ? (
-                <a
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="premium-btn premium-btn-primary"
-                >
-                  Visit project
-                </a>
-              ) : null}
-
               <Link to="/portfolio" className="premium-btn premium-btn-ghost">
                 ← Back to portfolio
               </Link>
             </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.65 }}
-            className="premium-detail-media"
-          >
+          </div>
+          <div className="premium-detail-media">
             {imageUrl ? (
               <img
                 src={imageUrl}
                 alt={title}
                 loading="lazy"
-                onError={(event) => {
-                  event.currentTarget.style.display = "none";
+                onError={(e) => {
+                  e.target.style.display = "none";
                 }}
               />
             ) : (
               <div className="premium-detail-placeholder">💼</div>
             )}
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -144,35 +115,35 @@ export default function PortfolioDetailPage() {
             <h2>Project Overview</h2>
             <p>{description}</p>
           </article>
-
-          {project.clientIndustry ? (
+          {project.clientIndustry && (
             <article className="premium-info-panel">
               <span>02</span>
               <h2>Industry</h2>
               <p>{project.clientIndustry}</p>
             </article>
-          ) : null}
-
-          {project.projectType ? (
+          )}
+          {project.projectType && (
             <article className="premium-info-panel">
               <span>03</span>
               <h2>Project Type</h2>
               <p>{project.projectType}</p>
             </article>
-          ) : null}
+          )}
         </div>
       </section>
 
       <section className="premium-cta">
         <div className="premium-container premium-cta-inner">
-          <span className="premium-eyebrow">Your project next</span>
-          <h2>Want a platform with this level of polish?</h2>
+          <span className="premium-eyebrow premium-eyebrow--light">
+            Your project next
+          </span>
+          <h2>Want a platform built with this level of polish?</h2>
           <p>
-            Let’s design and build a business website or system that helps your
+            Let's design and build a business website or system that helps your
             brand stand out.
           </p>
           <Link to="/contact" className="premium-btn premium-btn-light">
-            Start a project
+            Start a project →
           </Link>
         </div>
       </section>

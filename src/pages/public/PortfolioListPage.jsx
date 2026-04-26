@@ -5,19 +5,6 @@ import useLanguage from "../../hooks/useLanguage";
 import { publicApi } from "../../services/publicApi";
 import "../../styles/publicPremium.css";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
-
-function normalizeList(response) {
-  if (Array.isArray(response)) return response;
-  if (Array.isArray(response?.content)) return response.content;
-  if (Array.isArray(response?.data?.content)) return response.data.content;
-  if (Array.isArray(response?.data)) return response.data;
-  return [];
-}
-
 function text(...values) {
   return (
     values.find((value) => typeof value === "string" && value.trim()) || ""
@@ -26,39 +13,26 @@ function text(...values) {
 
 export default function PortfolioListPage() {
   const { language, t } = useLanguage();
-
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
-
     async function loadProjects() {
       try {
         setLoading(true);
-
-        const response = await publicApi.getPortfolioProjects({
+        const data = await publicApi.getPortfolioProjects({
           language: language || "EN",
-          page: 0,
-          size: 12,
         });
-
-        if (active) {
-          setProjects(normalizeList(response));
-        }
-      } catch {
-        if (active) {
-          setProjects([]);
-        }
+        if (active) setProjects(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Failed to load portfolio:", err);
+        if (active) setProjects([]);
       } finally {
-        if (active) {
-          setLoading(false);
-        }
+        if (active) setLoading(false);
       }
     }
-
     loadProjects();
-
     return () => {
       active = false;
     };
@@ -68,27 +42,20 @@ export default function PortfolioListPage() {
     <main className="premium-public-page">
       <section className="premium-hero premium-compact-hero">
         <div className="premium-container">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeUp}
-            className="premium-page-intro"
-          >
+          <div className="premium-page-intro">
             <span className="premium-eyebrow">
               {t("nav.portfolio", "Portfolio")}
             </span>
-
             <h1>
               {t("portfolioPage.title", "Selected work and case studies")}
             </h1>
-
             <p>
               {t(
                 "portfolioPage.description",
                 "Explore websites, platforms, dashboards, and business systems built to help brands grow online.",
               )}
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -108,7 +75,7 @@ export default function PortfolioListPage() {
                   project.name,
                   "Untitled Project",
                 );
-                const description = text(
+                const summary = text(
                   project.summary,
                   project.description,
                   "Project summary unavailable.",
@@ -118,13 +85,16 @@ export default function PortfolioListPage() {
                   project.imageUrl,
                   project.thumbnailUrl,
                 );
+                const tag = text(
+                  project.projectType,
+                  project.clientIndustry,
+                  "Project",
+                );
 
                 return (
                   <Link
-                    key={project.id ?? project.slug ?? index}
-                    to={
-                      project.slug ? `/portfolio/${project.slug}` : "/portfolio"
-                    }
+                    key={project.id ?? index}
+                    to={`/portfolio/${project.slug}`}
                     className="premium-work-card"
                   >
                     {imageUrl ? (
@@ -133,8 +103,8 @@ export default function PortfolioListPage() {
                         alt={title}
                         loading="lazy"
                         className="premium-work-image"
-                        onError={(event) => {
-                          event.currentTarget.style.display = "none";
+                        onError={(e) => {
+                          e.target.style.display = "none";
                         }}
                       />
                     ) : (
@@ -142,16 +112,10 @@ export default function PortfolioListPage() {
                         <span>💼</span>
                       </div>
                     )}
-
                     <div>
-                      <span className="premium-mini-badge">
-                        {project.projectType ||
-                          project.clientIndustry ||
-                          "Project"}
-                      </span>
-
+                      <span className="premium-mini-badge">{tag}</span>
                       <h3>{title}</h3>
-                      <p>{description}</p>
+                      <p>{summary}</p>
                       <strong>View project →</strong>
                     </div>
                   </Link>

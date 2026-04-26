@@ -86,38 +86,29 @@ export const publicApi = {
   },
 
   async getServiceBySlug(slug, params = {}) {
-    const response = await http.get(`/public/services/${slug}`, {
-      params,
-    });
-
+    const response = await http.get(`/public/services/${slug}`, { params });
     const data = unwrapApiResponse(response);
     return Array.isArray(data) ? null : data;
   },
 
   /* PORTFOLIO */
   async getPortfolioProjects(params = {}) {
-    const response = await http.get("/public/portfolio-projects", {
-      params,
-    });
-
-    return unwrapPagedApiResponse(response);
+    const response = await http.get("/public/portfolio-projects", { params });
+    // response.data = { success, message, data: [...] }
+    return response.data?.data ?? [];
   },
 
   async getPortfolioProjectBySlug(slug, params = {}) {
     const response = await http.get(`/public/portfolio-projects/${slug}`, {
       params,
     });
-
-    const data = unwrapApiResponse(response);
-    return Array.isArray(data) ? null : data;
+    // response.data = { success, message, data: {...} }
+    return response.data?.data ?? null;
   },
 
   /* PRODUCTS */
   async getProductBlueprints(params = {}) {
-    const response = await http.get("/public/product-blueprints", {
-      params,
-    });
-
+    const response = await http.get("/public/product-blueprints", { params });
     return unwrapPagedApiResponse(response);
   },
 
@@ -125,7 +116,6 @@ export const publicApi = {
     const response = await http.get(`/public/product-blueprints/${slug}`, {
       params,
     });
-
     const data = unwrapApiResponse(response);
     return Array.isArray(data) ? null : data;
   },
@@ -139,10 +129,7 @@ export const publicApi = {
   /* CLIENT LOGOS */
   async getClientLogos(params = {}) {
     try {
-      const response = await http.get("/public/client-logos", {
-        params,
-      });
-
+      const response = await http.get("/public/client-logos", { params });
       return unwrapApiResponse(response);
     } catch {
       return [];
@@ -152,10 +139,7 @@ export const publicApi = {
   /* HERO */
   async getHeroSections(params = {}) {
     try {
-      const response = await http.get("/public/hero-sections", {
-        params,
-      });
-
+      const response = await http.get("/public/hero-sections", { params });
       return unwrapApiResponse(response);
     } catch {
       return [];
@@ -165,10 +149,7 @@ export const publicApi = {
   /* HOMEPAGE */
   async getHomepageSections(params = {}) {
     try {
-      const response = await http.get("/public/homepage-sections", {
-        params,
-      });
-
+      const response = await http.get("/public/homepage-sections", { params });
       return unwrapApiResponse(response);
     } catch {
       return [];
@@ -178,10 +159,7 @@ export const publicApi = {
   /* FAQ */
   async getFaqs(params = {}) {
     try {
-      const response = await http.get("/public/faqs", {
-        params,
-      });
-
+      const response = await http.get("/public/faqs", { params });
       return unwrapApiResponse(response);
     } catch {
       return [];
@@ -191,10 +169,7 @@ export const publicApi = {
   /* SITE SETTINGS */
   async getSiteSettings(params = {}) {
     try {
-      const response = await http.get("/public/site-settings", {
-        params,
-      });
-
+      const response = await http.get("/public/site-settings", { params });
       return unwrapApiResponse(response);
     } catch {
       return [];
@@ -204,14 +179,12 @@ export const publicApi = {
   /* CONTACT FORM */
   async submitContactMessage(payload = {}) {
     const response = await http.post("/public/contact-messages", payload);
-
     return unwrapApiResponse(response);
   },
 
   /* NEWSLETTER */
   async subscribeNewsletter(payload = {}) {
     const response = await http.post("/public/newsletter/subscribe", payload);
-
     return unwrapApiResponse(response);
   },
 };
