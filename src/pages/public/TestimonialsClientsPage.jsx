@@ -1,9 +1,31 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import useLanguage from "../../hooks/useLanguage";
 import { publicApi } from "../../services/publicApi";
+import "../../styles/publicPremium.css";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 28 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
+
+function normalizeList(response) {
+  if (Array.isArray(response)) return response;
+  if (Array.isArray(response?.content)) return response.content;
+  if (Array.isArray(response?.data?.content)) return response.data.content;
+  if (Array.isArray(response?.data)) return response.data;
+  if (Array.isArray(response?.items)) return response.items;
+  return [];
+}
+
+function text(...values) {
+  return (
+    values.find((value) => typeof value === "string" && value.trim()) || ""
+  );
+}
 
 export default function TestimonialsClientsPage() {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
 
   const [testimonials, setTestimonials] = useState([]);
   const [clientLogos, setClientLogos] = useState([]);
@@ -32,10 +54,8 @@ export default function TestimonialsClientsPage() {
         ]);
 
         if (active) {
-          setTestimonials(
-            Array.isArray(testimonialData) ? testimonialData : [],
-          );
-          setClientLogos(Array.isArray(logoData) ? logoData : []);
+          setTestimonials(normalizeList(testimonialData));
+          setClientLogos(normalizeList(logoData));
         }
       } catch {
         if (active) {
@@ -57,96 +77,190 @@ export default function TestimonialsClientsPage() {
   }, [language]);
 
   return (
-    <div className="page">
-      <main className="page__main">
-        <section className="page-section bg-gradient-to-br from-primary/5 to-secondary/5">
-          <div className="container">
-            <div className="max-w-3xl mx-auto">
-              <span className="hero__badge">Testimonials</span>
-              <h1 className="text-3xl font-bold mt-16 mb-12">
-                Clients & Testimonials
-              </h1>
-              <p className="text-md text-soft">
-                Feedback from client engagements and trusted organizations we
-                have supported.
-              </p>
+    <main className="premium-public-page">
+      <section className="premium-hero premium-compact-hero">
+        <div className="premium-container">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={fadeUp}
+            className="premium-page-intro"
+          >
+            <span className="premium-eyebrow">
+              {t("nav.clients", "Clients")}
+            </span>
+
+            <h1>
+              {t(
+                "clientsPage.title",
+                "Client stories, trust signals, and business proof",
+              )}
+            </h1>
+
+            <p>
+              {t(
+                "clientsPage.description",
+                "Feedback from client engagements and organizations supported with websites, digital products, and business systems.",
+              )}
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="premium-section premium-testimonial-section">
+        <div className="premium-container">
+          <div className="premium-section-head">
+            <span className="premium-eyebrow">Testimonials</span>
+            <h2>What clients say about working with InkFront</h2>
+            <p>
+              Real feedback should help future clients understand the quality,
+              clarity, and professionalism of your work.
+            </p>
+          </div>
+
+          {loading ? (
+            <div className="premium-loading">Loading client content...</div>
+          ) : testimonials.length === 0 ? (
+            <div className="premium-empty-card">
+              No testimonials available yet.
             </div>
-          </div>
-        </section>
+          ) : (
+            <div className="premium-testimonial-grid premium-testimonial-grid-large">
+              {testimonials.map((item, index) => {
+                const quote = text(
+                  item.quote,
+                  item.message,
+                  item.content,
+                  "No testimonial text.",
+                );
 
-        <section className="page-section">
-          <div className="container">
-            {loading ? (
-              <div className="loading">Loading client content...</div>
-            ) : (
-              <>
-                <div className="grid grid-cols-2 gap-24">
-                  {testimonials.length === 0 ? (
-                    <div className="empty-state col-span-2">
-                      No testimonials available yet.
-                    </div>
-                  ) : (
-                    testimonials.map((item, index) => (
-                      <article key={item.id ?? index} className="card p-24">
-                        <div className="text-6xl mb-16 opacity-30">"</div>
-                        <p className="text-md leading-relaxed text-soft mb-20">
-                          “{item.quote ?? "No testimonial text."}”
-                        </p>
+                const name = text(
+                  item.clientName,
+                  item.name,
+                  item.author,
+                  "Anonymous Client",
+                );
 
-                        <div className="border-t border-border pt-16">
-                          <div className="font-semibold">
-                            {item.clientName ?? "Anonymous Client"}
-                          </div>
-                          <div className="text-xs text-muted mt-4">
-                            {[item.clientRole, item.organization]
-                              .filter(Boolean)
-                              .join(" • ")}
-                          </div>
+                const roleLine = [item.clientRole, item.role, item.organization]
+                  .filter(Boolean)
+                  .join(" • ");
+
+                const avatarUrl = text(
+                  item.avatarUrl,
+                  item.imageUrl,
+                  item.photoUrl,
+                );
+
+                return (
+                  <motion.article
+                    key={item.id ?? index}
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.55, delay: index * 0.04 }}
+                    viewport={{ once: true }}
+                    className="premium-testimonial-card"
+                  >
+                    <div className="premium-quote-mark">“</div>
+
+                    <p>“{quote}”</p>
+
+                    <div className="premium-person">
+                      {avatarUrl ? (
+                        <img
+                          src={avatarUrl}
+                          alt={name}
+                          className="premium-avatar"
+                          loading="lazy"
+                          onError={(event) => {
+                            event.currentTarget.style.display = "none";
+                          }}
+                        />
+                      ) : (
+                        <div className="premium-avatar premium-avatar-fallback">
+                          {name.charAt(0).toUpperCase()}
                         </div>
-                      </article>
-                    ))
-                  )}
-                </div>
+                      )}
 
-                <div className="mt-48">
-                  <h2 className="text-lg font-bold mb-24">Client logos</h2>
+                      <div>
+                        <strong>{name}</strong>
+                        <span>{roleLine || "Client"}</span>
+                      </div>
+                    </div>
+                  </motion.article>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </section>
 
-                  {clientLogos.length === 0 ? (
-                    <div className="empty-state">
-                      No client logos available yet.
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-4 gap-16">
-                      {clientLogos.map((logo, index) => (
-                        <a
-                          key={logo.id ?? index}
-                          href={logo.websiteUrl || "#"}
-                          target={logo.websiteUrl ? "_blank" : undefined}
-                          rel={logo.websiteUrl ? "noreferrer" : undefined}
-                          className="card p-20 text-center text-decoration-none"
-                        >
-                          {logo.logoUrl ? (
-                            <img
-                              src={logo.logoUrl}
-                              alt={logo.name || "Client logo"}
-                              className="mx-auto h-12 max-w-full object-contain"
-                              loading="lazy"
-                            />
-                          ) : (
-                            <span className="text-muted">
-                              {logo.name ?? "Client"}
-                            </span>
-                          )}
-                        </a>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </>
-            )}
-          </div>
-        </section>
-      </main>
-    </div>
+      <section className="premium-logo-strip premium-logo-strip-spacious">
+        <div className="premium-container">
+          <span>Trusted organizations and client brands</span>
+
+          {loading ? null : clientLogos.length === 0 ? (
+            <div className="premium-empty-card">
+              No client logos available yet.
+            </div>
+          ) : (
+            <div className="premium-logo-grid">
+              {clientLogos.map((logo, index) => {
+                const name = text(
+                  logo.name,
+                  logo.clientName,
+                  `Client ${index + 1}`,
+                );
+                const logoUrl = text(logo.logoUrl, logo.imageUrl);
+
+                const content = logoUrl ? (
+                  <img
+                    src={logoUrl}
+                    alt={name}
+                    className="premium-logo-img"
+                    loading="lazy"
+                    onError={(event) => {
+                      event.currentTarget.style.display = "none";
+                    }}
+                  />
+                ) : (
+                  <strong>{name}</strong>
+                );
+
+                if (logo.websiteUrl) {
+                  return (
+                    <a
+                      key={logo.id ?? index}
+                      href={logo.websiteUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="premium-logo-card"
+                    >
+                      {content}
+                    </a>
+                  );
+                }
+
+                return (
+                  <div key={logo.id ?? index} className="premium-logo-card">
+                    {content}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section className="premium-cta">
+        <div className="premium-container premium-cta-inner">
+          <span className="premium-eyebrow">Join the next success story</span>
+          <h2>Let’s build a professional platform for your brand.</h2>
+          <p>
+            Your website should communicate trust, show proof, and turn visitors
+            into real conversations.
+          </p>
+        </div>
+      </section>
+    </main>
   );
 }

@@ -3,23 +3,60 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import useLanguage from "../../hooks/useLanguage";
 import { publicApi } from "../../services/publicApi";
+import "../../styles/publicPremium.css";
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 },
+/* ============================================ */
+/* Hardcoded service highlights */
+/* ============================================ */
+const SERVICE_HIGHLIGHTS = {
+  "website-development": {
+    headline: "Your website is your hardest-working salesperson",
+    body: "We build fast, beautiful websites that load in under 2 seconds, rank on Google, and turn visitors into customers. Every site includes a CMS so you can update content without writing code.",
+    timeline: "2–4 weeks",
+  },
+  "business-automation": {
+    headline: "Stop doing work a machine can handle",
+    body: "We design automation workflows that handle bookings, invoices, reminders, and reports while your team focuses on growth. Most clients save 20+ hours per week after deployment.",
+    timeline: "3–6 weeks",
+  },
+  "brand-and-product-strategy": {
+    headline: "Clarity sells more than clever copy",
+    body: "We help you define exactly what you offer, who it's for, and why they should care. The output is a clear strategy document your whole team can execute against.",
+    timeline: "1–3 weeks",
+  },
+  "ecommerce-platforms": {
+    headline: "Sell online like you mean it",
+    body: "From single-product stores to multi-vendor marketplaces, we build e-commerce platforms that are fast, secure, and optimized for conversion.",
+    timeline: "4–8 weeks",
+  },
+  "seo-and-content-systems": {
+    headline: "Get found by the people searching for you",
+    body: "We build content systems that rank. Every page is structured for search engines, every blog post is designed to capture traffic, and every landing page is optimized to convert.",
+    timeline: "Ongoing (results in 60–90 days)",
+  },
+  "custom-software-solutions": {
+    headline: "Software built exactly for your workflow",
+    body: "Off-the-shelf tools force you to change how you work. We build custom software that fits your existing processes.",
+    timeline: "6–16 weeks",
+  },
+  "mobile-app-development": {
+    headline: "Put your business in your customers' pockets",
+    body: "We build native and cross-platform mobile apps that are fast, intuitive, and built to scale. From fintech to social platforms, we handle design, development, and App Store deployment.",
+    timeline: "8–16 weeks",
   },
 };
 
-const scaleIn = {
-  hidden: { opacity: 0, scale: 0.95 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
+/* ============================================ */
+/* Animation variants */
+/* ============================================ */
+const fadeUp = {
+  hidden: { opacity: 0, y: 28 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
+
+const stagger = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1 } },
 };
 
 const fallbackIcons = ["🚀", "⚙️", "📊", "🎨", "💻", "📱", "🔧", "💡"];
@@ -31,8 +68,55 @@ const iconMap = {
   "shopping-cart": "🛒",
   search: "🔎",
   layers: "🧩",
+  smartphone: "📱",
 };
 
+/* ============================================ */
+/* Helpers */
+/* ============================================ */
+function normalizeList(response) {
+  if (Array.isArray(response)) return response;
+  if (Array.isArray(response?.content)) return response.content;
+  if (Array.isArray(response?.data?.content)) return response.data.content;
+  if (Array.isArray(response?.data)) return response.data;
+  if (Array.isArray(response?.items)) return response.items;
+  return [];
+}
+
+function text(...values) {
+  return (
+    values.find((value) => typeof value === "string" && value.trim()) || ""
+  );
+}
+
+function imageOf(item) {
+  return text(
+    item?.imageUrl,
+    item?.image_url,
+    item?.coverImageUrl,
+    item?.cover_image_url,
+    item?.thumbnailUrl,
+  );
+}
+
+function PremiumImage({ src, alt, className }) {
+  if (!src) return null;
+  return (
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      className={className}
+      onError={(event) => {
+        event.currentTarget.style.display = "none";
+      }}
+    />
+  );
+}
+
+/* ============================================ */
+/* Component */
+/* ============================================ */
 export default function ServicesPage() {
   const { language, t } = useLanguage();
 
@@ -55,33 +139,18 @@ export default function ServicesPage() {
           size: 12,
         });
 
-        const items = Array.isArray(response?.content)
-          ? response.content
-          : Array.isArray(response?.data?.content)
-            ? response.data.content
-            : Array.isArray(response?.data)
-              ? response.data
-              : Array.isArray(response)
-                ? response
-                : [];
-
-        if (active) {
-          setServices(items);
-        }
+        if (active) setServices(normalizeList(response));
       } catch (err) {
         if (active) {
           setServices([]);
           setError(err?.message || "Failed to load services");
         }
       } finally {
-        if (active) {
-          setLoading(false);
-        }
+        if (active) setLoading(false);
       }
     }
 
     loadServices();
-
     return () => {
       active = false;
     };
@@ -92,145 +161,170 @@ export default function ServicesPage() {
     return iconMap[key] || fallbackIcons[index % fallbackIcons.length];
   };
 
-  const getServiceImage = (service) => {
-    return (
-      service?.imageUrl ||
-      service?.image_url ||
-      service?.coverImageUrl ||
-      service?.cover_image_url ||
-      ""
-    );
-  };
-
   return (
-    <div className="page">
-      <main className="page__main">
-        <section className="page-section bg-gradient-to-br from-primary/5 to-secondary/5">
-          <div className="container">
+    <main className="premium-public-page">
+      {/* ========== HERO ========== */}
+      <section className="premium-hero premium-compact-hero">
+        <div className="premium-container">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={fadeUp}
+            className="premium-page-intro"
+          >
+            <span className="premium-eyebrow">
+              {t("nav.services", "Services")}
+            </span>
+
+            <h1>
+              {t("servicesPage.title", "Services that grow your business")}
+            </h1>
+
+            <p>
+              {t(
+                "servicesPage.description",
+                "From custom websites to full automation systems, we build digital products that help you work smarter, sell more, and scale faster.",
+              )}
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ========== AFFORDABLE SERVICES BANNER ========== */}
+      <section className="premium-section" style={{ paddingBottom: 0 }}>
+        <div className="premium-container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="premium-services-banner"
+          >
+            <span className="premium-services-banner__icon">💡</span>
+            <h2 className="premium-services-banner__title">
+              Affordable services for every product we build
+            </h2>
+            <p className="premium-services-banner__text">
+              Every product blueprint on our platform can be built as a full
+              service. We offer flexible pricing — from MVP launches starting at{" "}
+              <strong>$2,500</strong> to full enterprise platforms. You only pay
+              for what your business truly needs.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ========== SERVICES GRID ========== */}
+      <section className="premium-section">
+        <div className="premium-container">
+          {loading ? (
+            <div className="premium-loading">
+              {t("states.loadingPage", "Loading services...")}
+            </div>
+          ) : error ? (
+            <div className="premium-empty-card">
+              <strong>{t("states.error", "Something went wrong")}</strong>
+              <p>{error}</p>
+            </div>
+          ) : services.length === 0 ? (
+            <div className="premium-empty-card">
+              <strong>
+                {t("servicesPage.empty", "No services available yet.")}
+              </strong>
+            </div>
+          ) : (
             <motion.div
+              variants={stagger}
               initial="hidden"
-              animate="visible"
-              variants={fadeInUp}
-              className="text-center max-w-3xl mx-auto"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="premium-product-grid"
             >
-              <span className="hero__badge">
-                {t("nav.services", "Services")}
-              </span>
+              {services.map((service, index) => {
+                const title = text(
+                  service.name,
+                  service.title,
+                  "Untitled Service",
+                );
+                const description = text(
+                  service.shortDescription,
+                  service.short_description,
+                  service.summary,
+                  "Service details will appear here.",
+                );
+                const imageUrl = imageOf(service);
+                const highlights = SERVICE_HIGHLIGHTS[service.slug];
 
-              <h1 className="text-4xl font-bold mt-4 mb-4">
-                {t("servicesPage.title", "Solutions built for growth")}
-              </h1>
+                return (
+                  <motion.article
+                    key={service.id ?? service.slug ?? index}
+                    variants={fadeUp}
+                    className="premium-product-card"
+                  >
+                    {imageUrl ? (
+                      <PremiumImage
+                        src={imageUrl}
+                        alt={title}
+                        className="premium-product-image"
+                      />
+                    ) : (
+                      <div className="premium-product-image premium-fallback-media">
+                        <span>{getServiceIcon(service, index)}</span>
+                      </div>
+                    )}
 
-              <p className="text-lg text-muted">
-                {t(
-                  "servicesPage.description",
-                  "We help brands launch products, scale operations, improve visibility, and create better digital experiences.",
-                )}
-              </p>
+                    <div className="premium-product-body">
+                      <span className="premium-mini-badge">
+                        {service.category || t("nav.services", "Service")}
+                      </span>
+
+                      <h3>{title}</h3>
+                      <p>{description}</p>
+
+                      {highlights && (
+                        <div className="premium-service-highlights">
+                          <p className="premium-service-highlights__timeline">
+                            ⏱ {highlights.timeline}
+                          </p>
+                          <p className="premium-service-highlights__preview">
+                            {highlights.body.slice(0, 120)}...
+                          </p>
+                        </div>
+                      )}
+
+                      {service.slug && (
+                        <Link
+                          to={`/services/${service.slug}`}
+                          className="premium-text-link"
+                        >
+                          View service details →
+                        </Link>
+                      )}
+                    </div>
+                  </motion.article>
+                );
+              })}
             </motion.div>
-          </div>
-        </section>
+          )}
+        </div>
+      </section>
 
-        <section className="page-section">
-          <div className="container">
-            {loading ? (
-              <div className="text-center py-48">
-                <div className="animate-spin text-4xl mb-4">⏳</div>
-                <p className="text-muted">
-                  {t("states.loadingPage", "Loading services...")}
-                </p>
-              </div>
-            ) : error ? (
-              <motion.div
-                initial="hidden"
-                animate="visible"
-                variants={fadeInUp}
-                className="card p-32 text-center"
-              >
-                <div className="text-6xl mb-4">⚠️</div>
-                <h3 className="text-xl font-bold mb-2">
-                  {t("states.error", "Something went wrong")}
-                </h3>
-                <p className="text-muted">{error}</p>
-              </motion.div>
-            ) : services.length === 0 ? (
-              <motion.div
-                initial="hidden"
-                animate="visible"
-                variants={fadeInUp}
-                className="text-center py-48"
-              >
-                <div className="text-6xl mb-4">📭</div>
-                <p className="text-muted">
-                  {t("servicesPage.empty", "No services available yet.")}
-                </p>
-              </motion.div>
-            ) : (
-              <motion.div
-                variants={staggerContainer}
-                initial="hidden"
-                animate="visible"
-                className="grid grid-cols-3 gap-6"
-              >
-                {services.map((service, index) => {
-                  const imageUrl = getServiceImage(service);
-
-                  return (
-                    <motion.article
-                      key={service.id ?? service.slug ?? index}
-                      variants={scaleIn}
-                      whileHover={{ y: -8, transition: { duration: 0.2 } }}
-                      className="card card--glow"
-                    >
-                      <div className="card__media bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                        {imageUrl ? (
-                          <img
-                            src={imageUrl}
-                            alt={service.name || service.title || "Service"}
-                            loading="lazy"
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <span className="text-6xl">
-                            {getServiceIcon(service, index)}
-                          </span>
-                        )}
-                      </div>
-
-                      <div className="card__content">
-                        <span className="card__badge">
-                          {service.category || t("nav.services", "Service")}
-                        </span>
-
-                        <h3 className="card__title">
-                          {service.name || service.title || "Untitled Service"}
-                        </h3>
-
-                        <p className="card__description">
-                          {service.shortDescription ||
-                            service.short_description ||
-                            service.fullDescription ||
-                            service.full_description ||
-                            "Service details will appear here."}
-                        </p>
-
-                        {service.slug ? (
-                          <Link
-                            to={`/services/${service.slug}`}
-                            className="btn btn--outline btn--sm mt-4"
-                          >
-                            Learn more →
-                          </Link>
-                        ) : null}
-                      </div>
-                    </motion.article>
-                  );
-                })}
-              </motion.div>
-            )}
-          </div>
-        </section>
-      </main>
-    </div>
+      {/* ========== CTA ========== */}
+      <section className="premium-cta">
+        <div className="premium-container premium-cta-inner">
+          <span className="premium-eyebrow premium-eyebrow--light">
+            Ready to start?
+          </span>
+          <h2>Tell us what you need built</h2>
+          <p>
+            We'll match you with the right service package and give you a clear
+            timeline and price — no hidden fees.
+          </p>
+          <Link to="/contact" className="premium-btn premium-btn-light">
+            Get a free consultation →
+          </Link>
+        </div>
+      </section>
+    </main>
   );
 }

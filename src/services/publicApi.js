@@ -3,42 +3,26 @@ import http from "./http";
 const isObject = (value) =>
   value !== null && typeof value === "object" && !Array.isArray(value);
 
+/* =========================================
+   RESPONSE HELPERS
+========================================= */
+
 export const unwrapApiResponse = (response) => {
   const root = response?.data ?? response ?? null;
 
-  if (Array.isArray(root)) {
-    return root;
-  }
+  if (Array.isArray(root)) return root;
 
-  if (!isObject(root)) {
-    return [];
-  }
+  if (!isObject(root)) return [];
 
   const data = root.data ?? root.payload ?? root.result ?? root;
 
-  if (Array.isArray(data)) {
-    return data;
-  }
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data?.content)) return data.content;
+  if (Array.isArray(root?.content)) return root.content;
+  if (Array.isArray(data?.items)) return data.items;
+  if (Array.isArray(root?.items)) return root.items;
 
-  if (Array.isArray(data?.content)) {
-    return data.content;
-  }
-
-  if (Array.isArray(root?.content)) {
-    return root.content;
-  }
-
-  if (Array.isArray(data?.items)) {
-    return data.items;
-  }
-
-  if (Array.isArray(root?.items)) {
-    return root.items;
-  }
-
-  if (isObject(data)) {
-    return data;
-  }
+  if (isObject(data)) return data;
 
   return [];
 };
@@ -90,16 +74,32 @@ export const unwrapPagedApiResponse = (response) => {
   };
 };
 
+/* =========================================
+   PUBLIC API
+========================================= */
+
 export const publicApi = {
+  /* SERVICES */
   async getServices(params = {}) {
     const response = await http.get("/public/services", { params });
     return unwrapApiResponse(response);
   },
 
+  async getServiceBySlug(slug, params = {}) {
+    const response = await http.get(`/public/services/${slug}`, {
+      params,
+    });
+
+    const data = unwrapApiResponse(response);
+    return Array.isArray(data) ? null : data;
+  },
+
+  /* PORTFOLIO */
   async getPortfolioProjects(params = {}) {
     const response = await http.get("/public/portfolio-projects", {
       params,
     });
+
     return unwrapPagedApiResponse(response);
   },
 
@@ -112,6 +112,7 @@ export const publicApi = {
     return Array.isArray(data) ? null : data;
   },
 
+  /* PRODUCTS */
   async getProductBlueprints(params = {}) {
     const response = await http.get("/public/product-blueprints", {
       params,
@@ -129,20 +130,39 @@ export const publicApi = {
     return Array.isArray(data) ? null : data;
   },
 
+  /* TESTIMONIALS */
   async getTestimonials(params = {}) {
     const response = await http.get("/public/testimonials", { params });
     return unwrapApiResponse(response);
   },
 
+  /* CLIENT LOGOS */
   async getClientLogos(params = {}) {
     try {
-      const response = await http.get("/public/client-logos", { params });
+      const response = await http.get("/public/client-logos", {
+        params,
+      });
+
       return unwrapApiResponse(response);
     } catch {
       return [];
     }
   },
 
+  /* HERO */
+  async getHeroSections(params = {}) {
+    try {
+      const response = await http.get("/public/hero-sections", {
+        params,
+      });
+
+      return unwrapApiResponse(response);
+    } catch {
+      return [];
+    }
+  },
+
+  /* HOMEPAGE */
   async getHomepageSections(params = {}) {
     try {
       const response = await http.get("/public/homepage-sections", {
@@ -155,9 +175,10 @@ export const publicApi = {
     }
   },
 
-  async getHeroSections(params = {}) {
+  /* FAQ */
+  async getFaqs(params = {}) {
     try {
-      const response = await http.get("/public/hero-sections", {
+      const response = await http.get("/public/faqs", {
         params,
       });
 
@@ -165,5 +186,32 @@ export const publicApi = {
     } catch {
       return [];
     }
+  },
+
+  /* SITE SETTINGS */
+  async getSiteSettings(params = {}) {
+    try {
+      const response = await http.get("/public/site-settings", {
+        params,
+      });
+
+      return unwrapApiResponse(response);
+    } catch {
+      return [];
+    }
+  },
+
+  /* CONTACT FORM */
+  async submitContactMessage(payload = {}) {
+    const response = await http.post("/public/contact-messages", payload);
+
+    return unwrapApiResponse(response);
+  },
+
+  /* NEWSLETTER */
+  async subscribeNewsletter(payload = {}) {
+    const response = await http.post("/public/newsletter/subscribe", payload);
+
+    return unwrapApiResponse(response);
   },
 };

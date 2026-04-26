@@ -1,10 +1,11 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SimpleThemeToggle from "../common/SimpleThemeToggle";
 import LanguageSwitcher from "../common/LanguageSwitcher";
 import useAuth from "../../hooks/useAuth";
 import useLanguage from "../../hooks/useLanguage";
+import "../../styles/publicPremium.css";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -42,11 +43,22 @@ export default function Navbar() {
     { to: "/contact", label: t("nav.contact", "Contact") },
   ];
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.classList.add("mobile-menu-open");
+    } else {
+      document.body.classList.remove("mobile-menu-open");
+    }
+    return () => {
+      document.body.classList.remove("mobile-menu-open");
+    };
+  }, [mobileMenuOpen]);
+
   async function handleLogout() {
     if (typeof logout === "function") {
       await logout();
     }
-
     setMobileMenuOpen(false);
     navigate("/", { replace: true });
   }
@@ -56,22 +68,29 @@ export default function Navbar() {
   }
 
   const navLinkClass = ({ isActive }) =>
-    isActive ? "navbar__link navbar__link--active" : "navbar__link";
+    isActive
+      ? "premium-navbar__link premium-navbar__link--active"
+      : "premium-navbar__link";
 
   const mobileNavLinkClass = ({ isActive }) =>
     isActive
-      ? "mobile-menu__link mobile-menu__link--active"
-      : "mobile-menu__link";
+      ? "premium-mobile-menu__link premium-mobile-menu__link--active"
+      : "premium-mobile-menu__link";
 
   return (
-    <header className="navbar">
-      <div className="container app-container">
-        <div className="navbar__container">
-          <Link to="/" className="navbar__brand" onClick={closeMobileMenu}>
+    <header className="premium-navbar">
+      <div className="premium-container">
+        <div className="premium-navbar__inner">
+          <Link
+            to="/"
+            className="premium-navbar__brand"
+            onClick={closeMobileMenu}
+          >
+            <span className="premium-navbar__mark">IF</span>
             <span>{t("common.appName", "INKFRONT")}</span>
           </Link>
 
-          <nav className="navbar__links nav-links-desktop">
+          <nav className="premium-navbar__links">
             {navLinks.map((item) => (
               <NavLink
                 key={item.to}
@@ -90,35 +109,41 @@ export default function Navbar() {
             ) : null}
           </nav>
 
-          <div className="navbar__actions nav-actions-desktop">
+          <div className="premium-navbar__actions">
             <LanguageSwitcher id="navbar-language-switcher" />
             <SimpleThemeToggle />
 
             {isAuthenticated ? (
               <>
                 <span
-                  className="navbar__user"
+                  className="premium-navbar__user"
                   title={user?.email || displayName}
                 >
                   {displayName}
                 </span>
 
                 {userIsAdmin ? (
-                  <Link to="/admin" className="btn btn--outline btn--sm">
+                  <Link
+                    to="/admin"
+                    className="premium-btn premium-btn-ghost premium-btn-sm"
+                  >
                     {t("nav.admin", "Admin")}
                   </Link>
                 ) : null}
 
                 <button
                   type="button"
-                  className="btn btn--primary btn--sm"
+                  className="premium-btn premium-btn-primary premium-btn-sm"
                   onClick={handleLogout}
                 >
                   {t("nav.logout", "Logout")}
                 </button>
               </>
             ) : (
-              <Link to="/login" className="btn btn--primary btn--sm">
+              <Link
+                to="/login"
+                className="premium-btn premium-btn-primary premium-btn-sm"
+              >
                 {t("nav.login", "Login")}
               </Link>
             )}
@@ -126,7 +151,7 @@ export default function Navbar() {
 
           <button
             type="button"
-            className="navbar__mobile-toggle"
+            className="premium-navbar__toggle"
             onClick={() => setMobileMenuOpen((current) => !current)}
             aria-expanded={mobileMenuOpen}
             aria-label={
@@ -135,35 +160,7 @@ export default function Navbar() {
                 : t("nav.openMenu", "Open menu")
             }
           >
-            <span className="sr-only">
-              {mobileMenuOpen
-                ? t("nav.closeMenu", "Close menu")
-                : t("nav.openMenu", "Open menu")}
-            </span>
-
-            <svg
-              className="navbar__mobile-icon"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              {mobileMenuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
+            {mobileMenuOpen ? "✕" : "☰"}
           </button>
         </div>
       </div>
@@ -171,15 +168,15 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileMenuOpen ? (
           <motion.div
-            className="mobile-menu"
+            className="premium-mobile-menu"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
           >
-            <div className="container app-container">
-              <div className="mobile-menu__inner">
-                <nav className="mobile-menu__links">
+            <div className="premium-container">
+              <div className="premium-mobile-menu__inner">
+                <nav className="premium-mobile-menu__links">
                   {navLinks.map((item) => (
                     <NavLink
                       key={item.to}
@@ -203,23 +200,20 @@ export default function Navbar() {
                   ) : null}
                 </nav>
 
-                <div className="mobile-menu__actions">
+                <div className="premium-mobile-menu__actions">
                   <LanguageSwitcher id="mobile-language-switcher" />
                   <SimpleThemeToggle />
 
                   {isAuthenticated ? (
                     <>
-                      <span
-                        className="navbar__user"
-                        title={user?.email || displayName}
-                      >
+                      <span className="premium-navbar__user">
                         {displayName}
                       </span>
 
                       {userIsAdmin ? (
                         <Link
                           to="/admin"
-                          className="btn btn--outline btn--sm"
+                          className="premium-btn premium-btn-ghost"
                           onClick={closeMobileMenu}
                         >
                           {t("nav.admin", "Admin")}
@@ -228,7 +222,7 @@ export default function Navbar() {
 
                       <button
                         type="button"
-                        className="btn btn--primary btn--sm"
+                        className="premium-btn premium-btn-primary"
                         onClick={handleLogout}
                       >
                         {t("nav.logout", "Logout")}
@@ -237,7 +231,7 @@ export default function Navbar() {
                   ) : (
                     <Link
                       to="/login"
-                      className="btn btn--primary btn--sm"
+                      className="premium-btn premium-btn-primary"
                       onClick={closeMobileMenu}
                     >
                       {t("nav.login", "Login")}

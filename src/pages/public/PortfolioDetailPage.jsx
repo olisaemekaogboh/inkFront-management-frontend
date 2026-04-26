@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { motion } from "framer-motion";
 import useLanguage from "../../hooks/useLanguage";
 import { publicApi } from "../../services/publicApi";
+import "../../styles/publicPremium.css";
+
+function text(...values) {
+  return (
+    values.find((value) => typeof value === "string" && value.trim()) || ""
+  );
+}
 
 export default function PortfolioDetailPage() {
   const { slug } = useParams();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
 
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -21,17 +29,11 @@ export default function PortfolioDetailPage() {
           language: language || "EN",
         });
 
-        if (active) {
-          setProject(data);
-        }
+        if (active) setProject(data);
       } catch {
-        if (active) {
-          setProject(null);
-        }
+        if (active) setProject(null);
       } finally {
-        if (active) {
-          setLoading(false);
-        }
+        if (active) setLoading(false);
       }
     }
 
@@ -44,79 +46,136 @@ export default function PortfolioDetailPage() {
 
   if (loading) {
     return (
-      <div className="page">
-        <main className="page__main">
-          <div className="container text-center py-48">
-            <div className="loading">Loading project...</div>
+      <main className="premium-public-page">
+        <section className="premium-section">
+          <div className="premium-container">
+            <div className="premium-loading">Loading project...</div>
           </div>
-        </main>
-      </div>
+        </section>
+      </main>
     );
   }
 
   if (!project) {
     return (
-      <div className="page">
-        <main className="page__main">
-          <div className="container">
-            <div className="error-state-card">Project not found.</div>
+      <main className="premium-public-page">
+        <section className="premium-section">
+          <div className="premium-container">
+            <div className="premium-empty-card">Project not found.</div>
           </div>
-        </main>
-      </div>
+        </section>
+      </main>
     );
   }
 
+  const title = text(project.title, project.name, "Untitled Project");
+  const description = text(
+    project.description,
+    project.summary,
+    "No project description available.",
+  );
+
+  const imageUrl = text(
+    project.coverImageUrl,
+    project.imageUrl,
+    project.thumbnailUrl,
+  );
+
   return (
-    <div className="page">
-      <main className="page__main">
-        <div
-          className="container py-48"
-          style={{ maxWidth: "1024px", margin: "0 auto" }}
-        >
-          {project.coverImageUrl ? (
-            <img
-              src={project.coverImageUrl}
-              alt={project.title || "Project"}
-              className="mb-32 w-full rounded-xl object-cover"
-              style={{ height: "320px" }}
-            />
-          ) : null}
+    <main className="premium-public-page">
+      <section className="premium-detail-hero">
+        <div className="premium-container premium-detail-grid">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65 }}
+          >
+            <span className="premium-eyebrow">
+              {project.projectType || project.clientIndustry || "Case Study"}
+            </span>
 
-          <div className="d-flex flex-wrap gap-8 mb-16 text-sm text-primary">
-            {project.projectType ? <span>{project.projectType}</span> : null}
-            {project.clientIndustry ? (
-              <span>{project.clientIndustry}</span>
-            ) : null}
-          </div>
+            <h1>{title}</h1>
+            <p>{description}</p>
 
-          <h1 className="text-3xl font-bold mb-16">
-            {project.title ?? "Untitled Project"}
-          </h1>
+            <div className="premium-actions">
+              {project.liveUrl && project.liveUrl !== "#" ? (
+                <a
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="premium-btn premium-btn-primary"
+                >
+                  Visit project
+                </a>
+              ) : null}
 
-          <p className="text-base leading-relaxed text-soft mb-32">
-            {project.description ??
-              project.summary ??
-              "No project description available."}
-          </p>
+              <Link to="/portfolio" className="premium-btn premium-btn-ghost">
+                ← Back to portfolio
+              </Link>
+            </div>
+          </motion.div>
 
-          {project.liveUrl && project.liveUrl !== "#" ? (
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="btn btn--primary mb-40"
-            >
-              Visit project
-            </a>
-          ) : null}
-
-          <div className="mt-40">
-            <Link to="/portfolio" className="btn btn--outline">
-              ← Back to portfolio
-            </Link>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.65 }}
+            className="premium-detail-media"
+          >
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                alt={title}
+                loading="lazy"
+                onError={(event) => {
+                  event.currentTarget.style.display = "none";
+                }}
+              />
+            ) : (
+              <div className="premium-detail-placeholder">💼</div>
+            )}
+          </motion.div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      <section className="premium-section">
+        <div className="premium-container premium-detail-content">
+          <article className="premium-info-panel">
+            <span>01</span>
+            <h2>Project Overview</h2>
+            <p>{description}</p>
+          </article>
+
+          {project.clientIndustry ? (
+            <article className="premium-info-panel">
+              <span>02</span>
+              <h2>Industry</h2>
+              <p>{project.clientIndustry}</p>
+            </article>
+          ) : null}
+
+          {project.projectType ? (
+            <article className="premium-info-panel">
+              <span>03</span>
+              <h2>Project Type</h2>
+              <p>{project.projectType}</p>
+            </article>
+          ) : null}
+        </div>
+      </section>
+
+      <section className="premium-cta">
+        <div className="premium-container premium-cta-inner">
+          <span className="premium-eyebrow">Your project next</span>
+          <h2>Want a platform with this level of polish?</h2>
+          <p>
+            Let’s design and build a business website or system that helps your
+            brand stand out.
+          </p>
+          <Link to="/contact" className="premium-btn premium-btn-light">
+            Start a project
+          </Link>
+        </div>
+      </section>
+    </main>
   );
 }

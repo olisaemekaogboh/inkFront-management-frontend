@@ -1,17 +1,28 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import useLanguage from "../../hooks/useLanguage";
 import { publicApi } from "../../services/publicApi";
+import "../../styles/publicPremium.css";
+
+function normalizeList(response) {
+  if (Array.isArray(response)) return response;
+  if (Array.isArray(response?.content)) return response.content;
+  if (Array.isArray(response?.data?.content)) return response.data.content;
+  if (Array.isArray(response?.data)) return response.data;
+  return [];
+}
+
+function text(...values) {
+  return (
+    values.find((value) => typeof value === "string" && value.trim()) || ""
+  );
+}
 
 export default function ProductsPage() {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
 
-  const [page, setPage] = useState({
-    content: [],
-    totalPages: 0,
-    page: 0,
-  });
-
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -23,21 +34,16 @@ export default function ProductsPage() {
 
         const response = await publicApi.getProductBlueprints({
           language: language || "EN",
+          featuredOnly: false,
           page: 0,
-          size: 12,
+          size: 24,
         });
 
-        if (active) {
-          setPage(response);
-        }
+        if (active) setProducts(normalizeList(response));
       } catch {
-        if (active) {
-          setPage({ content: [], totalPages: 0, page: 0 });
-        }
+        if (active) setProducts([]);
       } finally {
-        if (active) {
-          setLoading(false);
-        }
+        if (active) setLoading(false);
       }
     }
 
@@ -48,74 +54,113 @@ export default function ProductsPage() {
     };
   }, [language]);
 
-  const products = Array.isArray(page.content) ? page.content : [];
-
   return (
-    <div className="page">
-      <main className="page__main">
-        <section className="page-section bg-gradient-to-br from-primary/5 to-secondary/5">
-          <div className="container">
-            <div className="max-w-3xl mx-auto">
-              <span className="hero__badge">Products</span>
-              <h1 className="text-3xl font-bold mt-16 mb-12">Products</h1>
-              <p className="text-md text-soft">
-                Reusable product blueprints and solution packages for growing
-                teams.
-              </p>
-            </div>
-          </div>
-        </section>
+    <main className="premium-public-page">
+      <section className="premium-hero premium-compact-hero">
+        <div className="premium-container">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65 }}
+            className="premium-page-intro"
+          >
+            <span className="premium-eyebrow">
+              {t("nav.products", "Products")}
+            </span>
 
-        <section className="page-section">
-          <div className="container">
-            {loading ? (
-              <div className="loading">Loading products...</div>
-            ) : products.length === 0 ? (
-              <div className="empty-state">No products available yet.</div>
-            ) : (
-              <div className="grid grid-cols-3 gap-24">
-                {products.map((product, index) => (
-                  <article
+            <h1>
+              {t(
+                "productsPage.title",
+                "Product blueprints for serious businesses",
+              )}
+            </h1>
+
+            <p>
+              {t(
+                "productsPage.description",
+                "Explore ready-to-build digital product structures for websites, booking systems, portals, schools, e-commerce, and business dashboards.",
+              )}
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="premium-section">
+        <div className="premium-container">
+          {loading ? (
+            <div className="premium-loading">Loading products...</div>
+          ) : products.length === 0 ? (
+            <div className="premium-empty-card">No products available yet.</div>
+          ) : (
+            <div className="premium-product-grid">
+              {products.map((product, index) => {
+                const title = text(
+                  product.title,
+                  product.name,
+                  "Untitled Product",
+                );
+
+                const summary = text(
+                  product.summary,
+                  product.solutionOverview,
+                  "Product summary unavailable.",
+                );
+
+                const imageUrl = text(
+                  product.heroImageUrl,
+                  product.imageUrl,
+                  product.coverImageUrl,
+                );
+
+                return (
+                  <motion.article
                     key={product.id ?? product.slug ?? index}
-                    className="card"
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.55, delay: index * 0.04 }}
+                    viewport={{ once: true }}
+                    className="premium-product-card"
                   >
-                    {product.heroImageUrl ? (
-                      <div className="card__media">
-                        <img
-                          src={product.heroImageUrl}
-                          alt={product.title || "Product"}
-                          loading="lazy"
-                        />
+                    {imageUrl ? (
+                      <img
+                        src={imageUrl}
+                        alt={title}
+                        className="premium-product-image"
+                        loading="lazy"
+                        onError={(event) => {
+                          event.currentTarget.style.display = "none";
+                        }}
+                      />
+                    ) : (
+                      <div className="premium-product-image premium-fallback-media">
+                        <span>🧩</span>
                       </div>
-                    ) : null}
+                    )}
 
-                    <div className="card__content">
-                      <h3 className="card__title">
-                        {product.title ?? "Untitled Product"}
-                      </h3>
+                    <div className="premium-product-body">
+                      <span className="premium-mini-badge">
+                        Blueprint {String(index + 1).padStart(2, "0")}
+                      </span>
 
-                      <p className="card__description">
-                        {product.summary ??
-                          product.solutionOverview ??
-                          "Product summary unavailable."}
-                      </p>
+                      <h3>{title}</h3>
+                      <p>{summary}</p>
 
                       {product.slug ? (
                         <Link
                           to={`/products/${product.slug}`}
-                          className="btn btn--outline btn--sm mt-16"
+                          className="premium-text-link"
                         >
-                          View product →
+                          View blueprint →
                         </Link>
                       ) : null}
                     </div>
-                  </article>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
-      </main>
-    </div>
+                  </motion.article>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </section>
+    </main>
   );
 }

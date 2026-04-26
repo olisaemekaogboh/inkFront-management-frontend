@@ -15,7 +15,7 @@ import ProductsPage from "./pages/public/ProductsPage";
 import ProductBlueprintPage from "./pages/public/ProductBlueprintPage";
 import TestimonialsClientsPage from "./pages/public/TestimonialsClientsPage";
 import NotFoundPage from "./pages/public/NotFoundPage";
-
+import ServiceDetailPage from "./pages/public/ServiceDetailPage";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import LoginSuccessPage from "./pages/auth/LoginSuccessPage";
@@ -30,6 +30,7 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/services" element={<ServicesPage />} />
+          <Route path="/services/:slug" element={<ServiceDetailPage />} />
           <Route path="/portfolio" element={<PortfolioListPage />} />
           <Route path="/portfolio/:slug" element={<PortfolioDetailPage />} />
           <Route path="/products" element={<ProductsPage />} />

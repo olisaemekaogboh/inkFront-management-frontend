@@ -1,17 +1,33 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import useLanguage from "../../hooks/useLanguage";
 import { publicApi } from "../../services/publicApi";
+import "../../styles/publicPremium.css";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 28 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
+
+function normalizeList(response) {
+  if (Array.isArray(response)) return response;
+  if (Array.isArray(response?.content)) return response.content;
+  if (Array.isArray(response?.data?.content)) return response.data.content;
+  if (Array.isArray(response?.data)) return response.data;
+  return [];
+}
+
+function text(...values) {
+  return (
+    values.find((value) => typeof value === "string" && value.trim()) || ""
+  );
+}
 
 export default function PortfolioListPage() {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
 
-  const [page, setPage] = useState({
-    content: [],
-    totalPages: 0,
-    page: 0,
-  });
-
+  const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,11 +44,11 @@ export default function PortfolioListPage() {
         });
 
         if (active) {
-          setPage(response);
+          setProjects(normalizeList(response));
         }
       } catch {
         if (active) {
-          setPage({ content: [], totalPages: 0, page: 0 });
+          setProjects([]);
         }
       } finally {
         if (active) {
@@ -48,82 +64,103 @@ export default function PortfolioListPage() {
     };
   }, [language]);
 
-  const projects = Array.isArray(page.content) ? page.content : [];
-
   return (
-    <div className="page">
-      <main className="page__main">
-        <section className="page-section bg-gradient-to-br from-primary/5 to-secondary/5">
-          <div className="container">
-            <div className="max-w-3xl mx-auto">
-              <span className="hero__badge">Portfolio</span>
-              <h1 className="text-3xl font-bold mt-16 mb-12">Portfolio</h1>
-              <p className="text-md text-soft">
-                Selected work, case studies, and launches from our recent
-                engagements.
-              </p>
+    <main className="premium-public-page">
+      <section className="premium-hero premium-compact-hero">
+        <div className="premium-container">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={fadeUp}
+            className="premium-page-intro"
+          >
+            <span className="premium-eyebrow">
+              {t("nav.portfolio", "Portfolio")}
+            </span>
+
+            <h1>
+              {t("portfolioPage.title", "Selected work and case studies")}
+            </h1>
+
+            <p>
+              {t(
+                "portfolioPage.description",
+                "Explore websites, platforms, dashboards, and business systems built to help brands grow online.",
+              )}
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="premium-section">
+        <div className="premium-container">
+          {loading ? (
+            <div className="premium-loading">Loading portfolio...</div>
+          ) : projects.length === 0 ? (
+            <div className="premium-empty-card">
+              No portfolio projects available yet.
             </div>
-          </div>
-        </section>
+          ) : (
+            <div className="premium-work-grid">
+              {projects.map((project, index) => {
+                const title = text(
+                  project.title,
+                  project.name,
+                  "Untitled Project",
+                );
+                const description = text(
+                  project.summary,
+                  project.description,
+                  "Project summary unavailable.",
+                );
+                const imageUrl = text(
+                  project.coverImageUrl,
+                  project.imageUrl,
+                  project.thumbnailUrl,
+                );
 
-        <section className="page-section">
-          <div className="container">
-            {loading ? (
-              <div className="loading">Loading portfolio...</div>
-            ) : projects.length === 0 ? (
-              <div className="empty-state">
-                No portfolio projects available yet.
-              </div>
-            ) : (
-              <div className="grid grid-cols-3 gap-24">
-                {projects.map((project, index) => (
-                  <article
+                return (
+                  <Link
                     key={project.id ?? project.slug ?? index}
-                    className="card"
+                    to={
+                      project.slug ? `/portfolio/${project.slug}` : "/portfolio"
+                    }
+                    className="premium-work-card"
                   >
-                    {project.coverImageUrl ? (
-                      <div className="card__media">
-                        <img
-                          src={project.coverImageUrl}
-                          alt={project.title || "Project"}
-                          loading="lazy"
-                        />
+                    {imageUrl ? (
+                      <img
+                        src={imageUrl}
+                        alt={title}
+                        loading="lazy"
+                        className="premium-work-image"
+                        onError={(event) => {
+                          event.currentTarget.style.display = "none";
+                        }}
+                      />
+                    ) : (
+                      <div className="premium-work-image premium-fallback-media">
+                        <span>💼</span>
                       </div>
-                    ) : null}
+                    )}
 
-                    <div className="card__content">
-                      <div className="text-xs font-semibold uppercase tracking-wide text-primary mb-8">
+                    <div>
+                      <span className="premium-mini-badge">
                         {project.projectType ||
                           project.clientIndustry ||
                           "Project"}
-                      </div>
+                      </span>
 
-                      <h3 className="card__title">
-                        {project.title ?? "Untitled Project"}
-                      </h3>
-
-                      <p className="card__description">
-                        {project.summary ??
-                          project.description ??
-                          "Project summary unavailable."}
-                      </p>
-
-                      {project.slug ? (
-                        <Link
-                          to={`/portfolio/${project.slug}`}
-                          className="btn btn--outline btn--sm mt-16"
-                        >
-                          View project →
-                        </Link>
-                      ) : null}
+                      <h3>{title}</h3>
+                      <p>{description}</p>
+                      <strong>View project →</strong>
                     </div>
-                  </article>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
-      </main>
-    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </section>
+    </main>
   );
 }
