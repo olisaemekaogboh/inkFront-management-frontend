@@ -3,10 +3,6 @@ import http from "./http";
 const isObject = (value) =>
   value !== null && typeof value === "object" && !Array.isArray(value);
 
-/* =========================================
-   RESPONSE HELPERS
-========================================= */
-
 export const unwrapApiResponse = (response) => {
   const root = response?.data ?? response ?? null;
 
@@ -74,115 +70,131 @@ export const unwrapPagedApiResponse = (response) => {
   };
 };
 
-/* =========================================
-   PUBLIC API
-========================================= */
+const withLanguage = (params = {}) => ({
+  language: params.language || "EN",
+  ...params,
+});
 
 export const publicApi = {
-  /* SERVICES */
   async getServices(params = {}) {
-    const response = await http.get("/public/services", { params });
+    const response = await http.get("/public/services", {
+      params: withLanguage(params),
+    });
     return unwrapApiResponse(response);
   },
 
   async getServiceBySlug(slug, params = {}) {
-    const response = await http.get(`/public/services/${slug}`, { params });
+    const response = await http.get(`/public/services/${slug}`, {
+      params: withLanguage(params),
+    });
     const data = unwrapApiResponse(response);
     return Array.isArray(data) ? null : data;
   },
 
-  /* PORTFOLIO */
   async getPortfolioProjects(params = {}) {
-    const response = await http.get("/public/portfolio-projects", { params });
-    // response.data = { success, message, data: [...] }
-    return response.data?.data ?? [];
+    const response = await http.get("/public/portfolio-projects", {
+      params: withLanguage(params),
+    });
+    return unwrapApiResponse(response);
   },
 
   async getPortfolioProjectBySlug(slug, params = {}) {
     const response = await http.get(`/public/portfolio-projects/${slug}`, {
-      params,
+      params: withLanguage(params),
     });
-    // response.data = { success, message, data: {...} }
-    return response.data?.data ?? null;
+    const data = unwrapApiResponse(response);
+    return Array.isArray(data) ? null : data;
   },
 
-  /* PRODUCTS */
   async getProductBlueprints(params = {}) {
-    const response = await http.get("/public/product-blueprints", { params });
+    const response = await http.get("/public/product-blueprints", {
+      params: withLanguage(params),
+    });
     return unwrapPagedApiResponse(response);
   },
 
   async getProductBlueprintBySlug(slug, params = {}) {
     const response = await http.get(`/public/product-blueprints/${slug}`, {
-      params,
+      params: withLanguage(params),
     });
     const data = unwrapApiResponse(response);
     return Array.isArray(data) ? null : data;
   },
 
-  /* TESTIMONIALS */
   async getTestimonials(params = {}) {
-    const response = await http.get("/public/testimonials", { params });
+    const response = await http.get("/public/testimonials", {
+      params: withLanguage(params),
+    });
     return unwrapApiResponse(response);
   },
 
-  /* CLIENT LOGOS */
   async getClientLogos(params = {}) {
     try {
-      const response = await http.get("/public/client-logos", { params });
+      const response = await http.get("/public/client-logos", {
+        params: withLanguage(params),
+      });
       return unwrapApiResponse(response);
     } catch {
       return [];
     }
   },
 
-  /* HERO */
   async getHeroSections(params = {}) {
     try {
-      const response = await http.get("/public/hero-sections", { params });
+      const response = await http.get("/public/hero-sections", {
+        params: withLanguage(params),
+      });
       return unwrapApiResponse(response);
     } catch {
       return [];
     }
   },
 
-  /* HOMEPAGE */
   async getHomepageSections(params = {}) {
     try {
-      const response = await http.get("/public/homepage-sections", { params });
+      const response = await http.get("/public/homepage-sections", {
+        params: withLanguage(params),
+      });
       return unwrapApiResponse(response);
     } catch {
       return [];
     }
   },
 
-  /* FAQ */
   async getFaqs(params = {}) {
     try {
-      const response = await http.get("/public/faqs", { params });
-      return unwrapApiResponse(response);
+      const response = await http.get("/public/faqs", {
+        params: withLanguage(params),
+      });
+      return unwrapPagedApiResponse(response);
     } catch {
-      return [];
+      return {
+        content: [],
+        page: 0,
+        size: 0,
+        totalElements: 0,
+        totalPages: 0,
+        empty: true,
+      };
     }
   },
 
-  /* SITE SETTINGS */
   async getSiteSettings(params = {}) {
     try {
-      const response = await http.get("/public/site-settings", { params });
+      const response = await http.get("/public/site-settings", {
+        params: withLanguage(params),
+      });
       return unwrapApiResponse(response);
     } catch {
-      return [];
+      return {};
     }
   },
 
-  /* CONTACT FORM */
   async submitContactMessage(payload = {}) {
     const response = await http.post("/public/contact-messages", payload);
     return unwrapApiResponse(response);
   },
 
-  /* NEWSLETTER */
   async subscribeNewsletter(payload = {}) {
     const response = await http.post("/public/newsletter/subscribe", payload);
     return unwrapApiResponse(response);

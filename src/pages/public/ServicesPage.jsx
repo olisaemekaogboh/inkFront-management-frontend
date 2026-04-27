@@ -1,54 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import useLanguage from "../../hooks/useLanguage";
 import { publicApi } from "../../services/publicApi";
 import "../../styles/publicPremium.css";
 
-/* ============================================ */
-/* Hardcoded service highlights (English only - content) */
-/* ============================================ */
-const SERVICE_HIGHLIGHTS = {
-  "website-development": {
-    headline: "Your website is your hardest-working salesperson",
-    body: "We build fast, beautiful websites that load in under 2 seconds, rank on Google, and turn visitors into customers. Every site includes a CMS so you can update content without writing code.",
-    timeline: "2–4 weeks",
-  },
-  "business-automation": {
-    headline: "Stop doing work a machine can handle",
-    body: "We design automation workflows that handle bookings, invoices, reminders, and reports while your team focuses on growth. Most clients save 20+ hours per week after deployment.",
-    timeline: "3–6 weeks",
-  },
-  "brand-and-product-strategy": {
-    headline: "Clarity sells more than clever copy",
-    body: "We help you define exactly what you offer, who it's for, and why they should care. The output is a clear strategy document your whole team can execute against.",
-    timeline: "1–3 weeks",
-  },
-  "ecommerce-platforms": {
-    headline: "Sell online like you mean it",
-    body: "From single-product stores to multi-vendor marketplaces, we build e-commerce platforms that are fast, secure, and optimized for conversion.",
-    timeline: "4–8 weeks",
-  },
-  "seo-and-content-systems": {
-    headline: "Get found by the people searching for you",
-    body: "We build content systems that rank. Every page is structured for search engines, every blog post is designed to capture traffic, and every landing page is optimized to convert.",
-    timeline: "Ongoing (results in 60–90 days)",
-  },
-  "custom-software-solutions": {
-    headline: "Software built exactly for your workflow",
-    body: "Off-the-shelf tools force you to change how you work. We build custom software that fits your existing processes.",
-    timeline: "6–16 weeks",
-  },
-  "mobile-app-development": {
-    headline: "Put your business in your customers' pockets",
-    body: "We build native and cross-platform mobile apps that are fast, intuitive, and built to scale. From fintech to social platforms, we handle design, development, and App Store deployment.",
-    timeline: "8–16 weeks",
-  },
+const SERVICE_HIGHLIGHT_KEYS = {
+  "website-development": "websiteDevelopment",
+  "business-automation": "businessAutomation",
+  "brand-and-product-strategy": "brandProductStrategy",
+  "ecommerce-platforms": "ecommercePlatforms",
+  "seo-and-content-systems": "seoContentSystems",
+  "custom-software-solutions": "customSoftwareSolutions",
+  "mobile-app-development": "mobileAppDevelopment",
 };
 
-/* ============================================ */
-/* Animation variants */
-/* ============================================ */
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
@@ -71,9 +37,6 @@ const iconMap = {
   smartphone: "📱",
 };
 
-/* ============================================ */
-/* Helpers */
-/* ============================================ */
 function normalizeList(response) {
   if (Array.isArray(response)) return response;
   if (Array.isArray(response?.content)) return response.content;
@@ -101,6 +64,7 @@ function imageOf(item) {
 
 function PremiumImage({ src, alt, className }) {
   if (!src) return null;
+
   return (
     <img
       src={src}
@@ -114,15 +78,116 @@ function PremiumImage({ src, alt, className }) {
   );
 }
 
-/* ============================================ */
-/* Component */
-/* ============================================ */
 export default function ServicesPage() {
   const { language, t } = useLanguage();
 
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const serviceHighlights = useMemo(
+    () => ({
+      websiteDevelopment: {
+        headline: t(
+          "servicesPage.highlights.websiteDevelopment.headline",
+          "Your website is your hardest-working salesperson",
+        ),
+        body: t(
+          "servicesPage.highlights.websiteDevelopment.body",
+          "We build fast, beautiful websites that load quickly, rank on Google, and turn visitors into customers. Every site includes a CMS so you can update content without writing code.",
+        ),
+        timeline: t(
+          "servicesPage.highlights.websiteDevelopment.timeline",
+          "2–4 weeks",
+        ),
+      },
+      businessAutomation: {
+        headline: t(
+          "servicesPage.highlights.businessAutomation.headline",
+          "Stop doing work a machine can handle",
+        ),
+        body: t(
+          "servicesPage.highlights.businessAutomation.body",
+          "We design automation workflows that handle bookings, invoices, reminders, and reports while your team focuses on growth.",
+        ),
+        timeline: t(
+          "servicesPage.highlights.businessAutomation.timeline",
+          "3–6 weeks",
+        ),
+      },
+      brandProductStrategy: {
+        headline: t(
+          "servicesPage.highlights.brandProductStrategy.headline",
+          "Clarity sells more than clever copy",
+        ),
+        body: t(
+          "servicesPage.highlights.brandProductStrategy.body",
+          "We help you define what you offer, who it is for, and why they should care. The output is a clear strategy your team can execute.",
+        ),
+        timeline: t(
+          "servicesPage.highlights.brandProductStrategy.timeline",
+          "1–3 weeks",
+        ),
+      },
+      ecommercePlatforms: {
+        headline: t(
+          "servicesPage.highlights.ecommercePlatforms.headline",
+          "Sell online like you mean it",
+        ),
+        body: t(
+          "servicesPage.highlights.ecommercePlatforms.body",
+          "From single-product stores to multi-vendor marketplaces, we build e-commerce platforms that are fast, secure, and optimized for conversion.",
+        ),
+        timeline: t(
+          "servicesPage.highlights.ecommercePlatforms.timeline",
+          "4–8 weeks",
+        ),
+      },
+      seoContentSystems: {
+        headline: t(
+          "servicesPage.highlights.seoContentSystems.headline",
+          "Get found by the people searching for you",
+        ),
+        body: t(
+          "servicesPage.highlights.seoContentSystems.body",
+          "We build content systems structured for search engines, traffic capture, and better conversion.",
+        ),
+        timeline: t(
+          "servicesPage.highlights.seoContentSystems.timeline",
+          "Ongoing",
+        ),
+      },
+      customSoftwareSolutions: {
+        headline: t(
+          "servicesPage.highlights.customSoftwareSolutions.headline",
+          "Software built exactly for your workflow",
+        ),
+        body: t(
+          "servicesPage.highlights.customSoftwareSolutions.body",
+          "Off-the-shelf tools force you to change how you work. We build custom software that fits your existing process.",
+        ),
+        timeline: t(
+          "servicesPage.highlights.customSoftwareSolutions.timeline",
+          "6–16 weeks",
+        ),
+      },
+      mobileAppDevelopment: {
+        headline: t(
+          "servicesPage.highlights.mobileAppDevelopment.headline",
+          "Put your business in your customers' pockets",
+        ),
+        body: t(
+          "servicesPage.highlights.mobileAppDevelopment.body",
+          "We build native and cross-platform mobile apps that are fast, intuitive, and built to scale.",
+        ),
+        timeline: t(
+          "servicesPage.highlights.mobileAppDevelopment.timeline",
+          "8–16 weeks",
+        ),
+      },
+    }),
+    [t],
+  );
 
   useEffect(() => {
     let active = true;
@@ -143,7 +208,12 @@ export default function ServicesPage() {
       } catch (err) {
         if (active) {
           setServices([]);
-          setError(err?.message || "Failed to load services");
+          setError(
+            err?.response?.data?.message ||
+              err?.response?.data?.error ||
+              err?.message ||
+              t("states.failedToLoadServices", "Failed to load services"),
+          );
         }
       } finally {
         if (active) setLoading(false);
@@ -151,19 +221,24 @@ export default function ServicesPage() {
     }
 
     loadServices();
+
     return () => {
       active = false;
     };
-  }, [language]);
+  }, [language, t]);
 
   const getServiceIcon = (service, index) => {
     const key = service?.iconKey || service?.icon_key || service?.icon || "";
     return iconMap[key] || fallbackIcons[index % fallbackIcons.length];
   };
 
+  const getServiceHighlight = (slug) => {
+    const key = SERVICE_HIGHLIGHT_KEYS[slug];
+    return key ? serviceHighlights[key] : null;
+  };
+
   return (
     <main className="premium-public-page">
-      {/* ========== HERO ========== */}
       <section className="premium-hero premium-compact-hero">
         <div className="premium-container">
           <motion.div
@@ -190,7 +265,6 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ========== AFFORDABLE SERVICES BANNER ========== */}
       <section className="premium-section" style={{ paddingBottom: 0 }}>
         <div className="premium-container">
           <motion.div
@@ -201,12 +275,14 @@ export default function ServicesPage() {
             className="premium-services-banner"
           >
             <span className="premium-services-banner__icon">💡</span>
+
             <h2 className="premium-services-banner__title">
               {t(
                 "servicesPage.bannerTitle",
                 "Affordable services for every product we build",
               )}
             </h2>
+
             <p className="premium-services-banner__text">
               {t(
                 "servicesPage.bannerText",
@@ -222,12 +298,11 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ========== SERVICES GRID ========== */}
       <section className="premium-section">
         <div className="premium-container">
           {loading ? (
             <div className="premium-loading">
-              {t("states.loadingPage", "Loading services...")}
+              {t("states.loadingServices", "Loading services...")}
             </div>
           ) : error ? (
             <div className="premium-empty-card">
@@ -254,6 +329,7 @@ export default function ServicesPage() {
                   service.title,
                   t("servicesPage.untitled", "Untitled Service"),
                 );
+
                 const description = text(
                   service.shortDescription,
                   service.short_description,
@@ -263,8 +339,9 @@ export default function ServicesPage() {
                     "Service details will appear here.",
                   ),
                 );
+
                 const imageUrl = imageOf(service);
-                const highlights = SERVICE_HIGHLIGHTS[service.slug];
+                const highlights = getServiceHighlight(service.slug);
 
                 return (
                   <motion.article
@@ -292,7 +369,7 @@ export default function ServicesPage() {
                       <h3>{title}</h3>
                       <p>{description}</p>
 
-                      {highlights && (
+                      {highlights ? (
                         <div className="premium-service-highlights">
                           <p className="premium-service-highlights__timeline">
                             ⏱ {highlights.timeline}
@@ -301,9 +378,9 @@ export default function ServicesPage() {
                             {highlights.body.slice(0, 120)}...
                           </p>
                         </div>
-                      )}
+                      ) : null}
 
-                      {service.slug && (
+                      {service.slug ? (
                         <Link
                           to={`/services/${service.slug}`}
                           className="premium-text-link"
@@ -314,7 +391,7 @@ export default function ServicesPage() {
                           )}{" "}
                           →
                         </Link>
-                      )}
+                      ) : null}
                     </div>
                   </motion.article>
                 );
@@ -324,19 +401,21 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ========== CTA ========== */}
       <section className="premium-cta">
         <div className="premium-container premium-cta-inner">
           <span className="premium-eyebrow premium-eyebrow--light">
             {t("servicesPage.ctaEyebrow", "Ready to start?")}
           </span>
+
           <h2>{t("servicesPage.ctaTitle", "Tell us what you need built")}</h2>
+
           <p>
             {t(
               "servicesPage.ctaDescription",
               "We'll match you with the right service package and give you a clear timeline and price — no hidden fees.",
             )}
           </p>
+
           <Link to="/contact" className="premium-btn premium-btn-light">
             {t("servicesPage.ctaButton", "Get a free consultation")} →
           </Link>

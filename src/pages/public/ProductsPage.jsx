@@ -10,6 +10,7 @@ function normalizeList(response) {
   if (Array.isArray(response?.content)) return response.content;
   if (Array.isArray(response?.data?.content)) return response.data.content;
   if (Array.isArray(response?.data)) return response.data;
+  if (Array.isArray(response?.items)) return response.items;
   return [];
 }
 
@@ -24,6 +25,7 @@ export default function ProductsPage() {
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     let active = true;
@@ -31,6 +33,7 @@ export default function ProductsPage() {
     async function loadProducts() {
       try {
         setLoading(true);
+        setError("");
 
         const response = await publicApi.getProductBlueprints({
           language: language || "EN",
@@ -40,8 +43,16 @@ export default function ProductsPage() {
         });
 
         if (active) setProducts(normalizeList(response));
-      } catch {
-        if (active) setProducts([]);
+      } catch (err) {
+        if (active) {
+          setProducts([]);
+          setError(
+            err?.response?.data?.message ||
+              err?.response?.data?.error ||
+              err?.message ||
+              t("productsPage.loadError", "Failed to load products."),
+          );
+        }
       } finally {
         if (active) setLoading(false);
       }
@@ -52,7 +63,7 @@ export default function ProductsPage() {
     return () => {
       active = false;
     };
-  }, [language]);
+  }, [language, t]);
 
   return (
     <main className="premium-public-page">
@@ -89,7 +100,12 @@ export default function ProductsPage() {
         <div className="premium-container">
           {loading ? (
             <div className="premium-loading">
-              {t("states.loadingPage", "Loading products...")}
+              {t("states.loadingProducts", "Loading products...")}
+            </div>
+          ) : error ? (
+            <div className="premium-empty-card">
+              <strong>{t("states.error", "Something went wrong")}</strong>
+              <p>{error}</p>
             </div>
           ) : products.length === 0 ? (
             <div className="premium-empty-card">
@@ -108,7 +124,9 @@ export default function ProductsPage() {
 
                 const summary = text(
                   product.summary,
+                  product.shortDescription,
                   product.solutionOverview,
+                  product.description,
                   t("productsPage.noSummary", "Product summary unavailable."),
                 );
 
@@ -116,6 +134,7 @@ export default function ProductsPage() {
                   product.heroImageUrl,
                   product.imageUrl,
                   product.coverImageUrl,
+                  product.thumbnailUrl,
                 );
 
                 return (
