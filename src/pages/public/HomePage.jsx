@@ -149,21 +149,27 @@ export default function HomePage() {
     : [
         {
           id: "web-dev",
-          title: "Website Development",
-          summary:
+          title: t("home.fallbackServices.webDev", "Website Development"),
+          summary: t(
+            "home.fallbackServices.webDevSummary",
             "Fast, responsive, SEO-ready websites built to help your business look trusted.",
+          ),
         },
         {
           id: "software",
-          title: "Custom Software",
-          summary:
+          title: t("home.fallbackServices.software", "Custom Software"),
+          summary: t(
+            "home.fallbackServices.softwareSummary",
             "Dashboards, booking systems, portals, and internal tools for real operations.",
+          ),
         },
         {
           id: "strategy",
-          title: "Digital Strategy",
-          summary:
+          title: t("home.fallbackServices.strategy", "Digital Strategy"),
+          summary: t(
+            "home.fallbackServices.strategySummary",
             "Clear product direction, conversion flow, and launch planning for your brand.",
+          ),
         },
       ];
 
@@ -172,21 +178,35 @@ export default function HomePage() {
     : [
         {
           id: "agency-site",
-          title: "Agency Website Platform",
-          summary:
+          title: t(
+            "home.fallbackProjects.agencySite",
+            "Agency Website Platform",
+          ),
+          summary: t(
+            "home.fallbackProjects.agencySiteSummary",
             "A polished company website with service pages and lead capture.",
+          ),
           slug: "agency-website-platform",
         },
         {
           id: "booking-system",
-          title: "Booking Management System",
-          summary: "A clean booking flow for service-based businesses.",
+          title: t(
+            "home.fallbackProjects.bookingSystem",
+            "Booking Management System",
+          ),
+          summary: t(
+            "home.fallbackProjects.bookingSystemSummary",
+            "A clean booking flow for service-based businesses.",
+          ),
           slug: "booking-management-system",
         },
         {
           id: "client-portal",
-          title: "Client Portal",
-          summary: "A secure dashboard experience for clients and admins.",
+          title: t("home.fallbackProjects.clientPortal", "Client Portal"),
+          summary: t(
+            "home.fallbackProjects.clientPortalSummary",
+            "A secure dashboard experience for clients and admins.",
+          ),
           slug: "client-portal",
         },
       ];
@@ -196,9 +216,11 @@ export default function HomePage() {
     : [
         {
           id: "blueprint",
-          title: "Product Blueprint",
-          summary:
+          title: t("home.fallbackProducts.blueprint", "Product Blueprint"),
+          summary: t(
+            "home.fallbackProducts.blueprintSummary",
             "Map your idea, revenue model, user journey, and build roadmap before development.",
+          ),
           slug: "product-blueprint",
         },
       ];
@@ -208,29 +230,43 @@ export default function HomePage() {
     : [
         {
           id: "one",
-          clientName: "InkFront Client",
-          role: "Business Owner",
-          quote:
+          clientName: t(
+            "home.fallbackTestimonials.client1.name",
+            "InkFront Client",
+          ),
+          role: t("home.fallbackTestimonials.client1.role", "Business Owner"),
+          quote: t(
+            "home.fallbackTestimonials.client1.quote",
             "The platform gave our brand a professional online presence and made inquiries easier to manage.",
+          ),
         },
         {
           id: "two",
-          clientName: "Growth Client",
-          role: "Founder",
-          quote:
+          clientName: t(
+            "home.fallbackTestimonials.client2.name",
+            "Growth Client",
+          ),
+          role: t("home.fallbackTestimonials.client2.role", "Founder"),
+          quote: t(
+            "home.fallbackTestimonials.client2.quote",
             "Clean design, fast delivery, and a system that can grow with our business.",
+          ),
         },
       ];
 
   const finalLogos = logoItems.length ? logoItems : [];
 
   const heroTitle =
-    heroItem?.title || "Build a premium digital presence for your business";
+    heroItem?.title ||
+    t("home.heroTitle", "Build a premium digital presence for your business");
 
   const heroSubtitle =
     heroItem?.subtitle ||
     heroItem?.description ||
-    "InkFront designs and builds websites, product pages, portals, and business platforms that help your brand look trusted, convert leads, and scale online.";
+    t(
+      "home.heroSubtitle",
+      "InkFront designs and builds websites, product pages, portals, and business platforms that help your brand look trusted, convert leads, and scale online.",
+    );
 
   const heroImage = getImage(heroItem);
 
@@ -252,7 +288,7 @@ export default function HomePage() {
             className="premium-hero-copy"
           >
             <motion.span variants={fadeUp} className="premium-eyebrow">
-              InkFront Digital Systems
+              {t("home.eyebrow", "InkFront Digital Systems")}
             </motion.span>
 
             <motion.h1 variants={fadeUp}>{heroTitle}</motion.h1>
@@ -273,15 +309,15 @@ export default function HomePage() {
             <motion.div variants={fadeUp} className="premium-stats">
               <div>
                 <strong>20+</strong>
-                <span>Projects</span>
+                <span>{t("home.statsProjects", "Projects")}</span>
               </div>
               <div>
                 <strong>4</strong>
-                <span>Core services</span>
+                <span>{t("home.statsServices", "Core services")}</span>
               </div>
               <div>
                 <strong>100%</strong>
-                <span>Business focused</span>
+                <span>{t("home.statsBusiness", "Business focused")}</span>
               </div>
             </motion.div>
           </motion.div>
@@ -299,14 +335,14 @@ export default function HomePage() {
             />
 
             <div className="premium-dashboard-card">
-              <span>Live business system</span>
-              <h2>Websites. Portals. Products.</h2>
+              <span>{t("home.statsSystem", "Live business system")}</span>
+              <h2>{t("home.systemsTitle", "Websites. Portals. Products.")}</h2>
               <div className="premium-dashboard-list">
                 {["Services", "Portfolio", "Products", "Clients"].map(
                   (item) => (
                     <div key={item}>
-                      <span>{item}</span>
-                      <strong>Managed</strong>
+                      <span>{t(`nav.${item.toLowerCase()}`, item)}</span>
+                      <strong>{t("home.managed", "Managed")}</strong>
                     </div>
                   ),
                 )}
@@ -319,7 +355,7 @@ export default function HomePage() {
       {loading && (
         <section className="premium-container">
           <div className="premium-loading">
-            Loading latest InkFront content...
+            {t("common.loading", "Loading latest InkFront content...")}
           </div>
         </section>
       )}
@@ -327,7 +363,9 @@ export default function HomePage() {
       <section className="premium-section">
         <div className="premium-container">
           <div className="premium-section-head">
-            <span className="premium-eyebrow">What we do</span>
+            <span className="premium-eyebrow">
+              {t("home.whatWeDo", "What we do")}
+            </span>
             <h2>
               {t(
                 "sections.services.title",
@@ -344,12 +382,19 @@ export default function HomePage() {
 
           <div className="premium-card-grid">
             {finalServices.slice(0, 6).map((service, index) => {
-              const title = getText(service.title, service.name, "Service");
+              const title = getText(
+                service.title,
+                service.name,
+                t("home.service", "Service"),
+              );
               const summary = getText(
                 service.summary,
                 service.shortDescription,
                 service.description,
-                "A professional service designed to support your business.",
+                t(
+                  "home.serviceDescription",
+                  "A professional service designed to support your business.",
+                ),
               );
               const image = getImage(service);
 
@@ -375,7 +420,7 @@ export default function HomePage() {
                     <h3>{title}</h3>
                     <p>{summary}</p>
                     <Link to="/services" className="premium-text-link">
-                      Learn more →
+                      {t("common.learnMore", "Learn more")} →
                     </Link>
                   </div>
                 </motion.article>
@@ -388,8 +433,15 @@ export default function HomePage() {
       <section className="premium-section premium-section-dark">
         <div className="premium-container premium-split">
           <div>
-            <span className="premium-eyebrow">Product direction</span>
-            <h2>Turn your idea into a clear buildable business system.</h2>
+            <span className="premium-eyebrow">
+              {t("home.productDirection", "Product direction")}
+            </span>
+            <h2>
+              {t(
+                "home.productTitle",
+                "Turn your idea into a clear buildable business system.",
+              )}
+            </h2>
           </div>
 
           <div className="premium-blueprint-panel">
@@ -397,12 +449,15 @@ export default function HomePage() {
               const title = getText(
                 product.title,
                 product.name,
-                "Product Blueprint",
+                t("home.productBlueprint", "Product Blueprint"),
               );
               const summary = getText(
                 product.summary,
                 product.description,
-                "Plan the offer, pages, features, and customer journey before development starts.",
+                t(
+                  "home.productBlueprintSummary",
+                  "Plan the offer, pages, features, and customer journey before development starts.",
+                ),
               );
 
               return (
@@ -427,13 +482,15 @@ export default function HomePage() {
         <div className="premium-container">
           <div className="premium-section-head premium-section-head-row">
             <div>
-              <span className="premium-eyebrow">Selected work</span>
+              <span className="premium-eyebrow">
+                {t("home.selectedWork", "Selected work")}
+              </span>
               <h2>
                 {t("sections.portfolio.title", "Recent project direction")}
               </h2>
             </div>
             <Link to="/portfolio" className="premium-btn premium-btn-ghost">
-              View portfolio
+              {t("common.viewPortfolio", "View portfolio")}
             </Link>
           </div>
 
@@ -442,12 +499,15 @@ export default function HomePage() {
               const title = getText(
                 project.title,
                 project.name,
-                "Portfolio project",
+                t("home.portfolioProject", "Portfolio project"),
               );
               const summary = getText(
                 project.summary,
                 project.description,
-                "A clean digital project built for business impact.",
+                t(
+                  "home.portfolioSummary",
+                  "A clean digital project built for business impact.",
+                ),
               );
               const image = getImage(project);
 
@@ -467,7 +527,9 @@ export default function HomePage() {
                   <div>
                     <h3>{title}</h3>
                     <p>{summary}</p>
-                    <span>View case study →</span>
+                    <span>
+                      {t("common.viewCaseStudy", "View case study")} →
+                    </span>
                   </div>
                 </Link>
               );
@@ -479,11 +541,15 @@ export default function HomePage() {
       <section className="premium-section premium-testimonial-section">
         <div className="premium-container">
           <div className="premium-section-head">
-            <span className="premium-eyebrow">Client confidence</span>
+            <span className="premium-eyebrow">
+              {t("home.clientConfidence", "Client confidence")}
+            </span>
             <h2>{t("sections.testimonials.title", "What our clients say")}</h2>
             <p>
-              Clear communication, modern design, and systems that make your
-              business easier to manage.
+              {t(
+                "home.testimonialSubtitle",
+                "Clear communication, modern design, and systems that make your business easier to manage.",
+              )}
             </p>
           </div>
 
@@ -493,13 +559,16 @@ export default function HomePage() {
                 testimonial.clientName,
                 testimonial.name,
                 testimonial.author,
-                "Client",
+                t("home.client", "Client"),
               );
               const quote = getText(
                 testimonial.quote,
                 testimonial.content,
                 testimonial.message,
-                "A polished platform that helps the business look more professional online.",
+                t(
+                  "home.defaultQuote",
+                  "A polished platform that helps the business look more professional online.",
+                ),
               );
               const image = getImage(testimonial);
 
@@ -517,7 +586,10 @@ export default function HomePage() {
                     />
                     <div>
                       <strong>{name}</strong>
-                      <span>{testimonial.role || "Happy Client"}</span>
+                      <span>
+                        {testimonial.role ||
+                          t("home.happyClient", "Happy Client")}
+                      </span>
                     </div>
                   </div>
                 </article>
@@ -530,13 +602,13 @@ export default function HomePage() {
       {finalLogos.length > 0 && (
         <section className="premium-logo-strip">
           <div className="premium-container">
-            <span>Trusted by growing brands</span>
+            <span>{t("home.trustedBy", "Trusted by growing brands")}</span>
             <div className="premium-logo-grid">
               {finalLogos.slice(0, 10).map((logo, index) => {
                 const name = getText(
                   logo.name,
                   logo.clientName,
-                  `Client ${index + 1}`,
+                  `${t("home.client", "Client")} ${index + 1}`,
                 );
                 const image = getImage(logo);
 
@@ -558,20 +630,22 @@ export default function HomePage() {
 
       <section className="premium-cta">
         <div className="premium-container premium-cta-inner">
-          <span className="premium-eyebrow">Ready when you are</span>
+          <span className="premium-eyebrow">
+            {t("home.ready", "Ready when you are")}
+          </span>
           <h2>{t("cta.home.title", "Ready to build something premium?")}</h2>
           <p>
             {t(
               "cta.home.description",
-              "Let’s turn your business idea into a polished digital platform that looks trusted and works smoothly.",
+              "Let's turn your business idea into a polished digital platform that looks trusted and works smoothly.",
             )}
           </p>
           <div className="premium-actions premium-actions-center">
             <Link to="/contact" className="premium-btn premium-btn-primary">
-              Start a project
+              {t("common.contactUs", "Start a project")}
             </Link>
             <Link to="/services" className="premium-btn premium-btn-light">
-              Explore services
+              {t("nav.services", "Explore services")}
             </Link>
           </div>
         </div>

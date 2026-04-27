@@ -7,6 +7,7 @@ import LanguageSwitcher from "../common/LanguageSwitcher";
 
 const navItems = [
   { label: "Dashboard", to: "/admin", icon: "📊", end: true },
+  { label: "Contact Messages", to: "/admin/contact-messages", icon: "📩" },
   { label: "Services", to: "/admin/services", icon: "⚙️" },
   { label: "Portfolio", to: "/admin/portfolio", icon: "🎨" },
   { label: "Products", to: "/admin/products", icon: "📦" },
@@ -39,6 +40,7 @@ export default function AdminLayout() {
   useEffect(() => {
     function handleResize() {
       setDesktopSidebarVisible(window.innerWidth >= 1024);
+
       if (window.innerWidth >= 1024) {
         setMobileSidebarOpen(false);
       }

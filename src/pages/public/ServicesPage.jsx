@@ -6,7 +6,7 @@ import { publicApi } from "../../services/publicApi";
 import "../../styles/publicPremium.css";
 
 /* ============================================ */
-/* Hardcoded service highlights */
+/* Hardcoded service highlights (English only - content) */
 /* ============================================ */
 const SERVICE_HIGHLIGHTS = {
   "website-development": {
@@ -202,13 +202,21 @@ export default function ServicesPage() {
           >
             <span className="premium-services-banner__icon">💡</span>
             <h2 className="premium-services-banner__title">
-              Affordable services for every product we build
+              {t(
+                "servicesPage.bannerTitle",
+                "Affordable services for every product we build",
+              )}
             </h2>
             <p className="premium-services-banner__text">
-              Every product blueprint on our platform can be built as a full
-              service. We offer flexible pricing — from MVP launches starting at{" "}
-              <strong>$2,500</strong> to full enterprise platforms. You only pay
-              for what your business truly needs.
+              {t(
+                "servicesPage.bannerText",
+                "Every product blueprint on our platform can be built as a full service. We offer flexible pricing — from MVP launches starting at",
+              )}{" "}
+              <strong>$2,500</strong>{" "}
+              {t(
+                "servicesPage.bannerTextEnd",
+                "to full enterprise platforms. You only pay for what your business truly needs.",
+              )}
             </p>
           </motion.div>
         </div>
@@ -244,13 +252,16 @@ export default function ServicesPage() {
                 const title = text(
                   service.name,
                   service.title,
-                  "Untitled Service",
+                  t("servicesPage.untitled", "Untitled Service"),
                 );
                 const description = text(
                   service.shortDescription,
                   service.short_description,
                   service.summary,
-                  "Service details will appear here.",
+                  t(
+                    "servicesPage.descriptionFallback",
+                    "Service details will appear here.",
+                  ),
                 );
                 const imageUrl = imageOf(service);
                 const highlights = SERVICE_HIGHLIGHTS[service.slug];
@@ -297,7 +308,11 @@ export default function ServicesPage() {
                           to={`/services/${service.slug}`}
                           className="premium-text-link"
                         >
-                          View service details →
+                          {t(
+                            "servicesPage.viewDetails",
+                            "View service details",
+                          )}{" "}
+                          →
                         </Link>
                       )}
                     </div>
@@ -313,15 +328,17 @@ export default function ServicesPage() {
       <section className="premium-cta">
         <div className="premium-container premium-cta-inner">
           <span className="premium-eyebrow premium-eyebrow--light">
-            Ready to start?
+            {t("servicesPage.ctaEyebrow", "Ready to start?")}
           </span>
-          <h2>Tell us what you need built</h2>
+          <h2>{t("servicesPage.ctaTitle", "Tell us what you need built")}</h2>
           <p>
-            We'll match you with the right service package and give you a clear
-            timeline and price — no hidden fees.
+            {t(
+              "servicesPage.ctaDescription",
+              "We'll match you with the right service package and give you a clear timeline and price — no hidden fees.",
+            )}
           </p>
           <Link to="/contact" className="premium-btn premium-btn-light">
-            Get a free consultation →
+            {t("servicesPage.ctaButton", "Get a free consultation")} →
           </Link>
         </div>
       </section>

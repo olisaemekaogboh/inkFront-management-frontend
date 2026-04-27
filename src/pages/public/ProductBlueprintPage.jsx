@@ -58,7 +58,9 @@ export default function ProductBlueprintPage() {
       <main className="premium-public-page">
         <section className="premium-section">
           <div className="premium-container">
-            <div className="premium-loading">Loading product...</div>
+            <div className="premium-loading">
+              {t("states.loadingPage", "Loading product...")}
+            </div>
           </div>
         </section>
       </main>
@@ -70,15 +72,24 @@ export default function ProductBlueprintPage() {
       <main className="premium-public-page">
         <section className="premium-section">
           <div className="premium-container">
-            <div className="premium-empty-card">Product not found.</div>
+            <div className="premium-empty-card">
+              <strong>{t("products.notFound", "Product not found.")}</strong>
+            </div>
           </div>
         </section>
       </main>
     );
   }
 
-  const title = text(product.title, product.name, "Untitled Product");
-  const summary = text(product.summary, "No product summary available.");
+  const title = text(
+    product.title,
+    product.name,
+    t("products.untitled", "Untitled Product"),
+  );
+  const summary = text(
+    product.summary,
+    t("products.noSummary", "No product summary available."),
+  );
   const imageUrl = getImage(product);
 
   const benefitsList = formatBulletList(product.keyBenefits);
@@ -103,11 +114,11 @@ export default function ProductBlueprintPage() {
 
             <div className="premium-actions">
               <Link to="/contact" className="premium-btn premium-btn-primary">
-                Start a project
+                {t("common.contactUs", "Start a project")}
               </Link>
 
               <Link to="/products" className="premium-btn premium-btn-ghost">
-                ← Back to products
+                ← {t("common.backToList", "Back to products")}
               </Link>
             </div>
           </motion.div>
@@ -146,7 +157,7 @@ export default function ProductBlueprintPage() {
               className="premium-info-panel"
             >
               <span>01</span>
-              <h2>Challenge</h2>
+              <h2>{t("products.challenge", "Challenge")}</h2>
               <p>{product.challengeStatement}</p>
             </motion.article>
           ) : null}
@@ -160,7 +171,7 @@ export default function ProductBlueprintPage() {
               className="premium-info-panel"
             >
               <span>02</span>
-              <h2>Solution</h2>
+              <h2>{t("products.solution", "Solution")}</h2>
               <p>{product.solutionOverview}</p>
             </motion.article>
           ) : null}
@@ -174,7 +185,7 @@ export default function ProductBlueprintPage() {
               className="premium-info-panel"
             >
               <span>03</span>
-              <h2>Feature Highlights</h2>
+              <h2>{t("products.features", "Feature Highlights")}</h2>
               <p>{product.featureHighlights}</p>
             </motion.article>
           ) : null}
@@ -193,7 +204,7 @@ export default function ProductBlueprintPage() {
               className="premium-info-panel premium-benefits-panel"
             >
               <span>04</span>
-              <h2>Key Benefits</h2>
+              <h2>{t("products.keyBenefits", "Key Benefits")}</h2>
               <ul className="premium-bullet-list">
                 {benefitsList.map((benefit, index) => (
                   <li key={index}>{benefit.replace(/^[•\-]\s*/, "")}</li>
@@ -211,7 +222,7 @@ export default function ProductBlueprintPage() {
               className="premium-info-panel"
             >
               <span>05</span>
-              <h2>Use Cases</h2>
+              <h2>{t("products.useCases", "Use Cases")}</h2>
               <ul className="premium-bullet-list">
                 {useCasesList.map((useCase, index) => (
                   <li key={index}>{useCase.replace(/^[•\-]\s*/, "")}</li>
@@ -229,7 +240,7 @@ export default function ProductBlueprintPage() {
               className="premium-info-panel"
             >
               <span>06</span>
-              <h2>Target Users</h2>
+              <h2>{t("products.targetUsers", "Target Users")}</h2>
               <p>{product.targetUsers}</p>
             </motion.article>
           ) : null}
@@ -243,7 +254,7 @@ export default function ProductBlueprintPage() {
               className="premium-info-panel"
             >
               <span>07</span>
-              <h2>Technology Stack</h2>
+              <h2>{t("products.techStack", "Technology Stack")}</h2>
               <p className="premium-tech-stack">{product.techStack}</p>
             </motion.article>
           ) : null}
@@ -257,7 +268,7 @@ export default function ProductBlueprintPage() {
               className="premium-info-panel"
             >
               <span>08</span>
-              <h2>Estimated Timeline</h2>
+              <h2>{t("products.timeline", "Estimated Timeline")}</h2>
               <p>{product.timeline}</p>
             </motion.article>
           ) : null}
@@ -267,14 +278,23 @@ export default function ProductBlueprintPage() {
       {/* CTA Section */}
       <section className="premium-cta">
         <div className="premium-container premium-cta-inner">
-          <span className="premium-eyebrow">Build with clarity</span>
-          <h2>Ready to turn this blueprint into a real product?</h2>
+          <span className="premium-eyebrow premium-eyebrow--light">
+            {t("products.ctaEyebrow", "Build with clarity")}
+          </span>
+          <h2>
+            {t(
+              "products.ctaTitle",
+              "Ready to turn this blueprint into a real product?",
+            )}
+          </h2>
           <p>
-            Let InkFront help you convert your idea into a polished business
-            platform.
+            {t(
+              "products.ctaDescription",
+              "Let InkFront help you convert your idea into a polished business platform.",
+            )}
           </p>
           <Link to="/contact" className="premium-btn premium-btn-light">
-            Talk to us
+            {t("common.contactUs", "Talk to us")}
           </Link>
         </div>
       </section>

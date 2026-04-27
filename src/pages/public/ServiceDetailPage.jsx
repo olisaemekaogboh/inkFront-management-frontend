@@ -199,10 +199,15 @@ export default function ServiceDetailPage() {
         <section className="premium-section">
           <div className="premium-container">
             <div className="premium-empty-card">
-              <strong>Service not found</strong>
-              <p>This service may not exist or may not be published yet.</p>
+              <strong>{t("services.notFound", "Service not found")}</strong>
+              <p>
+                {t(
+                  "services.notFoundDesc",
+                  "This service may not exist or may not be published yet.",
+                )}
+              </p>
               <Link to="/services" className="premium-text-link">
-                ← Back to services
+                ← {t("common.backToList", "Back to services")}
               </Link>
             </div>
           </div>
@@ -211,12 +216,16 @@ export default function ServiceDetailPage() {
     );
   }
 
-  const title = text(service.name, service.title, "Untitled Service");
+  const title = text(
+    service.name,
+    service.title,
+    t("services.untitled", "Untitled Service"),
+  );
   const summary = text(
     service.shortDescription,
     service.short_description,
     service.summary,
-    "Service details will appear here.",
+    t("services.summaryFallback", "Service details will appear here."),
   );
   const description = text(
     service.fullDescription,
@@ -246,11 +255,11 @@ export default function ServiceDetailPage() {
 
             <div className="premium-actions">
               <Link to="/contact" className="premium-btn premium-btn-primary">
-                Request this service
+                {t("services.requestService", "Request this service")}
               </Link>
 
               <Link to="/services" className="premium-btn premium-btn-ghost">
-                ← Back to services
+                ← {t("common.backToList", "Back to services")}
               </Link>
             </div>
           </motion.div>
@@ -281,19 +290,25 @@ export default function ServiceDetailPage() {
         <div className="premium-container premium-detail-content">
           <article className="premium-info-panel">
             <span>01</span>
-            <h2>Overview</h2>
+            <h2>{t("services.overview", "Overview")}</h2>
             <p>{description}</p>
           </article>
 
           <article className="premium-info-panel">
             <span>02</span>
-            <h2>Timeline</h2>
-            <p>{highlight?.timeline || "Timeline depends on project scope."}</p>
+            <h2>{t("services.timeline", "Timeline")}</h2>
+            <p>
+              {highlight?.timeline ||
+                t(
+                  "services.timelineFallback",
+                  "Timeline depends on project scope.",
+                )}
+            </p>
           </article>
 
           <article className="premium-info-panel">
             <span>03</span>
-            <h2>What you get</h2>
+            <h2>{t("services.deliverables", "What you get")}</h2>
 
             {highlight?.deliverables?.length ? (
               <ul className="premium-detail-list">
@@ -303,8 +318,10 @@ export default function ServiceDetailPage() {
               </ul>
             ) : (
               <p>
-                A clean strategy, premium design direction, backend-connected
-                content, responsive UI, and a business-focused delivery process.
+                {t(
+                  "services.deliverablesFallback",
+                  "A clean strategy, premium design direction, backend-connected content, responsive UI, and a business-focused delivery process.",
+                )}
               </p>
             )}
           </article>
@@ -315,8 +332,12 @@ export default function ServiceDetailPage() {
         <section className="premium-section premium-testimonial-section">
           <div className="premium-container">
             <div className="premium-section-head">
-              <span className="premium-eyebrow">More services</span>
-              <h2>Other ways InkFront can help</h2>
+              <span className="premium-eyebrow">
+                {t("services.moreServices", "More services")}
+              </span>
+              <h2>
+                {t("services.otherServices", "Other ways InkFront can help")}
+              </h2>
             </div>
 
             <div className="premium-card-grid">
@@ -327,15 +348,23 @@ export default function ServiceDetailPage() {
                   className="premium-work-card"
                 >
                   <div>
-                    <h3>{text(item.name, item.title, "Service")}</h3>
+                    <h3>
+                      {text(
+                        item.name,
+                        item.title,
+                        t("services.service", "Service"),
+                      )}
+                    </h3>
                     <p>
                       {text(
                         item.shortDescription,
                         item.summary,
-                        "Explore this service.",
+                        t("services.viewService", "Explore this service."),
                       )}
                     </p>
-                    <strong>View service →</strong>
+                    <strong>
+                      {t("services.viewService", "View service")} →
+                    </strong>
                   </div>
                 </Link>
               ))}
@@ -347,15 +376,17 @@ export default function ServiceDetailPage() {
       <section className="premium-cta">
         <div className="premium-container premium-cta-inner">
           <span className="premium-eyebrow premium-eyebrow--light">
-            Ready to build?
+            {t("services.ctaEyebrow", "Ready to build?")}
           </span>
-          <h2>Let’s talk about your project.</h2>
+          <h2>{t("services.ctaTitle", "Let's talk about your project.")}</h2>
           <p>
-            Tell us what you need. We’ll recommend the right service package,
-            timeline, and next step.
+            {t(
+              "services.ctaDescription",
+              "Tell us what you need. We'll recommend the right service package, timeline, and next step.",
+            )}
           </p>
           <Link to="/contact" className="premium-btn premium-btn-light">
-            Get a free consultation →
+            {t("services.ctaButton", "Get a free consultation")} →
           </Link>
         </div>
       </section>

@@ -5,6 +5,7 @@ import PublicLayout from "./components/layout/PublicLayout";
 import AdminLayout from "./components/layout/AdminLayout";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import AdminContentManagerPage from "./pages/admin/AdminContentManagerPage";
+import AdminContactMessagesPage from "./pages/admin/AdminContactMessagesPage";
 import HomePage from "./pages/public/HomePage";
 import AboutPage from "./pages/public/AboutPage";
 import ContactPage from "./pages/public/ContactPage";
@@ -51,6 +52,11 @@ export default function App() {
           }
         >
           <Route index element={<AdminDashboardPage />} />
+
+          <Route
+            path="contact-messages"
+            element={<AdminContactMessagesPage />}
+          />
 
           <Route
             path="hero-sections"

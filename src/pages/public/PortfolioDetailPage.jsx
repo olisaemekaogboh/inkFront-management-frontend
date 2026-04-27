@@ -43,20 +43,23 @@ export default function PortfolioDetailPage() {
       <main className="premium-public-page">
         <section className="premium-section">
           <div className="premium-container">
-            <div className="premium-loading">Loading project...</div>
+            <div className="premium-loading">
+              {t("states.loadingPage", "Loading project...")}
+            </div>
           </div>
         </section>
       </main>
     );
+
   if (!project)
     return (
       <main className="premium-public-page">
         <section className="premium-section">
           <div className="premium-container">
             <div className="premium-empty-card">
-              <strong>Project not found</strong>
+              <strong>{t("portfolio.notFound", "Project not found")}</strong>
               <Link to="/portfolio" style={{ display: "block", marginTop: 16 }}>
-                ← Back to portfolio
+                ← {t("common.backToList", "Back to portfolio")}
               </Link>
             </div>
           </div>
@@ -64,18 +67,26 @@ export default function PortfolioDetailPage() {
       </main>
     );
 
-  const title = text(project.title, project.name, "Untitled Project");
+  const title = text(
+    project.title,
+    project.name,
+    t("portfolio.untitled", "Untitled Project"),
+  );
   const description = text(
     project.description,
     project.summary,
-    "No project description available.",
+    t("portfolio.noDescription", "No project description available."),
   );
   const imageUrl = text(
     project.coverImageUrl,
     project.imageUrl,
     project.thumbnailUrl,
   );
-  const tag = text(project.projectType, project.clientIndustry, "Case Study");
+  const tag = text(
+    project.projectType,
+    project.clientIndustry,
+    t("portfolio.caseStudy", "Case Study"),
+  );
 
   return (
     <main className="premium-public-page">
@@ -87,7 +98,7 @@ export default function PortfolioDetailPage() {
             <p>{description}</p>
             <div className="premium-actions">
               <Link to="/portfolio" className="premium-btn premium-btn-ghost">
-                ← Back to portfolio
+                ← {t("common.backToList", "Back to portfolio")}
               </Link>
             </div>
           </div>
@@ -112,20 +123,20 @@ export default function PortfolioDetailPage() {
         <div className="premium-container premium-detail-content">
           <article className="premium-info-panel">
             <span>01</span>
-            <h2>Project Overview</h2>
+            <h2>{t("portfolio.overviewTitle", "Project Overview")}</h2>
             <p>{description}</p>
           </article>
           {project.clientIndustry && (
             <article className="premium-info-panel">
               <span>02</span>
-              <h2>Industry</h2>
+              <h2>{t("portfolio.clientIndustry", "Industry")}</h2>
               <p>{project.clientIndustry}</p>
             </article>
           )}
           {project.projectType && (
             <article className="premium-info-panel">
               <span>03</span>
-              <h2>Project Type</h2>
+              <h2>{t("portfolio.projectType", "Project Type")}</h2>
               <p>{project.projectType}</p>
             </article>
           )}
@@ -135,15 +146,22 @@ export default function PortfolioDetailPage() {
       <section className="premium-cta">
         <div className="premium-container premium-cta-inner">
           <span className="premium-eyebrow premium-eyebrow--light">
-            Your project next
+            {t("portfolio.ctaEyebrow", "Your project next")}
           </span>
-          <h2>Want a platform built with this level of polish?</h2>
+          <h2>
+            {t(
+              "portfolio.ctaTitle",
+              "Want a platform built with this level of polish?",
+            )}
+          </h2>
           <p>
-            Let's design and build a business website or system that helps your
-            brand stand out.
+            {t(
+              "portfolio.ctaDescription",
+              "Let's design and build a business website or system that helps your brand stand out.",
+            )}
           </p>
           <Link to="/contact" className="premium-btn premium-btn-light">
-            Start a project →
+            {t("common.contactUs", "Start a project")} →
           </Link>
         </div>
       </section>

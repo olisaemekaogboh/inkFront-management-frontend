@@ -1,76 +1,17 @@
 import { createContext, useEffect, useMemo, useState } from "react";
+import enTranslations from "../i18n/locales/en";
+import haTranslations from "../i18n/locales/ha";
+import igTranslations from "../i18n/locales/ig";
+import yoTranslations from "../i18n/locales/yo";
 
 export const LanguageContext = createContext(null);
 
 const LANGUAGE_OPTIONS = [
-  { code: "EN", label: "English" },
-  { code: "IG", label: "Igbo" },
-  { code: "HA", label: "Hausa" },
-  { code: "YO", label: "Yoruba" },
+  { code: "EN", label: "English", translations: enTranslations },
+  { code: "HA", label: "Hausa", translations: haTranslations },
+  { code: "IG", label: "Igbo", translations: igTranslations },
+  { code: "YO", label: "Yoruba", translations: yoTranslations },
 ];
-
-const translations = {
-  EN: {
-    nav: {
-      home: "Home",
-      about: "About",
-      services: "Services",
-      portfolio: "Portfolio",
-      products: "Products",
-      clients: "Clients",
-      contact: "Contact",
-      login: "Login",
-      register: "Register",
-      dashboard: "Dashboard",
-      logout: "Logout",
-    },
-  },
-  IG: {
-    nav: {
-      home: "Ụlọ",
-      about: "Gbasara anyị",
-      services: "Ọrụ",
-      portfolio: "Ọrụ anyị",
-      products: "Ngwaahịa",
-      clients: "Ndị ahịa",
-      contact: "Kpọtụrụ",
-      login: "Banye",
-      register: "Debanye aha",
-      dashboard: "Dashboard",
-      logout: "Pụọ",
-    },
-  },
-  HA: {
-    nav: {
-      home: "Gida",
-      about: "Game da mu",
-      services: "Ayyuka",
-      portfolio: "Ayyukanmu",
-      products: "Kayayyaki",
-      clients: "Abokan ciniki",
-      contact: "Tuntuɓe mu",
-      login: "Shiga",
-      register: "Yi rajista",
-      dashboard: "Dashboard",
-      logout: "Fita",
-    },
-  },
-  YO: {
-    nav: {
-      home: "Ile",
-      about: "Nipa wa",
-      services: "Iṣẹ",
-      portfolio: "Awọn iṣẹ wa",
-      products: "Ọja",
-      clients: "Onibara",
-      contact: "Kan si wa",
-      login: "Wọle",
-      register: "Forukọsilẹ",
-      dashboard: "Dashboard",
-      logout: "Jade",
-    },
-  },
-};
 
 function getNestedValue(object, path) {
   return path.split(".").reduce((current, key) => current?.[key], object);
@@ -82,8 +23,13 @@ export function LanguageProvider({ children }) {
     return LANGUAGE_OPTIONS.some((item) => item.code === saved) ? saved : "EN";
   });
 
+  const currentTranslations =
+    LANGUAGE_OPTIONS.find((opt) => opt.code === language)?.translations ||
+    enTranslations;
+
   useEffect(() => {
     localStorage.setItem("language", language);
+    document.documentElement.lang = language.toLowerCase();
   }, [language]);
 
   const changeLanguage = (nextLanguage) => {
@@ -93,11 +39,8 @@ export function LanguageProvider({ children }) {
   };
 
   const t = (key, fallback = key) => {
-    return (
-      getNestedValue(translations[language], key) ||
-      getNestedValue(translations.EN, key) ||
-      fallback
-    );
+    const translation = getNestedValue(currentTranslations, key);
+    return translation !== undefined ? translation : fallback;
   };
 
   const value = useMemo(
@@ -106,7 +49,6 @@ export function LanguageProvider({ children }) {
       setLanguage: changeLanguage,
       changeLanguage,
       t,
-
       languages: LANGUAGE_OPTIONS.map((item) => item.code),
       languageOptions: LANGUAGE_OPTIONS,
       supportedLanguages: LANGUAGE_OPTIONS,

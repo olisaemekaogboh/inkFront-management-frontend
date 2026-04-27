@@ -88,22 +88,28 @@ export default function ProductsPage() {
       <section className="premium-section">
         <div className="premium-container">
           {loading ? (
-            <div className="premium-loading">Loading products...</div>
+            <div className="premium-loading">
+              {t("states.loadingPage", "Loading products...")}
+            </div>
           ) : products.length === 0 ? (
-            <div className="premium-empty-card">No products available yet.</div>
+            <div className="premium-empty-card">
+              <strong>
+                {t("productsPage.empty", "No products available yet.")}
+              </strong>
+            </div>
           ) : (
             <div className="premium-product-grid">
               {products.map((product, index) => {
                 const title = text(
                   product.title,
                   product.name,
-                  "Untitled Product",
+                  t("productsPage.untitled", "Untitled Product"),
                 );
 
                 const summary = text(
                   product.summary,
                   product.solutionOverview,
-                  "Product summary unavailable.",
+                  t("productsPage.noSummary", "Product summary unavailable."),
                 );
 
                 const imageUrl = text(
@@ -139,7 +145,8 @@ export default function ProductsPage() {
 
                     <div className="premium-product-body">
                       <span className="premium-mini-badge">
-                        Blueprint {String(index + 1).padStart(2, "0")}
+                        {t("productsPage.blueprint", "Blueprint")}{" "}
+                        {String(index + 1).padStart(2, "0")}
                       </span>
 
                       <h3>{title}</h3>
@@ -150,7 +157,7 @@ export default function ProductsPage() {
                           to={`/products/${product.slug}`}
                           className="premium-text-link"
                         >
-                          View blueprint →
+                          {t("productsPage.viewBlueprint", "View blueprint")} →
                         </Link>
                       ) : null}
                     </div>

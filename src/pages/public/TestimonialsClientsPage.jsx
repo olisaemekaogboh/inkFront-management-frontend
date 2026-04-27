@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import useLanguage from "../../hooks/useLanguage";
 import { publicApi } from "../../services/publicApi";
 import "../../styles/publicPremium.css";
@@ -110,19 +111,35 @@ export default function TestimonialsClientsPage() {
       <section className="premium-section premium-testimonial-section">
         <div className="premium-container">
           <div className="premium-section-head">
-            <span className="premium-eyebrow">Testimonials</span>
-            <h2>What clients say about working with InkFront</h2>
+            <span className="premium-eyebrow">
+              {t("clientsPage.testimonialsEyebrow", "Testimonials")}
+            </span>
+            <h2>
+              {t(
+                "clientsPage.testimonialsTitle",
+                "What clients say about working with InkFront",
+              )}
+            </h2>
             <p>
-              Real feedback should help future clients understand the quality,
-              clarity, and professionalism of your work.
+              {t(
+                "clientsPage.testimonialsDescription",
+                "Real feedback should help future clients understand the quality, clarity, and professionalism of your work.",
+              )}
             </p>
           </div>
 
           {loading ? (
-            <div className="premium-loading">Loading client content...</div>
+            <div className="premium-loading">
+              {t("states.loadingPage", "Loading client content...")}
+            </div>
           ) : testimonials.length === 0 ? (
             <div className="premium-empty-card">
-              No testimonials available yet.
+              <strong>
+                {t(
+                  "clientsPage.noTestimonials",
+                  "No testimonials available yet.",
+                )}
+              </strong>
             </div>
           ) : (
             <div className="premium-testimonial-grid premium-testimonial-grid-large">
@@ -131,14 +148,14 @@ export default function TestimonialsClientsPage() {
                   item.quote,
                   item.message,
                   item.content,
-                  "No testimonial text.",
+                  t("clientsPage.defaultQuote", "No testimonial text."),
                 );
 
                 const name = text(
                   item.clientName,
                   item.name,
                   item.author,
-                  "Anonymous Client",
+                  t("clientsPage.anonymous", "Anonymous Client"),
                 );
 
                 const roleLine = [item.clientRole, item.role, item.organization]
@@ -183,7 +200,9 @@ export default function TestimonialsClientsPage() {
 
                       <div>
                         <strong>{name}</strong>
-                        <span>{roleLine || "Client"}</span>
+                        <span>
+                          {roleLine || t("clientsPage.client", "Client")}
+                        </span>
                       </div>
                     </div>
                   </motion.article>
@@ -196,11 +215,18 @@ export default function TestimonialsClientsPage() {
 
       <section className="premium-logo-strip premium-logo-strip-spacious">
         <div className="premium-container">
-          <span>Trusted organizations and client brands</span>
+          <span>
+            {t(
+              "clientsPage.logosTitle",
+              "Trusted organizations and client brands",
+            )}
+          </span>
 
           {loading ? null : clientLogos.length === 0 ? (
             <div className="premium-empty-card">
-              No client logos available yet.
+              <strong>
+                {t("clientsPage.noLogos", "No client logos available yet.")}
+              </strong>
             </div>
           ) : (
             <div className="premium-logo-grid">
@@ -208,7 +234,7 @@ export default function TestimonialsClientsPage() {
                 const name = text(
                   logo.name,
                   logo.clientName,
-                  `Client ${index + 1}`,
+                  `${t("clientsPage.client", "Client")} ${index + 1}`,
                 );
                 const logoUrl = text(logo.logoUrl, logo.imageUrl);
 
@@ -253,12 +279,24 @@ export default function TestimonialsClientsPage() {
 
       <section className="premium-cta">
         <div className="premium-container premium-cta-inner">
-          <span className="premium-eyebrow">Join the next success story</span>
-          <h2>Let’s build a professional platform for your brand.</h2>
+          <span className="premium-eyebrow premium-eyebrow--light">
+            {t("clientsPage.ctaEyebrow", "Join the next success story")}
+          </span>
+          <h2>
+            {t(
+              "clientsPage.ctaTitle",
+              "Let's build a professional platform for your brand.",
+            )}
+          </h2>
           <p>
-            Your website should communicate trust, show proof, and turn visitors
-            into real conversations.
+            {t(
+              "clientsPage.ctaDescription",
+              "Your website should communicate trust, show proof, and turn visitors into real conversations.",
+            )}
           </p>
+          <Link to="/contact" className="premium-btn premium-btn-light">
+            {t("common.contactUs", "Start a project")} →
+          </Link>
         </div>
       </section>
     </main>

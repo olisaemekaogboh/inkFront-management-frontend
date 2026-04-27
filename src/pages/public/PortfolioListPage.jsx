@@ -62,10 +62,17 @@ export default function PortfolioListPage() {
       <section className="premium-section">
         <div className="premium-container">
           {loading ? (
-            <div className="premium-loading">Loading portfolio...</div>
+            <div className="premium-loading">
+              {t("states.loadingPage", "Loading portfolio...")}
+            </div>
           ) : projects.length === 0 ? (
             <div className="premium-empty-card">
-              No portfolio projects available yet.
+              <strong>
+                {t(
+                  "portfolioPage.empty",
+                  "No portfolio projects available yet.",
+                )}
+              </strong>
             </div>
           ) : (
             <div className="premium-work-grid">
@@ -73,12 +80,12 @@ export default function PortfolioListPage() {
                 const title = text(
                   project.title,
                   project.name,
-                  "Untitled Project",
+                  t("portfolioPage.untitled", "Untitled Project"),
                 );
                 const summary = text(
                   project.summary,
                   project.description,
-                  "Project summary unavailable.",
+                  t("portfolioPage.noSummary", "Project summary unavailable."),
                 );
                 const imageUrl = text(
                   project.coverImageUrl,
@@ -88,7 +95,7 @@ export default function PortfolioListPage() {
                 const tag = text(
                   project.projectType,
                   project.clientIndustry,
-                  "Project",
+                  t("portfolioPage.project", "Project"),
                 );
 
                 return (
@@ -116,7 +123,9 @@ export default function PortfolioListPage() {
                       <span className="premium-mini-badge">{tag}</span>
                       <h3>{title}</h3>
                       <p>{summary}</p>
-                      <strong>View project →</strong>
+                      <strong>
+                        {t("common.viewProject", "View project")} →
+                      </strong>
                     </div>
                   </Link>
                 );

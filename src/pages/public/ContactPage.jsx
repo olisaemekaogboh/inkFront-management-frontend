@@ -4,17 +4,52 @@ import useLanguage from "../../hooks/useLanguage";
 import { publicApi } from "../../services/publicApi";
 import "../../styles/publicPremium.css";
 
-const SERVICE_OPTIONS = [
-  "Website Development",
-  "Business Automation",
-  "Product Blueprint",
-  "E-Commerce Platform",
-  "Custom Software",
-  "Client Portal",
-  "School Management System",
-  "Mobile App Development",
-  "SEO and Content System",
-];
+const SERVICE_OPTIONS = {
+  EN: [
+    "Website Development",
+    "Business Automation",
+    "Product Blueprint",
+    "E-Commerce Platform",
+    "Custom Software",
+    "Client Portal",
+    "School Management System",
+    "Mobile App Development",
+    "SEO and Content System",
+  ],
+  IG: [
+    "Mepụta Webụsaịtị",
+    "Akpaaka Azụmahịa",
+    "Atụmatụ Ngwaahịa",
+    "Ikpo Okwu Azụmahịa E-Commerce",
+    "Sọftụwia Pụrụ Iche",
+    "Ọnụ Ụzọ Ndị Ahịa",
+    "Usoro Nlekọta Ụlọ Akwụkwọ",
+    "Mepụta Ngwa Mkpanaka",
+    "SEO na Sistemụ Ọdịnaya",
+  ],
+  HA: [
+    "Ƙirƙirar Yanar Gizo",
+    "Sarrafa Kasuwanci ta Atomatik",
+    "Tsarin Samfuri",
+    "Dandalin Kasuwancin E-Commerce",
+    "Software na Musamman",
+    "Ƙofar Abokin Ciniki",
+    "Tsarin Gudanar da Makarantu",
+    "Ƙirƙirar Manhajar Wayar Salula",
+    "SEO da Tsarin Abun Ciki",
+  ],
+  YO: [
+    "Ìdàgbàsókè Ojúlé Wẹ́ẹ̀bù",
+    "Àdánidá Iṣẹ́ Òwò",
+    "Àpẹẹrẹ Ọjà",
+    "Ibi Ìtajà E-Commerce",
+    "Sọfụ́wíà Àkànṣe",
+    "Ẹnubọ̀dè Alábàrá",
+    "Ètò Ìṣàkóso Ilé-Ẹ̀kọ́",
+    "Ìdàgbàsókè Àwọn Ohun Èlò Alágbèéká",
+    "SEO àti Ètò Àkóónú",
+  ],
+};
 
 const initialForm = {
   fullName: "",
@@ -77,7 +112,12 @@ export default function ContactPage() {
     event.preventDefault();
 
     if (!canSubmit) {
-      setError("Please fill in your name, email, subject, and message.");
+      setError(
+        t(
+          "forms.contact.validationError",
+          "Please fill in your name, email, subject, and message.",
+        ),
+      );
       return;
     }
 
@@ -94,19 +134,27 @@ export default function ContactPage() {
       });
 
       setSuccess(
-        "Message sent successfully. The InkFront admin team will review it and get back to you soon.",
+        t(
+          "forms.contact.success",
+          "Message sent successfully. The InkFront admin team will review it and get back to you soon.",
+        ),
       );
     } catch (err) {
       setError(
         err?.response?.data?.message ||
           err?.response?.data?.error ||
           err?.message ||
-          "Failed to send message. Please try again.",
+          t("forms.contact.error", "Failed to send message. Please try again."),
       );
     } finally {
       setSubmitting(false);
     }
   }
+
+  const getServiceOptions = () => {
+    const langMap = { EN: "EN", IG: "IG", HA: "HA", YO: "YO" };
+    return SERVICE_OPTIONS[langMap[language] || "EN"];
+  };
 
   return (
     <main className="premium-public-page">
@@ -123,7 +171,7 @@ export default function ContactPage() {
             </span>
 
             <h1>
-              {t("pages.contact.title", "Let’s build your next digital system")}
+              {t("pages.contact.title", "Let's build your next digital system")}
             </h1>
 
             <p>
@@ -139,14 +187,17 @@ export default function ContactPage() {
       <section className="premium-section">
         <div className="premium-container premium-contact-grid">
           <article className="premium-contact-panel">
-            <span className="premium-eyebrow">Project inquiry</span>
+            <span className="premium-eyebrow">
+              {t("pages.contact.inquiry", "Project inquiry")}
+            </span>
 
-            <h2>Send us a message</h2>
+            <h2>{t("pages.contact.sendMessage", "Send us a message")}</h2>
 
             <p>
-              Tell us what you want to build. Include your project goal,
-              preferred timeline, required features, and budget range if you
-              already have one.
+              {t(
+                "pages.contact.description",
+                "Tell us what you want to build. Include your project goal, preferred timeline, required features, and budget range if you already have one.",
+              )}
             </p>
 
             {success ? (
@@ -164,20 +215,23 @@ export default function ContactPage() {
             <form className="premium-contact-form" onSubmit={handleSubmit}>
               <div className="premium-form-grid">
                 <label>
-                  Full name *
+                  {t("forms.contact.fullName", "Full name")} *
                   <input
                     name="fullName"
                     value={form.fullName}
                     onChange={handleChange}
                     required
                     maxLength={150}
-                    placeholder="Your full name"
+                    placeholder={t(
+                      "forms.contact.fullNamePlaceholder",
+                      "Your full name",
+                    )}
                     autoComplete="name"
                   />
                 </label>
 
                 <label>
-                  Email *
+                  {t("forms.contact.email", "Email")} *
                   <input
                     type="email"
                     name="email"
@@ -185,31 +239,37 @@ export default function ContactPage() {
                     onChange={handleChange}
                     required
                     maxLength={180}
-                    placeholder="you@example.com"
+                    placeholder={t(
+                      "forms.contact.emailPlaceholder",
+                      "you@example.com",
+                    )}
                     autoComplete="email"
                   />
                 </label>
 
                 <label>
-                  Phone
+                  {t("forms.contact.phoneNumber", "Phone")}
                   <input
                     name="phone"
                     value={form.phone}
                     onChange={handleChange}
                     maxLength={50}
-                    placeholder="+234..."
+                    placeholder={t("forms.contact.phonePlaceholder", "+234...")}
                     autoComplete="tel"
                   />
                 </label>
 
                 <label>
-                  Company / Brand
+                  {t("forms.contact.companyName", "Company / Brand")}
                   <input
                     name="company"
                     value={form.company}
                     onChange={handleChange}
                     maxLength={150}
-                    placeholder="Company or brand name"
+                    placeholder={t(
+                      "forms.contact.companyPlaceholder",
+                      "Company or brand name",
+                    )}
                     autoComplete="organization"
                   />
                 </label>
@@ -217,14 +277,16 @@ export default function ContactPage() {
 
               <div className="premium-form-grid">
                 <label>
-                  Service interest
+                  {t("forms.contact.serviceInterest", "Service interest")}
                   <select
                     name="serviceInterest"
                     value={form.serviceInterest}
                     onChange={handleChange}
                   >
-                    <option value="">Select service</option>
-                    {SERVICE_OPTIONS.map((option) => (
+                    <option value="">
+                      {t("forms.contact.selectService", "Select service")}
+                    </option>
+                    {getServiceOptions().map((option) => (
                       <option value={option} key={option}>
                         {option}
                       </option>
@@ -233,34 +295,37 @@ export default function ContactPage() {
                 </label>
 
                 <label>
-                  Preferred language
+                  {t("forms.contact.preferredLanguage", "Preferred language")}
                   <select
                     name="preferredLanguage"
                     value={form.preferredLanguage}
                     onChange={handleChange}
                   >
-                    <option value="EN">English</option>
-                    <option value="IG">Igbo</option>
-                    <option value="HA">Hausa</option>
-                    <option value="YO">Yoruba</option>
+                    <option value="EN">{t("language.name", "English")}</option>
+                    <option value="IG">{t("language.name", "Igbo")}</option>
+                    <option value="HA">{t("language.name", "Hausa")}</option>
+                    <option value="YO">{t("language.name", "Yoruba")}</option>
                   </select>
                 </label>
               </div>
 
               <label>
-                Subject *
+                {t("forms.contact.subject", "Subject")} *
                 <input
                   name="subject"
                   value={form.subject}
                   onChange={handleChange}
                   required
                   maxLength={200}
-                  placeholder="What do you need?"
+                  placeholder={t(
+                    "forms.contact.subjectPlaceholder",
+                    "What do you need?",
+                  )}
                 />
               </label>
 
               <label>
-                Message *
+                {t("forms.contact.message", "Message")} *
                 <textarea
                   name="message"
                   value={form.message}
@@ -268,7 +333,10 @@ export default function ContactPage() {
                   required
                   maxLength={5000}
                   rows={7}
-                  placeholder="Describe your project, timeline, budget range, required pages/features, and what problem you want to solve..."
+                  placeholder={t(
+                    "forms.contact.messagePlaceholder",
+                    "Describe your project, timeline, budget range, required pages/features, and what problem you want to solve...",
+                  )}
                 />
               </label>
 
@@ -277,7 +345,9 @@ export default function ContactPage() {
                 className="premium-btn premium-btn-primary"
                 disabled={submitting || !canSubmit}
               >
-                {submitting ? "Sending..." : "Send message →"}
+                {submitting
+                  ? t("forms.contact.sending", "Sending...")
+                  : t("forms.contact.submit", "Send message →")}
               </button>
             </form>
           </article>
@@ -285,37 +355,52 @@ export default function ContactPage() {
           <aside className="premium-contact-sidebar">
             <div className="premium-info-panel">
               <span>01</span>
-              <h2>What happens next?</h2>
+              <h2>
+                {t("pages.contact.nextSteps.title", "What happens next?")}
+              </h2>
               <p>
-                Your message is saved inside the admin Contact CRM, where the
-                team can review it, assign it, update status, and follow up.
+                {t(
+                  "pages.contact.nextSteps.description",
+                  "Your message is saved inside the admin Contact CRM, where the team can review it, assign it, update status, and follow up.",
+                )}
               </p>
             </div>
 
             <div className="premium-info-panel">
               <span>02</span>
-              <h2>Best details to include</h2>
+              <h2>
+                {t(
+                  "pages.contact.detailsToInclude.title",
+                  "Best details to include",
+                )}
+              </h2>
               <p>
-                Include your business type, project goal, required features,
-                timeline, budget range, and any reference websites you like.
+                {t(
+                  "pages.contact.detailsToInclude.description",
+                  "Include your business type, project goal, required features, timeline, budget range, and any reference websites you like.",
+                )}
               </p>
             </div>
 
             <div className="premium-info-panel">
               <span>03</span>
-              <h2>How we respond</h2>
+              <h2>{t("pages.contact.howWeRespond.title", "How we respond")}</h2>
               <p>
-                We review the request and reply with a practical recommendation,
-                possible scope, timeline, and next step.
+                {t(
+                  "pages.contact.howWeRespond.description",
+                  "We review the request and reply with a practical recommendation, possible scope, timeline, and next step.",
+                )}
               </p>
             </div>
 
             <div className="premium-info-panel">
               <span>04</span>
-              <h2>Stored safely</h2>
+              <h2>{t("pages.contact.storedSafely.title", "Stored safely")}</h2>
               <p>
-                Every inquiry is stored as a CRM message so no lead gets lost in
-                email, chat, or manual notes.
+                {t(
+                  "pages.contact.storedSafely.description",
+                  "Every inquiry is stored as a CRM message so no lead gets lost in email, chat, or manual notes.",
+                )}
               </p>
             </div>
           </aside>
