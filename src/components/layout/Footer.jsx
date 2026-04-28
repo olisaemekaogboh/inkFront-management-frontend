@@ -30,6 +30,7 @@ export default function Footer() {
       { to: "/admin", label: "Admin" },
       { to: "/terms", label: "Terms & Conditions" },
       { to: "/privacy", label: "Privacy Policy" },
+      { to: "/cookies", label: "Cookies Policy" },
     ],
   };
 
@@ -136,6 +137,7 @@ export default function Footer() {
             <Link to="/terms">Terms</Link>
             <Link to="/privacy">Privacy</Link>
             <Link to="/contact">Contact</Link>
+            <Link to="/cookies">Cookies</Link>
           </div>
         </div>
       </div>

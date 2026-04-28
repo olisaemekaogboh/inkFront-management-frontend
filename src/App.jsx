@@ -10,7 +10,7 @@ import AdminContactMessagesPage from "./pages/admin/AdminContactMessagesPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AdminBlogPostsPage from "./pages/admin/AdminBlogPostsPage";
 import AdminNewsletterPage from "./pages/admin/AdminNewsletterPage";
-
+import CookiesPolicyPage from "./pages/public/CookiesPolicyPage";
 import HomePage from "./pages/public/HomePage";
 import AboutPage from "./pages/public/AboutPage";
 import ContactPage from "./pages/public/ContactPage";
@@ -41,7 +41,7 @@ export default function App() {
 
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/services/:slug" element={<ServiceDetailPage />} />
-
+          <Route path="/cookies" element={<CookiesPolicyPage />} />
           <Route path="/portfolio" element={<PortfolioListPage />} />
           <Route path="/portfolio/:slug" element={<PortfolioDetailPage />} />
 
