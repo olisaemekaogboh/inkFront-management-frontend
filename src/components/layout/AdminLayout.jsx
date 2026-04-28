@@ -4,11 +4,13 @@ import { useEffect, useMemo, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import SimpleThemeToggle from "../common/SimpleThemeToggle";
 import LanguageSwitcher from "../common/LanguageSwitcher";
+import "./AdminLayout.css";
 
 const navItems = [
   { label: "Dashboard", to: "/admin", icon: "📊", end: true },
   { label: "Contact Messages", to: "/admin/contact-messages", icon: "📩" },
   { label: "Blog Posts", to: "/admin/blog-posts", icon: "📝" },
+  { label: "Newsletter", to: "/admin/newsletter", icon: "📬" },
   { label: "Services", to: "/admin/services", icon: "⚙️" },
   { label: "Portfolio", to: "/admin/portfolio", icon: "🎨" },
   { label: "Products", to: "/admin/products", icon: "📦" },
@@ -40,9 +42,9 @@ export default function AdminLayout() {
 
   useEffect(() => {
     function handleResize() {
-      setDesktopSidebarVisible(window.innerWidth >= 1024);
+      setDesktopSidebarVisible(window.innerWidth >= 1100);
 
-      if (window.innerWidth >= 1024) {
+      if (window.innerWidth >= 1100) {
         setMobileSidebarOpen(false);
       }
     }
@@ -73,10 +75,10 @@ export default function AdminLayout() {
   const sidebarShouldShow = desktopSidebarVisible || mobileSidebarOpen;
 
   return (
-    <div className="admin">
+    <div className="admin-shell">
       <button
         type="button"
-        className="admin__mobile-toggle"
+        className="admin-shell__mobile-toggle"
         onClick={() => setMobileSidebarOpen((current) => !current)}
         aria-label={mobileSidebarOpen ? "Close sidebar" : "Open sidebar"}
         aria-expanded={mobileSidebarOpen}
@@ -87,26 +89,27 @@ export default function AdminLayout() {
       <AnimatePresence>
         {sidebarShouldShow ? (
           <motion.aside
-            className="admin__sidebar"
-            initial={{ x: -280 }}
+            className="admin-shell__sidebar"
+            initial={{ x: -320 }}
             animate={{ x: 0 }}
-            exit={{ x: -280 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
+            exit={{ x: -320 }}
+            transition={{ duration: 0.24, ease: "easeOut" }}
           >
-            <div className="admin__sidebar-brand">
+            <div className="admin-shell__brand">
               <Link
-                to="/"
-                className="admin__brand-link"
+                to="/admin"
+                className="admin-shell__brand-link"
                 onClick={closeMobileSidebar}
               >
-                <span>🚀</span>
-                <strong>InFront</strong>
+                <span className="admin-shell__brand-mark">IF</span>
+                <span>
+                  <strong>InkFront</strong>
+                  <small>Management Console</small>
+                </span>
               </Link>
-
-              <p className="text-xs text-muted mt-2">Admin Dashboard</p>
             </div>
 
-            <nav className="admin__sidebar-nav">
+            <nav className="admin-shell__nav">
               {navItems.map((item) => (
                 <NavLink
                   key={item.to}
@@ -114,18 +117,24 @@ export default function AdminLayout() {
                   end={item.end}
                   className={({ isActive }) =>
                     isActive
-                      ? "admin__sidebar-link admin__sidebar-link--active"
-                      : "admin__sidebar-link"
+                      ? "admin-shell__nav-link admin-shell__nav-link--active"
+                      : "admin-shell__nav-link"
                   }
                   onClick={closeMobileSidebar}
                 >
-                  <span className="admin__sidebar-icon">{item.icon}</span>
+                  <span className="admin-shell__nav-icon">{item.icon}</span>
                   <span>{item.label}</span>
                 </NavLink>
               ))}
             </nav>
 
-            <div className="admin__sidebar-footer">
+            <div className="admin-shell__sidebar-card">
+              <span>Admin status</span>
+              <strong>{userRole}</strong>
+              <p>Manage website content, leads, blog posts, and newsletters.</p>
+            </div>
+
+            <div className="admin-shell__sidebar-footer">
               <SimpleThemeToggle />
               <LanguageSwitcher id="admin-language-switcher" />
             </div>
@@ -136,49 +145,59 @@ export default function AdminLayout() {
       {mobileSidebarOpen ? (
         <button
           type="button"
-          className="admin__overlay"
+          className="admin-shell__overlay"
           onClick={closeMobileSidebar}
           aria-label="Close sidebar overlay"
         />
       ) : null}
 
-      <div className="admin__main">
-        <header className="admin__topbar">
-          <div className="admin__topbar-copy">
+      <div className="admin-shell__main">
+        <header className="admin-shell__topbar">
+          <div className="admin-shell__topbar-copy">
+            <span>Workspace</span>
             <h1>Welcome back, {displayName}</h1>
             <p>
-              {userRole} • {new Date().toLocaleDateString()}
+              {userRole} •{" "}
+              {new Date().toLocaleDateString(undefined, {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
             </p>
           </div>
 
-          <div className="admin__topbar-actions">
-            <div className="hide-mobile">
+          <div className="admin-shell__topbar-actions">
+            <div className="admin-shell__desktop-control">
               <SimpleThemeToggle />
             </div>
 
-            <div className="hide-mobile">
+            <div className="admin-shell__desktop-control">
               <LanguageSwitcher id="admin-topbar-switcher" />
             </div>
 
-            <Link to="/" className="btn btn--outline btn--sm">
+            <Link
+              to="/"
+              className="admin-shell__button admin-shell__button--ghost"
+            >
               View Site
             </Link>
 
             <button
               type="button"
               onClick={handleLogout}
-              className="btn btn--outline btn--sm"
+              className="admin-shell__button admin-shell__button--danger"
             >
-              🚪 Logout
+              Logout
             </button>
           </div>
         </header>
 
         <motion.main
-          className="admin__content"
-          initial={{ opacity: 0, y: 16 }}
+          className="admin-shell__content"
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35 }}
+          transition={{ duration: 0.32 }}
         >
           <Outlet />
         </motion.main>

@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Container from "../../components/common/Container";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
 import ErrorState from "../../components/common/ErrorState";
+import NewsletterSection from "../../components/sections/NewsletterSection";
 import useLanguage from "../../hooks/useLanguage";
 import blogService from "../../services/blogService";
 
@@ -472,6 +473,10 @@ export default function BlogListPage() {
           )}
         </Container>
       </section>
+
+      <Container>
+        <NewsletterSection />
+      </Container>
     </main>
   );
 }

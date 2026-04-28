@@ -9,6 +9,7 @@ import AdminContentManagerPage from "./pages/admin/AdminContentManagerPage";
 import AdminContactMessagesPage from "./pages/admin/AdminContactMessagesPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AdminBlogPostsPage from "./pages/admin/AdminBlogPostsPage";
+import AdminNewsletterPage from "./pages/admin/AdminNewsletterPage";
 
 import HomePage from "./pages/public/HomePage";
 import AboutPage from "./pages/public/AboutPage";
@@ -22,6 +23,8 @@ import ProductBlueprintPage from "./pages/public/ProductBlueprintPage";
 import TestimonialsClientsPage from "./pages/public/TestimonialsClientsPage";
 import BlogListPage from "./pages/public/BlogListPage";
 import BlogDetailPage from "./pages/public/BlogDetailPage";
+import TermsPage from "./pages/public/TermsPage";
+import PrivacyPolicyPage from "./pages/public/PrivacyPolicyPage";
 import NotFoundPage from "./pages/public/NotFoundPage";
 
 import LoginPage from "./pages/auth/LoginPage";
@@ -51,6 +54,9 @@ export default function App() {
           <Route path="/clients" element={<TestimonialsClientsPage />} />
           <Route path="/contact" element={<ContactPage />} />
 
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/privacy" element={<PrivacyPolicyPage />} />
+
           <Route path="/login" element={<LoginPage />} />
           <Route path="/login/success" element={<LoginSuccessPage />} />
           <Route path="/register" element={<RegisterPage />} />
@@ -72,6 +78,7 @@ export default function App() {
           />
 
           <Route path="blog-posts" element={<AdminBlogPostsPage />} />
+          <Route path="newsletter" element={<AdminNewsletterPage />} />
 
           <Route
             path="hero-sections"

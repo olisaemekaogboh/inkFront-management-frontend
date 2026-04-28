@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import useLanguage from "../../hooks/useLanguage";
 import { publicApi } from "../../services/publicApi";
+import NewsletterSection from "../../components/sections/NewsletterSection";
 import "../../styles/publicPremium.css";
 
 const SERVICE_OPTIONS = {
@@ -406,6 +407,10 @@ export default function ContactPage() {
           </aside>
         </div>
       </section>
+
+      <div className="premium-container">
+        <NewsletterSection />
+      </div>
     </main>
   );
 }

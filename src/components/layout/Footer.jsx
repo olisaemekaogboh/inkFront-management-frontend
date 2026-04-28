@@ -1,6 +1,17 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
+function InkFrontLogo() {
+  return (
+    <span className="inkfront-brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 48 48">
+        <path d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z" />
+        <path d="M25 23h13v17h-7V29h-6v-6Z" />
+      </svg>
+    </span>
+  );
+}
+
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -9,110 +20,124 @@ export default function Footer() {
       { to: "/services", label: "Services" },
       { to: "/portfolio", label: "Portfolio" },
       { to: "/products", label: "Products" },
+      { to: "/blog", label: "Blog" },
       { to: "/clients", label: "Clients" },
     ],
     company: [
-      { to: "/about", label: "About Us" },
+      { to: "/about", label: "About InkFront" },
       { to: "/contact", label: "Contact" },
+      { to: "/login", label: "Login" },
+      { to: "/admin", label: "Admin" },
+      { to: "/terms", label: "Terms & Conditions" },
       { to: "/privacy", label: "Privacy Policy" },
-      { to: "/terms", label: "Terms of Service" },
     ],
   };
 
   return (
-    <footer className="footer">
-      <div className="container">
-        <div className="footer__grid">
-          {/* Brand Section */}
+    <footer className="premium-footer">
+      <div className="premium-container">
+        <div className="premium-footer__top">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            className="premium-footer__brand"
+            initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.55 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              InFront Agency
-            </h3>
-            <p className="text-sm text-muted mb-4">
-              We build digital products, service websites, and scalable business
-              tools that help brands grow online.
-            </p>
-            <div className="d-flex gap-2">
-              <span className="text-2xl">🚀</span>
-              <span className="text-2xl">💻</span>
-              <span className="text-2xl">🎨</span>
-              <span className="text-2xl">📈</span>
-            </div>
-          </motion.div>
-
-          {/* Explore Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-lg font-bold mb-4">Explore</h3>
-            <div className="d-flex flex-column gap-2">
-              {footerLinks.explore.map((link) => (
-                <Link key={link.to} to={link.to} className="footer__link">
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Company Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-lg font-bold mb-4">Company</h3>
-            <div className="d-flex flex-column gap-2">
-              {footerLinks.company.map((link) => (
-                <Link key={link.to} to={link.to} className="footer__link">
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Contact Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-lg font-bold mb-4">Contact</h3>
-            <p className="text-sm text-muted mb-4">
-              Ready to work together? Let's build something amazing.
-            </p>
-            <Link to="/contact" className="btn btn--primary btn--sm">
-              Get in touch →
+            <Link to="/" className="premium-footer__logo">
+              <InkFrontLogo />
+              <strong>InkFront</strong>
             </Link>
-            <div className="mt-4 pt-4 border-t border-border">
-              <p className="text-xs text-muted">📧 hello@infrontagency.com</p>
-              <p className="text-xs text-muted mt-1">📞 +1 (555) 123-4567</p>
+
+            <p>
+              InkFront builds premium websites, booking systems, dashboards,
+              blogs, newsletters, portals, and custom software tools for modern
+              businesses.
+            </p>
+
+            <div className="premium-footer__chips">
+              <span>Websites</span>
+              <span>Portals</span>
+              <span>Blogs</span>
+              <span>Automation</span>
+              <span>Growth</span>
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="premium-footer__column"
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.08 }}
+            viewport={{ once: true }}
+          >
+            <h3>Explore</h3>
+
+            {footerLinks.explore.map((link) => (
+              <Link key={link.to} to={link.to}>
+                {link.label}
+              </Link>
+            ))}
+          </motion.div>
+
+          <motion.div
+            className="premium-footer__column"
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.16 }}
+            viewport={{ once: true }}
+          >
+            <h3>Company</h3>
+
+            {footerLinks.company.map((link) => (
+              <Link key={link.to} to={link.to}>
+                {link.label}
+              </Link>
+            ))}
+          </motion.div>
+
+          <motion.div
+            className="premium-footer__contact"
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.24 }}
+            viewport={{ once: true }}
+          >
+            <h3>Start with InkFront</h3>
+
+            <p>
+              Ready to upgrade your business online? Let InkFront build a clean,
+              modern digital system for your brand.
+            </p>
+
+            <Link to="/contact" className="premium-btn premium-btn-light">
+              Contact InkFront →
+            </Link>
+
+            <div className="premium-footer__meta">
+              <span>📧 hello@inkfront.com</span>
+              <span>🌍 English • Igbo • Hausa • Yoruba</span>
+              <span>⚖️ Terms & Privacy Available</span>
             </div>
           </motion.div>
         </div>
 
-        {/* Copyright Section */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="border-t border-border mt-8 pt-8 text-center"
-        >
-          <p className="text-xs text-muted">
-            © {currentYear} InFront Agency. All rights reserved. Built with 🚀
-            for modern businesses.
-          </p>
-        </motion.div>
+        <div className="premium-footer__bottom">
+          <p>© {currentYear} InkFront. All rights reserved.</p>
+
+          <div
+            style={{
+              display: "flex",
+              gap: "14px",
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
+          >
+            <Link to="/terms">Terms</Link>
+            <Link to="/privacy">Privacy</Link>
+            <Link to="/contact">Contact</Link>
+          </div>
+        </div>
       </div>
     </footer>
   );

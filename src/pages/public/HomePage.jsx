@@ -1,8 +1,15 @@
-import { useMemo } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
+import {
+  motion,
+  useInView,
+  useMotionValue,
+  useTransform,
+  animate,
+} from "framer-motion";
 import { Link } from "react-router-dom";
 import useLanguage from "../../hooks/useLanguage";
 import useFetchOnMount from "../../hooks/useFetchOnMount";
+import NewsletterSection from "../../components/sections/NewsletterSection";
 import { heroService } from "../../services/heroService";
 import { serviceCatalogService } from "../../services/serviceCatalogService";
 import { portfolioService } from "../../services/portfolioService";
@@ -31,7 +38,28 @@ const getImage = (item) =>
     item?.avatarUrl,
   );
 
-const PremiumImage = ({ src, alt, className }) => {
+function CountUpNumber({ value, suffix = "", duration = 1.4 }) {
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    const controls = animate(0, value, {
+      duration,
+      ease: "easeOut",
+      onUpdate: (latest) => setDisplayValue(Math.round(latest)),
+    });
+
+    return () => controls.stop();
+  }, [value, duration]);
+
+  return (
+    <>
+      {displayValue}
+      {suffix}
+    </>
+  );
+}
+
+const PremiumImage = ({ src, alt, className, eager = false }) => {
   if (!src) return null;
 
   return (
@@ -39,7 +67,8 @@ const PremiumImage = ({ src, alt, className }) => {
       src={src}
       alt={alt || "InkFront visual"}
       className={className}
-      loading="lazy"
+      loading={eager ? "eager" : "lazy"}
+      decoding="async"
       onError={(event) => {
         event.currentTarget.style.display = "none";
       }}
@@ -48,11 +77,11 @@ const PremiumImage = ({ src, alt, className }) => {
 };
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
+  hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.65, ease: "easeOut" },
+    transition: { duration: 0.55, ease: "easeOut" },
   },
 };
 
@@ -60,8 +89,17 @@ const stagger = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.12,
+      staggerChildren: 0.09,
     },
+  },
+};
+
+const sectionReveal = {
+  hidden: { opacity: 0, y: 34 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.65, ease: "easeOut" },
   },
 };
 
@@ -278,8 +316,8 @@ export default function HomePage() {
     testimonials.loading;
 
   return (
-    <main className="premium-public-page">
-      <section className="premium-hero">
+    <main className="premium-public-page premium-home-page">
+      <section className="premium-hero premium-home-hero">
         <div className="premium-container premium-hero-grid">
           <motion.div
             variants={stagger}
@@ -301,6 +339,7 @@ export default function HomePage() {
               <Link to="/contact" className="premium-btn premium-btn-primary">
                 {t("common.contactUs", "Start a project")}
               </Link>
+
               <Link to="/services" className="premium-btn premium-btn-ghost">
                 {t("nav.services", "Explore services")}
               </Link>
@@ -308,59 +347,46 @@ export default function HomePage() {
 
             <motion.div variants={fadeUp} className="premium-stats">
               <div>
-                <strong>20+</strong>
+                <strong>
+                  <CountUpNumber value={50} suffix="+" />
+                </strong>
                 <span>{t("home.statsProjects", "Projects")}</span>
               </div>
+
               <div>
-                <strong>4</strong>
+                <strong>
+                  <CountUpNumber value={7} />
+                </strong>
                 <span>{t("home.statsServices", "Core services")}</span>
               </div>
+
               <div>
-                <strong>100%</strong>
+                <strong>
+                  <CountUpNumber value={100} suffix="%" />
+                </strong>
                 <span>{t("home.statsBusiness", "Business focused")}</span>
               </div>
             </motion.div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.75, ease: "easeOut" }}
-            className="premium-hero-visual"
-          >
-            <PremiumImage
-              src={heroImage}
-              alt={heroTitle}
-              className="premium-hero-img"
-            />
-
-            <div className="premium-dashboard-card">
-              <span>{t("home.statsSystem", "Live business system")}</span>
-              <h2>{t("home.systemsTitle", "Websites. Portals. Products.")}</h2>
-              <div className="premium-dashboard-list">
-                {["Services", "Portfolio", "Products", "Clients"].map(
-                  (item) => (
-                    <div key={item}>
-                      <span>{t(`nav.${item.toLowerCase()}`, item)}</span>
-                      <strong>{t("home.managed", "Managed")}</strong>
-                    </div>
-                  ),
-                )}
-              </div>
-            </div>
           </motion.div>
         </div>
       </section>
 
       {loading && (
         <section className="premium-container">
-          <div className="premium-loading">
+          <div className="premium-loading premium-loading-modern">
+            <span className="premium-loading-dot" />
             {t("common.loading", "Loading latest InkFront content...")}
           </div>
         </section>
       )}
 
-      <section className="premium-section">
+      <motion.section
+        className="premium-section"
+        variants={sectionReveal}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.16 }}
+      >
         <div className="premium-container">
           <div className="premium-section-head">
             <span className="premium-eyebrow">
@@ -428,9 +454,15 @@ export default function HomePage() {
             })}
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      <section className="premium-section premium-section-dark">
+      <motion.section
+        className="premium-section premium-section-dark"
+        variants={sectionReveal}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.16 }}
+      >
         <div className="premium-container premium-split">
           <div>
             <span className="premium-eyebrow">
@@ -476,9 +508,15 @@ export default function HomePage() {
             })}
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      <section className="premium-section">
+      <motion.section
+        className="premium-section"
+        variants={sectionReveal}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.16 }}
+      >
         <div className="premium-container">
           <div className="premium-section-head premium-section-head-row">
             <div>
@@ -489,6 +527,7 @@ export default function HomePage() {
                 {t("sections.portfolio.title", "Recent project direction")}
               </h2>
             </div>
+
             <Link to="/portfolio" className="premium-btn premium-btn-ghost">
               {t("common.viewPortfolio", "View portfolio")}
             </Link>
@@ -536,9 +575,15 @@ export default function HomePage() {
             })}
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      <section className="premium-section premium-testimonial-section">
+      <motion.section
+        className="premium-section premium-testimonial-section"
+        variants={sectionReveal}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.16 }}
+      >
         <div className="premium-container">
           <div className="premium-section-head">
             <span className="premium-eyebrow">
@@ -597,10 +642,16 @@ export default function HomePage() {
             })}
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {finalLogos.length > 0 && (
-        <section className="premium-logo-strip">
+        <motion.section
+          className="premium-logo-strip"
+          variants={sectionReveal}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.16 }}
+        >
           <div className="premium-container">
             <span>{t("home.trustedBy", "Trusted by growing brands")}</span>
             <div className="premium-logo-grid">
@@ -625,10 +676,16 @@ export default function HomePage() {
               })}
             </div>
           </div>
-        </section>
+        </motion.section>
       )}
 
-      <section className="premium-cta">
+      <motion.section
+        className="premium-cta"
+        variants={sectionReveal}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.16 }}
+      >
         <div className="premium-container premium-cta-inner">
           <span className="premium-eyebrow">
             {t("home.ready", "Ready when you are")}
@@ -649,7 +706,11 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
-      </section>
+
+        <div className="premium-container">
+          <NewsletterSection />
+        </div>
+      </motion.section>
     </main>
   );
 }
