@@ -8,6 +8,7 @@ import LanguageSwitcher from "../common/LanguageSwitcher";
 const navItems = [
   { label: "Dashboard", to: "/admin", icon: "📊", end: true },
   { label: "Contact Messages", to: "/admin/contact-messages", icon: "📩" },
+  { label: "Blog Posts", to: "/admin/blog-posts", icon: "📝" },
   { label: "Services", to: "/admin/services", icon: "⚙️" },
   { label: "Portfolio", to: "/admin/portfolio", icon: "🎨" },
   { label: "Products", to: "/admin/products", icon: "📦" },

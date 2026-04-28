@@ -1,21 +1,32 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
+
 import { useState, useEffect } from "react";
+
 import { motion, AnimatePresence } from "framer-motion";
+
 import SimpleThemeToggle from "../common/SimpleThemeToggle";
+
 import LanguageSwitcher from "../common/LanguageSwitcher";
+
 import useAuth from "../../hooks/useAuth";
+
 import useLanguage from "../../hooks/useLanguage";
+
 import "../../styles/publicPremium.css";
 
 export default function Navbar() {
   const navigate = useNavigate();
+
   const auth = useAuth();
+
   const { t } = useLanguage();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const user = auth?.user || null;
+
   const isAuthenticated = Boolean(auth?.isAuthenticated);
+
   const logout = auth?.logout;
 
   const roles = Array.isArray(user?.roles) ? user.roles : [];
@@ -35,21 +46,29 @@ export default function Navbar() {
 
   const navLinks = [
     { to: "/", label: t("nav.home", "Home"), end: true },
+
     { to: "/about", label: t("nav.about", "About") },
+
     { to: "/services", label: t("nav.services", "Services") },
+
     { to: "/portfolio", label: t("nav.portfolio", "Portfolio") },
+
     { to: "/products", label: t("nav.products", "Products") },
+
+    { to: "/blog", label: t("nav.blog", "Blog") },
+
     { to: "/clients", label: t("nav.clients", "Clients") },
+
     { to: "/contact", label: t("nav.contact", "Contact") },
   ];
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.classList.add("mobile-menu-open");
     } else {
       document.body.classList.remove("mobile-menu-open");
     }
+
     return () => {
       document.body.classList.remove("mobile-menu-open");
     };
@@ -59,7 +78,9 @@ export default function Navbar() {
     if (typeof logout === "function") {
       await logout();
     }
+
     setMobileMenuOpen(false);
+
     navigate("/", { replace: true });
   }
 
@@ -87,6 +108,7 @@ export default function Navbar() {
             onClick={closeMobileMenu}
           >
             <span className="premium-navbar__mark">IF</span>
+
             <span>{t("common.appName", "INKFRONT")}</span>
           </Link>
 
@@ -111,6 +133,7 @@ export default function Navbar() {
 
           <div className="premium-navbar__actions">
             <LanguageSwitcher id="navbar-language-switcher" />
+
             <SimpleThemeToggle />
 
             {isAuthenticated ? (
@@ -202,6 +225,7 @@ export default function Navbar() {
 
                 <div className="premium-mobile-menu__actions">
                   <LanguageSwitcher id="mobile-language-switcher" />
+
                   <SimpleThemeToggle />
 
                   {isAuthenticated ? (
