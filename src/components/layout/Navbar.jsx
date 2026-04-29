@@ -1,5 +1,5 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import SimpleThemeToggle from "../common/SimpleThemeToggle";
@@ -7,14 +7,17 @@ import LanguageSwitcher from "../common/LanguageSwitcher";
 import useAuth from "../../hooks/useAuth";
 import useLanguage from "../../hooks/useLanguage";
 
-import "../../styles/publicPremium.css";
+import "./Navbar.css";
 
 function InkFrontLogo() {
   return (
     <span className="inkfront-brand-mark" aria-hidden="true">
-      <svg viewBox="0 0 48 48" fill="currentColor">
-        <path d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z" />
-        <path d="M25 23h13v17h-7V29h-6v-6Z" opacity="0.7" />
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z"
+          fill="currentColor"
+        />
+        <path d="M25 23h13v17h-7V29h-6v-6Z" fill="currentColor" opacity="0.7" />
       </svg>
     </span>
   );
@@ -26,7 +29,9 @@ export default function Navbar() {
   const { t } = useLanguage();
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [hoverTimeout, setHoverTimeout] = useState(null);
+  const menuRef = useRef(null);
+  const buttonRef = useRef(null);
 
   const user = auth?.user || null;
   const isAuthenticated = Boolean(auth?.isAuthenticated);
@@ -48,7 +53,7 @@ export default function Navbar() {
     t("nav.account", "Account");
 
   const navLinks = [
-    { to: "/", label: t("nav.home", "Home"), end: true },
+    { to: "/", label: t("nav.home", "Home") },
     { to: "/about", label: t("nav.about", "About") },
     { to: "/services", label: t("nav.services", "Services") },
     { to: "/portfolio", label: t("nav.portfolio", "Portfolio") },
@@ -58,182 +63,156 @@ export default function Navbar() {
     { to: "/contact", label: t("nav.contact", "Contact") },
   ];
 
+  // Hover handlers
+  const handleMouseEnter = () => {
+    if (hoverTimeout) clearTimeout(hoverTimeout);
+    setMenuOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    const timeout = setTimeout(() => {
+      setMenuOpen(false);
+    }, 200);
+    setHoverTimeout(timeout);
+  };
+
+  // Close menu when clicking outside
   useEffect(() => {
-    function handleScroll() {
-      setScrolled(window.scrollY > 12);
+    function handleClickOutside(event) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target)
+      ) {
+        setMenuOpen(false);
+      }
     }
-
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => window.removeEventListener("scroll", handleScroll);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    if (menuOpen) {
-      document.body.classList.add("mobile-menu-open");
-    } else {
-      document.body.classList.remove("mobile-menu-open");
-    }
-
-    return () => {
-      document.body.classList.remove("mobile-menu-open");
-    };
-  }, [menuOpen]);
+  // Navigate and close menu
+  const handleNavigation = (to) => {
+    setMenuOpen(false);
+    navigate(to);
+  };
 
   async function handleLogout() {
     if (typeof logout === "function") {
       await logout();
     }
-
     setMenuOpen(false);
     navigate("/", { replace: true });
   }
 
-  function closeMenu() {
-    setMenuOpen(false);
-  }
-
-  const menuLinkClass = ({ isActive }) =>
-    isActive
-      ? "premium-menu-drawer__link premium-menu-drawer__link--active"
-      : "premium-menu-drawer__link";
-
   return (
-    <header
-      className={`premium-navbar premium-navbar--final ${scrolled ? "premium-navbar--scrolled" : ""}`}
-    >
-      <div className="premium-navbar__inner premium-navbar__inner--final">
-        <Link to="/" className="premium-navbar__brand" onClick={closeMenu}>
+    <header className="premium-navbar premium-navbar--seamless">
+      <div className="premium-navbar__inner">
+        {/* Logo */}
+        <Link to="/" className="premium-navbar__logo">
           <InkFrontLogo />
-          <span className="premium-navbar__brand-name">InkFront</span>
+          <span className="premium-navbar__logo-text">InkFront</span>
         </Link>
 
-        <button
-          type="button"
-          className="premium-navbar__menu-button"
-          onClick={() => setMenuOpen((current) => !current)}
-          aria-expanded={menuOpen}
-          aria-label={
-            menuOpen
-              ? t("nav.closeMenu", "Close menu")
-              : t("nav.openMenu", "Open menu")
-          }
-        >
-          <span>{menuOpen ? "Close" : "Menu"}</span>
-          <strong>{menuOpen ? "✕" : "☰"}</strong>
-        </button>
-      </div>
+        {/* Right Section - Controls & Menu */}
+        <div className="premium-navbar__right">
+          <div className="premium-navbar__controls">
+            <SimpleThemeToggle />
+            <LanguageSwitcher id="navbar-language-switcher" />
+          </div>
 
-      <AnimatePresence>
-        {menuOpen && (
-          <>
-            <motion.button
-              type="button"
-              className="premium-menu-overlay"
-              onClick={closeMenu}
-              aria-label={t("nav.closeMenu", "Close menu")}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.38, ease: "easeOut" }}
-            />
-
-            <motion.aside
-              className="premium-menu-drawer"
-              initial={{ x: "105%", opacity: 0.92 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: "105%", opacity: 0.92 }}
-              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          {/* Menu Button with Dropdown */}
+          <div
+            className="premium-menu-container"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <button
+              ref={buttonRef}
+              className={`premium-menu-btn ${menuOpen ? "premium-menu-btn--active" : ""}`}
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-expanded={menuOpen}
             >
-              <div className="premium-menu-drawer__header">
-                <Link
-                  to="/"
-                  className="premium-navbar__brand"
-                  onClick={closeMenu}
+              <span className="premium-menu-btn__text">Menu</span>
+              <svg
+                className={`premium-menu-btn__arrow ${menuOpen ? "premium-menu-btn__arrow--open" : ""}`}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+
+            <AnimatePresence>
+              {menuOpen && (
+                <motion.div
+                  ref={menuRef}
+                  className="premium-dropdown"
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <InkFrontLogo />
-                  <span className="premium-navbar__brand-name">InkFront</span>
-                </Link>
-
-                <button
-                  type="button"
-                  className="premium-menu-drawer__close"
-                  onClick={closeMenu}
-                  aria-label={t("nav.closeMenu", "Close menu")}
-                >
-                  ✕
-                </button>
-              </div>
-
-              <nav className="premium-menu-drawer__links">
-                {navLinks.map((item) => (
-                  <NavLink
-                    key={item.to}
-                    to={item.to}
-                    end={item.end}
-                    onClick={closeMenu}
-                    className={menuLinkClass}
-                  >
-                    {item.label}
-                  </NavLink>
-                ))}
-
-                {isAuthenticated && userIsAdmin && (
-                  <NavLink
-                    to="/admin"
-                    onClick={closeMenu}
-                    className={menuLinkClass}
-                  >
-                    {t("nav.dashboard", "Dashboard")}
-                  </NavLink>
-                )}
-              </nav>
-
-              <div className="premium-menu-drawer__controls">
-                <LanguageSwitcher id="drawer-language-switcher" />
-                <SimpleThemeToggle />
-              </div>
-
-              <div className="premium-menu-drawer__account">
-                {isAuthenticated ? (
-                  <>
-                    <span title={user?.email || displayName}>
-                      {displayName}
-                    </span>
-
-                    {userIsAdmin && (
-                      <Link
-                        to="/admin"
-                        className="premium-btn premium-btn-ghost"
-                        onClick={closeMenu}
+                  <div className="premium-dropdown__links">
+                    {navLinks.map((link) => (
+                      <button
+                        key={link.to}
+                        className="premium-dropdown__link"
+                        onClick={() => handleNavigation(link.to)}
                       >
-                        {t("nav.admin", "Admin")}
-                      </Link>
-                    )}
+                        {link.label}
+                      </button>
+                    ))}
+                  </div>
 
+                  {isAuthenticated && userIsAdmin && (
+                    <>
+                      <div className="premium-dropdown__divider" />
+                      <button
+                        className="premium-dropdown__link premium-dropdown__link--admin"
+                        onClick={() => handleNavigation("/admin")}
+                      >
+                        📊 Dashboard
+                      </button>
+                    </>
+                  )}
+
+                  <div className="premium-dropdown__divider" />
+
+                  {isAuthenticated ? (
+                    <>
+                      <div className="premium-dropdown__user">
+                        <div className="premium-dropdown__user-name">
+                          {displayName}
+                        </div>
+                        <div className="premium-dropdown__user-email">
+                          {user?.email}
+                        </div>
+                      </div>
+                      <button
+                        className="premium-dropdown__logout"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </button>
+                    </>
+                  ) : (
                     <button
-                      type="button"
-                      className="premium-btn premium-btn-primary"
-                      onClick={handleLogout}
+                      className="premium-dropdown__login"
+                      onClick={() => handleNavigation("/login")}
                     >
-                      {t("nav.logout", "Logout")}
+                      Login
                     </button>
-                  </>
-                ) : (
-                  <Link
-                    to="/login"
-                    className="premium-btn premium-btn-primary"
-                    onClick={closeMenu}
-                  >
-                    {t("nav.login", "Login")}
-                  </Link>
-                )}
-              </div>
-            </motion.aside>
-          </>
-        )}
-      </AnimatePresence>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
     </header>
   );
 }

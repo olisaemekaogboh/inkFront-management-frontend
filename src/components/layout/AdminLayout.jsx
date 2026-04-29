@@ -160,7 +160,7 @@ export default function AdminLayout() {
       <div className="admin-shell__main">
         <header className="admin-shell__topbar">
           <div className="admin-shell__topbar-copy">
-            <h1>Hello, {firstName}</h1>
+            <h1>{firstName}</h1>
             <p>{userRole}</p>
           </div>
 

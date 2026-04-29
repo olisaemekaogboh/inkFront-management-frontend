@@ -1,0 +1,263 @@
+/* ============================================ */
+/* Seamless Navbar - No Visible Division */
+/* ============================================ */
+
+.premium-navbar--seamless {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.premium-navbar--seamless .premium-navbar__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* Logo - blends with page */
+.premium-navbar--seamless .premium-navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.premium-navbar--seamless .premium-navbar__logo-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+/* Brand mark - subtle and elegant */
+.inkfront-brand-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  color: var(--color-primary);
+}
+
+.inkfront-brand-mark svg {
+  width: 28px;
+  height: 28px;
+  color: var(--color-primary);
+}
+
+/* Right section - controls blend in */
+.premium-navbar--seamless .premium-navbar__right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.premium-navbar--seamless .premium-navbar__controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Menu Button - subtle and modern */
+.premium-menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  border-radius: 40px;
+}
+
+.premium-menu-btn:hover {
+  background: rgba(var(--color-primary-rgb), 0.08);
+}
+
+.premium-menu-btn--active {
+  background: rgba(var(--color-primary-rgb), 0.12);
+}
+
+.premium-menu-btn__arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+  opacity: 0.6;
+}
+
+.premium-menu-btn__arrow--open {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Menu - clean floating */
+.premium-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  min-width: 260px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  z-index: 1001;
+  backdrop-filter: blur(20px);
+  background: rgba(var(--color-bg-rgb), 0.95);
+}
+
+[data-theme="dark"] .premium-dropdown {
+  background: rgba(30, 41, 59, 0.95);
+  backdrop-filter: blur(20px);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Dropdown links */
+.premium-dropdown__links {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+}
+
+.premium-dropdown__link {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.premium-dropdown__link:hover {
+  background: rgba(var(--color-primary-rgb), 0.08);
+  color: var(--color-primary);
+  padding-left: 24px;
+}
+
+.premium-dropdown__link--admin {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+/* Divider */
+.premium-dropdown__divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 4px 0;
+}
+
+/* User section */
+.premium-dropdown__user {
+  padding: 12px 20px;
+}
+
+.premium-dropdown__user-name {
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+
+.premium-dropdown__user-email {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+/* Auth buttons */
+.premium-dropdown__login,
+.premium-dropdown__logout {
+  display: block;
+  width: calc(100% - 32px);
+  margin: 8px 16px;
+  padding: 10px 16px;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 40px;
+  color: var(--color-text);
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.premium-dropdown__login:hover,
+.premium-dropdown__logout:hover {
+  background: rgba(var(--color-primary-rgb), 0.08);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* Language & Theme toggle styling for seamless navbar */
+.premium-navbar--seamless .language-switcher__button,
+.premium-navbar--seamless .theme-toggle__button {
+  background: transparent;
+  border: none;
+  padding: 8px 8px;
+}
+
+.premium-navbar--seamless .language-switcher__button:hover,
+.premium-navbar--seamless .theme-toggle__button:hover {
+  background: rgba(var(--color-primary-rgb), 0.08);
+}
+
+.premium-navbar--seamless .language-switcher__dropdown,
+.premium-navbar--seamless .theme-toggle__dropdown {
+  top: calc(100% + 8px);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .premium-navbar--seamless .premium-navbar__inner {
+    padding: 16px 20px;
+  }
+
+  .premium-navbar--seamless .premium-navbar__logo-text {
+    font-size: 1rem;
+  }
+
+  .premium-navbar--seamless .premium-navbar__controls {
+    display: none;
+  }
+
+  .premium-menu-btn {
+    padding: 6px 16px;
+    font-size: 0.85rem;
+  }
+
+  .premium-dropdown {
+    position: fixed;
+    top: 70px;
+    left: 16px;
+    right: 16px;
+    bottom: auto;
+    width: auto;
+    min-width: auto;
+    border-radius: 20px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+}
+
+/* Smooth scrolling for mobile menu */
+@media (max-width: 768px) {
+  .premium-dropdown {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+}

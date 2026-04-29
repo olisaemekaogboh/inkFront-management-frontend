@@ -1,4 +1,4 @@
-/* AdminLayout.css - Modern & Clean with Theme Support */
+/* AdminLayout.css - Seamless Modern Design */
 
 /* Base Layout */
 .admin-shell {
@@ -8,7 +8,7 @@
   color: var(--color-text);
 }
 
-/* Sidebar */
+/* Sidebar - Floating design */
 .admin-shell__sidebar {
   position: fixed;
   inset: 0 auto 0 0;
@@ -17,15 +17,21 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  border-right: 1px solid var(--color-border);
-  background: var(--color-bg);
+  background: rgba(var(--color-bg-rgb), 0.95);
+  backdrop-filter: blur(20px);
   padding: 24px 20px;
+  border-right: none;
+  box-shadow: 1px 0 20px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="dark"] .admin-shell__sidebar {
+  background: rgba(15, 23, 42, 0.95);
+  box-shadow: 1px 0 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Brand */
 .admin-shell__brand {
   padding-bottom: 8px;
-  border-bottom: 1px solid var(--color-border);
   margin-bottom: 8px;
 }
 
@@ -42,15 +48,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-primary);
+  background: transparent;
   border-radius: 10px;
-  color: white;
+  color: var(--color-primary);
 }
 
 .admin-shell__brand-svg {
   width: 28px;
   height: 28px;
-  color: white;
+  color: var(--color-primary);
 }
 
 .admin-shell__brand-name {
@@ -81,13 +87,13 @@
 }
 
 .admin-shell__nav-link:hover {
-  background: var(--color-surface);
+  background: rgba(var(--color-primary-rgb), 0.08);
   color: var(--color-text);
 }
 
 .admin-shell__nav-link--active {
-  background: var(--color-primary);
-  color: white;
+  background: rgba(var(--color-primary-rgb), 0.12);
+  color: var(--color-primary);
 }
 
 .admin-shell__nav-icon {
@@ -110,7 +116,7 @@
   min-width: 0;
 }
 
-/* Topbar */
+/* Topbar - Clean and minimal */
 .admin-shell__topbar {
   position: sticky;
   top: 0;
@@ -119,21 +125,27 @@
   justify-content: space-between;
   align-items: center;
   gap: 20px;
-  padding: 16px 24px;
-  background: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
+  padding: 16px 32px;
+  background: rgba(var(--color-bg-rgb), 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: none;
 }
 
 .admin-shell__topbar-copy h1 {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.1rem;
+  font-weight: 500;
   color: var(--color-text);
+}
+
+.admin-shell__topbar-copy h1::before {
+  content: "👋 ";
+  font-size: 1.1rem;
 }
 
 .admin-shell__topbar-copy p {
   margin: 2px 0 0;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--color-text-muted);
 }
 
@@ -144,7 +156,7 @@
   flex-wrap: wrap;
 }
 
-/* Buttons */
+/* Buttons - Minimal */
 .admin-shell__button {
   display: inline-flex;
   align-items: center;
@@ -161,32 +173,32 @@
 }
 
 .admin-shell__button--ghost {
+  color: var(--color-text-muted);
   border: 1px solid var(--color-border);
-  color: var(--color-text);
 }
 
 .admin-shell__button--ghost:hover {
+  background: rgba(var(--color-primary-rgb), 0.08);
   border-color: var(--color-primary);
   color: var(--color-primary);
 }
 
 .admin-shell__button--danger {
-  background: rgba(239, 68, 68, 0.1);
   color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
 .admin-shell__button--danger:hover {
-  background: rgba(239, 68, 68, 0.2);
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
 }
 
 /* Content Area */
 .admin-shell__content {
-  padding: 24px;
+  padding: 32px;
   min-height: calc(100vh - 80px);
 }
 
-/* Mobile Toggle */
+/* Mobile Toggle - Floating button */
 .admin-shell__mobile-toggle {
   position: fixed;
   bottom: 20px;
@@ -202,6 +214,10 @@
   font-size: 1.5rem;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.admin-shell__mobile-toggle:hover {
+  transform: scale(1.05);
 }
 
 /* Overlay */
@@ -254,6 +270,10 @@
   
   .admin-shell__topbar-actions {
     justify-content: flex-start;
+  }
+  
+  .admin-shell__topbar-copy h1::before {
+    content: "👋";
   }
   
   .admin-shell__content {

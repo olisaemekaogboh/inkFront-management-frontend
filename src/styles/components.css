@@ -613,3 +613,246 @@
     padding: var(--space-md);
   }
 }
+/* ============================================ */
+/* Language Switcher - Seamless Design */
+/* ============================================ */
+
+.language-switcher {
+  position: relative;
+}
+
+.language-switcher__button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 40px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.language-switcher__button:hover {
+  background: rgba(var(--color-primary-rgb), 0.08);
+  color: var(--color-primary);
+}
+
+.language-switcher__button--active {
+  background: rgba(var(--color-primary-rgb), 0.12);
+  color: var(--color-primary);
+}
+
+.language-switcher__flag {
+  font-size: 1rem;
+}
+
+.language-switcher__code {
+  font-weight: 500;
+}
+
+.language-switcher__arrow {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s ease;
+  opacity: 0.6;
+}
+
+.language-switcher__arrow--open {
+  transform: rotate(180deg);
+}
+
+/* Dropdown */
+.language-switcher__dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 200px;
+  background: rgba(var(--color-bg-rgb), 0.98);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  z-index: 1000;
+}
+
+[data-theme="dark"] .language-switcher__dropdown {
+  background: rgba(15, 23, 42, 0.98);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Options */
+.language-switcher__option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.language-switcher__option:hover {
+  background: rgba(var(--color-primary-rgb), 0.08);
+  padding-left: 20px;
+}
+
+.language-switcher__option--active {
+  color: var(--color-primary);
+  background: rgba(var(--color-primary-rgb), 0.08);
+}
+
+.language-switcher__option-flag {
+  font-size: 1rem;
+}
+
+.language-switcher__option-label {
+  flex: 1;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.language-switcher__option-code {
+  font-size: 0.7rem;
+  opacity: 0.6;
+}
+
+.language-switcher__check {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2;
+  color: var(--color-primary);
+}
+
+/* ============================================ */
+/* Theme Toggle - Seamless Design */
+/* ============================================ */
+
+.theme-toggle {
+  position: relative;
+}
+
+.theme-toggle__button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 40px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle__button:hover {
+  background: rgba(var(--color-primary-rgb), 0.08);
+  color: var(--color-primary);
+}
+
+.theme-toggle__button--active {
+  background: rgba(var(--color-primary-rgb), 0.12);
+  color: var(--color-primary);
+}
+
+.theme-toggle__icon {
+  font-size: 1rem;
+}
+
+.theme-toggle__label {
+  font-weight: 500;
+}
+
+.theme-toggle__arrow {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s ease;
+  opacity: 0.6;
+}
+
+.theme-toggle__arrow--open {
+  transform: rotate(180deg);
+}
+
+/* Dropdown */
+.theme-toggle__dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 130px;
+  background: rgba(var(--color-bg-rgb), 0.98);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  z-index: 1000;
+}
+
+[data-theme="dark"] .theme-toggle__dropdown {
+  background: rgba(15, 23, 42, 0.98);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Options */
+.theme-toggle__option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle__option:hover {
+  background: rgba(var(--color-primary-rgb), 0.08);
+  padding-left: 20px;
+}
+
+.theme-toggle__option--active {
+  color: var(--color-primary);
+  background: rgba(var(--color-primary-rgb), 0.08);
+}
+
+.theme-toggle__option-icon {
+  font-size: 1rem;
+}
+
+.theme-toggle__option-label {
+  flex: 1;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.theme-toggle__check {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2;
+  color: var(--color-primary);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .language-switcher__dropdown,
+  .theme-toggle__dropdown {
+    position: fixed;
+    top: auto;
+    bottom: 70px;
+    right: 70px;
+    left: auto;
+  }
+}
