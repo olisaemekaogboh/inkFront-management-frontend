@@ -158,23 +158,24 @@ export default function PortfolioListPage() {
                     viewport={{ once: true }}
                   >
                     <Link to={to} className="premium-work-card">
-                      {imageUrl ? (
-                        <img
-                          src={imageUrl}
-                          alt={title}
-                          loading="lazy"
-                          className="premium-work-image"
-                          onError={(event) => {
-                            event.currentTarget.style.display = "none";
-                          }}
-                        />
-                      ) : (
-                        <div className="premium-work-image premium-fallback-media">
-                          <span>💼</span>
-                        </div>
-                      )}
+                      <div className="premium-work-card__image">
+                        {imageUrl ? (
+                          <img
+                            src={imageUrl}
+                            alt={title}
+                            loading="lazy"
+                            onError={(event) => {
+                              event.currentTarget.style.display = "none";
+                            }}
+                          />
+                        ) : (
+                          <div className="premium-work-card__placeholder">
+                            <span>💼</span>
+                          </div>
+                        )}
+                      </div>
 
-                      <div>
+                      <div className="premium-work-card__content">
                         <span className="premium-mini-badge">{tag}</span>
                         <h3>{title}</h3>
                         <p>{summary}</p>

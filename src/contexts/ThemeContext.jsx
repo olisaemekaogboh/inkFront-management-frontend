@@ -1,12 +1,13 @@
 import React, {
   createContext,
+  useCallback,
   useEffect,
   useMemo,
   useState,
-  useCallback,
 } from "react";
 
 const THEME_STORAGE_KEY = "agency_platform_theme_preference";
+
 const THEME_OPTIONS = {
   LIGHT: "light",
   DARK: "dark",
@@ -28,8 +29,9 @@ function getStoredThemePreference() {
 
   try {
     const storedValue = localStorage.getItem(THEME_STORAGE_KEY);
-    const isValid = Object.values(THEME_OPTIONS).includes(storedValue);
-    return isValid ? storedValue : THEME_OPTIONS.SYSTEM;
+    return Object.values(THEME_OPTIONS).includes(storedValue)
+      ? storedValue
+      : THEME_OPTIONS.SYSTEM;
   } catch (error) {
     console.error("Failed to read theme preference:", error);
     return THEME_OPTIONS.SYSTEM;
@@ -57,9 +59,8 @@ export function ThemeProvider({ children }) {
   );
   const [systemTheme, setSystemTheme] = useState(getSystemTheme);
 
-  // Handle system theme changes
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") return undefined;
 
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -67,44 +68,48 @@ export function ThemeProvider({ children }) {
       setSystemTheme(event.matches ? THEME_OPTIONS.DARK : THEME_OPTIONS.LIGHT);
     };
 
-    // Modern event listener
     if (mediaQuery.addEventListener) {
       mediaQuery.addEventListener("change", handleChange);
       return () => mediaQuery.removeEventListener("change", handleChange);
     }
 
-    // Fallback for older browsers
     mediaQuery.addListener(handleChange);
     return () => mediaQuery.removeListener(handleChange);
   }, []);
 
-  // Save theme preference to localStorage
+  const resolvedTheme = useMemo(() => {
+    return themePreference === THEME_OPTIONS.SYSTEM
+      ? systemTheme
+      : themePreference;
+  }, [themePreference, systemTheme]);
+
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window === "undefined") return;
+
+    try {
       localStorage.setItem(THEME_STORAGE_KEY, themePreference);
+    } catch (error) {
+      console.error("Failed to save theme preference:", error);
     }
   }, [themePreference]);
 
-  // Compute resolved theme
-  const resolvedTheme = useMemo(
-    () =>
-      themePreference === THEME_OPTIONS.SYSTEM ? systemTheme : themePreference,
-    [themePreference, systemTheme],
-  );
-
-  // Apply theme to DOM
   useEffect(() => {
-    if (typeof document !== "undefined") {
-      document.documentElement.setAttribute("data-theme", resolvedTheme);
-      document.documentElement.style.colorScheme = resolvedTheme;
-    }
-  }, [resolvedTheme]);
+    if (typeof document === "undefined") return;
 
-  // Get current theme display info
-  const currentThemeDisplay = useMemo(
-    () => THEME_DISPLAY[themePreference] || THEME_DISPLAY.light,
-    [themePreference],
-  );
+    const root = document.documentElement;
+    const body = document.body;
+
+    root.setAttribute("data-theme", resolvedTheme);
+    root.setAttribute("data-theme-preference", themePreference);
+    root.style.colorScheme = resolvedTheme;
+
+    body.setAttribute("data-theme", resolvedTheme);
+
+    root.classList.toggle("dark", resolvedTheme === THEME_OPTIONS.DARK);
+    root.classList.toggle("light", resolvedTheme === THEME_OPTIONS.LIGHT);
+    body.classList.toggle("dark", resolvedTheme === THEME_OPTIONS.DARK);
+    body.classList.toggle("light", resolvedTheme === THEME_OPTIONS.LIGHT);
+  }, [resolvedTheme, themePreference]);
 
   const setTheme = useCallback((newTheme) => {
     if (Object.values(THEME_OPTIONS).includes(newTheme)) {
@@ -120,9 +125,14 @@ export function ThemeProvider({ children }) {
     });
   }, []);
 
+  const currentThemeDisplay = useMemo(() => {
+    return THEME_DISPLAY[themePreference] || THEME_DISPLAY.system;
+  }, [themePreference]);
+
   const value = useMemo(
     () => ({
       theme: resolvedTheme,
+      resolvedTheme,
       themePreference,
       systemTheme,
       isDarkMode: resolvedTheme === THEME_OPTIONS.DARK,
@@ -148,11 +158,12 @@ export function ThemeProvider({ children }) {
   );
 }
 
-// Custom hook for using theme
 export function useTheme() {
   const context = React.useContext(ThemeContext);
+
   if (!context) {
     throw new Error("useTheme must be used within a ThemeProvider");
   }
+
   return context;
 }

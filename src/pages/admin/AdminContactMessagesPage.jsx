@@ -20,7 +20,6 @@ const emptyReplyForm = {
 
 function formatDate(value) {
   if (!value) return "N/A";
-
   try {
     return new Date(value).toLocaleString();
   } catch {
@@ -51,30 +50,19 @@ export default function AdminContactMessagesPage() {
   const [messages, setMessages] = useState([]);
   const [stats, setStats] = useState(null);
   const [selectedMessage, setSelectedMessage] = useState(null);
-
   const [status, setStatus] = useState("ALL");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
-
-  const [pageInfo, setPageInfo] = useState({
-    page: 0,
-    size: 12,
-    totalElements: 0,
-    totalPages: 0,
-  });
-
+  const [pageInfo, setPageInfo] = useState({ totalElements: 0, totalPages: 1 });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-
   const [editForm, setEditForm] = useState({
     status: "NEW",
     adminNote: "",
     assignedTo: "",
   });
-
   const [replyForm, setReplyForm] = useState(emptyReplyForm);
 
   const activeParams = useMemo(
@@ -90,15 +78,15 @@ export default function AdminContactMessagesPage() {
   async function loadMessages() {
     try {
       setLoading(true);
-      setError("");
-
       const [messagesPage, statsData] = await Promise.all([
         adminContactMessageApi.getMessages(activeParams),
         adminContactMessageApi.getStats(),
       ]);
-
-      setMessages(messagesPage.content || []);
-      setPageInfo(messagesPage);
+      setMessages(messagesPage?.content || []);
+      setPageInfo({
+        totalElements: messagesPage?.totalElements || 0,
+        totalPages: messagesPage?.totalPages || 1,
+      });
       setStats(statsData || null);
     } catch (err) {
       setError(getErrorMessage(err, "Failed to load contact messages."));
@@ -113,37 +101,30 @@ export default function AdminContactMessagesPage() {
 
   function openMessage(message) {
     setSelectedMessage(message);
-
     setEditForm({
       status: message?.status || "NEW",
       adminNote: message?.adminNote || "",
       assignedTo: message?.assignedTo || "",
     });
-
     setReplyForm({
       subject: message?.subject ? `Re: ${message.subject}` : "Re: Your inquiry",
       message: "",
       replyTo: "",
     });
-
-    setSuccess("");
     setError("");
+    setSuccess("");
   }
 
   function closeMessage() {
     setSelectedMessage(null);
-    setSuccess("");
     setError("");
+    setSuccess("");
   }
 
   async function handleUpdate() {
     if (!selectedMessage?.id) return;
-
     try {
       setSaving(true);
-      setError("");
-      setSuccess("");
-
       const updated = await adminContactMessageApi.updateMessage(
         selectedMessage.id,
         {
@@ -152,7 +133,6 @@ export default function AdminContactMessagesPage() {
           assignedTo: editForm.assignedTo,
         },
       );
-
       setSelectedMessage(updated);
       setSuccess("Message updated successfully.");
       await loadMessages();
@@ -165,19 +145,13 @@ export default function AdminContactMessagesPage() {
 
   async function handleReply(event) {
     event.preventDefault();
-
     if (!selectedMessage?.id) return;
-
     if (!replyForm.subject.trim() || !replyForm.message.trim()) {
       setError("Reply subject and message are required.");
       return;
     }
-
     try {
       setSaving(true);
-      setError("");
-      setSuccess("");
-
       const updated = await adminContactMessageApi.replyToMessage(
         selectedMessage.id,
         {
@@ -188,16 +162,14 @@ export default function AdminContactMessagesPage() {
           assignedTo: editForm.assignedTo,
         },
       );
-
       setSelectedMessage(updated);
       setEditForm({
         status: updated?.status || "CONTACTED",
         adminNote: updated?.adminNote || "",
         assignedTo: updated?.assignedTo || "",
       });
-
       setReplyForm(emptyReplyForm);
-      setSuccess("Reply sent successfully. Message marked as CONTACTED.");
+      setSuccess("Reply sent successfully.");
       await loadMessages();
     } catch (err) {
       setError(getErrorMessage(err, "Failed to send reply."));
@@ -210,20 +182,11 @@ export default function AdminContactMessagesPage() {
     const confirmed = window.confirm(
       `Delete message from ${message?.fullName || message?.email || "client"}?`,
     );
-
     if (!confirmed) return;
-
     try {
       setSaving(true);
-      setError("");
-      setSuccess("");
-
       await adminContactMessageApi.deleteMessage(message.id);
-
-      if (selectedMessage?.id === message.id) {
-        setSelectedMessage(null);
-      }
-
+      if (selectedMessage?.id === message.id) setSelectedMessage(null);
       setSuccess("Message deleted successfully.");
       await loadMessages();
     } catch (err) {
@@ -234,194 +197,154 @@ export default function AdminContactMessagesPage() {
   }
 
   const metricCards = [
-    {
-      label: "New Messages",
-      value: stats?.newMessages ?? 0,
-      icon: "📩",
-      tone: "blue",
-    },
+    { label: "New", value: stats?.newMessages ?? 0, icon: "📩", color: "blue" },
     {
       label: "Contacted",
       value: stats?.contacted ?? 0,
       icon: "🤝",
-      tone: "green",
+      color: "green",
     },
     {
       label: "In Progress",
       value: stats?.inProgress ?? 0,
       icon: "⚙️",
-      tone: "amber",
+      color: "amber",
     },
     {
       label: "Resolved",
       value: stats?.resolved ?? 0,
       icon: "✅",
-      tone: "purple",
+      color: "purple",
     },
   ];
 
   return (
     <div className="crm-page">
-      <section className="crm-hero">
+      {/* Header */}
+      <div className="crm-header">
         <div>
-          <span className="crm-eyebrow">CRM Inbox</span>
           <h1>Contact Messages</h1>
-          <p>
-            View leads from the public contact form, assign staff, update
-            status, add notes, and reply directly by email.
-          </p>
+          <p>View and manage leads from the contact form.</p>
         </div>
-
         <button
-          type="button"
           className="crm-btn crm-btn-primary"
           onClick={loadMessages}
           disabled={loading}
         >
-          {loading ? "Refreshing..." : "Refresh"}
+          {loading ? "Loading..." : "Refresh"}
         </button>
-      </section>
+      </div>
 
-      <section className="crm-stats-grid">
+      {/* Stats */}
+      <div className="crm-stats">
         {metricCards.map((item) => (
-          <article
-            key={item.label}
-            className={`crm-stat-card crm-stat-card-${item.tone}`}
-          >
-            <div className="crm-stat-icon">{item.icon}</div>
+          <div key={item.label} className={`crm-stat crm-stat--${item.color}`}>
+            <span className="crm-stat-icon">{item.icon}</span>
             <div>
-              <span>{item.label}</span>
-              <strong>{item.value}</strong>
+              <div className="crm-stat-value">{item.value}</div>
+              <div className="crm-stat-label">{item.label}</div>
             </div>
-          </article>
+          </div>
         ))}
-      </section>
+      </div>
 
-      <section className="crm-toolbar">
+      {/* Filters */}
+      <div className="crm-filters">
         <div className="crm-search">
-          <span>🔎</span>
           <input
+            type="text"
+            placeholder="Search by name or email..."
             value={search}
-            onChange={(event) => {
-              setSearch(event.target.value);
+            onChange={(e) => {
+              setSearch(e.target.value);
               setPage(0);
             }}
-            placeholder="Search by name or email..."
           />
         </div>
-
         <select
+          className="crm-filter-select"
           value={status}
-          onChange={(event) => {
-            setStatus(event.target.value);
+          onChange={(e) => {
+            setStatus(e.target.value);
             setPage(0);
           }}
-          className="crm-select"
         >
-          {STATUS_OPTIONS.map((option) => (
-            <option key={option} value={option}>
-              {statusLabel(option)}
+          {STATUS_OPTIONS.map((opt) => (
+            <option key={opt} value={opt}>
+              {statusLabel(opt)}
             </option>
           ))}
         </select>
-      </section>
+      </div>
 
-      {error ? <div className="crm-alert crm-alert-error">{error}</div> : null}
-      {success ? (
-        <div className="crm-alert crm-alert-success">{success}</div>
-      ) : null}
+      {/* Messages Table */}
+      <div className="crm-table-container">
+        {error && <div className="crm-error">{error}</div>}
+        {success && <div className="crm-success">{success}</div>}
 
-      <section className="crm-card">
-        <div className="crm-card-header">
-          <div>
-            <h2>Inbox</h2>
-            <p>
-              {pageInfo.totalElements || messages.length || 0} total messages
-            </p>
-          </div>
-        </div>
-
-        <div className="crm-table-wrap">
-          <table className="crm-table">
-            <thead>
-              <tr>
-                <th>Client</th>
-                <th>Subject</th>
-                <th>Status</th>
-                <th>Assigned</th>
-                <th>Received</th>
-                <th />
-              </tr>
-            </thead>
-
-            <tbody>
-              {loading ? (
+        {loading ? (
+          <div className="crm-loading">Loading messages...</div>
+        ) : messages.length === 0 ? (
+          <div className="crm-empty">No messages found.</div>
+        ) : (
+          <>
+            <table className="crm-table">
+              <thead>
                 <tr>
-                  <td colSpan="6" className="crm-table-state">
-                    Loading contact messages...
-                  </td>
+                  <th>Client</th>
+                  <th>Subject / Message</th>
+                  <th>Status</th>
+                  <th>Assigned To</th>
+                  <th>Received</th>
+                  <th></th>
                 </tr>
-              ) : messages.length === 0 ? (
-                <tr>
-                  <td colSpan="6" className="crm-table-state">
-                    No contact messages found.
-                  </td>
-                </tr>
-              ) : (
-                messages.map((message) => (
-                  <tr key={message.id}>
+              </thead>
+              <tbody>
+                {messages.map((msg) => (
+                  <tr key={msg.id}>
                     <td>
-                      <div className="crm-client-cell">
+                      <div className="crm-client">
                         <div className="crm-avatar">
-                          {(message.fullName || message.email || "?")
+                          {(msg.fullName || msg.email || "?")
                             .charAt(0)
                             .toUpperCase()}
                         </div>
                         <div>
-                          <strong>
-                            {message.fullName || "Unknown Client"}
-                          </strong>
-                          <span>{message.email || "No email"}</span>
+                          <div className="crm-client-name">
+                            {msg.fullName || "Unknown"}
+                          </div>
+                          <div className="crm-client-email">{msg.email}</div>
                         </div>
                       </div>
                     </td>
-
                     <td>
-                      <strong>{message.subject || "No subject"}</strong>
-                      <span className="crm-muted">
-                        {message.serviceInterest ||
-                          message.company ||
-                          "General inquiry"}
-                      </span>
+                      <div className="crm-subject">
+                        {msg.subject || "No subject"}
+                      </div>
+                      {msg.serviceInterest && (
+                        <div className="crm-service">{msg.serviceInterest}</div>
+                      )}
                     </td>
-
                     <td>
                       <span
-                        className={`crm-status crm-status-${getStatusClass(
-                          message.status,
-                        )}`}
+                        className={`crm-badge crm-badge--${getStatusClass(msg.status)}`}
                       >
-                        {statusLabel(message.status)}
+                        {statusLabel(msg.status)}
                       </span>
                     </td>
-
-                    <td>{message.assignedTo || "Unassigned"}</td>
-                    <td>{formatDate(message.createdAt)}</td>
-
+                    <td>{msg.assignedTo || "Unassigned"}</td>
+                    <td>{formatDate(msg.createdAt)}</td>
                     <td>
-                      <div className="crm-row-actions">
+                      <div className="crm-actions">
                         <button
-                          type="button"
-                          className="crm-btn crm-btn-light crm-btn-sm"
-                          onClick={() => openMessage(message)}
+                          className="crm-btn-sm"
+                          onClick={() => openMessage(msg)}
                         >
                           View
                         </button>
-
                         <button
-                          type="button"
-                          className="crm-btn crm-btn-danger crm-btn-sm"
-                          onClick={() => handleDelete(message)}
+                          className="crm-btn-sm crm-btn-danger"
+                          onClick={() => handleDelete(msg)}
                           disabled={saving}
                         >
                           Delete
@@ -429,40 +352,37 @@ export default function AdminContactMessagesPage() {
                       </div>
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+                ))}
+              </tbody>
+            </table>
 
-        <div className="crm-pagination">
-          <button
-            type="button"
-            className="crm-btn crm-btn-light crm-btn-sm"
-            disabled={page <= 0 || loading}
-            onClick={() => setPage((current) => Math.max(current - 1, 0))}
-          >
-            Previous
-          </button>
+            {/* Pagination */}
+            {pageInfo.totalPages > 1 && (
+              <div className="crm-pagination">
+                <button
+                  disabled={page === 0}
+                  onClick={() => setPage((p) => p - 1)}
+                >
+                  Previous
+                </button>
+                <span>
+                  Page {page + 1} of {pageInfo.totalPages}
+                </span>
+                <button
+                  disabled={page + 1 >= pageInfo.totalPages}
+                  onClick={() => setPage((p) => p + 1)}
+                >
+                  Next
+                </button>
+              </div>
+            )}
+          </>
+        )}
+      </div>
 
-          <span>
-            Page {(pageInfo.page ?? page) + 1} of{" "}
-            {Math.max(pageInfo.totalPages || 1, 1)}
-          </span>
-
-          <button
-            type="button"
-            className="crm-btn crm-btn-light crm-btn-sm"
-            disabled={page + 1 >= (pageInfo.totalPages || 1) || loading}
-            onClick={() => setPage((current) => current + 1)}
-          >
-            Next
-          </button>
-        </div>
-      </section>
-
+      {/* Drawer Modal */}
       <AnimatePresence>
-        {selectedMessage ? (
+        {selectedMessage && (
           <motion.div
             className="crm-drawer-overlay"
             initial={{ opacity: 0 }}
@@ -471,186 +391,137 @@ export default function AdminContactMessagesPage() {
           >
             <motion.aside
               className="crm-drawer"
-              initial={{ opacity: 0, x: 90 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 90 }}
-              transition={{ duration: 0.25 }}
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
             >
-              <header className="crm-drawer-header">
+              <div className="crm-drawer-header">
                 <div>
-                  <span className="crm-eyebrow">
-                    Message #{selectedMessage.id}
-                  </span>
-                  <h2>{selectedMessage.subject || "Client inquiry"}</h2>
+                  <h2>{selectedMessage.subject || "Client Message"}</h2>
                   <p>
                     {selectedMessage.fullName} • {selectedMessage.email}
                   </p>
                 </div>
-
-                <button
-                  type="button"
-                  className="crm-btn crm-btn-light crm-btn-sm"
-                  onClick={closeMessage}
-                >
-                  Close
+                <button className="crm-close" onClick={closeMessage}>
+                  ×
                 </button>
-              </header>
+              </div>
 
               <div className="crm-drawer-body">
-                {error ? (
-                  <div className="crm-alert crm-alert-error">{error}</div>
-                ) : null}
-
-                {success ? (
-                  <div className="crm-alert crm-alert-success">{success}</div>
-                ) : null}
-
-                <article className="crm-message-box">
-                  <h3>Client Message</h3>
+                {/* Message Content */}
+                <div className="crm-section">
+                  <h3>Message</h3>
                   <p>{selectedMessage.message}</p>
-
-                  <div className="crm-detail-grid">
-                    <span>Phone: {selectedMessage.phone || "N/A"}</span>
-                    <span>Company: {selectedMessage.company || "N/A"}</span>
-                    <span>
-                      Service: {selectedMessage.serviceInterest || "N/A"}
-                    </span>
-                    <span>
-                      Language: {selectedMessage.preferredLanguage || "EN"}
-                    </span>
-                    <span>
-                      Created: {formatDate(selectedMessage.createdAt)}
-                    </span>
-                    <span>
-                      Last contacted:{" "}
-                      {formatDate(selectedMessage.lastContactedAt)}
-                    </span>
+                  <div className="crm-details">
+                    <span>📞 {selectedMessage.phone || "N/A"}</span>
+                    <span>🏢 {selectedMessage.company || "N/A"}</span>
+                    <span>🔧 {selectedMessage.serviceInterest || "N/A"}</span>
+                    <span>🌐 {selectedMessage.preferredLanguage || "EN"}</span>
                   </div>
-                </article>
+                </div>
 
-                <section className="crm-form-section">
-                  <h3>Manage Lead</h3>
-
-                  <div className="crm-form-grid">
+                {/* Update Form */}
+                <div className="crm-section">
+                  <h3>Update Message</h3>
+                  <div className="crm-form-row">
                     <label>
                       Status
                       <select
                         value={editForm.status}
-                        onChange={(event) =>
-                          setEditForm((current) => ({
-                            ...current,
-                            status: event.target.value,
-                          }))
+                        onChange={(e) =>
+                          setEditForm({ ...editForm, status: e.target.value })
                         }
                       >
-                        {STATUS_OPTIONS.filter(
-                          (option) => option !== "ALL",
-                        ).map((option) => (
-                          <option key={option} value={option}>
-                            {statusLabel(option)}
-                          </option>
-                        ))}
+                        {STATUS_OPTIONS.filter((o) => o !== "ALL").map(
+                          (opt) => (
+                            <option key={opt} value={opt}>
+                              {statusLabel(opt)}
+                            </option>
+                          ),
+                        )}
                       </select>
                     </label>
-
                     <label>
-                      Assign staff
+                      Assign To
                       <input
+                        type="text"
                         value={editForm.assignedTo}
-                        onChange={(event) =>
-                          setEditForm((current) => ({
-                            ...current,
-                            assignedTo: event.target.value,
-                          }))
+                        onChange={(e) =>
+                          setEditForm({
+                            ...editForm,
+                            assignedTo: e.target.value,
+                          })
                         }
-                        placeholder="Staff name or email"
+                        placeholder="Staff name"
                       />
                     </label>
                   </div>
-
                   <label>
-                    Admin note
+                    Admin Note
                     <textarea
+                      rows={3}
                       value={editForm.adminNote}
-                      onChange={(event) =>
-                        setEditForm((current) => ({
-                          ...current,
-                          adminNote: event.target.value,
-                        }))
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, adminNote: e.target.value })
                       }
-                      rows={4}
-                      placeholder="Internal note..."
+                      placeholder="Internal notes..."
                     />
                   </label>
-
                   <button
-                    type="button"
-                    className="crm-btn crm-btn-primary"
+                    className="crm-btn-primary"
                     onClick={handleUpdate}
                     disabled={saving}
                   >
-                    {saving ? "Saving..." : "Save Changes"}
+                    Save Changes
                   </button>
-                </section>
+                </div>
 
-                <form onSubmit={handleReply} className="crm-form-section">
-                  <h3>Reply to Client Email</h3>
-
-                  <label>
-                    Reply-to email optional
-                    <input
-                      value={replyForm.replyTo}
-                      onChange={(event) =>
-                        setReplyForm((current) => ({
-                          ...current,
-                          replyTo: event.target.value,
-                        }))
-                      }
-                      placeholder="Optional reply-to email"
-                    />
-                  </label>
-
-                  <label>
-                    Subject
-                    <input
-                      value={replyForm.subject}
-                      onChange={(event) =>
-                        setReplyForm((current) => ({
-                          ...current,
-                          subject: event.target.value,
-                        }))
-                      }
-                      placeholder="Email subject"
-                    />
-                  </label>
-
-                  <label>
-                    Reply message
-                    <textarea
-                      value={replyForm.message}
-                      onChange={(event) =>
-                        setReplyForm((current) => ({
-                          ...current,
-                          message: event.target.value,
-                        }))
-                      }
-                      rows={7}
-                      placeholder="Write your reply..."
-                    />
-                  </label>
-
-                  <button
-                    type="submit"
-                    className="crm-btn crm-btn-primary"
-                    disabled={saving}
-                  >
-                    {saving ? "Sending..." : "Send Reply"}
-                  </button>
-                </form>
+                {/* Reply Form */}
+                <div className="crm-section">
+                  <h3>Reply to Client</h3>
+                  <form onSubmit={handleReply}>
+                    <label>
+                      Subject
+                      <input
+                        type="text"
+                        value={replyForm.subject}
+                        onChange={(e) =>
+                          setReplyForm({
+                            ...replyForm,
+                            subject: e.target.value,
+                          })
+                        }
+                        required
+                      />
+                    </label>
+                    <label>
+                      Message
+                      <textarea
+                        rows={5}
+                        value={replyForm.message}
+                        onChange={(e) =>
+                          setReplyForm({
+                            ...replyForm,
+                            message: e.target.value,
+                          })
+                        }
+                        required
+                        placeholder="Write your reply..."
+                      />
+                    </label>
+                    <button
+                      type="submit"
+                      className="crm-btn-primary"
+                      disabled={saving}
+                    >
+                      Send Reply
+                    </button>
+                  </form>
+                </div>
               </div>
             </motion.aside>
           </motion.div>
-        ) : null}
+        )}
       </AnimatePresence>
     </div>
   );

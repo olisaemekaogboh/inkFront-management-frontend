@@ -27,7 +27,6 @@ export default function Footer() {
       { to: "/about", label: "About InkFront" },
       { to: "/contact", label: "Contact" },
       { to: "/login", label: "Login" },
-      { to: "/admin", label: "Admin" },
       { to: "/terms", label: "Terms & Conditions" },
       { to: "/privacy", label: "Privacy Policy" },
       { to: "/cookies", label: "Cookies Policy" },
@@ -73,7 +72,6 @@ export default function Footer() {
             viewport={{ once: true }}
           >
             <h3>Explore</h3>
-
             {footerLinks.explore.map((link) => (
               <Link key={link.to} to={link.to}>
                 {link.label}
@@ -89,7 +87,6 @@ export default function Footer() {
             viewport={{ once: true }}
           >
             <h3>Company</h3>
-
             {footerLinks.company.map((link) => (
               <Link key={link.to} to={link.to}>
                 {link.label}
@@ -105,7 +102,6 @@ export default function Footer() {
             viewport={{ once: true }}
           >
             <h3>Start with InkFront</h3>
-
             <p>
               Ready to upgrade your business online? Let InkFront build a clean,
               modern digital system for your brand.

@@ -1,6 +1,6 @@
-/* theme-dark.css - Dark theme variables */
+/* theme-dark.css */
+
 [data-theme="dark"] {
-  /* Primary colors (adjusted for dark bg) */
   --color-primary-50: #081d3b;
   --color-primary-100: #0f2b52;
   --color-primary-200: #163d6e;
@@ -11,46 +11,58 @@
   --color-primary-700: #93c5fd;
   --color-primary-800: #bfdbfe;
   --color-primary-900: #eff6ff;
-  
+
   --color-primary: var(--color-primary-500);
-  --color-primary-hover: var(--color-primary-400);
-  --color-primary-active: var(--color-primary-600);
-  --color-primary-contrast: #0f172a;
+  --color-primary-dark: var(--color-primary-400);
+  --color-primary-light: var(--color-primary-600);
+  --color-primary-hover: var(--color-primary-600);
+  --color-primary-active: var(--color-primary-400);
+  --color-primary-contrast: #020617;
+  --color-primary-glow: rgb(96 165 250 / 0.2);
 
-  /* Neutral colors (dark mode) */
-  --color-gray-900: #f9fafb;
-  --color-gray-800: #f3f4f6;
-  --color-gray-700: #e5e7eb;
-  --color-gray-600: #d1d5db;
-  --color-gray-500: #9ca3af;
-  --color-gray-400: #6b7280;
-  --color-gray-300: #4b5563;
-  --color-gray-200: #374151;
-  --color-gray-100: #1f2937;
-  --color-gray-50: #111827;
-
-  /* Semantic colors */
   --color-bg: #0f172a;
-  --color-bg-elevated: #1e293b;
+  --color-bg-elevated: #111827;
   --color-surface: #1e293b;
+  --color-surface-soft: #162033;
   --color-surface-hover: #334155;
   --color-surface-active: #475569;
-  
-  --color-text: var(--color-gray-900);
-  --color-text-soft: var(--color-gray-700);
-  --color-text-muted: var(--color-gray-500);
-  
-  --color-border: var(--color-gray-200);
-  --color-border-strong: var(--color-gray-300);
-  
-  --color-overlay: rgb(0 0 0 / 0.7);
-  --color-navbar-bg: rgb(15 23 42 / 0.9);
 
-  /* Shadows (dark mode) */
-  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.3);
+  --color-text: #f8fafc;
+  --color-text-soft: #cbd5e1;
+  --color-text-muted: #94a3b8;
+  --color-heading: #ffffff;
+
+  --color-border: rgb(148 163 184 / 0.22);
+  --color-border-strong: rgb(203 213 225 / 0.35);
+
+  --color-overlay: rgb(0 0 0 / 0.72);
+  --color-navbar-bg: rgb(15 23 42 / 0.9);
+  --color-card: #1e293b;
+
+  --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary-light) 100%);
+  --gradient-page: radial-gradient(circle at top left, rgb(96 165 250 / 0.12), transparent 28rem), var(--color-bg);
+
+  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.28);
+  --shadow-md: 0 8px 18px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 18px 40px rgb(0 0 0 / 0.34);
+  --shadow-xl: 0 28px 70px rgb(0 0 0 / 0.42);
+  --shadow-2xl: 0 36px 90px rgb(0 0 0 / 0.5);
+
+  /* Compatibility aliases for older files */
+  --bg: var(--color-bg);
+  --bg-elevated: var(--color-bg-elevated);
+  --surface: var(--color-surface);
+  --surface-hover: var(--color-surface-hover);
+  --text: var(--color-text);
+  --text-soft: var(--color-text-soft);
+  --text-muted: var(--color-text-muted);
+  --border: var(--color-border);
+  --border-strong: var(--color-border-strong);
+  --primary: var(--color-primary);
+  --primary-hover: var(--color-primary-hover);
+  --primary-contrast: var(--color-primary-contrast);
+  --card: var(--color-card);
+  --navbar-bg: var(--color-navbar-bg);
 
   color-scheme: dark;
 }

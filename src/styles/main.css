@@ -1,10 +1,11 @@
 /* main.css - Import all styles in correct order */
-@import 'reset.css';
-@import 'tokens.css';
-@import 'theme-light.css';
-@import 'theme-dark.css';
-@import 'global.css';
-@import 'utilities.css';
-@import 'components.css';
-@import 'layout.css';
-@import 'admin.css';
+
+@import "./reset.css";
+@import "./tokens.css";
+@import "./theme-light.css";
+@import "./theme-dark.css";
+@import "./global.css";
+@import "./components.css";
+@import "./layout.css";
+@import "./admin.css";
+@import "./utilities.css";

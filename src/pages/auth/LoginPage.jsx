@@ -17,7 +17,6 @@ function InkFrontLogo() {
 
 function hasAdminRole(user) {
   const roles = Array.isArray(user?.roles) ? user.roles : [];
-
   return (
     roles.includes("ADMIN") ||
     roles.includes("ROLE_ADMIN") ||
@@ -31,45 +30,21 @@ export default function LoginPage() {
   const location = useLocation();
   const { login } = useAuth();
 
-  const [form, setForm] = useState({
-    identifier: "",
-    email: "",
-    password: "",
-  });
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [googleSubmitting, setGoogleSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const redirectTarget = location.state?.from || "/";
 
-  function handleChange(event) {
-    const { name, value } = event.target;
-
-    setForm((current) => ({
-      ...current,
-      [name]: value,
-      ...(name === "email" ? { identifier: value } : {}),
-    }));
-
-    if (errorMessage) {
-      setErrorMessage("");
-    }
-  }
-
   async function handleSubmit(event) {
     event.preventDefault();
-
     setSubmitting(true);
     setErrorMessage("");
 
     try {
-      const loginResult = await login({
-        identifier: form.identifier || form.email,
-        email: form.email || form.identifier,
-        password: form.password,
-      });
-
+      const loginResult = await login({ identifier: email, email, password });
       const currentUser = loginResult?.user || loginResult?.data?.user || null;
 
       if (redirectTarget.startsWith("/admin") && !hasAdminRole(currentUser)) {
@@ -96,124 +71,154 @@ export default function LoginPage() {
 
   return (
     <main className="premium-public-page">
-      <section className="premium-section">
-        <div className="premium-container">
-          <article
-            className="premium-contact-panel"
+      <div
+        className="premium-container"
+        style={{
+          maxWidth: "480px",
+          margin: "0 auto",
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <div
+          className="premium-contact-panel"
+          style={{ padding: "48px 40px", textAlign: "center" }}
+        >
+          {/* Logo & Title - Centered */}
+          <Link
+            to="/"
             style={{
-              maxWidth: "540px",
-              margin: "0 auto",
+              textDecoration: "none",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              marginBottom: "32px",
             }}
           >
-            <Link
-              to="/"
-              className="premium-footer__logo"
+            <InkFrontLogo />
+            <h1
               style={{
-                display: "inline-flex",
-                marginBottom: "26px",
-                textDecoration: "none",
+                marginTop: "16px",
+                marginBottom: "0",
+                fontSize: "1.75rem",
+                color: "var(--app-text)",
               }}
             >
-              <InkFrontLogo />
-              <strong
-                style={{
-                  color: "var(--app-text)",
-                }}
-              >
-                InkFront
-              </strong>
-            </Link>
+              InkFront
+            </h1>
+          </Link>
 
-            <span className="premium-eyebrow">Secure Access</span>
+          {/* Google Login */}
+          <button
+            type="button"
+            className="premium-btn premium-btn-ghost"
+            onClick={handleGoogleLogin}
+            disabled={googleSubmitting || submitting}
+            style={{ width: "100%", marginBottom: "20px" }}
+          >
+            {googleSubmitting ? "Redirecting..." : "Continue with Google"}
+          </button>
 
-            <h2 style={{ marginTop: "16px" }}>Welcome back</h2>
+          {/* Divider */}
+          <div
+            style={{
+              margin: "20px 0",
+              position: "relative",
+              textAlign: "center",
+            }}
+          >
+            <hr
+              style={{
+                border: "none",
+                borderTop: "1px solid var(--app-border)",
+              }}
+            />
+            <span
+              style={{
+                position: "relative",
+                top: "-12px",
+                background: "var(--app-card)",
+                padding: "0 12px",
+                color: "var(--app-muted)",
+                fontSize: "0.8rem",
+              }}
+            >
+              or
+            </span>
+          </div>
 
-            <p>
-              Login to continue to InkFront. Admin users can access the
-              dashboard, while regular users continue to the public website.
-            </p>
+          {/* Error Message */}
+          {errorMessage && (
+            <div
+              className="premium-form-alert premium-form-alert-error"
+              style={{ marginBottom: "20px" }}
+            >
+              {errorMessage}
+            </div>
+          )}
 
-            <button
-              type="button"
-              className="premium-btn premium-btn-ghost"
-              onClick={handleGoogleLogin}
-              disabled={googleSubmitting || submitting}
+          {/* Login Form */}
+          <form onSubmit={handleSubmit}>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email address"
+              required
+              disabled={submitting || googleSubmitting}
               style={{
                 width: "100%",
-                marginTop: "20px",
+                marginBottom: "16px",
+                padding: "12px 16px",
+                borderRadius: "12px",
+                border: "1px solid var(--app-border)",
+                background: "var(--app-card)",
+                color: "var(--app-text)",
               }}
+            />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              required
+              disabled={submitting || googleSubmitting}
+              style={{
+                width: "100%",
+                marginBottom: "24px",
+                padding: "12px 16px",
+                borderRadius: "12px",
+                border: "1px solid var(--app-border)",
+                background: "var(--app-card)",
+                color: "var(--app-text)",
+              }}
+            />
+            <button
+              type="submit"
+              className="premium-btn premium-btn-primary"
+              disabled={submitting || googleSubmitting}
+              style={{ width: "100%" }}
             >
-              {googleSubmitting ? "Redirecting..." : "Continue with Google"}
+              {submitting ? "Signing in..." : "Login"}
             </button>
+          </form>
 
-            <div
-              style={{
-                margin: "18px 0",
-                textAlign: "center",
-                color: "var(--app-muted)",
-                fontWeight: "700",
-              }}
-            >
-              or sign in with email
-            </div>
-
-            {errorMessage ? (
-              <div className="premium-form-alert premium-form-alert-error">
-                {errorMessage}
-              </div>
-            ) : null}
-
-            <form className="premium-contact-form" onSubmit={handleSubmit}>
-              <label>
-                Email Address
-                <input
-                  type="email"
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  required
-                  autoComplete="email"
-                  placeholder="you@example.com"
-                  disabled={submitting || googleSubmitting}
-                />
-              </label>
-
-              <label>
-                Password
-                <input
-                  type="password"
-                  name="password"
-                  value={form.password}
-                  onChange={handleChange}
-                  required
-                  autoComplete="current-password"
-                  placeholder="Enter password"
-                  disabled={submitting || googleSubmitting}
-                />
-              </label>
-
-              <button
-                type="submit"
-                className="premium-btn premium-btn-primary"
-                disabled={submitting || googleSubmitting}
-                style={{ width: "100%" }}
-              >
-                {submitting ? "Signing in..." : "Login"}
-              </button>
-            </form>
-
-            <p
-              style={{
-                marginTop: "20px",
-                textAlign: "center",
-                color: "var(--app-muted)",
-              }}
-            >
-              Don&apos;t have an account? <Link to="/register">Create one</Link>
-            </p>
-          </article>
+          {/* Register Link */}
+          <p
+            style={{
+              marginTop: "24px",
+              color: "var(--app-muted)",
+              fontSize: "0.85rem",
+            }}
+          >
+            Don't have an account?{" "}
+            <Link to="/register" style={{ color: "var(--app-primary)" }}>
+              Create account
+            </Link>
+          </p>
         </div>
-      </section>
+      </div>
     </main>
   );
 }

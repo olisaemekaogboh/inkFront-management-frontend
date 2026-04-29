@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import useLanguage from "../../hooks/useLanguage";
 import { publicApi } from "../../services/publicApi";
@@ -21,35 +21,42 @@ const SERVICE_OPTIONS = {
     "Mepụta Webụsaịtị",
     "Akpaaka Azụmahịa",
     "Atụmatụ Ngwaahịa",
-    "Ikpo Okwu Azụmahịa E-Commerce",
+    "Ụlọ Ahịa E-Commerce",
     "Sọftụwia Pụrụ Iche",
     "Ọnụ Ụzọ Ndị Ahịa",
     "Usoro Nlekọta Ụlọ Akwụkwọ",
-    "Mepụta Ngwa Mkpanaka",
+    "Ngwa Ekwentị",
     "SEO na Sistemụ Ọdịnaya",
   ],
   HA: [
     "Ƙirƙirar Yanar Gizo",
     "Sarrafa Kasuwanci ta Atomatik",
     "Tsarin Samfuri",
-    "Dandalin Kasuwancin E-Commerce",
+    "Dandalin E-Commerce",
     "Software na Musamman",
     "Ƙofar Abokin Ciniki",
-    "Tsarin Gudanar da Makarantu",
-    "Ƙirƙirar Manhajar Wayar Salula",
+    "Tsarin Gudanar da Makaranta",
+    "Manhajar Waya",
     "SEO da Tsarin Abun Ciki",
   ],
   YO: [
     "Ìdàgbàsókè Ojúlé Wẹ́ẹ̀bù",
-    "Àdánidá Iṣẹ́ Òwò",
+    "Àdánidá Iṣòwò",
     "Àpẹẹrẹ Ọjà",
-    "Ibi Ìtajà E-Commerce",
-    "Sọfụ́wíà Àkànṣe",
-    "Ẹnubọ̀dè Alábàrá",
+    "Pẹpẹ E-Commerce",
+    "Sọfitiwia Àkànṣe",
+    "Ẹnubodè Oníbàárà",
     "Ètò Ìṣàkóso Ilé-Ẹ̀kọ́",
-    "Ìdàgbàsókè Àwọn Ohun Èlò Alágbèéká",
+    "App Alágbèéká",
     "SEO àti Ètò Àkóónú",
   ],
+};
+
+const LANGUAGE_LABELS = {
+  EN: "English",
+  IG: "Igbo",
+  HA: "Hausa",
+  YO: "Yoruba",
 };
 
 const initialForm = {
@@ -79,14 +86,30 @@ function cleanPayload(form) {
 export default function ContactPage() {
   const { language, t } = useLanguage();
 
+  const activeLanguage = useMemo(() => {
+    const code = `${language || "EN"}`.toUpperCase();
+    return SERVICE_OPTIONS[code] ? code : "EN";
+  }, [language]);
+
   const [form, setForm] = useState({
     ...initialForm,
-    preferredLanguage: language || "EN",
+    preferredLanguage: activeLanguage,
   });
 
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+
+  /* FIX:
+     When site language changes, sync preferredLanguage dropdown.
+     Before it stayed on EN forever.
+  */
+  useEffect(() => {
+    setForm((current) => ({
+      ...current,
+      preferredLanguage: activeLanguage,
+    }));
+  }, [activeLanguage]);
 
   const canSubmit = useMemo(() => {
     return (
@@ -131,7 +154,7 @@ export default function ContactPage() {
 
       setForm({
         ...initialForm,
-        preferredLanguage: language || "EN",
+        preferredLanguage: activeLanguage,
       });
 
       setSuccess(
@@ -152,10 +175,9 @@ export default function ContactPage() {
     }
   }
 
-  const getServiceOptions = () => {
-    const langMap = { EN: "EN", IG: "IG", HA: "HA", YO: "YO" };
-    return SERVICE_OPTIONS[langMap[language] || "EN"];
-  };
+  const serviceOptions = useMemo(() => {
+    return SERVICE_OPTIONS[activeLanguage] || SERVICE_OPTIONS.EN;
+  }, [activeLanguage]);
 
   return (
     <main className="premium-public-page">
@@ -178,7 +200,7 @@ export default function ContactPage() {
             <p>
               {t(
                 "pages.contact.subtitle",
-                "Send your project details directly to the InkFront admin team. Your inquiry will be saved, tracked, and followed up from the admin CRM.",
+                "Send your project details directly to the InkFront admin team.",
               )}
             </p>
           </motion.div>
@@ -188,30 +210,19 @@ export default function ContactPage() {
       <section className="premium-section">
         <div className="premium-container premium-contact-grid">
           <article className="premium-contact-panel">
-            <span className="premium-eyebrow">
-              {t("pages.contact.inquiry", "Project inquiry")}
-            </span>
-
             <h2>{t("pages.contact.sendMessage", "Send us a message")}</h2>
 
-            <p>
-              {t(
-                "pages.contact.description",
-                "Tell us what you want to build. Include your project goal, preferred timeline, required features, and budget range if you already have one.",
-              )}
-            </p>
-
-            {success ? (
+            {success && (
               <div className="premium-form-alert premium-form-alert-success">
                 {success}
               </div>
-            ) : null}
+            )}
 
-            {error ? (
+            {error && (
               <div className="premium-form-alert premium-form-alert-error">
                 {error}
               </div>
-            ) : null}
+            )}
 
             <form className="premium-contact-form" onSubmit={handleSubmit}>
               <div className="premium-form-grid">
@@ -222,12 +233,6 @@ export default function ContactPage() {
                     value={form.fullName}
                     onChange={handleChange}
                     required
-                    maxLength={150}
-                    placeholder={t(
-                      "forms.contact.fullNamePlaceholder",
-                      "Your full name",
-                    )}
-                    autoComplete="name"
                   />
                 </label>
 
@@ -239,12 +244,6 @@ export default function ContactPage() {
                     value={form.email}
                     onChange={handleChange}
                     required
-                    maxLength={180}
-                    placeholder={t(
-                      "forms.contact.emailPlaceholder",
-                      "you@example.com",
-                    )}
-                    autoComplete="email"
                   />
                 </label>
 
@@ -254,9 +253,6 @@ export default function ContactPage() {
                     name="phone"
                     value={form.phone}
                     onChange={handleChange}
-                    maxLength={50}
-                    placeholder={t("forms.contact.phonePlaceholder", "+234...")}
-                    autoComplete="tel"
                   />
                 </label>
 
@@ -266,12 +262,6 @@ export default function ContactPage() {
                     name="company"
                     value={form.company}
                     onChange={handleChange}
-                    maxLength={150}
-                    placeholder={t(
-                      "forms.contact.companyPlaceholder",
-                      "Company or brand name",
-                    )}
-                    autoComplete="organization"
                   />
                 </label>
               </div>
@@ -287,8 +277,9 @@ export default function ContactPage() {
                     <option value="">
                       {t("forms.contact.selectService", "Select service")}
                     </option>
-                    {getServiceOptions().map((option) => (
-                      <option value={option} key={option}>
+
+                    {serviceOptions.map((option) => (
+                      <option key={option} value={option}>
                         {option}
                       </option>
                     ))}
@@ -302,10 +293,11 @@ export default function ContactPage() {
                     value={form.preferredLanguage}
                     onChange={handleChange}
                   >
-                    <option value="EN">{t("language.name", "English")}</option>
-                    <option value="IG">{t("language.name", "Igbo")}</option>
-                    <option value="HA">{t("language.name", "Hausa")}</option>
-                    <option value="YO">{t("language.name", "Yoruba")}</option>
+                    {Object.entries(LANGUAGE_LABELS).map(([code, label]) => (
+                      <option key={code} value={code}>
+                        {label}
+                      </option>
+                    ))}
                   </select>
                 </label>
               </div>
@@ -317,11 +309,6 @@ export default function ContactPage() {
                   value={form.subject}
                   onChange={handleChange}
                   required
-                  maxLength={200}
-                  placeholder={t(
-                    "forms.contact.subjectPlaceholder",
-                    "What do you need?",
-                  )}
                 />
               </label>
 
@@ -332,12 +319,7 @@ export default function ContactPage() {
                   value={form.message}
                   onChange={handleChange}
                   required
-                  maxLength={5000}
                   rows={7}
-                  placeholder={t(
-                    "forms.contact.messagePlaceholder",
-                    "Describe your project, timeline, budget range, required pages/features, and what problem you want to solve...",
-                  )}
                 />
               </label>
 
@@ -355,53 +337,11 @@ export default function ContactPage() {
 
           <aside className="premium-contact-sidebar">
             <div className="premium-info-panel">
-              <span>01</span>
-              <h2>
-                {t("pages.contact.nextSteps.title", "What happens next?")}
-              </h2>
+              <span>🌍</span>
+              <h2>{LANGUAGE_LABELS[activeLanguage]}</h2>
               <p>
-                {t(
-                  "pages.contact.nextSteps.description",
-                  "Your message is saved inside the admin Contact CRM, where the team can review it, assign it, update status, and follow up.",
-                )}
-              </p>
-            </div>
-
-            <div className="premium-info-panel">
-              <span>02</span>
-              <h2>
-                {t(
-                  "pages.contact.detailsToInclude.title",
-                  "Best details to include",
-                )}
-              </h2>
-              <p>
-                {t(
-                  "pages.contact.detailsToInclude.description",
-                  "Include your business type, project goal, required features, timeline, budget range, and any reference websites you like.",
-                )}
-              </p>
-            </div>
-
-            <div className="premium-info-panel">
-              <span>03</span>
-              <h2>{t("pages.contact.howWeRespond.title", "How we respond")}</h2>
-              <p>
-                {t(
-                  "pages.contact.howWeRespond.description",
-                  "We review the request and reply with a practical recommendation, possible scope, timeline, and next step.",
-                )}
-              </p>
-            </div>
-
-            <div className="premium-info-panel">
-              <span>04</span>
-              <h2>{t("pages.contact.storedSafely.title", "Stored safely")}</h2>
-              <p>
-                {t(
-                  "pages.contact.storedSafely.description",
-                  "Every inquiry is stored as a CRM message so no lead gets lost in email, chat, or manual notes.",
-                )}
+                Current site language is synced correctly with service options
+                and preferred language.
               </p>
             </div>
           </aside>

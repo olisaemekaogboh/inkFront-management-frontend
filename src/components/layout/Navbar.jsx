@@ -12,9 +12,9 @@ import "../../styles/publicPremium.css";
 function InkFrontLogo() {
   return (
     <span className="inkfront-brand-mark" aria-hidden="true">
-      <svg viewBox="0 0 48 48">
+      <svg viewBox="0 0 48 48" fill="currentColor">
         <path d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z" />
-        <path d="M25 23h13v17h-7V29h-6v-6Z" />
+        <path d="M25 23h13v17h-7V29h-6v-6Z" opacity="0.7" />
       </svg>
     </span>
   );
@@ -101,11 +101,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={
-        scrolled
-          ? "premium-navbar premium-navbar--final premium-navbar--scrolled"
-          : "premium-navbar premium-navbar--final"
-      }
+      className={`premium-navbar premium-navbar--final ${scrolled ? "premium-navbar--scrolled" : ""}`}
     >
       <div className="premium-navbar__inner premium-navbar__inner--final">
         <Link to="/" className="premium-navbar__brand" onClick={closeMenu}>
@@ -130,7 +126,7 @@ export default function Navbar() {
       </div>
 
       <AnimatePresence>
-        {menuOpen ? (
+        {menuOpen && (
           <>
             <motion.button
               type="button"
@@ -183,7 +179,7 @@ export default function Navbar() {
                   </NavLink>
                 ))}
 
-                {isAuthenticated && userIsAdmin ? (
+                {isAuthenticated && userIsAdmin && (
                   <NavLink
                     to="/admin"
                     onClick={closeMenu}
@@ -191,7 +187,7 @@ export default function Navbar() {
                   >
                     {t("nav.dashboard", "Dashboard")}
                   </NavLink>
-                ) : null}
+                )}
               </nav>
 
               <div className="premium-menu-drawer__controls">
@@ -206,7 +202,7 @@ export default function Navbar() {
                       {displayName}
                     </span>
 
-                    {userIsAdmin ? (
+                    {userIsAdmin && (
                       <Link
                         to="/admin"
                         className="premium-btn premium-btn-ghost"
@@ -214,7 +210,7 @@ export default function Navbar() {
                       >
                         {t("nav.admin", "Admin")}
                       </Link>
-                    ) : null}
+                    )}
 
                     <button
                       type="button"
@@ -236,7 +232,7 @@ export default function Navbar() {
               </div>
             </motion.aside>
           </>
-        ) : null}
+        )}
       </AnimatePresence>
     </header>
   );
