@@ -34,14 +34,11 @@ function normalizeSettings(value) {
     if (!value.content && !value.items) return value;
   }
 
-  const list = normalizeList(value);
-
-  return list.reduce((acc, item) => {
+  return normalizeList(value).reduce((acc, item) => {
     const key = item?.settingKey || item?.key;
     const settingValue = item?.settingValue || item?.value;
 
     if (key) acc[key] = settingValue;
-
     return acc;
   }, {});
 }
@@ -61,15 +58,10 @@ function getImageUrl(item, settings = {}) {
     item?.backgroundImageUrl,
     item?.bannerImageUrl,
     item?.mediaUrl,
-    item?.image,
-    item?.coverImage,
-    item?.featuredImage,
     settings.imageUrl,
     settings["about.imageUrl"],
     settings.coverImageUrl,
     settings["about.coverImageUrl"],
-    settings.featuredImageUrl,
-    settings["about.featuredImageUrl"],
     settings.heroImageUrl,
     settings["about.heroImageUrl"],
   );
@@ -84,9 +76,8 @@ function buildFallbackTestimonials(t) {
       organization: "EduBridge Academy",
       quote: t(
         "pages.about.fallbackTestimonials.t1.quote",
-        "InkFront built our school management platform exactly how we described it. Clean design, solid backend. Our teachers and parents love using it.",
+        "InkFront built our school management platform with clean design, strong backend logic, and a user experience our teachers and parents could understand quickly.",
       ),
-      avatarUrl: "",
     },
     {
       id: "t2",
@@ -95,9 +86,8 @@ function buildFallbackTestimonials(t) {
       organization: "QuickShip Logistics",
       quote: t(
         "pages.about.fallbackTestimonials.t2.quote",
-        "We needed a dispatch system fast. The team delivered a working logistics dashboard in under 5 weeks. It's now core to our daily operations.",
+        "The team understood our dispatch workflow before writing code. That business-first approach made the final logistics dashboard practical and easy to use.",
       ),
-      avatarUrl: "",
     },
     {
       id: "t3",
@@ -109,9 +99,8 @@ function buildFallbackTestimonials(t) {
       organization: "HalaMart",
       quote: t(
         "pages.about.fallbackTestimonials.t3.quote",
-        "Our marketplace was just an idea. InkFront turned it into a live multi-vendor platform with escrow, catalog management, and clean admin tools.",
+        "InkFront helped us turn a marketplace idea into a working digital product with vendor tools, product management, and a polished customer experience.",
       ),
-      avatarUrl: "",
     },
     {
       id: "t4",
@@ -120,9 +109,8 @@ function buildFallbackTestimonials(t) {
       organization: "PaySwift Fintech",
       quote: t(
         "pages.about.fallbackTestimonials.t4.quote",
-        "Professional API architecture and clean frontend work. They understand business logic, not just code. We've been working together for over a year.",
+        "They understand both software architecture and business logic. That combination is rare and valuable when building serious platforms.",
       ),
-      avatarUrl: "",
     },
   ];
 }
@@ -133,66 +121,66 @@ function buildFallbackFaqs(t) {
       id: "f1",
       question: t(
         "pages.about.fallbackFaqs.f1.question",
-        "What kind of businesses do you work with?",
+        "Who is behind InkFront?",
       ),
       answer: t(
         "pages.about.fallbackFaqs.f1.answer",
-        "We work with startups, SMEs, agencies, schools, fintechs, logistics companies, and service-based businesses that need a strong digital presence and operational systems.",
+        "InkFront is backed by a flexible team of 5 to 15 software engineers, product thinkers, and digital builders with strong experience in business logic, frontend experience, backend systems, and scalable platform delivery.",
       ),
     },
     {
       id: "f2",
       question: t(
         "pages.about.fallbackFaqs.f2.question",
-        "How long does it take to complete a project?",
+        "How experienced is the team?",
       ),
       answer: t(
         "pages.about.fallbackFaqs.f2.answer",
-        "Timelines depend on the scope — a business website takes 2–4 weeks, while a full custom platform can take 8–16 weeks. We give clear estimates during the strategy phase.",
+        "Our team brings 10+ years of combined practical experience building websites, dashboards, portals, e-commerce systems, school systems, booking platforms, and custom software for real business use cases.",
       ),
     },
     {
       id: "f3",
       question: t(
         "pages.about.fallbackFaqs.f3.question",
-        "Do you offer post-launch support?",
+        "Do you only serve businesses in Nigeria?",
       ),
       answer: t(
         "pages.about.fallbackFaqs.f3.answer",
-        "Yes. Every project includes a warranty period and we offer ongoing maintenance plans to keep your platform updated, secure, and performing well.",
+        "Nigeria is our foundation and Africa is our focus. We build for businesses across Nigeria and design systems that can scale into wider African markets.",
       ),
     },
     {
       id: "f4",
       question: t(
         "pages.about.fallbackFaqs.f4.question",
-        "Can you work with my existing team or tools?",
+        "What makes your approach different?",
       ),
       answer: t(
         "pages.about.fallbackFaqs.f4.answer",
-        "Absolutely. We integrate with your current workflows, APIs, databases, and third-party tools. We build on top of what you already have, not replace everything.",
+        "We do not just design screens. We study how the business works, map the user journey, structure the backend properly, and build digital systems that feel simple for users and useful for business owners.",
       ),
     },
     {
       id: "f5",
       question: t(
         "pages.about.fallbackFaqs.f5.question",
-        "How much does a typical project cost?",
+        "Can you work with existing projects?",
       ),
       answer: t(
         "pages.about.fallbackFaqs.f5.answer",
-        "Our MVP packages start at $2,500 for a complete business website. Custom platforms range from $5,000–$25,000+ depending on complexity. Every project gets a fixed-price proposal upfront.",
+        "Yes. We can improve existing React, Spring Boot, PostgreSQL, and admin-dashboard projects without starting from scratch. We fix broken flows, improve design, connect APIs, and preserve working features.",
       ),
     },
     {
       id: "f6",
       question: t(
         "pages.about.fallbackFaqs.f6.question",
-        "What technologies do you use?",
+        "What kind of platforms do you build?",
       ),
       answer: t(
         "pages.about.fallbackFaqs.f6.answer",
-        "We build with React, Spring Boot, PostgreSQL, Docker, and modern cloud infrastructure. For mobile apps, we use React Native or Flutter. We choose the right stack for your needs.",
+        "We build business websites, product landing pages, client portals, admin dashboards, booking systems, e-commerce platforms, school management systems, CRM tools, and custom workflow software.",
       ),
     },
   ];
@@ -204,27 +192,27 @@ function buildWorkSteps(t) {
       number: "01",
       title: t(
         "pages.about.workSteps.understand.title",
-        "Understand the business",
+        "Understand the business logic",
       ),
       body: t(
         "pages.about.workSteps.understand.body",
-        "We clarify the offer, audience, pages, workflows, and business goal before building.",
+        "We study how your business earns, serves customers, manages operations, and handles data before we design or build anything.",
       ),
     },
     {
       number: "02",
-      title: t("pages.about.workSteps.design.title", "Design the experience"),
+      title: t("pages.about.workSteps.design.title", "Design for real users"),
       body: t(
         "pages.about.workSteps.design.body",
-        "We shape the layout, content flow, and user journey so the platform feels premium and easy to use.",
+        "We create clean journeys, strong layouts, and user-friendly interfaces that make your platform easy for customers, staff, and admins.",
       ),
     },
     {
       number: "03",
-      title: t("pages.about.workSteps.build.title", "Build with clean systems"),
+      title: t("pages.about.workSteps.build.title", "Build scalable systems"),
       body: t(
         "pages.about.workSteps.build.body",
-        "We connect frontend, backend, DTOs, services, APIs, admin tools, and published public content.",
+        "We connect frontend, backend, DTOs, APIs, admin tools, database models, authentication, and content management into one reliable system.",
       ),
     },
   ];
@@ -314,7 +302,10 @@ export default function AboutPage() {
   const heroTitle = text(
     heroItem?.title,
     getSetting("heroTitle"),
-    t("pages.about.title", "We build digital systems for modern businesses"),
+    t(
+      "pages.about.title",
+      "African-driven software engineering for serious business growth",
+    ),
   );
 
   const heroSubtitle = text(
@@ -323,7 +314,7 @@ export default function AboutPage() {
     getSetting("heroSubtitle"),
     t(
       "pages.about.subtitle",
-      "InkFront helps businesses launch premium websites, product pages, dashboards, portals, and backend-connected digital platforms.",
+      "InkFront is backed by a team of 5 to 15 software engineers with 10+ years of experience building business websites, dashboards, portals, and custom platforms that combine strong business logic with excellent user experience across Nigeria and Africa.",
     ),
   );
 
@@ -333,13 +324,13 @@ export default function AboutPage() {
     "story",
     t(
       "pages.about.storyFallback",
-      "InkFront exists to help businesses move from scattered ideas and weak online presence to polished, trusted, and scalable digital platforms.",
+      "InkFront exists because many African businesses do not just need a website — they need digital systems that understand how their business actually works. Our team combines software engineering, business thinking, product structure, and user experience design to help companies move from scattered manual processes to polished platforms that customers can trust and teams can manage with confidence.",
     ),
   );
 
   const missionTitle = getSetting(
     "missionTitle",
-    t("pages.about.missionTitle", "Our mission"),
+    t("pages.about.missionTitle", "Our African-driven mission"),
   );
 
   const mission = getSetting(
@@ -348,14 +339,14 @@ export default function AboutPage() {
       "mission",
       t(
         "pages.about.missionFallback",
-        "To design and build practical digital systems that help businesses communicate clearly, operate better, and grow with confidence.",
+        "Our mission is to build practical, reliable, and beautiful digital systems for African businesses that want to compete with confidence. We help founders, schools, logistics companies, agencies, creators, and service businesses turn local knowledge into world-class digital experiences. We believe African businesses deserve platforms that are fast, clear, secure, easy to manage, and designed around real customer behavior.",
       ),
     ),
   );
 
   const visionTitle = getSetting(
     "visionTitle",
-    t("pages.about.visionTitle", "Our vision"),
+    t("pages.about.visionTitle", "Our African technology vision"),
   );
 
   const vision = getSetting(
@@ -364,7 +355,7 @@ export default function AboutPage() {
       "vision",
       t(
         "pages.about.visionFallback",
-        "To become a trusted technology partner for businesses that want clean design, solid backend systems, and long-term digital growth.",
+        "Our vision is to become one of Africa’s most trusted digital product partners — a team known for building platforms that make businesses easier to run, easier to understand, and easier to scale. We see a future where African companies no longer depend on weak templates or disconnected tools, but own clean, scalable software systems built for their market, their customers, and their growth.",
       ),
     ),
   );
@@ -373,7 +364,7 @@ export default function AboutPage() {
     "values",
     t(
       "pages.about.valuesFallback",
-      "We value clarity, reliability, business impact, clean execution, and honest communication.",
+      "We value clear thinking, honest communication, business-first engineering, user-friendly design, reliability, speed, documentation, and long-term partnership. Every project should solve a real problem, reduce confusion, improve customer trust, and give the business owner more control.",
     ),
   );
 
@@ -401,20 +392,18 @@ export default function AboutPage() {
 
             <div className="premium-stats premium-about-stats">
               <div>
-                <strong>7+</strong>
-                <span>{t("home.statsServices", "Core services")}</span>
+                <strong>5–15</strong>
+                <span>Software engineers</span>
               </div>
 
               <div>
-                <strong>100%</strong>
-                <span>{t("home.statsBusiness", "Business focused")}</span>
+                <strong>10+</strong>
+                <span>Years experience</span>
               </div>
 
               <div>
-                <strong>{language}</strong>
-                <span>
-                  {t("pages.about.multilingualReady", "Multilingual ready")}
-                </span>
+                <strong>NG</strong>
+                <span>Africa focused</span>
               </div>
             </div>
           </motion.div>
@@ -448,8 +437,25 @@ export default function AboutPage() {
               {t("pages.about.storyEyebrow", "Our story")}
             </span>
 
-            <h2>{t("pages.about.storyTitle", "Why InkFront exists")}</h2>
+            <h2>
+              {t(
+                "pages.about.storyTitle",
+                "Built for business logic, not just design",
+              )}
+            </h2>
             <p>{story}</p>
+
+            <ul className="premium-detail-list" style={{ marginTop: 24 }}>
+              <li>Backed by a flexible team of 5 to 15 software engineers.</li>
+              <li>
+                Strong understanding of business logic and user experience.
+              </li>
+              <li>
+                10+ years of practical experience across web and software
+                systems.
+              </li>
+              <li>Focused on Nigeria first, with an African growth mindset.</li>
+            </ul>
           </article>
 
           <div className="premium-about-panels">
@@ -478,23 +484,71 @@ export default function AboutPage() {
         <div className="premium-container premium-split">
           <div>
             <span className="premium-eyebrow premium-eyebrow--light">
-              {t("pages.about.howWeWorkEyebrow", "How we work")}
+              Engineering depth
             </span>
 
-            <h2>
-              {t(
-                "pages.about.howWeWorkTitle",
-                "We turn business goals into clear digital systems.",
-              )}
-            </h2>
+            <h2>We combine software skill with business understanding.</h2>
+
+            <p>
+              Our work is not only about code. We think through how a business
+              receives leads, manages customers, presents services, controls
+              content, handles data, and creates a smooth experience for users.
+            </p>
           </div>
 
           <div className="premium-blueprint-panel">
-            {workSteps.map((item) => (
+            {[
+              {
+                number: "01",
+                title: "Business logic first",
+                body: "Before building, we understand your operations, users, services, workflows, and revenue model.",
+              },
+              {
+                number: "02",
+                title: "Clean user experience",
+                body: "We design pages, dashboards, forms, and flows that feel simple, premium, and easy to use.",
+              },
+              {
+                number: "03",
+                title: "Reliable engineering",
+                body: "We build with clean frontend structure, backend services, DTOs, APIs, authentication, and database logic.",
+              },
+              {
+                number: "04",
+                title: "African market awareness",
+                body: "We build with awareness of Nigerian and African business realities: trust, speed, mobile use, clarity, and affordability.",
+              },
+            ].map((item) => (
               <article key={item.number} className="premium-blueprint-item">
                 <strong>{item.number}</strong>
 
                 <div>
+                  <h3>{item.title}</h3>
+                  <p>{item.body}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="premium-section">
+        <div className="premium-container">
+          <div className="premium-section-head">
+            <span className="premium-eyebrow">How we work</span>
+            <h2>From idea to polished digital system.</h2>
+            <p>
+              Every project follows a clear process so the final platform is not
+              just beautiful, but useful, maintainable, and aligned with the way
+              your business works.
+            </p>
+          </div>
+
+          <div className="premium-card-grid">
+            {workSteps.map((item) => (
+              <article key={item.number} className="premium-service-card">
+                <div className="premium-card-body">
+                  <div className="premium-icon">{item.number}</div>
                   <h3>{item.title}</h3>
                   <p>{item.body}</p>
                 </div>
@@ -560,12 +614,7 @@ export default function AboutPage() {
                   viewport={{ once: true }}
                   className="premium-testimonial-card"
                 >
-                  <div
-                    className="premium-quote-mark"
-                    aria-label={t("sections.testimonials.quoteMark", "Quote")}
-                  >
-                    "
-                  </div>
+                  <div className="premium-quote-mark">"</div>
 
                   <p>"{quote}"</p>
 
@@ -628,19 +677,8 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 className="premium-info-panel"
               >
-                <h3>
-                  {text(
-                    item.question,
-                    t("sections.faq.defaultQuestion", "Question"),
-                  )}
-                </h3>
-
-                <p>
-                  {text(
-                    item.answer,
-                    t("sections.faq.defaultAnswer", "Answer unavailable."),
-                  )}
-                </p>
+                <h3>{text(item.question, "Question")}</h3>
+                <p>{text(item.answer, "Answer unavailable.")}</p>
               </motion.article>
             ))}
           </div>

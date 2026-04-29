@@ -711,7 +711,26 @@ export default function HomePage() {
 
                   <div className="premium-card-body">
                     <div className="premium-icon">
-                      {service.icon || service.iconKey || `0${index + 1}`}
+                      {(() => {
+                        const iconMap = {
+                          code: "💻",
+                          workflow: "⚙️",
+                          target: "🎯",
+                          "shopping-cart": "🛒",
+                          search: "🔎",
+                          layers: "🧩",
+                          smartphone: "📱",
+                        };
+                        const key =
+                          service.iconKey ||
+                          service.icon_key ||
+                          service.icon ||
+                          "";
+                        return (
+                          iconMap[key] ||
+                          ["🚀", "⚙️", "📊", "🎨", "💻", "📱"][index % 6]
+                        );
+                      })()}
                     </div>
                     <h3>{title}</h3>
                     <p>{summary}</p>

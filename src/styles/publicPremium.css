@@ -1502,3 +1502,61 @@ body.mobile-menu-open { overflow: hidden; }
   width: 100%;
   margin-top: 0;
 }
+/* ============================================ */
+/* FOOTER SOCIAL */
+/* ============================================ */
+
+.premium-footer__social {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.premium-footer__social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.2s ease;
+}
+
+.premium-footer__social a:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.premium-footer__social svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Footer meta icons */
+.premium-footer__meta span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.premium-footer__meta svg {
+  flex-shrink: 0;
+}
+
+/* Google Maps link */
+.premium-footer__map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.premium-footer__map-link:hover {
+  color: #ffffff;
+}

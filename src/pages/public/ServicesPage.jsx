@@ -288,7 +288,7 @@ export default function ServicesPage() {
                 "servicesPage.bannerText",
                 "Every product blueprint on our platform can be built as a full service. We offer flexible pricing — from MVP launches starting at",
               )}{" "}
-              <strong>$2,500</strong>{" "}
+              <strong>₦300,000</strong>{" "}
               {t(
                 "servicesPage.bannerTextEnd",
                 "to full enterprise platforms. You only pay for what your business truly needs.",
