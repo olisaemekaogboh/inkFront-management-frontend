@@ -52,6 +52,29 @@ function text(...values) {
   );
 }
 
+function getImageUrl(item, settings = {}) {
+  return text(
+    item?.imageUrl,
+    item?.coverImageUrl,
+    item?.featuredImageUrl,
+    item?.thumbnailUrl,
+    item?.backgroundImageUrl,
+    item?.bannerImageUrl,
+    item?.mediaUrl,
+    item?.image,
+    item?.coverImage,
+    item?.featuredImage,
+    settings.imageUrl,
+    settings["about.imageUrl"],
+    settings.coverImageUrl,
+    settings["about.coverImageUrl"],
+    settings.featuredImageUrl,
+    settings["about.featuredImageUrl"],
+    settings.heroImageUrl,
+    settings["about.heroImageUrl"],
+  );
+}
+
 function buildFallbackTestimonials(t) {
   return [
     {
@@ -304,11 +327,7 @@ export default function AboutPage() {
     ),
   );
 
-  const imageUrl = text(
-    heroItem?.imageUrl,
-    heroItem?.coverImageUrl,
-    getSetting("imageUrl"),
-  );
+  const imageUrl = getImageUrl(heroItem, siteSettings);
 
   const story = getSetting(
     "story",
@@ -361,7 +380,13 @@ export default function AboutPage() {
   return (
     <main className="premium-public-page">
       <section className="premium-detail-hero">
-        <div className="premium-container premium-detail-grid">
+        <div
+          className={
+            imageUrl
+              ? "premium-container premium-detail-grid"
+              : "premium-container premium-page-intro"
+          }
+        >
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -376,7 +401,7 @@ export default function AboutPage() {
 
             <div className="premium-stats premium-about-stats">
               <div>
-                <strong>4+</strong>
+                <strong>7+</strong>
                 <span>{t("home.statsServices", "Core services")}</span>
               </div>
 
@@ -394,30 +419,25 @@ export default function AboutPage() {
             </div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.65 }}
-            className="premium-detail-media"
-          >
-            {imageUrl ? (
+          {imageUrl ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.65 }}
+              className="premium-detail-media"
+            >
               <img
                 src={imageUrl}
                 alt={heroTitle}
                 loading="lazy"
                 onError={(event) => {
-                  event.currentTarget.style.display = "none";
+                  event.currentTarget.closest(
+                    ".premium-detail-media",
+                  ).style.display = "none";
                 }}
               />
-            ) : (
-              <div
-                className="premium-detail-placeholder"
-                aria-label={t("pages.about.imagePlaceholder", "Rocket")}
-              >
-                🚀
-              </div>
-            )}
-          </motion.div>
+            </motion.div>
+          ) : null}
         </div>
       </section>
 
