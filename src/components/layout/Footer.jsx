@@ -112,9 +112,9 @@ export default function Footer() {
             </Link>
 
             <div className="premium-footer__meta">
-              <span>📧 hello@inkfront.com</span>
-              <span>🌍 English • Igbo • Hausa • Yoruba</span>
-              <span>⚖️ Terms & Privacy Available</span>
+              <span>📧 @inkfront.com</span>
+              <span>🌍 +2349030175230</span>
+              <span>4 Basden street fegge,Onitsha,AN</span>
             </div>
           </motion.div>
         </div>

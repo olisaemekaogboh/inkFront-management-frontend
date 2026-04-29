@@ -408,3 +408,58 @@ pre {
     text-decoration: underline;
   }
 }
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+main {
+  min-height: 100vh;
+}
+
+.premium-public-page,
+.blog-page,
+.admin-dashboard,
+.admin-blog-page,
+.admin-newsletter-page {
+  animation: pageSmoothEnter 0.42s ease both;
+}
+
+@keyframes pageSmoothEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.motion-safe {
+  will-change: transform, opacity;
+}
+
+img {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .premium-public-page,
+  .blog-page,
+  .admin-dashboard,
+  .admin-blog-page,
+  .admin-newsletter-page {
+    animation: none !important;
+  }
+}

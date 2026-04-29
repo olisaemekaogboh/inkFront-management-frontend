@@ -28,9 +28,16 @@ const getText = (...values) =>
 const getImage = (item) =>
   getText(
     item?.imageUrl,
+    item?.heroImageUrl,
+    item?.backgroundImageUrl,
+    item?.desktopImageUrl,
+    item?.mobileImageUrl,
     item?.coverImageUrl,
     item?.featuredImageUrl,
     item?.thumbnailUrl,
+    item?.mediaUrl,
+    item?.fileUrl,
+    item?.url,
     item?.logoUrl,
     item?.avatarUrl,
   );
@@ -544,19 +551,15 @@ export default function HomePage() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="premium-hero-visual"
+            className={`premium-hero-visual ${!heroImage ? "premium-hero-visual--empty" : ""}`}
           >
-            {heroImage ? (
+            {heroImage && (
               <PremiumImage
                 src={heroImage}
                 alt={heroTitle}
                 className="premium-hero-img"
                 eager
               />
-            ) : (
-              <div className="premium-hero-img premium-fallback-media">
-                <span>🚀</span>
-              </div>
             )}
 
             <div className="premium-dashboard-card">
@@ -571,15 +574,15 @@ export default function HomePage() {
               <div className="premium-dashboard-list">
                 <div>
                   <span>{t("home.heroPanelItem1", "Frontend")}</span>
-                  <strong>React + Vite</strong>
+                  <strong>Great</strong>
                 </div>
                 <div>
                   <span>{t("home.heroPanelItem2", "Backend")}</span>
-                  <strong>Spring Boot</strong>
+                  <strong>Great</strong>
                 </div>
                 <div>
                   <span>{t("home.heroPanelItem3", "Content")}</span>
-                  <strong>Admin managed</strong>
+                  <strong>Great</strong>
                 </div>
               </div>
             </div>

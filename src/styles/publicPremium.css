@@ -1491,3 +1491,14 @@ body.mobile-menu-open { overflow: hidden; }
   width: fit-content;
   margin-bottom: 8px;
 }
+.premium-hero-visual--empty {
+  min-height: auto;
+}
+
+.premium-hero-visual--empty .premium-dashboard-card {
+  position: relative;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  margin-top: 0;
+}

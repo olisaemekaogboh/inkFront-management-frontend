@@ -3,29 +3,31 @@ import { useLocation } from "react-router-dom";
 
 export default function ScrollToTop() {
   const { pathname, search, hash } = useLocation();
-  const previousPathRef = useRef("");
+  const previousPathRef = useRef(pathname);
 
   useEffect(() => {
-    const currentPath = `${pathname}${search}`;
+    const pathChanged = previousPathRef.current !== pathname;
+    previousPathRef.current = pathname;
 
     if (hash) {
-      const target = document.querySelector(hash);
+      const id = hash.replace("#", "");
 
-      if (target) {
-        window.requestAnimationFrame(() => {
-          target.scrollIntoView({
+      requestAnimationFrame(() => {
+        const element = document.getElementById(id);
+
+        if (element) {
+          element.scrollIntoView({
             behavior: "smooth",
             block: "start",
           });
-        });
-      }
+        }
+      });
 
-      previousPathRef.current = currentPath;
       return;
     }
 
-    if (previousPathRef.current !== currentPath) {
-      window.requestAnimationFrame(() => {
+    if (pathChanged) {
+      requestAnimationFrame(() => {
         window.scrollTo({
           top: 0,
           left: 0,
@@ -33,8 +35,6 @@ export default function ScrollToTop() {
         });
       });
     }
-
-    previousPathRef.current = currentPath;
   }, [pathname, search, hash]);
 
   return null;
