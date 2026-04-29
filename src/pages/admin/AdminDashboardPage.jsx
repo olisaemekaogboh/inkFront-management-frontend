@@ -1,378 +1,379 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  Area,
+  AreaChart,
+} from "recharts";
 import "./AdminDashboardPage.css";
 
-const stats = [
+// Mock data - replace with real API calls
+const fetchDashboardStats = async () => {
+  return {
+    totalLeads: 128,
+    totalSubscribers: 456,
+    publishedPosts: 24,
+    activeServices: 8,
+    weeklyData: [
+      { name: "Mon", leads: 12, subscribers: 8, posts: 3 },
+      { name: "Tue", leads: 18, subscribers: 12, posts: 5 },
+      { name: "Wed", leads: 15, subscribers: 10, posts: 4 },
+      { name: "Thu", leads: 22, subscribers: 15, posts: 7 },
+      { name: "Fri", leads: 28, subscribers: 20, posts: 8 },
+      { name: "Sat", leads: 14, subscribers: 9, posts: 5 },
+      { name: "Sun", leads: 10, subscribers: 6, posts: 3 },
+    ],
+    contentDistribution: [
+      { name: "Blog", value: 35, color: "#6366f1" },
+      { name: "Services", value: 25, color: "#10b981" },
+      { name: "Portfolio", value: 20, color: "#f59e0b" },
+      { name: "Products", value: 20, color: "#8b5cf6" },
+    ],
+    recentMessages: [
+      {
+        id: 1,
+        name: "John Doe",
+        email: "john@example.com",
+        status: "new",
+        date: "2024-01-15",
+      },
+      {
+        id: 2,
+        name: "Jane Smith",
+        email: "jane@example.com",
+        status: "read",
+        date: "2024-01-14",
+      },
+      {
+        id: 3,
+        name: "Mike Johnson",
+        email: "mike@example.com",
+        status: "new",
+        date: "2024-01-14",
+      },
+      {
+        id: 4,
+        name: "Sarah Williams",
+        email: "sarah@example.com",
+        status: "responded",
+        date: "2024-01-13",
+      },
+    ],
+  };
+};
+
+const statCards = [
   {
-    label: "Content Modules",
-    value: "11",
-    change: "+4 active modules",
-    icon: "🧩",
-  },
-  {
-    label: "Leads & Subscribers",
-    value: "24",
-    change: "CRM + Newsletter",
+    key: "totalLeads",
+    label: "Leads",
     icon: "📩",
+    color: "#6366f1",
+    bgGradient: "linear-gradient(135deg, #6366f1 0%, #818cf8 100%)",
   },
   {
-    label: "Published Content",
-    value: "18",
-    change: "Blog + public pages",
-    icon: "🚀",
+    key: "totalSubscribers",
+    label: "Subscribers",
+    icon: "📬",
+    color: "#10b981",
+    bgGradient: "linear-gradient(135deg, #10b981 0%, #34d399 100%)",
   },
   {
-    label: "Languages",
-    value: "4",
-    change: "EN / IG / HA / YO",
-    icon: "🌍",
+    key: "publishedPosts",
+    label: "Blog Posts",
+    icon: "📝",
+    color: "#f59e0b",
+    bgGradient: "linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)",
+  },
+  {
+    key: "activeServices",
+    label: "Services",
+    icon: "⚙️",
+    color: "#8b5cf6",
+    bgGradient: "linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)",
   },
 ];
 
-const weeklyActivity = [
-  { label: "Mon", posts: 3, leads: 6, newsletter: 2 },
-  { label: "Tue", posts: 5, leads: 8, newsletter: 4 },
-  { label: "Wed", posts: 4, leads: 7, newsletter: 3 },
-  { label: "Thu", posts: 7, leads: 10, newsletter: 5 },
-  { label: "Fri", posts: 8, leads: 14, newsletter: 7 },
-  { label: "Sat", posts: 5, leads: 9, newsletter: 4 },
-  { label: "Sun", posts: 6, leads: 12, newsletter: 6 },
-];
-
-const contentBreakdown = [
-  { label: "Blog", value: 35 },
-  { label: "Services", value: 25 },
-  { label: "Portfolio", value: 20 },
-  { label: "Newsletter", value: 20 },
-];
-
-const modules = [
-  {
-    name: "Contact Messages",
-    description: "Track leads and customer project requests.",
-    records: 12,
-    status: "Active",
-    route: "/admin/contact-messages",
-  },
-  {
-    name: "Blog Posts",
-    description: "Create, publish, and manage blog articles.",
-    records: 10,
-    status: "Active",
-    route: "/admin/blog-posts",
-  },
-  {
-    name: "Newsletter",
-    description: "Manage subscribers and email campaigns.",
-    records: 14,
-    status: "Active",
-    route: "/admin/newsletter",
-  },
-  {
-    name: "Services",
-    description: "Manage public services shown on the website.",
-    records: 6,
-    status: "Active",
-    route: "/admin/services",
-  },
-  {
-    name: "Portfolio",
-    description: "Control case studies and selected works.",
-    records: 6,
-    status: "Active",
-    route: "/admin/portfolio",
-  },
-];
-
-const recentActivity = [
-  {
-    title: "Newsletter campaign tested",
-    type: "Newsletter",
-    status: "Needs SMTP",
-    time: "Today",
-  },
-  {
-    title: "Blog module connected",
-    type: "Blog",
-    status: "Live",
-    time: "Today",
-  },
-  {
-    title: "Contact CRM active",
-    type: "CRM",
-    status: "Live",
-    time: "Recent",
-  },
-  {
-    title: "Public pages backend-driven",
-    type: "Website",
-    status: "Live",
-    time: "Recent",
-  },
-];
-
-const quickActions = [
-  { label: "Create Blog Post", to: "/admin/blog-posts", icon: "📝" },
-  { label: "Send Newsletter", to: "/admin/newsletter", icon: "📬" },
-  { label: "Review Leads", to: "/admin/contact-messages", icon: "📩" },
-  { label: "Update Services", to: "/admin/services", icon: "⚙️" },
-];
-
-const maxWeeklyValue = Math.max(
-  ...weeklyActivity.flatMap((item) => [
-    item.posts,
-    item.leads,
-    item.newsletter,
-  ]),
-);
+const COLORS = ["#6366f1", "#10b981", "#f59e0b", "#8b5cf6"];
 
 export default function AdminDashboardPage() {
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchDashboardStats().then((data) => {
+      setStats(data);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="admin-dashboard">
+        <div className="admin-dashboard__loading">
+          <div className="admin-dashboard__spinner"></div>
+          <p>Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="admin-dashboard">
-      <section className="admin-dashboard__hero">
-        <div>
-          <span className="admin-dashboard__eyebrow">Admin Overview</span>
-          <h1>InkFront management dashboard</h1>
-          <p>
-            Manage your public website content, blog posts, subscribers,
-            campaigns, leads, services, products, portfolio, and client trust
-            sections from one clear dashboard.
-          </p>
-        </div>
-
-        <div className="admin-dashboard__hero-actions">
-          <Link to="/admin/blog-posts" className="admin-dashboard__primary-btn">
-            New Blog Post
-          </Link>
-          <Link to="/admin/newsletter" className="admin-dashboard__ghost-btn">
-            Newsletter
-          </Link>
-        </div>
-      </section>
-
-      <section className="admin-dashboard__stats">
-        {stats.map((item, index) => (
-          <motion.article
-            key={item.label}
-            className="admin-dashboard__stat"
-            initial={{ opacity: 0, y: 14 }}
+      {/* Stats Grid */}
+      <div className="admin-dashboard__stats">
+        {statCards.map((card, idx) => (
+          <motion.div
+            key={card.key}
+            className="admin-dashboard__stat-card"
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.05 }}
+            transition={{ delay: idx * 0.05 }}
+            style={{ background: card.bgGradient }}
           >
-            <span className="admin-dashboard__stat-icon">{item.icon}</span>
-            <div>
-              <p>{item.label}</p>
-              <strong>{item.value}</strong>
-              <small>{item.change}</small>
+            <div className="admin-dashboard__stat-icon">{card.icon}</div>
+            <div className="admin-dashboard__stat-content">
+              <span className="admin-dashboard__stat-label">{card.label}</span>
+              <strong className="admin-dashboard__stat-value">
+                {stats[card.key]}
+              </strong>
             </div>
-          </motion.article>
+          </motion.div>
         ))}
-      </section>
+      </div>
 
-      <section className="admin-dashboard__grid">
-        <article className="admin-dashboard__panel admin-dashboard__panel--wide">
-          <div className="admin-dashboard__panel-head">
-            <div>
-              <span className="admin-dashboard__eyebrow">Weekly Activity</span>
-              <h2>Posts, leads, and newsletter activity</h2>
-            </div>
-            <span className="admin-dashboard__badge">Live style chart</span>
+      {/* Charts Row */}
+      <div className="admin-dashboard__charts">
+        {/* Area Chart - Weekly Activity */}
+        <motion.div
+          className="admin-dashboard__chart-card admin-dashboard__chart-card--large"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <div className="admin-dashboard__chart-header">
+            <h3>Weekly Activity</h3>
+            <span className="admin-dashboard__chart-badge">Last 7 days</span>
           </div>
-
+          <ResponsiveContainer width="100%" height={280}>
+            <AreaChart data={stats.weeklyData}>
+              <defs>
+                <linearGradient id="leadsGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient
+                  id="subscribersGradient"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
+                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <XAxis dataKey="name" stroke="#64748b" fontSize={12} />
+              <YAxis stroke="#64748b" fontSize={12} />
+              <Tooltip
+                contentStyle={{
+                  background: "#1e293b",
+                  border: "none",
+                  borderRadius: "8px",
+                  color: "#fff",
+                }}
+                itemStyle={{ color: "#fff" }}
+              />
+              <Area
+                type="monotone"
+                dataKey="leads"
+                stroke="#6366f1"
+                fill="url(#leadsGradient)"
+                strokeWidth={2}
+              />
+              <Area
+                type="monotone"
+                dataKey="subscribers"
+                stroke="#10b981"
+                fill="url(#subscribersGradient)"
+                strokeWidth={2}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
           <div className="admin-dashboard__chart-legend">
             <span>
-              <i className="admin-dashboard__legend-dot admin-dashboard__legend-dot--posts" />
-              Blog posts
-            </span>
-            <span>
-              <i className="admin-dashboard__legend-dot admin-dashboard__legend-dot--leads" />
+              <i
+                className="admin-dashboard__legend-dot"
+                style={{ background: "#6366f1" }}
+              ></i>
               Leads
             </span>
             <span>
-              <i className="admin-dashboard__legend-dot admin-dashboard__legend-dot--newsletter" />
-              Newsletter
+              <i
+                className="admin-dashboard__legend-dot"
+                style={{ background: "#10b981" }}
+              ></i>
+              Subscribers
             </span>
           </div>
+        </motion.div>
 
-          <div className="admin-dashboard__multi-chart">
-            {weeklyActivity.map((day) => (
-              <div key={day.label} className="admin-dashboard__chart-day">
-                <div className="admin-dashboard__bars">
-                  <span
-                    className="admin-dashboard__bar admin-dashboard__bar--posts"
-                    style={{
-                      height: `${Math.max(
-                        8,
-                        (day.posts / maxWeeklyValue) * 100,
-                      )}%`,
-                    }}
-                    title={`Posts: ${day.posts}`}
-                  />
-                  <span
-                    className="admin-dashboard__bar admin-dashboard__bar--leads"
-                    style={{
-                      height: `${Math.max(
-                        8,
-                        (day.leads / maxWeeklyValue) * 100,
-                      )}%`,
-                    }}
-                    title={`Leads: ${day.leads}`}
-                  />
-                  <span
-                    className="admin-dashboard__bar admin-dashboard__bar--newsletter"
-                    style={{
-                      height: `${Math.max(
-                        8,
-                        (day.newsletter / maxWeeklyValue) * 100,
-                      )}%`,
-                    }}
-                    title={`Newsletter: ${day.newsletter}`}
-                  />
-                </div>
-                <strong>{day.label}</strong>
-              </div>
-            ))}
+        {/* Pie Chart - Content Distribution */}
+        <motion.div
+          className="admin-dashboard__chart-card"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <div className="admin-dashboard__chart-header">
+            <h3>Content Distribution</h3>
           </div>
-        </article>
-
-        <article className="admin-dashboard__panel">
-          <div className="admin-dashboard__panel-head">
-            <div>
-              <span className="admin-dashboard__eyebrow">Breakdown</span>
-              <h2>Content mix</h2>
-            </div>
-          </div>
-
-          <div className="admin-dashboard__donut-wrap">
-            <div className="admin-dashboard__donut">
-              <div>
-                <strong>100%</strong>
-                <span>Modules</span>
-              </div>
-            </div>
-
-            <div className="admin-dashboard__donut-list">
-              {contentBreakdown.map((item) => (
-                <div key={item.label}>
-                  <span>{item.label}</span>
-                  <strong>{item.value}%</strong>
-                </div>
-              ))}
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section className="admin-dashboard__grid admin-dashboard__grid--bottom">
-        <article className="admin-dashboard__panel admin-dashboard__panel--wide">
-          <div className="admin-dashboard__panel-head">
-            <div>
-              <span className="admin-dashboard__eyebrow">Live Table</span>
-              <h2>Management modules</h2>
-            </div>
-          </div>
-
-          <div className="admin-dashboard__table-wrap">
-            <table className="admin-dashboard__table">
-              <thead>
-                <tr>
-                  <th>Module</th>
-                  <th>Description</th>
-                  <th>Records</th>
-                  <th>Status</th>
-                  <th>Open</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {modules.map((module) => (
-                  <tr key={module.name}>
-                    <td>
-                      <strong>{module.name}</strong>
-                    </td>
-                    <td>{module.description}</td>
-                    <td>{module.records}</td>
-                    <td>
-                      <span className="admin-dashboard__status">
-                        {module.status}
-                      </span>
-                    </td>
-                    <td>
-                      <Link
-                        to={module.route}
-                        className="admin-dashboard__table-link"
-                      >
-                        Manage
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </article>
-
-        <article className="admin-dashboard__panel">
-          <div className="admin-dashboard__panel-head">
-            <div>
-              <span className="admin-dashboard__eyebrow">Actions</span>
-              <h2>Quick actions</h2>
-            </div>
-          </div>
-
-          <div className="admin-dashboard__quick-actions">
-            {quickActions.map((action) => (
-              <Link
-                key={action.label}
-                to={action.to}
-                className="admin-dashboard__quick-action"
+          <ResponsiveContainer width="100%" height={220}>
+            <PieChart>
+              <Pie
+                data={stats.contentDistribution}
+                cx="50%"
+                cy="50%"
+                innerRadius={50}
+                outerRadius={80}
+                paddingAngle={3}
+                dataKey="value"
               >
-                <span>{action.icon}</span>
-                <strong>{action.label}</strong>
-              </Link>
+                {stats.contentDistribution.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip
+                contentStyle={{
+                  background: "#1e293b",
+                  border: "none",
+                  borderRadius: "8px",
+                }}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+          <div className="admin-dashboard__pie-labels">
+            {stats.contentDistribution.map((item, idx) => (
+              <div key={idx} className="admin-dashboard__pie-label">
+                <i
+                  className="admin-dashboard__pie-dot"
+                  style={{ background: item.color }}
+                ></i>
+                <span>{item.name}</span>
+                <strong>{item.value}%</strong>
+              </div>
             ))}
           </div>
-        </article>
-      </section>
+        </motion.div>
 
-      <section className="admin-dashboard__panel">
-        <div className="admin-dashboard__panel-head">
-          <div>
-            <span className="admin-dashboard__eyebrow">Recent Activity</span>
-            <h2>Latest admin events</h2>
+        {/* Mini Bar Chart - Posts */}
+        <motion.div
+          className="admin-dashboard__chart-card"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+        >
+          <div className="admin-dashboard__chart-header">
+            <h3>Weekly Posts</h3>
           </div>
-        </div>
+          <ResponsiveContainer width="100%" height={220}>
+            <BarChart data={stats.weeklyData}>
+              <XAxis dataKey="name" stroke="#64748b" fontSize={11} />
+              <YAxis stroke="#64748b" fontSize={11} />
+              <Tooltip
+                contentStyle={{
+                  background: "#1e293b",
+                  border: "none",
+                  borderRadius: "8px",
+                }}
+              />
+              <Bar dataKey="posts" fill="#f59e0b" radius={[6, 6, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </motion.div>
+      </div>
 
-        <div className="admin-dashboard__activity-table-wrap">
+      {/* Recent Messages Table */}
+      <motion.div
+        className="admin-dashboard__table-card"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+      >
+        <div className="admin-dashboard__table-header">
+          <h3>Recent Messages</h3>
+          <Link
+            to="/admin/contact-messages"
+            className="admin-dashboard__table-link"
+          >
+            View all →
+          </Link>
+        </div>
+        <div className="admin-dashboard__table-wrap">
           <table className="admin-dashboard__table">
             <thead>
               <tr>
-                <th>Activity</th>
-                <th>Type</th>
+                <th>Name</th>
+                <th>Email</th>
                 <th>Status</th>
-                <th>Time</th>
+                <th>Date</th>
               </tr>
             </thead>
-
             <tbody>
-              {recentActivity.map((activity) => (
-                <tr key={activity.title}>
+              {stats.recentMessages.map((message) => (
+                <tr key={message.id}>
                   <td>
-                    <strong>{activity.title}</strong>
+                    <strong>{message.name}</strong>
                   </td>
-                  <td>{activity.type}</td>
+                  <td>{message.email}</td>
                   <td>
-                    <span className="admin-dashboard__status">
-                      {activity.status}
+                    <span
+                      className={`admin-dashboard__status admin-dashboard__status--${message.status}`}
+                    >
+                      {message.status}
                     </span>
                   </td>
-                  <td>{activity.time}</td>
+                  <td>{message.date}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-      </section>
+      </motion.div>
+
+      {/* Quick Actions */}
+      <motion.div
+        className="admin-dashboard__actions"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.45 }}
+      >
+        <Link to="/admin/blog-posts" className="admin-dashboard__action-btn">
+          <span>✍️</span> Write Post
+        </Link>
+        <Link to="/admin/newsletter" className="admin-dashboard__action-btn">
+          <span>📧</span> Send Newsletter
+        </Link>
+        <Link
+          to="/admin/contact-messages"
+          className="admin-dashboard__action-btn"
+        >
+          <span>💬</span> View Leads
+        </Link>
+        <Link to="/admin/services" className="admin-dashboard__action-btn">
+          <span>⚙️</span> Manage Services
+        </Link>
+      </motion.div>
     </div>
   );
 }

@@ -16,6 +16,7 @@ import { portfolioService } from "../../services/portfolioService";
 import { productBlueprintService } from "../../services/productBlueprintService";
 import { testimonialService } from "../../services/testimonialService";
 import { clientLogoService } from "../../services/clientLogoService";
+import blogService from "../../services/blogService";
 import "../../styles/publicPremium.css";
 
 const normalizeList = (value) => {
@@ -37,6 +38,19 @@ const getImage = (item) =>
     item?.logoUrl,
     item?.avatarUrl,
   );
+
+function formatDate(value) {
+  if (!value) return "";
+  try {
+    return new Intl.DateTimeFormat("en", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }).format(new Date(value));
+  } catch {
+    return "";
+  }
+}
 
 function CountUpNumber({ value, suffix = "", duration = 1.4 }) {
   const [displayValue, setDisplayValue] = useState(0);
@@ -103,8 +117,44 @@ const sectionReveal = {
   },
 };
 
+// Blog Card Component
+const BlogCard = ({ post }) => {
+  const formattedDate = formatDate(post.publishedAt || post.createdAt);
+
+  return (
+    <article className="premium-blog-card">
+      {post.featuredImageUrl && (
+        <Link to={`/blog/${post.slug}`} className="premium-blog-card__image">
+          <img src={post.featuredImageUrl} alt={post.title} loading="lazy" />
+        </Link>
+      )}
+      <div className="premium-blog-card__content">
+        <div className="premium-blog-card__meta">
+          {post.category && (
+            <span className="premium-blog-card__category">{post.category}</span>
+          )}
+          <span className="premium-blog-card__date">{formattedDate}</span>
+        </div>
+        <h3 className="premium-blog-card__title">
+          <Link to={`/blog/${post.slug}`}>{post.title}</Link>
+        </h3>
+        {post.excerpt && (
+          <p className="premium-blog-card__excerpt">
+            {post.excerpt.substring(0, 120)}...
+          </p>
+        )}
+        <Link to={`/blog/${post.slug}`} className="premium-blog-card__link">
+          Read article →
+        </Link>
+      </div>
+    </article>
+  );
+};
+
 export default function HomePage() {
   const { language, t } = useLanguage();
+  const [featuredPosts, setFeaturedPosts] = useState([]);
+  const [blogLoading, setBlogLoading] = useState(true);
 
   const hero = useFetchOnMount(
     () =>
@@ -170,6 +220,36 @@ export default function HomePage() {
       }),
     [language],
   );
+
+  // Fetch featured blog posts
+  useEffect(() => {
+    let active = true;
+
+    const loadFeaturedPosts = async () => {
+      try {
+        setBlogLoading(true);
+        const data = await blogService.getFeaturedPosts({ language });
+        if (active && Array.isArray(data)) {
+          setFeaturedPosts(data.slice(0, 3));
+        } else if (active && data?.content) {
+          setFeaturedPosts(data.content.slice(0, 3));
+        } else {
+          setFeaturedPosts([]);
+        }
+      } catch (error) {
+        console.error("Failed to load featured posts:", error);
+        if (active) setFeaturedPosts([]);
+      } finally {
+        if (active) setBlogLoading(false);
+      }
+    };
+
+    loadFeaturedPosts();
+
+    return () => {
+      active = false;
+    };
+  }, [language]);
 
   const heroItem = useMemo(
     () => normalizeList(hero.data)[0] || null,
@@ -305,8 +385,6 @@ export default function HomePage() {
       "home.heroSubtitle",
       "InkFront designs and builds websites, product pages, portals, and business platforms that help your brand look trusted, convert leads, and scale online.",
     );
-
-  const heroImage = getImage(heroItem);
 
   const loading =
     hero.loading ||
@@ -576,6 +654,46 @@ export default function HomePage() {
           </div>
         </div>
       </motion.section>
+
+      {/* Blog Section */}
+      {!blogLoading && featuredPosts.length > 0 && (
+        <motion.section
+          className="premium-section"
+          variants={sectionReveal}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.16 }}
+        >
+          <div className="premium-container">
+            <div className="premium-section-head premium-section-head-row">
+              <div>
+                <span className="premium-eyebrow">
+                  {t("blog.latest", "Latest insights")}
+                </span>
+                <h2>{t("blog.fromOurBlog", "From our blog")}</h2>
+              </div>
+              <Link to="/blog" className="premium-btn premium-btn-ghost">
+                {t("common.viewAll", "View all")} →
+              </Link>
+            </div>
+
+            <div className="premium-blog-grid">
+              {featuredPosts.slice(0, 3).map((post, index) => (
+                <motion.div
+                  key={post.id || index}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <BlogCard post={post} />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </motion.section>
+      )}
 
       <motion.section
         className="premium-section premium-testimonial-section"

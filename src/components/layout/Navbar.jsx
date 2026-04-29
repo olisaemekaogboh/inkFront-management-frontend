@@ -1,5 +1,5 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import SimpleThemeToggle from "../common/SimpleThemeToggle";
@@ -12,7 +12,7 @@ import "../../styles/publicPremium.css";
 function InkFrontLogo() {
   return (
     <span className="inkfront-brand-mark" aria-hidden="true">
-      <svg viewBox="0 0 48 48" role="img">
+      <svg viewBox="0 0 48 48">
         <path d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z" />
         <path d="M25 23h13v17h-7V29h-6v-6Z" />
       </svg>
@@ -26,6 +26,7 @@ export default function Navbar() {
   const { t } = useLanguage();
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const user = auth?.user || null;
   const isAuthenticated = Boolean(auth?.isAuthenticated);
@@ -58,6 +59,17 @@ export default function Navbar() {
   ];
 
   useEffect(() => {
+    function handleScroll() {
+      setScrolled(window.scrollY > 12);
+    }
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
     if (menuOpen) {
       document.body.classList.add("mobile-menu-open");
     } else {
@@ -88,29 +100,33 @@ export default function Navbar() {
       : "premium-menu-drawer__link";
 
   return (
-    <header className="premium-navbar">
-      <div className="premium-container">
-        <div className="premium-navbar__inner premium-navbar__inner--menu-only">
-          <Link to="/" className="premium-navbar__brand" onClick={closeMenu}>
-            <InkFrontLogo />
-            <span className="premium-navbar__brand-name">InkFront</span>
-          </Link>
+    <header
+      className={
+        scrolled
+          ? "premium-navbar premium-navbar--final premium-navbar--scrolled"
+          : "premium-navbar premium-navbar--final"
+      }
+    >
+      <div className="premium-navbar__inner premium-navbar__inner--final">
+        <Link to="/" className="premium-navbar__brand" onClick={closeMenu}>
+          <InkFrontLogo />
+          <span className="premium-navbar__brand-name">InkFront</span>
+        </Link>
 
-          <button
-            type="button"
-            className="premium-navbar__menu-button"
-            onClick={() => setMenuOpen((current) => !current)}
-            aria-expanded={menuOpen}
-            aria-label={
-              menuOpen
-                ? t("nav.closeMenu", "Close menu")
-                : t("nav.openMenu", "Open menu")
-            }
-          >
-            <span>{menuOpen ? "Close" : "Menu"}</span>
-            <strong>{menuOpen ? "✕" : "☰"}</strong>
-          </button>
-        </div>
+        <button
+          type="button"
+          className="premium-navbar__menu-button"
+          onClick={() => setMenuOpen((current) => !current)}
+          aria-expanded={menuOpen}
+          aria-label={
+            menuOpen
+              ? t("nav.closeMenu", "Close menu")
+              : t("nav.openMenu", "Open menu")
+          }
+        >
+          <span>{menuOpen ? "Close" : "Menu"}</span>
+          <strong>{menuOpen ? "✕" : "☰"}</strong>
+        </button>
       </div>
 
       <AnimatePresence>
@@ -129,9 +145,9 @@ export default function Navbar() {
 
             <motion.aside
               className="premium-menu-drawer"
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
+              initial={{ x: "105%", opacity: 0.92 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: "105%", opacity: 0.92 }}
               transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             >
               <div className="premium-menu-drawer__header">

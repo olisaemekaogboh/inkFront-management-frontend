@@ -34,48 +34,75 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [googleLoginAvailable] = useState(true);
 
-  const refreshCurrentUser = useCallback(async () => {
-    setLoading(true);
+  const applyAuthPayload = useCallback((payload) => {
+    const nextUser = extractUser(payload);
+    const nextAuthenticated = extractAuthenticated(payload, nextUser);
 
+    setUser(nextAuthenticated ? nextUser : null);
+    setAuthenticated(nextAuthenticated);
+
+    return nextAuthenticated ? nextUser : null;
+  }, []);
+
+  const refreshCurrentUser = useCallback(async () => {
     try {
       const payload = await authService.me();
-
-      console.log("AUTH /me response:", payload);
-
-      const nextUser = extractUser(payload);
-      const nextAuthenticated = extractAuthenticated(payload, nextUser);
-
-      setUser(nextAuthenticated ? nextUser : null);
-      setAuthenticated(nextAuthenticated);
-
-      return nextAuthenticated ? nextUser : null;
-    } catch (error) {
-      console.log("AUTH /me failed:", error?.response?.status, error?.message);
-
+      return applyAuthPayload(payload);
+    } catch {
       setUser(null);
       setAuthenticated(false);
       return null;
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [applyAuthPayload]);
 
   const login = useCallback(
     async (payload) => {
-      const response = await authService.login(payload);
-      await refreshCurrentUser();
-      return response;
+      setLoading(true);
+
+      try {
+        const response = await authService.login(payload);
+        const nextUser = applyAuthPayload(response);
+
+        setLoading(false);
+
+        return {
+          ...response,
+          user: nextUser,
+        };
+      } catch (error) {
+        setUser(null);
+        setAuthenticated(false);
+        setLoading(false);
+        throw error;
+      }
     },
-    [refreshCurrentUser],
+    [applyAuthPayload],
   );
 
   const register = useCallback(
     async (payload) => {
-      const response = await authService.register(payload);
-      await refreshCurrentUser();
-      return response;
+      setLoading(true);
+
+      try {
+        const response = await authService.register(payload);
+        const nextUser = applyAuthPayload(response);
+
+        setLoading(false);
+
+        return {
+          ...response,
+          user: nextUser,
+        };
+      } catch (error) {
+        setUser(null);
+        setAuthenticated(false);
+        setLoading(false);
+        throw error;
+      }
     },
-    [refreshCurrentUser],
+    [applyAuthPayload],
   );
 
   const logout = useCallback(async () => {

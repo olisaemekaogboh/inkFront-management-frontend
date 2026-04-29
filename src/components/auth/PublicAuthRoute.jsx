@@ -1,18 +1,7 @@
 import { Navigate, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
-function hasAdminRole(user) {
-  const roles = Array.isArray(user?.roles) ? user.roles : [];
-
-  return (
-    roles.includes("ADMIN") ||
-    roles.includes("ROLE_ADMIN") ||
-    roles.includes("SUPER_ADMIN") ||
-    roles.includes("ROLE_SUPER_ADMIN")
-  );
-}
-
-export default function ProtectedRoute({ children, requireAdmin = false }) {
+export default function PublicAuthRoute({ children }) {
   const { user, authenticated, loading } = useAuth();
   const location = useLocation();
 
@@ -23,7 +12,7 @@ export default function ProtectedRoute({ children, requireAdmin = false }) {
           <div className="premium-container">
             <div className="premium-loading premium-loading-modern">
               <span className="premium-loading-dot" />
-              Checking your session...
+              Loading InkFront...
             </div>
           </div>
         </section>
@@ -39,10 +28,6 @@ export default function ProtectedRoute({ children, requireAdmin = false }) {
         state={{ from: location.pathname || "/" }}
       />
     );
-  }
-
-  if (requireAdmin && !hasAdminRole(user)) {
-    return <Navigate to="/" replace />;
   }
 
   return children;

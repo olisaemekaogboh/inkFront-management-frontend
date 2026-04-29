@@ -4,13 +4,14 @@ import { AuthProvider } from "./contexts/AuthContext";
 import PublicLayout from "./components/layout/PublicLayout";
 import AdminLayout from "./components/layout/AdminLayout";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import PublicAuthRoute from "./components/auth/PublicAuthRoute";
 
 import AdminContentManagerPage from "./pages/admin/AdminContentManagerPage";
 import AdminContactMessagesPage from "./pages/admin/AdminContactMessagesPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AdminBlogPostsPage from "./pages/admin/AdminBlogPostsPage";
 import AdminNewsletterPage from "./pages/admin/AdminNewsletterPage";
-import CookiesPolicyPage from "./pages/public/CookiesPolicyPage";
+
 import HomePage from "./pages/public/HomePage";
 import AboutPage from "./pages/public/AboutPage";
 import ContactPage from "./pages/public/ContactPage";
@@ -25,6 +26,7 @@ import BlogListPage from "./pages/public/BlogListPage";
 import BlogDetailPage from "./pages/public/BlogDetailPage";
 import TermsPage from "./pages/public/TermsPage";
 import PrivacyPolicyPage from "./pages/public/PrivacyPolicyPage";
+import CookiesPolicyPage from "./pages/public/CookiesPolicyPage";
 import NotFoundPage from "./pages/public/NotFoundPage";
 
 import LoginPage from "./pages/auth/LoginPage";
@@ -35,13 +37,23 @@ export default function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route element={<PublicLayout />}>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login/success" element={<LoginSuccessPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+
+        <Route
+          element={
+            <PublicAuthRoute>
+              <PublicLayout />
+            </PublicAuthRoute>
+          }
+        >
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
 
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/services/:slug" element={<ServiceDetailPage />} />
-          <Route path="/cookies" element={<CookiesPolicyPage />} />
+
           <Route path="/portfolio" element={<PortfolioListPage />} />
           <Route path="/portfolio/:slug" element={<PortfolioDetailPage />} />
 
@@ -56,27 +68,22 @@ export default function App() {
 
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/privacy" element={<PrivacyPolicyPage />} />
-
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/login/success" element={<LoginSuccessPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/cookies" element={<CookiesPolicyPage />} />
         </Route>
 
         <Route
           path="/admin"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute requireAdmin>
               <AdminLayout />
             </ProtectedRoute>
           }
         >
           <Route index element={<AdminDashboardPage />} />
-
           <Route
             path="contact-messages"
             element={<AdminContactMessagesPage />}
           />
-
           <Route path="blog-posts" element={<AdminBlogPostsPage />} />
           <Route path="newsletter" element={<AdminNewsletterPage />} />
 
