@@ -11,6 +11,8 @@ function normalizeList(payload) {
 }
 
 function normalizeItemForForm(item, initialValues) {
+  const status = item?.status ?? (item?.active ? "PUBLISHED" : "DRAFT");
+
   return {
     ...initialValues,
     ...item,
@@ -25,24 +27,42 @@ function normalizeItemForForm(item, initialValues) {
     icon: item?.icon ?? item?.iconKey ?? initialValues.icon ?? "",
     sortOrder:
       item?.sortOrder ?? item?.displayOrder ?? initialValues.sortOrder ?? 0,
-    status: item?.status ?? (item?.active ? "PUBLISHED" : "DRAFT"),
+    status,
+    active: status === "PUBLISHED",
+    featured: Boolean(item?.featured),
   };
 }
-
 function buildPayload(form) {
+  const status = form.status || (form.active ? "PUBLISHED" : "DRAFT");
+  const order = Number(form.sortOrder ?? form.displayOrder ?? 0);
+
   return {
     ...form,
-    name: form.name || form.title,
-    shortDescription: form.shortDescription || form.summary,
-    fullDescription: form.fullDescription || form.description,
-    iconKey: form.iconKey || form.icon,
-    displayOrder: Number(form.displayOrder ?? form.sortOrder ?? 0),
-    sortOrder: Number(form.sortOrder ?? form.displayOrder ?? 0),
+
+    // Prefer the fields the admin actually edits in the form.
+    name: form.title || form.name,
+    title: form.title || form.name,
+
+    shortDescription: form.summary || form.shortDescription,
+    summary: form.summary || form.shortDescription,
+
+    fullDescription: form.description || form.fullDescription,
+    description: form.description || form.fullDescription,
+
+    iconKey: form.icon || form.iconKey,
+    icon: form.icon || form.iconKey,
+
+    imageUrl: form.imageUrl,
+
+    status,
+    active: status === "PUBLISHED",
+
+    displayOrder: order,
+    sortOrder: order,
+
     featured: Boolean(form.featured),
-    active: form.status === "PUBLISHED",
   };
 }
-
 export default function AdminCrudPage({ config }) {
   const [items, setItems] = useState([]);
   const [form, setForm] = useState(config.initialValues);
@@ -54,9 +74,19 @@ export default function AdminCrudPage({ config }) {
 
   const fields = useMemo(() => config.fields || [], [config.fields]);
 
+  const resetFormOnly = () => {
+    setForm(config.initialValues);
+    setEditingItem(null);
+  };
+
+  const resetForm = () => {
+    resetFormOnly();
+    setNotice("");
+    setError("");
+  };
+
   const loadItems = async () => {
     setLoading(true);
-    setError("");
 
     try {
       const data = await adminContentService.list(config.endpoint);
@@ -71,6 +101,8 @@ export default function AdminCrudPage({ config }) {
   useEffect(() => {
     setForm(config.initialValues);
     setEditingItem(null);
+    setNotice("");
+    setError("");
     loadItems();
   }, [config]);
 
@@ -86,13 +118,6 @@ export default function AdminCrudPage({ config }) {
       ...current,
       [field.name]: checked,
     }));
-  };
-
-  const resetForm = () => {
-    setForm(config.initialValues);
-    setEditingItem(null);
-    setNotice("");
-    setError("");
   };
 
   const handleEdit = (item) => {
@@ -118,16 +143,19 @@ export default function AdminCrudPage({ config }) {
           editingItem.id,
           payload,
         );
+        resetFormOnly();
         setNotice("Content updated successfully.");
       } else {
         await adminContentService.create(config.endpoint, payload);
+        resetFormOnly();
         setNotice("Content created successfully.");
       }
 
-      resetForm();
       await loadItems();
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
       setError(err.message || "Save failed.");
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } finally {
       setSaving(false);
     }
@@ -150,12 +178,16 @@ export default function AdminCrudPage({ config }) {
       await adminContentService.remove(config.endpoint, item.id);
       setNotice("Content deleted successfully.");
       await loadItems();
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
       setError(err.message || "Delete failed.");
     }
   };
 
   const handleQuickStatus = async (item, status) => {
+    setNotice("");
+    setError("");
+
     try {
       const payload = buildPayload({
         ...normalizeItemForForm(item, config.initialValues),
@@ -165,6 +197,7 @@ export default function AdminCrudPage({ config }) {
       await adminContentService.update(config.endpoint, item.id, payload);
       setNotice(`Content marked as ${status}.`);
       await loadItems();
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
       setError(err.message || "Status update failed.");
     }
@@ -327,7 +360,7 @@ export default function AdminCrudPage({ config }) {
                         </small>
                       </div>
                     </td>
-                    <td>{item.language || "EN"}</td>
+                    <td>{item.language || "EN"} </td>
                     <td>
                       <span
                         className={`admin-crud-status admin-crud-status--${(

@@ -10,9 +10,10 @@ const templates = {
     description: "",
     icon: "",
     imageUrl: "",
-    featured: true,
-    active: true,
-    sortOrder: 1,
+    status: "DRAFT",
+    featured: false,
+    active: false,
+    sortOrder: 0,
   },
   portfolio: {
     language: "EN",
@@ -23,9 +24,10 @@ const templates = {
     clientName: "",
     projectUrl: "",
     imageUrl: "",
-    featured: true,
-    active: true,
-    sortOrder: 1,
+    status: "DRAFT",
+    featured: false,
+    active: false,
+    sortOrder: 0,
   },
   products: {
     language: "EN",
@@ -35,9 +37,10 @@ const templates = {
     description: "",
     priceLabel: "",
     imageUrl: "",
-    featured: true,
-    active: true,
-    sortOrder: 1,
+    status: "DRAFT",
+    featured: false,
+    active: false,
+    sortOrder: 0,
   },
   testimonials: {
     language: "EN",
@@ -46,18 +49,20 @@ const templates = {
     companyName: "",
     quote: "",
     avatarUrl: "",
-    featured: true,
-    active: true,
-    sortOrder: 1,
+    status: "DRAFT",
+    featured: false,
+    active: false,
+    sortOrder: 0,
   },
   "client-logos": {
     language: "EN",
     name: "",
     logoUrl: "",
     websiteUrl: "",
-    featured: true,
-    active: true,
-    sortOrder: 1,
+    status: "DRAFT",
+    featured: false,
+    active: false,
+    sortOrder: 0,
   },
   "hero-sections": {
     language: "EN",
@@ -70,9 +75,10 @@ const templates = {
     secondaryButtonLabel: "View services",
     secondaryButtonUrl: "/services",
     imageUrl: "",
-    featured: true,
-    active: true,
-    sortOrder: 1,
+    status: "DRAFT",
+    featured: false,
+    active: false,
+    sortOrder: 0,
   },
   "homepage-sections": {
     language: "EN",
@@ -81,9 +87,10 @@ const templates = {
     subtitle: "",
     description: "",
     imageUrl: "",
-    featured: true,
-    active: true,
-    sortOrder: 1,
+    status: "DRAFT",
+    featured: false,
+    active: false,
+    sortOrder: 0,
   },
 };
 
@@ -107,6 +114,46 @@ function normalizeList(payload) {
 
 function prettyJson(value) {
   return JSON.stringify(value, null, 2);
+}
+
+function normalizeForEdit(item = {}) {
+  const status = item.status || (item.active ? "PUBLISHED" : "DRAFT");
+
+  return {
+    ...item,
+    title: item.title ?? item.name ?? "",
+    summary: item.summary ?? item.shortDescription ?? "",
+    description: item.description ?? item.fullDescription ?? "",
+    icon: item.icon ?? item.iconKey ?? "",
+    imageUrl:
+      item.imageUrl ??
+      item.coverImageUrl ??
+      item.heroImageUrl ??
+      item.backgroundImageUrl ??
+      "",
+    sortOrder: item.sortOrder ?? item.displayOrder ?? 0,
+    status,
+    active: status === "PUBLISHED",
+    featured: Boolean(item.featured),
+  };
+}
+
+function buildPayload(payload = {}) {
+  const status = payload.status || (payload.active ? "PUBLISHED" : "DRAFT");
+  const sortOrder = Number(payload.sortOrder ?? payload.displayOrder ?? 0);
+
+  return {
+    ...payload,
+    status,
+    active: status === "PUBLISHED",
+    name: payload.name || payload.title,
+    shortDescription: payload.shortDescription || payload.summary,
+    fullDescription: payload.fullDescription || payload.description,
+    iconKey: payload.iconKey || payload.icon,
+    displayOrder: sortOrder,
+    sortOrder,
+    featured: Boolean(payload.featured),
+  };
 }
 
 export default function AdminContentManagerPage({ type, title, description }) {
@@ -134,7 +181,6 @@ export default function AdminContentManagerPage({ type, title, description }) {
     }
 
     setLoading(true);
-    setError("");
 
     try {
       const data = await adminContentService.list(endpoint);
@@ -160,8 +206,9 @@ export default function AdminContentManagerPage({ type, title, description }) {
   };
 
   const handleEdit = (item) => {
+    const normalized = normalizeForEdit(item);
     setEditingItem(item);
-    setJsonText(prettyJson(item));
+    setJsonText(prettyJson(normalized));
     setFeedback("");
     setError("");
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -180,7 +227,8 @@ export default function AdminContentManagerPage({ type, title, description }) {
     setError("");
 
     try {
-      const payload = JSON.parse(jsonText);
+      const parsed = JSON.parse(jsonText);
+      const payload = buildPayload(parsed);
 
       if (editingItem?.id) {
         await adminContentService.update(endpoint, editingItem.id, payload);
@@ -232,6 +280,9 @@ export default function AdminContentManagerPage({ type, title, description }) {
         </button>
       </div>
 
+      {error ? <p className="error-state mt-4">{error}</p> : null}
+      {feedback ? <p className="form-feedback mt-4">{feedback}</p> : null}
+
       <form onSubmit={handleSubmit} className="content-panel mb-6">
         <div className="admin-modal-header">
           <h3>{editingItem ? "Edit content" : "Create content"}</h3>
@@ -247,9 +298,6 @@ export default function AdminContentManagerPage({ type, title, description }) {
             className="font-mono text-sm"
           />
         </label>
-
-        {error ? <p className="error-state mt-4">{error}</p> : null}
-        {feedback ? <p className="form-feedback mt-4">{feedback}</p> : null}
 
         <div className="admin-modal-actions">
           <button
@@ -274,8 +322,8 @@ export default function AdminContentManagerPage({ type, title, description }) {
                 <th>ID</th>
                 <th>Title / Name</th>
                 <th>Language</th>
+                <th>Status</th>
                 <th>Featured</th>
-                <th>Active</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -290,45 +338,50 @@ export default function AdminContentManagerPage({ type, title, description }) {
                   <td colSpan="6">No content yet.</td>
                 </tr>
               ) : (
-                items.map((item) => (
-                  <tr key={item.id}>
-                    <td>{item.id}</td>
-                    <td>
-                      <strong>
-                        {item.title ||
-                          item.name ||
-                          item.clientName ||
-                          item.sectionKey ||
-                          "Untitled"}
-                      </strong>
-                      <br />
-                      <small>
-                        {item.slug || item.summary || item.quote || ""}
-                      </small>
-                    </td>
-                    <td>{item.language || "EN"}</td>
-                    <td>{String(Boolean(item.featured))}</td>
-                    <td>{String(item.active !== false)}</td>
-                    <td>
-                      <div className="admin-table-actions">
-                        <button
-                          type="button"
-                          className="btn btn-secondary"
-                          onClick={() => handleEdit(item)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-secondary"
-                          onClick={() => handleDelete(item)}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
+                items.map((item) => {
+                  const status =
+                    item.status || (item.active ? "PUBLISHED" : "DRAFT");
+
+                  return (
+                    <tr key={item.id}>
+                      <td>{item.id}</td>
+                      <td>
+                        <strong>
+                          {item.title ||
+                            item.name ||
+                            item.clientName ||
+                            item.sectionKey ||
+                            "Untitled"}
+                        </strong>
+                        <br />
+                        <small>
+                          {item.slug || item.summary || item.quote || ""}
+                        </small>
+                      </td>
+                      <td>{item.language || "EN"}</td>
+                      <td>{status}</td>
+                      <td>{String(Boolean(item.featured))}</td>
+                      <td>
+                        <div className="admin-table-actions">
+                          <button
+                            type="button"
+                            className="btn btn-secondary"
+                            onClick={() => handleEdit(item)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-secondary"
+                            onClick={() => handleDelete(item)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>
