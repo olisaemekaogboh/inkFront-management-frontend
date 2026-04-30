@@ -5,6 +5,7 @@ import {
   useMemo,
   useState,
 } from "react";
+
 import enTranslations from "../i18n/locales/en";
 import haTranslations from "../i18n/locales/ha";
 import igTranslations from "../i18n/locales/ig";
@@ -42,7 +43,6 @@ function getNestedValue(object, path) {
     if (current && Object.prototype.hasOwnProperty.call(current, key)) {
       return current[key];
     }
-
     return undefined;
   }, object);
 }
@@ -90,33 +90,22 @@ export function LanguageProvider({ children }) {
 
   const t = useCallback(
     (key, fallback = key) => {
-      const directTranslation = getNestedValue(currentTranslations, key);
+      // 1. direct
+      const direct = getNestedValue(currentTranslations, key);
+      if (direct != null) return direct;
 
-      if (directTranslation !== undefined && directTranslation !== null) {
-        return directTranslation;
-      }
-
+      // 2. alias
       const aliasedKey = resolveAliasedKey(key);
-      const aliasedTranslation = getNestedValue(
-        currentTranslations,
-        aliasedKey,
-      );
+      const aliased = getNestedValue(currentTranslations, aliasedKey);
+      if (aliased != null) return aliased;
 
-      if (aliasedTranslation !== undefined && aliasedTranslation !== null) {
-        return aliasedTranslation;
-      }
+      // 3. fallback EN direct
+      const enDirect = getNestedValue(enTranslations, key);
+      if (enDirect != null) return enDirect;
 
-      const englishDirect = getNestedValue(enTranslations, key);
-
-      if (englishDirect !== undefined && englishDirect !== null) {
-        return englishDirect;
-      }
-
-      const englishAliased = getNestedValue(enTranslations, aliasedKey);
-
-      if (englishAliased !== undefined && englishAliased !== null) {
-        return englishAliased;
-      }
+      // 4. fallback EN alias
+      const enAliased = getNestedValue(enTranslations, aliasedKey);
+      if (enAliased != null) return enAliased;
 
       return fallback;
     },

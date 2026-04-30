@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import useLanguage from "../../hooks/useLanguage";
 
@@ -11,10 +11,11 @@ export default function LanguageSwitcher() {
     supportedLanguages,
     availableLanguages,
     languages,
+    t,
   } = useLanguage();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [hoverTimeout, setHoverTimeout] = useState(null);
+  const hoverTimeoutRef = useRef(null);
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
 
@@ -23,12 +24,12 @@ export default function LanguageSwitcher() {
     supportedLanguages ||
     availableLanguages ||
     (Array.isArray(languages)
-      ? languages.map((code) => ({ code, label: code }))
+      ? languages.map((code) => ({ code, label: code, nativeLabel: code }))
       : [
-          { code: "EN", label: "English", flag: "🇬🇧" },
-          { code: "IG", label: "Igbo", flag: "🇳🇬" },
-          { code: "HA", label: "Hausa", flag: "🇳🇬" },
-          { code: "YO", label: "Yoruba", flag: "🇳🇬" },
+          { code: "EN", label: "English", nativeLabel: "English", flag: "🇬🇧" },
+          { code: "IG", label: "Igbo", nativeLabel: "Igbo", flag: "🇳🇬" },
+          { code: "HA", label: "Hausa", nativeLabel: "Hausa", flag: "🇳🇬" },
+          { code: "YO", label: "Yoruba", nativeLabel: "Yorùbá", flag: "🇳🇬" },
         ]);
 
   const currentOption = options.find((opt) => {
@@ -37,22 +38,22 @@ export default function LanguageSwitcher() {
   });
 
   const currentFlag = currentOption?.flag || "🌐";
-  const currentLabel = currentOption?.label || language;
+  const currentLabel =
+    currentOption?.nativeLabel || currentOption?.label || language;
 
-  // Hover handlers
   const handleMouseEnter = () => {
-    if (hoverTimeout) clearTimeout(hoverTimeout);
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
     setIsOpen(true);
   };
 
   const handleMouseLeave = () => {
-    const timeout = setTimeout(() => {
+    hoverTimeoutRef.current = setTimeout(() => {
       setIsOpen(false);
     }, 200);
-    setHoverTimeout(timeout);
   };
 
-  // Close when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -64,8 +65,16 @@ export default function LanguageSwitcher() {
         setIsOpen(false);
       }
     }
+
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+      }
+    };
   }, []);
 
   const handleLanguageChange = (nextLanguage) => {
@@ -74,6 +83,7 @@ export default function LanguageSwitcher() {
     } else if (typeof setLanguage === "function") {
       setLanguage(nextLanguage);
     }
+
     setIsOpen(false);
   };
 
@@ -85,19 +95,25 @@ export default function LanguageSwitcher() {
     >
       <button
         ref={buttonRef}
-        className={`language-switcher__button ${isOpen ? "language-switcher__button--active" : ""}`}
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="Select language"
+        type="button"
+        className={`language-switcher__button ${
+          isOpen ? "language-switcher__button--active" : ""
+        }`}
+        onClick={() => setIsOpen((current) => !current)}
+        aria-label={t("language.selectPlaceholder")}
         aria-expanded={isOpen}
       >
         <span className="language-switcher__flag">{currentFlag}</span>
         <span className="language-switcher__code">{currentLabel}</span>
         <svg
-          className={`language-switcher__arrow ${isOpen ? "language-switcher__arrow--open" : ""}`}
+          className={`language-switcher__arrow ${
+            isOpen ? "language-switcher__arrow--open" : ""
+          }`}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
+          aria-hidden="true"
         >
           <polyline points="6 9 12 15 18 9" />
         </svg>
@@ -115,13 +131,16 @@ export default function LanguageSwitcher() {
           >
             {options.map((item) => {
               const code = item.code || item.value || item;
-              const label = item.label || item.name || code;
+              const label = item.nativeLabel || item.label || item.name || code;
               const flag = item.flag || "🌐";
 
               return (
                 <button
                   key={code}
-                  className={`language-switcher__option ${language === code ? "language-switcher__option--active" : ""}`}
+                  type="button"
+                  className={`language-switcher__option ${
+                    language === code ? "language-switcher__option--active" : ""
+                  }`}
                   onClick={() => handleLanguageChange(code)}
                 >
                   <span className="language-switcher__option-flag">{flag}</span>
@@ -129,6 +148,7 @@ export default function LanguageSwitcher() {
                     {label}
                   </span>
                   <span className="language-switcher__option-code">{code}</span>
+
                   {language === code && (
                     <svg
                       className="language-switcher__check"
@@ -136,6 +156,7 @@ export default function LanguageSwitcher() {
                       fill="none"
                       stroke="currentColor"
                       strokeWidth="2"
+                      aria-hidden="true"
                     >
                       <polyline points="20 6 9 17 4 12" />
                     </svg>

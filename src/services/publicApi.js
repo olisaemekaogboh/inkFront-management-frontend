@@ -1,7 +1,18 @@
 import http from "./http";
+import { DEFAULT_LANGUAGE, LANGUAGE_STORAGE_KEY } from "../i18n/languages";
 
 const isObject = (value) =>
   value !== null && typeof value === "object" && !Array.isArray(value);
+
+function getStoredLanguage() {
+  return (
+    localStorage.getItem(LANGUAGE_STORAGE_KEY) ||
+    localStorage.getItem("language") ||
+    DEFAULT_LANGUAGE
+  )
+    .trim()
+    .toUpperCase();
+}
 
 export const unwrapApiResponse = (response) => {
   const root = response?.data ?? response ?? null;
@@ -71,7 +82,7 @@ export const unwrapPagedApiResponse = (response) => {
 };
 
 const withLanguage = (params = {}) => ({
-  language: params.language || "EN",
+  language: params.language || getStoredLanguage(),
   ...params,
 });
 
@@ -190,13 +201,17 @@ export const publicApi = {
     }
   },
 
-  async submitContactMessage(payload = {}) {
-    const response = await http.post("/public/contact-messages", payload);
+  async submitContactMessage(payload = {}, params = {}) {
+    const response = await http.post("/public/contact-messages", payload, {
+      params: withLanguage(params),
+    });
     return unwrapApiResponse(response);
   },
 
-  async subscribeNewsletter(payload = {}) {
-    const response = await http.post("/public/newsletter/subscribe", payload);
+  async subscribeNewsletter(payload = {}, params = {}) {
+    const response = await http.post("/public/newsletter/subscribe", payload, {
+      params: withLanguage(params),
+    });
     return unwrapApiResponse(response);
   },
 };
