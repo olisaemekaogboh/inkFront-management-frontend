@@ -6,7 +6,6 @@ import SimpleThemeToggle from "../common/SimpleThemeToggle";
 import LanguageSwitcher from "../common/LanguageSwitcher";
 import "./AdminLayout.css";
 
-// InkFront Logo Component
 function InkFrontLogo() {
   return (
     <svg
@@ -34,30 +33,34 @@ const navItems = [
   { label: "Products", to: "/admin/products", icon: "📦" },
   { label: "Testimonials", to: "/admin/testimonials", icon: "⭐" },
   { label: "Clients", to: "/admin/client-logos", icon: "👥" },
-  { label: "Hero", to: "/admin/hero-sections", icon: "🏠" },
   { label: "Homepage", to: "/admin/homepage-sections", icon: "🧩" },
+  { label: "Hero", to: "/admin/hero-sections", icon: "🏠" },
 ];
 
 function getPrimaryRole(roles = []) {
   const safeRoles = Array.isArray(roles) ? roles : [];
-  if (safeRoles.includes("ROLE_SUPER_ADMIN")) return "Super Admin";
-  if (safeRoles.includes("SUPER_ADMIN")) return "Super Admin";
-  if (safeRoles.includes("ROLE_ADMIN")) return "Admin";
-  if (safeRoles.includes("ADMIN")) return "Admin";
-  if (safeRoles.includes("ROLE_USER")) return "User";
-  if (safeRoles.includes("USER")) return "User";
+  if (
+    safeRoles.includes("ROLE_SUPER_ADMIN") ||
+    safeRoles.includes("SUPER_ADMIN")
+  ) {
+    return "Super Admin";
+  }
+  if (safeRoles.includes("ROLE_ADMIN") || safeRoles.includes("ADMIN")) {
+    return "Admin";
+  }
   return "User";
 }
 
-// Helper to get first name from email
 function getFirstName(user) {
   if (user?.firstName) return user.firstName;
   if (user?.displayName) return user.displayName.split(" ")[0];
+
   if (user?.email) {
     const emailName = user.email.split("@")[0];
     const cleanName = emailName.replace(/[._]/g, " ").split(" ")[0];
     return cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
   }
+
   return "Admin";
 }
 
@@ -70,9 +73,11 @@ export default function AdminLayout() {
 
   useEffect(() => {
     function handleResize() {
-      setDesktopSidebarVisible(window.innerWidth >= 1100);
-      if (window.innerWidth >= 1100) setMobileSidebarOpen(false);
+      const isDesktop = window.innerWidth >= 1100;
+      setDesktopSidebarVisible(isDesktop);
+      if (isDesktop) setMobileSidebarOpen(false);
     }
+
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -178,6 +183,7 @@ export default function AdminLayout() {
               View Site
             </Link>
             <button
+              type="button"
               onClick={handleLogout}
               className="admin-shell__button admin-shell__button--danger"
             >

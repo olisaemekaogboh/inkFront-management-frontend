@@ -17,7 +17,7 @@ import AdminPortfolioPage from "./pages/admin/AdminPortfolioPage";
 import AdminProductsPage from "./pages/admin/AdminProductsPage";
 import AdminTestimonialsPage from "./pages/admin/AdminTestimonialsPage";
 import AdminHeroSectionsPage from "./pages/admin/AdminHeroSectionsPage";
-
+import AdminHomepageSectionsPage from "./pages/admin/AdminHomepageSectionsPage";
 import HomePage from "./pages/public/HomePage";
 import AboutPage from "./pages/public/AboutPage";
 import ContactPage from "./pages/public/ContactPage";
@@ -103,13 +103,7 @@ export default function App() {
 
           <Route
             path="homepage-sections"
-            element={
-              <AdminContentManagerPage
-                type="homepage-sections"
-                title="Homepage Sections"
-                description="Manage reusable homepage blocks."
-              />
-            }
+            element={<AdminHomepageSectionsPage />}
           />
         </Route>
 

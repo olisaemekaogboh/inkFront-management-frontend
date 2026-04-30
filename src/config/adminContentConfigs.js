@@ -170,6 +170,46 @@ export const adminContentConfigs = {
       sortOrder: 0,
     },
   },
+  homepageSections: {
+    endpoint: "/admin/homepage-sections",
+    title: "Homepage Sections",
+    eyebrow: "Homepage",
+    description:
+      "Create, update, publish, order, and manage reusable homepage sections.",
+    nameField: "title",
+    fields: [
+      {
+        name: "language",
+        label: "Language",
+        type: "select",
+        options: ["EN", "HA", "IG", "YO"],
+      },
+      { name: "sectionKey", label: "Section Key", required: true },
+      { name: "title", label: "Title", required: true },
+      { name: "subtitle", label: "Subtitle", type: "textarea" },
+      { name: "description", label: "Description", type: "textarea" },
+      { name: "imageUrl", label: "Image URL" },
+      {
+        name: "status",
+        label: "Status",
+        type: "select",
+        options: ["DRAFT", "PUBLISHED", "ARCHIVED"],
+      },
+      { name: "featured", label: "Featured", type: "checkbox" },
+      { name: "sortOrder", label: "Display Order", type: "number" },
+    ],
+    initialValues: {
+      language: "EN",
+      sectionKey: "",
+      title: "",
+      subtitle: "",
+      description: "",
+      imageUrl: "",
+      status: "DRAFT",
+      featured: false,
+      sortOrder: 0,
+    },
+  },
 
   testimonials: {
     endpoint: "/admin/testimonials",

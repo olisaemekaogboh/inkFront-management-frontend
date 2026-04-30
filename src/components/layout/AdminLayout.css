@@ -1,6 +1,5 @@
 /* AdminLayout.css - Seamless Modern Design */
 
-/* Base Layout */
 .admin-shell {
   min-height: 100vh;
   display: flex;
@@ -8,20 +7,22 @@
   color: var(--color-text);
 }
 
-/* Sidebar - Floating design */
 .admin-shell__sidebar {
   position: fixed;
   inset: 0 auto 0 0;
   z-index: 80;
   width: 280px;
+  height: 100vh;
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
   background: rgba(var(--color-bg-rgb), 0.95);
   backdrop-filter: blur(20px);
-  padding: 24px 20px;
+  padding: 20px 16px;
   border-right: none;
   box-shadow: 1px 0 20px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
 }
 
 [data-theme="dark"] .admin-shell__sidebar {
@@ -29,10 +30,9 @@
   box-shadow: 1px 0 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Brand */
 .admin-shell__brand {
+  flex: 0 0 auto;
   padding-bottom: 8px;
-  margin-bottom: 8px;
 }
 
 .admin-shell__brand-link {
@@ -66,15 +66,35 @@
   letter-spacing: -0.02em;
 }
 
-/* Navigation */
+/* FIXED: only nav scrolls */
 .admin-shell__nav {
+  flex: 1 1 auto;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--color-primary-rgb), 0.35) transparent;
+}
+
+.admin-shell__nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+.admin-shell__nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.admin-shell__nav::-webkit-scrollbar-thumb {
+  background: rgba(var(--color-primary-rgb), 0.35);
+  border-radius: 999px;
 }
 
 .admin-shell__nav-link {
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -99,24 +119,23 @@
 .admin-shell__nav-icon {
   font-size: 1.2rem;
   width: 28px;
+  flex: 0 0 28px;
 }
 
-/* Sidebar Footer */
 .admin-shell__sidebar-footer {
+  flex: 0 0 auto;
   display: flex;
   gap: 12px;
-  padding-top: 20px;
+  padding-top: 16px;
   border-top: 1px solid var(--color-border);
 }
 
-/* Main Content */
 .admin-shell__main {
   flex: 1;
   margin-left: 280px;
   min-width: 0;
 }
 
-/* Topbar - Clean and minimal */
 .admin-shell__topbar {
   position: sticky;
   top: 0;
@@ -156,7 +175,6 @@
   flex-wrap: wrap;
 }
 
-/* Buttons - Minimal */
 .admin-shell__button {
   display: inline-flex;
   align-items: center;
@@ -192,13 +210,11 @@
   color: #ef4444;
 }
 
-/* Content Area */
 .admin-shell__content {
   padding: 32px;
   min-height: calc(100vh - 80px);
 }
 
-/* Mobile Toggle - Floating button */
 .admin-shell__mobile-toggle {
   position: fixed;
   bottom: 20px;
@@ -220,7 +236,6 @@
   transform: scale(1.05);
 }
 
-/* Overlay */
 .admin-shell__overlay {
   position: fixed;
   inset: 0;
@@ -231,51 +246,45 @@
   cursor: pointer;
 }
 
-/* Responsive */
 @media (max-width: 1100px) {
-  .admin-shell__sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-  }
-  
-  .admin-shell__sidebar.open {
-    transform: translateX(0);
-  }
-  
   .admin-shell__main {
     margin-left: 0;
   }
-  
+
   .admin-shell__mobile-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
   }
-  
+
   .admin-shell__topbar {
     padding: 12px 20px;
   }
-  
+
   .admin-shell__content {
     padding: 20px;
   }
 }
 
 @media (max-width: 640px) {
+  .admin-shell__sidebar {
+    width: min(280px, 86vw);
+  }
+
   .admin-shell__topbar {
     flex-direction: column;
     align-items: stretch;
     gap: 12px;
   }
-  
+
   .admin-shell__topbar-actions {
     justify-content: flex-start;
   }
-  
+
   .admin-shell__topbar-copy h1::before {
     content: "👋";
   }
-  
+
   .admin-shell__content {
     padding: 16px;
   }
