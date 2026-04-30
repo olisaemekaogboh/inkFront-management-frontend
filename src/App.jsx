@@ -11,6 +11,12 @@ import AdminContactMessagesPage from "./pages/admin/AdminContactMessagesPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AdminBlogPostsPage from "./pages/admin/AdminBlogPostsPage";
 import AdminNewsletterPage from "./pages/admin/AdminNewsletterPage";
+import AdminServicesPage from "./pages/admin/AdminServicesPage";
+import AdminClientLogosPage from "./pages/admin/AdminClientLogosPage";
+import AdminPortfolioPage from "./pages/admin/AdminPortfolioPage";
+import AdminProductsPage from "./pages/admin/AdminProductsPage";
+import AdminTestimonialsPage from "./pages/admin/AdminTestimonialsPage";
+import AdminHeroSectionsPage from "./pages/admin/AdminHeroSectionsPage";
 
 import HomePage from "./pages/public/HomePage";
 import AboutPage from "./pages/public/AboutPage";
@@ -87,16 +93,13 @@ export default function App() {
           <Route path="blog-posts" element={<AdminBlogPostsPage />} />
           <Route path="newsletter" element={<AdminNewsletterPage />} />
 
-          <Route
-            path="hero-sections"
-            element={
-              <AdminContentManagerPage
-                type="hero-sections"
-                title="Hero Sections"
-                description="Create homepage hero content."
-              />
-            }
-          />
+          <Route path="services" element={<AdminServicesPage />} />
+          <Route path="client-logos" element={<AdminClientLogosPage />} />
+          <Route path="clients" element={<AdminClientLogosPage />} />
+          <Route path="portfolio" element={<AdminPortfolioPage />} />
+          <Route path="products" element={<AdminProductsPage />} />
+          <Route path="testimonials" element={<AdminTestimonialsPage />} />
+          <Route path="hero-sections" element={<AdminHeroSectionsPage />} />
 
           <Route
             path="homepage-sections"
@@ -105,72 +108,6 @@ export default function App() {
                 type="homepage-sections"
                 title="Homepage Sections"
                 description="Manage reusable homepage blocks."
-              />
-            }
-          />
-
-          <Route
-            path="services"
-            element={
-              <AdminContentManagerPage
-                type="services"
-                title="Services"
-                description="Create and manage public services."
-              />
-            }
-          />
-
-          <Route
-            path="portfolio"
-            element={
-              <AdminContentManagerPage
-                type="portfolio"
-                title="Portfolio"
-                description="Create and manage portfolio projects."
-              />
-            }
-          />
-
-          <Route
-            path="products"
-            element={
-              <AdminContentManagerPage
-                type="products"
-                title="Product Blueprints"
-                description="Create and manage product blueprint pages."
-              />
-            }
-          />
-
-          <Route
-            path="testimonials"
-            element={
-              <AdminContentManagerPage
-                type="testimonials"
-                title="Testimonials"
-                description="Create and manage client testimonials."
-              />
-            }
-          />
-
-          <Route
-            path="client-logos"
-            element={
-              <AdminContentManagerPage
-                type="client-logos"
-                title="Client Logos"
-                description="Create and manage trusted client logos."
-              />
-            }
-          />
-
-          <Route
-            path="clients"
-            element={
-              <AdminContentManagerPage
-                type="testimonials"
-                title="Clients"
-                description="Manage testimonials shown on the clients page."
               />
             }
           />

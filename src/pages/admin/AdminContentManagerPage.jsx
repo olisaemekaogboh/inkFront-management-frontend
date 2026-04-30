@@ -101,6 +101,7 @@ function normalizeList(payload) {
   if (Array.isArray(payload)) return payload;
   if (Array.isArray(payload?.content)) return payload.content;
   if (Array.isArray(payload?.data)) return payload.data;
+  if (Array.isArray(payload?.items)) return payload.items;
   return [];
 }
 
@@ -120,7 +121,18 @@ export default function AdminContentManagerPage({ type, title, description }) {
   const [feedback, setFeedback] = useState("");
   const [error, setError] = useState("");
 
+  const resetFormOnly = () => {
+    setEditingItem(null);
+    setJsonText(prettyJson(template));
+  };
+
   const loadItems = async () => {
+    if (!endpoint) {
+      setError(`Invalid admin content type: ${type}`);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     setError("");
 
@@ -135,14 +147,14 @@ export default function AdminContentManagerPage({ type, title, description }) {
   };
 
   useEffect(() => {
-    setJsonText(prettyJson(template));
-    setEditingItem(null);
+    resetFormOnly();
+    setFeedback("");
+    setError("");
     loadItems();
   }, [endpoint, template]);
 
   const handleNew = () => {
-    setEditingItem(null);
-    setJsonText(prettyJson(template));
+    resetFormOnly();
     setFeedback("");
     setError("");
   };
@@ -157,6 +169,12 @@ export default function AdminContentManagerPage({ type, title, description }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!endpoint) {
+      setError(`Invalid admin content type: ${type}`);
+      return;
+    }
+
     setSaving(true);
     setFeedback("");
     setError("");
@@ -166,13 +184,14 @@ export default function AdminContentManagerPage({ type, title, description }) {
 
       if (editingItem?.id) {
         await adminContentService.update(endpoint, editingItem.id, payload);
+        resetFormOnly();
         setFeedback("Content updated successfully.");
       } else {
         await adminContentService.create(endpoint, payload);
+        resetFormOnly();
         setFeedback("Content created successfully.");
       }
 
-      handleNew();
       await loadItems();
     } catch (err) {
       setError(err.message || "Save failed. Check your JSON and DTO fields.");
