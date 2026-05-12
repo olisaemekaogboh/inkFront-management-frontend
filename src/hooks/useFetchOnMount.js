@@ -1,29 +1,32 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-function useFetchOnMount(fetcher, dependencies = []) {
+function useFetchOnMount(fetcher, deps = []) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const fetcherRef = useRef(fetcher);
+  fetcherRef.current = fetcher;
 
   const execute = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
 
-      const result = await fetcher();
+      const result = await fetcherRef.current();
       setData(result);
+
       return result;
     } catch (err) {
       setError(err);
-      throw err;
     } finally {
       setLoading(false);
     }
-  }, dependencies);
+  }, []); // 🔥 IMPORTANT: NEVER depend on fetcher directly
 
   useEffect(() => {
-    execute().catch(() => {});
-  }, [execute]);
+    execute();
+  }, deps); // 🔥 ONLY REAL DEPENDENCIES (language, etc)
 
   return {
     data,

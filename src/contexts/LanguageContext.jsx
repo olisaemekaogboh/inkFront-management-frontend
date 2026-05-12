@@ -26,13 +26,7 @@ const KEY_ALIASES = {
   home: "pages.home",
   about: "pages.about",
   services: "pages.services",
-  servicesPage: "pages.servicesPage",
   portfolio: "pages.portfolio",
-  portfolioPage: "pages.portfolioPage",
-  products: "pages.products",
-  productsPage: "pages.productsPage",
-  blueprint: "pages.blueprint",
-  clientsPage: "pages.clientsPage",
   contact: "pages.contact",
 };
 
@@ -50,10 +44,7 @@ function getNestedValue(object, path) {
 function resolveAliasedKey(key) {
   const [firstSegment, ...rest] = key.split(".");
   const aliasRoot = KEY_ALIASES[firstSegment];
-
-  if (!aliasRoot) return key;
-
-  return [aliasRoot, ...rest].join(".");
+  return aliasRoot ? [aliasRoot, ...rest].join(".") : key;
 }
 
 function getValidLanguage(value) {
@@ -61,19 +52,19 @@ function getValidLanguage(value) {
     .trim()
     .toUpperCase();
 
-  return LANGUAGE_OPTIONS.some((item) => item.code === normalized)
+  return LANGUAGE_OPTIONS.some((l) => l.code === normalized)
     ? normalized
     : "EN";
 }
 
 export function LanguageProvider({ children }) {
-  const [language, setLanguageState] = useState(() => {
-    return getValidLanguage(localStorage.getItem(STORAGE_KEY));
-  });
+  const [language, setLanguageState] = useState(() =>
+    getValidLanguage(localStorage.getItem(STORAGE_KEY)),
+  );
 
   const currentTranslations = useMemo(() => {
     return (
-      LANGUAGE_OPTIONS.find((item) => item.code === language)?.translations ||
+      LANGUAGE_OPTIONS.find((l) => l.code === language)?.translations ||
       enTranslations
     );
   }, [language]);
@@ -81,56 +72,37 @@ export function LanguageProvider({ children }) {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, language);
     document.documentElement.lang = language.toLowerCase();
-    document.documentElement.setAttribute("data-language", language);
   }, [language]);
 
-  const changeLanguage = useCallback((nextLanguage) => {
-    setLanguageState(getValidLanguage(nextLanguage));
+  const changeLanguage = useCallback((lang) => {
+    setLanguageState(getValidLanguage(lang));
   }, []);
 
   const t = useCallback(
     (key, fallback = key) => {
-      // 1. direct
       const direct = getNestedValue(currentTranslations, key);
       if (direct != null) return direct;
 
-      // 2. alias
       const aliasedKey = resolveAliasedKey(key);
       const aliased = getNestedValue(currentTranslations, aliasedKey);
       if (aliased != null) return aliased;
 
-      // 3. fallback EN direct
-      const enDirect = getNestedValue(enTranslations, key);
-      if (enDirect != null) return enDirect;
-
-      // 4. fallback EN alias
-      const enAliased = getNestedValue(enTranslations, aliasedKey);
-      if (enAliased != null) return enAliased;
+      const enFallback = getNestedValue(enTranslations, key);
+      if (enFallback != null) return enFallback;
 
       return fallback;
     },
     [currentTranslations],
   );
 
-  const value = useMemo(
-    () => ({
-      language,
-      setLanguage: changeLanguage,
-      changeLanguage,
-      t,
-      languages: LANGUAGE_OPTIONS.map((item) => item.code),
-      languageOptions: LANGUAGE_OPTIONS,
-      supportedLanguages: LANGUAGE_OPTIONS,
-      availableLanguages: LANGUAGE_OPTIONS,
-      currentLanguage:
-        LANGUAGE_OPTIONS.find((item) => item.code === language) ||
-        LANGUAGE_OPTIONS[0],
-    }),
-    [language, changeLanguage, t],
-  );
-
   return (
-    <LanguageContext.Provider value={value}>
+    <LanguageContext.Provider
+      value={{
+        language,
+        changeLanguage,
+        t,
+      }}
+    >
       {children}
     </LanguageContext.Provider>
   );

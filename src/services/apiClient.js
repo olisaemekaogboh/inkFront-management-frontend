@@ -11,11 +11,32 @@ const apiClient = axios.create({
   },
 });
 
+// ✅ GET LANGUAGE FROM STORAGE (same key you used)
+function getLanguage() {
+  const lang = localStorage.getItem("language");
+  return (lang || "EN").toUpperCase();
+}
+
+// ✅ REQUEST INTERCEPTOR (THIS IS THE FIX)
 apiClient.interceptors.request.use(
-  (config) => config,
+  (config) => {
+    const language = getLanguage();
+
+    // attach to params (for GET requests)
+    config.params = {
+      ...(config.params || {}),
+      language,
+    };
+
+    // also attach as header (optional but powerful)
+    config.headers["Accept-Language"] = language;
+
+    return config;
+  },
   (error) => Promise.reject(error),
 );
 
+// RESPONSE INTERCEPTOR (unchanged, just cleaned)
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
