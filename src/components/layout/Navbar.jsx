@@ -11,11 +11,8 @@ function InkFrontLogo() {
   return (
     <span className="inkfront-brand-mark" aria-hidden="true">
       <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z"
-          fill="#2563eb"
-        />
-        <path d="M25 23h13v17h-7V29h-6v-6Z" fill="#3b82f6" opacity="0.7" />
+        <path d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z" fill="blue" />
+        <path d="M25 23h13v17h-7V29h-6v-6Z" fill="blue" opacity="0.7" />
       </svg>
     </span>
   );
@@ -26,6 +23,7 @@ export default function Navbar() {
   const auth = useAuth();
   const { t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const closeTimeout = useRef(null);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
@@ -69,6 +67,15 @@ export default function Navbar() {
     closeTimeout.current = setTimeout(() => setMenuOpen(false), 300);
   }, []);
 
+  // Handle scroll effect for navbar background
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -96,7 +103,9 @@ export default function Navbar() {
   }
 
   return (
-    <header className="premium-navbar premium-navbar--seamless">
+    <header
+      className={`premium-navbar premium-navbar--seamless ${isScrolled ? "premium-navbar--scrolled" : ""}`}
+    >
       <div className="premium-navbar__inner">
         <Link to="/" className="premium-navbar__logo">
           <InkFrontLogo />

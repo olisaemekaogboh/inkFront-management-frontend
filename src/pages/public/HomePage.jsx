@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { motion, animate } from "framer-motion";
 import { Link } from "react-router-dom";
 import useLanguage from "../../hooks/useLanguage";
+
 import useFetchOnMount from "../../hooks/useFetchOnMount";
 import NewsletterSection from "../../components/sections/NewsletterSection";
 import { heroService } from "../../services/heroService";
@@ -41,6 +42,165 @@ const getImage = (item) =>
     item?.logoUrl,
     item?.avatarUrl,
   );
+
+// Portfolio image mapping based on project slugs and categories
+const portfolioImageMap = {
+  "edubridge-school-platform": "/images/portfolio/school.jpg",
+  "skillbridge-learning-platform": "/images/portfolio/learn.png",
+  "school-management-system": "/images/portfolio/school.jpg",
+  "quickship-logistics-dashboard": "/images/portfolio/logistics.png",
+  "logistics-management": "/images/portfolio/logistics.png",
+  "halamart-marketplace": "/images/portfolio/market.png",
+  "ecommerce-platform": "/images/portfolio/market.png",
+  "payswift-bill-payments": "/images/portfolio/banking.png",
+  "savewise-investment-platform": "/images/portfolio/invest.png",
+  "fintech-solution": "/images/portfolio/banking.png",
+  "propertyfinder-real-estate": "/images/portfolio/realEstate2.png",
+  "real-estate-platform": "/images/portfolio/realEstate2.png",
+  "bloommusic-streaming": "/images/portfolio/music.png",
+  "music-platform": "/images/portfolio/music.png",
+  "medicare-facility-management": "/images/portfolio/health.png",
+  "healthcare-system": "/images/portfolio/health.png",
+  "farmconnect-agritech-marketplace": "/images/portfolio/agric.png",
+  "agritech-platform": "/images/portfolio/agric.png",
+  "eventwave-ticketing-platform": "/images/portfolio/ticket.png",
+  "event-platform": "/images/portfolio/ticket.png",
+  "churchflow-ministry-platform": "/images/portfolio/realEstate.png",
+  "church-management": "/images/portfolio/realEstate.png",
+  "business-management": "/images/portfolio/business.png",
+  "enterprise-solution": "/images/portfolio/business.png",
+  "client-portal": "/images/portfolio/business.png",
+  "agency-website-platform": "/images/portfolio/business.png",
+  "booking-management-system": "/images/portfolio/market.png",
+};
+
+const defaultImages = [
+  "/images/portfolio/business.png",
+  "/images/portfolio/agric.png",
+  "/images/portfolio/banking.png",
+  "/images/portfolio/health.png",
+  "/images/portfolio/invest.png",
+  "/images/portfolio/learn.png",
+  "/images/portfolio/logistics.png",
+  "/images/portfolio/market.png",
+  "/images/portfolio/music.png",
+  "/images/portfolio/realEstate.png",
+  "/images/portfolio/realEstate2.png",
+  "/images/portfolio/ticket.png",
+  "/images/portfolio/school.jpg",
+];
+
+function getPortfolioImage(project, index) {
+  const projectImage = getImage(project);
+
+  if (
+    projectImage &&
+    !projectImage.includes("pollinations") &&
+    projectImage.includes("/")
+  ) {
+    return projectImage;
+  }
+
+  if (project.slug && portfolioImageMap[project.slug]) {
+    return portfolioImageMap[project.slug];
+  }
+
+  const category = (
+    project.clientIndustry ||
+    project.category ||
+    project.projectType ||
+    ""
+  ).toLowerCase();
+  const title = (project.title || project.name || "").toLowerCase();
+  const description = (
+    project.description ||
+    project.summary ||
+    ""
+  ).toLowerCase();
+
+  if (
+    category.includes("agric") ||
+    title.includes("farm") ||
+    title.includes("agric") ||
+    description.includes("agric")
+  ) {
+    return "/images/portfolio/agric.png";
+  }
+  if (
+    category.includes("fintech") ||
+    title.includes("bank") ||
+    title.includes("pay") ||
+    title.includes("finance") ||
+    title.includes("payment")
+  ) {
+    return "/images/portfolio/banking.png";
+  }
+  if (
+    category.includes("ecommerce") ||
+    title.includes("market") ||
+    title.includes("shop") ||
+    title.includes("store") ||
+    title.includes("commerce")
+  ) {
+    return "/images/portfolio/market.png";
+  }
+  if (
+    category.includes("logistics") ||
+    title.includes("ship") ||
+    title.includes("delivery") ||
+    title.includes("logistic")
+  ) {
+    return "/images/portfolio/logistics.png";
+  }
+  if (
+    category.includes("health") ||
+    title.includes("medical") ||
+    title.includes("hospital") ||
+    title.includes("healthcare")
+  ) {
+    return "/images/portfolio/health.png";
+  }
+  if (
+    category.includes("education") ||
+    title.includes("learn") ||
+    title.includes("course") ||
+    title.includes("school") ||
+    title.includes("academy")
+  ) {
+    return "/images/portfolio/learn.png";
+  }
+  if (
+    category.includes("entertainment") ||
+    title.includes("music") ||
+    title.includes("stream") ||
+    title.includes("media")
+  ) {
+    return "/images/portfolio/music.png";
+  }
+  if (
+    category.includes("estate") ||
+    title.includes("property") ||
+    title.includes("real estate")
+  ) {
+    return "/images/portfolio/realEstate2.png";
+  }
+  if (
+    category.includes("event") ||
+    title.includes("ticket") ||
+    title.includes("booking")
+  ) {
+    return "/images/portfolio/ticket.png";
+  }
+  if (
+    category.includes("church") ||
+    category.includes("faith") ||
+    category.includes("ministry")
+  ) {
+    return "/images/portfolio/realEstate.png";
+  }
+
+  return defaultImages[index % defaultImages.length];
+}
 
 function formatDate(value, language = "EN") {
   if (!value) return "";
@@ -370,6 +530,157 @@ const BlogCard = ({ post, t, language }) => {
   );
 };
 
+const TestimonialCarousel = ({ testimonials, t }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const intervalRef = useRef(null);
+  const carouselRef = useRef(null);
+
+  useEffect(() => {
+    if (isPlaying && testimonials.length > 1) {
+      intervalRef.current = setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+      }, 6000);
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isPlaying, testimonials.length]);
+
+  const handleMouseEnter = () => setIsPlaying(false);
+  const handleMouseLeave = () => setIsPlaying(true);
+
+  const goToSlide = (index) => {
+    setCurrentIndex(index);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      if (isPlaying && testimonials.length > 1) {
+        intervalRef.current = setInterval(() => {
+          setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+        }, 6000);
+      }
+    }
+  };
+
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex(
+      (prevIndex) =>
+        (prevIndex - 1 + testimonials.length) % testimonials.length,
+    );
+  };
+
+  if (!testimonials.length) return null;
+
+  return (
+    <div
+      className="premium-testimonial-carousel"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      ref={carouselRef}
+    >
+      <div className="premium-carousel-container">
+        <button
+          className="premium-carousel-nav premium-carousel-prev"
+          onClick={prevSlide}
+          aria-label="Previous testimonial"
+        >
+          ←
+        </button>
+
+        <div className="premium-carousel-track">
+          {testimonials.map((testimonial, index) => {
+            const name = getText(
+              testimonial.clientName,
+              testimonial.name,
+              testimonial.author,
+              t("home.client"),
+            );
+            const quote = getText(
+              testimonial.quote,
+              testimonial.content,
+              testimonial.message,
+              t("home.defaultQuote"),
+            );
+            const image = getImage(testimonial);
+            const role =
+              testimonial.role || testimonial.position || t("home.happyClient");
+
+            return (
+              <motion.div
+                key={testimonial.id || name}
+                className={`premium-carousel-slide ${
+                  index === currentIndex ? "active" : ""
+                }`}
+                initial={{ opacity: 0, x: 100 }}
+                animate={{
+                  opacity: index === currentIndex ? 1 : 0,
+                  x: index === currentIndex ? 0 : 100,
+                  display: index === currentIndex ? "block" : "none",
+                }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
+              >
+                <article className="premium-testimonial-card premium-carousel-card">
+                  <div className="premium-quote-mark" aria-hidden="true">
+                    “
+                  </div>
+                  <p className="premium-testimonial-quote">{quote}</p>
+                  <div className="premium-person">
+                    {image ? (
+                      <PremiumImage
+                        src={image}
+                        alt={name}
+                        className="premium-avatar"
+                      />
+                    ) : (
+                      <div className="premium-avatar premium-avatar-fallback">
+                        {name.charAt(0)}
+                      </div>
+                    )}
+                    <div>
+                      <strong>{name}</strong>
+                      <span>{role}</span>
+                    </div>
+                  </div>
+                </article>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        <button
+          className="premium-carousel-nav premium-carousel-next"
+          onClick={nextSlide}
+          aria-label="Next testimonial"
+        >
+          →
+        </button>
+      </div>
+
+      {testimonials.length > 1 && (
+        <div className="premium-carousel-dots">
+          {testimonials.map((_, index) => (
+            <button
+              key={index}
+              className={`premium-carousel-dot ${
+                index === currentIndex ? "active" : ""
+              }`}
+              onClick={() => goToSlide(index)}
+              aria-label={`Go to testimonial ${index + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default function HomePage() {
   const { language, t } = useLanguage();
   const [featuredPosts, setFeaturedPosts] = useState([]);
@@ -378,7 +689,7 @@ export default function HomePage() {
   const hero = useFetchOnMount(
     () =>
       heroService.getHeroSections({
-        language,
+        language: language || "EN",
         placement: "HOME",
         featuredOnly: true,
       }),
@@ -422,9 +733,9 @@ export default function HomePage() {
     () =>
       testimonialService.getTestimonials({
         language,
-        featuredOnly: true,
+        featuredOnly: false,
         page: 0,
-        size: 6,
+        size: 30,
       }),
     [language],
   );
@@ -470,10 +781,43 @@ export default function HomePage() {
     };
   }, [language, t]);
 
-  const heroItem = useMemo(
-    () => normalizeList(hero.data)[0] || null,
-    [hero.data],
-  );
+  const heroItem = useMemo(() => {
+    let heroList = [];
+
+    if (hero.data?.data && Array.isArray(hero.data.data)) {
+      heroList = hero.data.data;
+    } else if (Array.isArray(hero.data)) {
+      heroList = hero.data;
+    } else if (hero.data && typeof hero.data === "object") {
+      for (let key in hero.data) {
+        if (Array.isArray(hero.data[key])) {
+          heroList = hero.data[key];
+          break;
+        }
+      }
+    }
+
+    const languageHeroes = heroList.filter(
+      (item) =>
+        item.language === language || item.language === language.toUpperCase(),
+    );
+
+    if (languageHeroes.length === 0) return null;
+
+    const sortedHeroes = [...languageHeroes].sort(
+      (a, b) =>
+        (a.displayOrder || a.display_order || 0) -
+        (b.displayOrder || b.display_order || 0),
+    );
+
+    return sortedHeroes[0] || null;
+  }, [hero.data, language]);
+
+  const heroTitle = heroItem?.title || t("home.heroTitle");
+  const heroSubtitle =
+    heroItem?.subtitle || heroItem?.description || t("home.heroSubtitle");
+  const heroImage =
+    heroItem?.backgroundImageUrl || heroItem?.imageUrl || getImage(heroItem);
 
   const serviceItems = normalizeList(services.data);
   const projectItems = normalizeList(portfolio.data);
@@ -494,13 +838,6 @@ export default function HomePage() {
     ? testimonialItems
     : fallbackTestimonials(t);
   const finalLogos = logoItems.length ? logoItems : [];
-
-  const heroTitle = heroItem?.title || t("home.heroTitle");
-
-  const heroSubtitle =
-    heroItem?.subtitle || heroItem?.description || t("home.heroSubtitle");
-
-  const heroImage = getImage(heroItem);
 
   const loading =
     hero.loading ||
@@ -533,7 +870,6 @@ export default function HomePage() {
               <Link to="/contact" className="premium-btn premium-btn-primary">
                 {t("common.contactUs")}
               </Link>
-
               <Link to="/services" className="premium-btn premium-btn-ghost">
                 {t("nav.services")}
               </Link>
@@ -546,14 +882,12 @@ export default function HomePage() {
                 </strong>
                 <span>{t("home.statsProjects")}</span>
               </div>
-
               <div>
                 <strong>
                   <CountUpNumber value={7} />
                 </strong>
                 <span>{t("home.statsServices")}</span>
               </div>
-
               <div>
                 <strong>
                   <CountUpNumber value={100} suffix="%" />
@@ -588,7 +922,6 @@ export default function HomePage() {
                   "Websites, dashboards, portals, and launch-ready systems.",
                 )}
               </h2>
-
               <div className="premium-dashboard-list">
                 <div>
                   <span>{t("home.heroPanelItem1", "Frontend")}</span>
@@ -709,7 +1042,6 @@ export default function HomePage() {
                     alt={title}
                     className="premium-card-image"
                   />
-
                   <div className="premium-card-body">
                     <div className="premium-icon">
                       {(() => {
@@ -815,14 +1147,13 @@ export default function HomePage() {
               <span className="premium-eyebrow">{t("home.selectedWork")}</span>
               <h2>{t("sections.portfolio.title")}</h2>
             </div>
-
             <Link to="/portfolio" className="premium-btn premium-btn-ghost">
               {t("common.viewAll")}
             </Link>
           </div>
 
           <div className="premium-work-grid">
-            {finalProjects.slice(0, 6).map((project) => {
+            {finalProjects.slice(0, 6).map((project, index) => {
               const title = getText(
                 project.title,
                 project.name,
@@ -833,7 +1164,7 @@ export default function HomePage() {
                 project.description,
                 t("home.portfolioSummary"),
               );
-              const image = getImage(project);
+              const image = getPortfolioImage(project, index);
 
               return (
                 <Link
@@ -843,11 +1174,19 @@ export default function HomePage() {
                   }
                   className="premium-work-card"
                 >
-                  <PremiumImage
-                    src={image}
-                    alt={title}
-                    className="premium-work-image"
-                  />
+                  {image ? (
+                    <img
+                      src={image}
+                      alt={title}
+                      className="premium-work-image"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.target.style.display = "none";
+                        const placeholder = e.target.nextElementSibling;
+                        if (placeholder) placeholder.style.display = "flex";
+                      }}
+                    />
+                  ) : null}
 
                   {!image && (
                     <div className="premium-work-image premium-fallback-media">
@@ -857,7 +1196,11 @@ export default function HomePage() {
 
                   <div>
                     <h3>{title}</h3>
-                    <p>{summary}</p>
+                    <p>
+                      {summary && summary.length > 100
+                        ? summary.substring(0, 100) + "..."
+                        : summary}
+                    </p>
                     <span>{t("common.viewDetails")} →</span>
                   </div>
                 </Link>
@@ -935,7 +1278,6 @@ export default function HomePage() {
                 </span>
                 <h2>{t("blog.fromOurBlog", "From our blog")}</h2>
               </div>
-
               <Link to="/blog" className="premium-btn premium-btn-ghost">
                 {t("common.viewAll")} →
               </Link>
@@ -974,56 +1316,7 @@ export default function HomePage() {
             <p>{t("home.testimonialSubtitle")}</p>
           </div>
 
-          <div className="premium-testimonial-grid">
-            {finalTestimonials.slice(0, 4).map((testimonial) => {
-              const name = getText(
-                testimonial.clientName,
-                testimonial.name,
-                testimonial.author,
-                t("home.client"),
-              );
-              const quote = getText(
-                testimonial.quote,
-                testimonial.content,
-                testimonial.message,
-                t("home.defaultQuote"),
-              );
-              const image = getImage(testimonial);
-
-              return (
-                <article
-                  key={testimonial.id || name}
-                  className="premium-testimonial-card"
-                >
-                  <div className="premium-quote-mark" aria-hidden="true">
-                    “
-                  </div>
-                  <p>{quote}</p>
-                  <div className="premium-person">
-                    {image ? (
-                      <PremiumImage
-                        src={image}
-                        alt={name}
-                        className="premium-avatar"
-                      />
-                    ) : (
-                      <div className="premium-avatar premium-avatar-fallback">
-                        {name.charAt(0)}
-                      </div>
-                    )}
-                    <div>
-                      <strong>{name}</strong>
-                      <span>
-                        {testimonial.role ||
-                          testimonial.position ||
-                          t("home.happyClient")}
-                      </span>
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
+          <TestimonialCarousel testimonials={finalTestimonials} t={t} />
         </div>
       </motion.section>
 
@@ -1036,9 +1329,6 @@ export default function HomePage() {
       >
         <div className="premium-container">
           <div className="premium-services-banner">
-            <span className="premium-services-banner__icon" aria-hidden="true">
-              ⚡
-            </span>
             <h2 className="premium-services-banner__title">
               {t(
                 "home.bannerTitle",

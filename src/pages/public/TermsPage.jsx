@@ -245,7 +245,9 @@ export default function TermsPage() {
             viewport={{ once: true }}
             variants={fadeUp}
           >
-            <span>{t("terms.lastUpdatedLabel", "Last Updated")}</span>
+            <spans className="premium-eyebrow">
+              {t("terms.lastUpdatedLabel", "Last Updated")}
+            </spans>
             <h2>{updatedDate}</h2>
             <p>
               {t(

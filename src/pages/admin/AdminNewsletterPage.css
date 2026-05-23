@@ -1,28 +1,60 @@
-/* AdminNewsletterPage.css - Respects Theme Context */
+/* AdminNewsletterPage.css - Complete Theme Support */
+/* ============================================ */
 
 .admin-newsletter-page {
   display: grid;
   gap: 24px;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 4px;
+  padding: 24px 4px;
 }
 
+/* Theme variables - Light mode */
+[data-theme="light"] .admin-newsletter-page {
+  --newsletter-bg: #ffffff;
+  --newsletter-card: #ffffff;
+  --newsletter-surface: #f8fafc;
+  --newsletter-text: #111827;
+  --newsletter-muted: #64748b;
+  --newsletter-border: #e2e8f0;
+  --newsletter-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Theme variables - Dark mode */
+[data-theme="dark"] .admin-newsletter-page {
+  --newsletter-bg: #0f172a;
+  --newsletter-card: #1e293b;
+  --newsletter-surface: #0f172a;
+  --newsletter-text: #f1f5f9;
+  --newsletter-muted: #94a3b8;
+  --newsletter-border: rgba(255, 255, 255, 0.08);
+  --newsletter-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Apply theme variables */
+.admin-newsletter-page {
+  background: var(--newsletter-bg);
+  color: var(--newsletter-text);
+}
+
+/* ============================================ */
 /* Hero Section */
+/* ============================================ */
+
 .admin-newsletter-hero {
   display: flex;
   justify-content: space-between;
   gap: 24px;
   align-items: flex-start;
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
+  background: var(--newsletter-card);
+  border: 1px solid var(--newsletter-border);
   border-radius: 24px;
   padding: 32px;
   transition: all 0.2s ease;
 }
 
 .admin-newsletter-hero:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--newsletter-shadow);
 }
 
 .admin-newsletter-eyebrow {
@@ -31,7 +63,7 @@
   border-radius: 100px;
   padding: 6px 14px;
   background: rgba(99, 102, 241, 0.1);
-  color: var(--color-primary);
+  color: var(--color-primary, #6366f1);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -43,17 +75,20 @@
   font-size: clamp(1.5rem, 4vw, 2.5rem);
   font-weight: 700;
   line-height: 1.2;
-  color: var(--color-text);
+  color: var(--newsletter-text);
 }
 
 .admin-newsletter-hero p {
   max-width: 680px;
   margin: 0;
-  color: var(--color-text-muted);
+  color: var(--newsletter-muted);
   line-height: 1.6;
 }
 
+/* ============================================ */
 /* Notifications */
+/* ============================================ */
+
 .admin-newsletter-notice,
 .admin-newsletter-error {
   border-radius: 16px;
@@ -74,13 +109,16 @@
   color: #ef4444;
 }
 
+/* ============================================ */
 /* Tabs */
+/* ============================================ */
+
 .admin-newsletter-tabs {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
+  background: var(--newsletter-card);
+  border: 1px solid var(--newsletter-border);
   border-radius: 20px;
   padding: 8px;
 }
@@ -90,7 +128,7 @@
   border: 1px solid transparent;
   border-radius: 50px;
   background: transparent;
-  color: var(--color-text-muted);
+  color: var(--newsletter-muted);
   font-weight: 600;
   font-size: 0.875rem;
   cursor: pointer;
@@ -98,30 +136,36 @@
 }
 
 .admin-newsletter-tab:hover {
-  background: var(--color-surface);
-  color: var(--color-text);
+  background: var(--newsletter-surface);
+  color: var(--newsletter-text);
 }
 
 .admin-newsletter-tab--active {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
+  background: var(--color-primary, #6366f1);
+  border-color: var(--color-primary, #6366f1);
   color: white;
 }
 
 .admin-newsletter-tab--active:hover {
-  background: var(--color-primary);
+  background: var(--color-primary, #6366f1);
   color: white;
 }
 
+/* ============================================ */
 /* Cards */
+/* ============================================ */
+
 .admin-newsletter-card {
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
+  background: var(--newsletter-card);
+  border: 1px solid var(--newsletter-border);
   border-radius: 20px;
   overflow: hidden;
 }
 
+/* ============================================ */
 /* Toolbar */
+/* ============================================ */
+
 .admin-newsletter-toolbar {
   display: flex;
   justify-content: space-between;
@@ -129,8 +173,8 @@
   align-items: center;
   flex-wrap: wrap;
   padding: 20px;
-  border-bottom: 1px solid var(--color-border);
-  background: var(--color-surface);
+  border-bottom: 1px solid var(--newsletter-border);
+  background: var(--newsletter-surface);
 }
 
 .admin-newsletter-search {
@@ -143,17 +187,17 @@
 .admin-newsletter-search input {
   flex: 1;
   padding: 10px 16px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--newsletter-border);
   border-radius: 40px;
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--newsletter-bg);
+  color: var(--newsletter-text);
   font-size: 0.875rem;
   outline: none;
   transition: all 0.2s ease;
 }
 
 .admin-newsletter-search input:focus {
-  border-color: var(--color-primary);
+  border-color: var(--color-primary, #6366f1);
   box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
 }
 
@@ -161,7 +205,7 @@
   padding: 10px 24px;
   border: none;
   border-radius: 40px;
-  background: var(--color-primary);
+  background: var(--color-primary, #6366f1);
   color: white;
   font-weight: 600;
   font-size: 0.875rem;
@@ -181,10 +225,10 @@
 
 .admin-newsletter-filters select {
   padding: 10px 32px 10px 16px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--newsletter-border);
   border-radius: 40px;
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--newsletter-bg);
+  color: var(--newsletter-text);
   font-size: 0.875rem;
   cursor: pointer;
   outline: none;
@@ -195,7 +239,14 @@
   background-size: 14px;
 }
 
+[data-theme="dark"] .admin-newsletter-filters select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+}
+
+/* ============================================ */
 /* Table */
+/* ============================================ */
+
 .admin-newsletter-table-wrap {
   overflow-x: auto;
 }
@@ -212,23 +263,26 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--color-text-muted);
-  background: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
+  color: var(--newsletter-muted);
+  background: var(--newsletter-surface);
+  border-bottom: 1px solid var(--newsletter-border);
 }
 
 .admin-newsletter-table td {
   padding: 16px 20px;
-  border-bottom: 1px solid var(--color-border);
-  color: var(--color-text);
+  border-bottom: 1px solid var(--newsletter-border);
+  color: var(--newsletter-text);
   font-size: 0.875rem;
 }
 
 .admin-newsletter-table tbody tr:hover {
-  background: var(--color-surface);
+  background: var(--newsletter-surface);
 }
 
+/* ============================================ */
 /* Title Cell */
+/* ============================================ */
+
 .admin-newsletter-title-cell {
   display: flex;
   flex-direction: column;
@@ -237,21 +291,24 @@
 
 .admin-newsletter-title-cell strong {
   font-weight: 600;
-  color: var(--color-text);
+  color: var(--newsletter-text);
 }
 
 .admin-newsletter-title-cell small {
   font-size: 0.75rem;
-  color: var(--color-text-muted);
+  color: var(--newsletter-muted);
 }
 
+/* ============================================ */
 /* Status Pills */
+/* ============================================ */
+
 .admin-newsletter-pill {
   display: inline-flex;
   padding: 4px 12px;
   border-radius: 100px;
-  background: var(--color-surface);
-  color: var(--color-text);
+  background: var(--newsletter-surface);
+  color: var(--newsletter-text);
   font-size: 0.75rem;
   font-weight: 500;
 }
@@ -262,6 +319,7 @@
   border-radius: 100px;
   font-size: 0.75rem;
   font-weight: 600;
+  text-transform: capitalize;
 }
 
 .admin-newsletter-status--draft {
@@ -281,7 +339,10 @@
   color: #6b7280;
 }
 
+/* ============================================ */
 /* Buttons */
+/* ============================================ */
+
 .admin-newsletter-primary-btn {
   display: inline-flex;
   align-items: center;
@@ -290,7 +351,7 @@
   padding: 10px 20px;
   border: none;
   border-radius: 40px;
-  background: var(--color-primary);
+  background: var(--color-primary, #6366f1);
   color: white;
   font-weight: 600;
   font-size: 0.875rem;
@@ -305,10 +366,10 @@
 
 .admin-newsletter-secondary-btn {
   padding: 10px 20px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--newsletter-border);
   border-radius: 40px;
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--newsletter-bg);
+  color: var(--newsletter-text);
   font-weight: 600;
   font-size: 0.875rem;
   cursor: pointer;
@@ -317,6 +378,7 @@
 
 .admin-newsletter-secondary-btn:hover {
   transform: translateY(-1px);
+  background: var(--newsletter-surface);
 }
 
 .admin-newsletter-danger-btn {
@@ -344,38 +406,46 @@
 
 .admin-newsletter-actions button {
   padding: 6px 14px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--newsletter-border);
   border-radius: 40px;
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--newsletter-bg);
+  color: var(--newsletter-text);
   font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.admin-newsletter-actions button:hover {
+.admin-newsletter-actions button:hover:not(:disabled) {
   transform: translateY(-1px);
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  border-color: var(--color-primary, #6366f1);
+  color: var(--color-primary, #6366f1);
 }
 
+.admin-newsletter-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ============================================ */
 /* Pagination */
+/* ============================================ */
+
 .admin-newsletter-pagination {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 16px;
   padding: 20px;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--newsletter-border);
 }
 
 .admin-newsletter-pagination button {
   padding: 8px 16px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--newsletter-border);
   border-radius: 40px;
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--newsletter-bg);
+  color: var(--newsletter-text);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -383,8 +453,8 @@
 
 .admin-newsletter-pagination button:hover:not(:disabled) {
   transform: translateY(-1px);
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  border-color: var(--color-primary, #6366f1);
+  color: var(--color-primary, #6366f1);
 }
 
 .admin-newsletter-pagination button:disabled {
@@ -394,10 +464,13 @@
 
 .admin-newsletter-pagination span {
   font-size: 0.875rem;
-  color: var(--color-text-muted);
+  color: var(--newsletter-muted);
 }
 
+/* ============================================ */
 /* State */
+/* ============================================ */
+
 .admin-newsletter-state {
   display: flex;
   flex-direction: column;
@@ -411,15 +484,18 @@
 .admin-newsletter-state h3 {
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--color-text);
+  color: var(--newsletter-text);
 }
 
 .admin-newsletter-state p {
-  color: var(--color-text-muted);
+  color: var(--newsletter-muted);
   font-size: 0.875rem;
 }
 
+/* ============================================ */
 /* Modal */
+/* ============================================ */
+
 .admin-newsletter-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -437,10 +513,10 @@
   max-width: 900px;
   max-height: 90vh;
   overflow-y: auto;
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
+  background: var(--newsletter-card);
+  border: 1px solid var(--newsletter-border);
   border-radius: 24px;
-  box-shadow: var(--shadow-xl);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
 .admin-newsletter-modal__header {
@@ -451,8 +527,8 @@
   align-items: flex-start;
   gap: 16px;
   padding: 24px;
-  border-bottom: 1px solid var(--color-border);
-  background: var(--color-bg);
+  border-bottom: 1px solid var(--newsletter-border);
+  background: var(--newsletter-card);
   z-index: 1;
 }
 
@@ -460,7 +536,7 @@
   margin: 8px 0 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--color-text);
+  color: var(--newsletter-text);
 }
 
 .admin-newsletter-close-btn {
@@ -469,22 +545,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--newsletter-border);
   border-radius: 50%;
-  background: var(--color-surface);
-  color: var(--color-text);
+  background: var(--newsletter-surface);
+  color: var(--newsletter-text);
   font-size: 1.25rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .admin-newsletter-close-btn:hover {
-  background: var(--color-primary);
+  background: var(--color-primary, #6366f1);
   color: white;
-  border-color: var(--color-primary);
+  border-color: var(--color-primary, #6366f1);
 }
 
+/* ============================================ */
 /* Form */
+/* ============================================ */
+
 .admin-newsletter-form {
   padding: 24px;
 }
@@ -508,17 +587,17 @@
 .admin-newsletter-field span {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--color-text);
+  color: var(--newsletter-text);
 }
 
 .admin-newsletter-field input,
 .admin-newsletter-field textarea,
 .admin-newsletter-field select {
   padding: 12px 16px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--newsletter-border);
   border-radius: 12px;
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--newsletter-bg);
+  color: var(--newsletter-text);
   font-size: 0.875rem;
   outline: none;
   transition: all 0.2s ease;
@@ -527,7 +606,7 @@
 .admin-newsletter-field input:focus,
 .admin-newsletter-field textarea:focus,
 .admin-newsletter-field select:focus {
-  border-color: var(--color-primary);
+  border-color: var(--color-primary, #6366f1);
   box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
 }
 
@@ -541,11 +620,20 @@
   justify-content: flex-end;
   gap: 12px;
   padding: 20px 24px;
-  border-top: 1px solid var(--color-border);
-  background: var(--color-bg);
+  border-top: 1px solid var(--newsletter-border);
+  background: var(--newsletter-card);
 }
 
+/* ============================================ */
 /* Responsive */
+/* ============================================ */
+
+@media (max-width: 992px) {
+  .admin-newsletter-page {
+    padding: 20px 16px;
+  }
+}
+
 @media (max-width: 768px) {
   .admin-newsletter-hero {
     flex-direction: column;
@@ -584,5 +672,40 @@
 
   .admin-newsletter-pagination {
     flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  .admin-newsletter-modal {
+    max-width: 95%;
+    margin: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-newsletter-page {
+    padding: 16px 12px;
+  }
+  
+  .admin-newsletter-hero {
+    padding: 20px;
+  }
+  
+  .admin-newsletter-hero h1 {
+    font-size: 1.3rem;
+  }
+  
+  .admin-newsletter-table th,
+  .admin-newsletter-table td {
+    padding: 10px 12px;
+    font-size: 0.75rem;
+  }
+  
+  .admin-newsletter-title-cell strong {
+    font-size: 0.8rem;
+  }
+  
+  .admin-newsletter-actions button {
+    padding: 4px 10px;
+    font-size: 0.7rem;
   }
 }

@@ -337,7 +337,7 @@ export default function ContactPage() {
 
           <aside className="premium-contact-sidebar">
             <div className="premium-info-panel">
-              <span>🌍</span>
+              <span style={{ fontSize: "2rem" }}>🌍</span>
               <h2>{LANGUAGE_LABELS[activeLanguage]}</h2>
               <p>
                 Current site language is synced correctly with service options

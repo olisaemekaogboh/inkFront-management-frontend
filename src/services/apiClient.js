@@ -11,24 +11,22 @@ const apiClient = axios.create({
   },
 });
 
-// ✅ GET LANGUAGE FROM STORAGE (same key you used)
+// GET LANGUAGE FROM STORAGE
 function getLanguage() {
   const lang = localStorage.getItem("language");
   return (lang || "EN").toUpperCase();
 }
 
-// ✅ REQUEST INTERCEPTOR (THIS IS THE FIX)
+// REQUEST INTERCEPTOR
 apiClient.interceptors.request.use(
   (config) => {
     const language = getLanguage();
 
-    // attach to params (for GET requests)
     config.params = {
       ...(config.params || {}),
       language,
     };
 
-    // also attach as header (optional but powerful)
     config.headers["Accept-Language"] = language;
 
     return config;
@@ -36,7 +34,7 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-// RESPONSE INTERCEPTOR (unchanged, just cleaned)
+// RESPONSE INTERCEPTOR - FIXED to preserve error response
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -51,6 +49,15 @@ apiClient.interceptors.response.use(
     const isCurrentUserRequest = requestUrl.includes("/auth/me");
     const isPublicRequest = requestUrl.includes("/public/");
 
+    // For 401 on login/register, DON'T create a new error - just pass the original error
+    if (
+      status === 401 &&
+      (isLoginRequest || requestUrl.includes("/auth/register"))
+    ) {
+      // Return the original error with full response data
+      return Promise.reject(error);
+    }
+
     if (
       status === 401 &&
       !originalRequest._retry &&
@@ -64,18 +71,14 @@ apiClient.interceptors.response.use(
       try {
         await apiClient.post("/auth/refresh");
         return apiClient(originalRequest);
-      } catch {
-        return Promise.reject(new Error("Unauthorized"));
+      } catch (refreshError) {
+        // Return the refresh error
+        return Promise.reject(refreshError);
       }
     }
 
-    const message =
-      error?.response?.data?.message ||
-      error?.response?.data?.error ||
-      error?.message ||
-      "Something went wrong";
-
-    return Promise.reject(new Error(message));
+    // For all other errors, pass the original error with response
+    return Promise.reject(error);
   },
 );
 

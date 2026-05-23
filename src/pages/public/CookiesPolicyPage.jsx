@@ -166,7 +166,9 @@ export default function CookiesPolicyPage() {
             viewport={{ once: true }}
             variants={fadeUp}
           >
-            <span>{t("cookies.lastUpdated", "Last Updated")}</span>
+            <spans className="premium-eyebrow">
+              {t("cookies.lastUpdated", "Last Updated")}
+            </spans>
             <h2>{updatedDate}</h2>
             <p>
               {t(

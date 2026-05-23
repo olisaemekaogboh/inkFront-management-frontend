@@ -134,6 +134,7 @@ svg {
     background: var(--bg);
     color: var(--text);
   }
+  
 
   .app-container {
     @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;

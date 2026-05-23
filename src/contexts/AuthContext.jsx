@@ -1,3 +1,4 @@
+// contexts/AuthContext.js
 import {
   createContext,
   useCallback,
@@ -12,20 +13,20 @@ export const AuthContext = createContext(null);
 const extractUser = (payload) => {
   if (!payload) return null;
 
+  // Your backend returns { success, authenticated, data }
+  if (payload.data) return payload.data;
   if (payload.user) return payload.user;
-  if (payload.data?.user) return payload.data.user;
-  if (payload.data && typeof payload.data === "object") return payload.data;
 
   return null;
 };
 
-const extractAuthenticated = (payload, user) => {
+const extractAuthenticated = (payload) => {
   if (!payload) return false;
 
+  // Your backend returns authenticated flag
   if (payload.authenticated === true) return true;
-  if (payload.data?.authenticated === true) return true;
 
-  return Boolean(user?.email || user?.id);
+  return false;
 };
 
 export function AuthProvider({ children }) {
@@ -36,7 +37,7 @@ export function AuthProvider({ children }) {
 
   const applyAuthPayload = useCallback((payload) => {
     const nextUser = extractUser(payload);
-    const nextAuthenticated = extractAuthenticated(payload, nextUser);
+    const nextAuthenticated = extractAuthenticated(payload);
 
     setUser(nextAuthenticated ? nextUser : null);
     setAuthenticated(nextAuthenticated);
@@ -47,8 +48,10 @@ export function AuthProvider({ children }) {
   const refreshCurrentUser = useCallback(async () => {
     try {
       const payload = await authService.me();
-      return applyAuthPayload(payload);
-    } catch {
+      const user = applyAuthPayload(payload);
+      return user;
+    } catch (error) {
+      console.error("Refresh user error:", error);
       setUser(null);
       setAuthenticated(false);
       return null;
@@ -56,30 +59,46 @@ export function AuthProvider({ children }) {
       setLoading(false);
     }
   }, [applyAuthPayload]);
+  const login = useCallback(async (payload) => {
+    setLoading(true);
 
-  const login = useCallback(
-    async (payload) => {
-      setLoading(true);
+    try {
+      const response = await authService.login(payload);
+      console.log("Login response in AuthContext:", response);
 
-      try {
-        const response = await authService.login(payload);
-        const nextUser = applyAuthPayload(response);
+      // Extract user from response
+      const nextUser = extractUser(response);
+      const nextAuthenticated = extractAuthenticated(response);
 
-        setLoading(false);
+      console.log("Extracted user:", nextUser);
+      console.log("Extracted authenticated:", nextAuthenticated);
 
-        return {
-          ...response,
-          user: nextUser,
-        };
-      } catch (error) {
-        setUser(null);
-        setAuthenticated(false);
-        setLoading(false);
-        throw error;
-      }
-    },
-    [applyAuthPayload],
-  );
+      setUser(nextAuthenticated ? nextUser : null);
+      setAuthenticated(nextAuthenticated);
+
+      setLoading(false);
+
+      return {
+        ...response,
+        user: nextUser,
+      };
+    } catch (error) {
+      console.error("Login error in AuthContext:", error);
+      console.error("Error details:", {
+        message: error.message,
+        response: error.response,
+        status: error.response?.status,
+        data: error.response?.data,
+      });
+
+      setUser(null);
+      setAuthenticated(false);
+      setLoading(false);
+
+      // Re-throw the error so the LoginPage can handle it
+      throw error;
+    }
+  }, []);
 
   const register = useCallback(
     async (payload) => {
@@ -96,6 +115,7 @@ export function AuthProvider({ children }) {
           user: nextUser,
         };
       } catch (error) {
+        console.error("Register error in AuthContext:", error);
         setUser(null);
         setAuthenticated(false);
         setLoading(false);
@@ -108,6 +128,8 @@ export function AuthProvider({ children }) {
   const logout = useCallback(async () => {
     try {
       await authService.logout();
+    } catch (error) {
+      console.error("Logout error:", error);
     } finally {
       setUser(null);
       setAuthenticated(false);

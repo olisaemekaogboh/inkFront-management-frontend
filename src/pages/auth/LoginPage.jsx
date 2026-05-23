@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { authService } from "../../services/authService";
@@ -28,37 +28,143 @@ function hasAdminRole(user) {
 export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAuth();
+  const { login, refreshCurrentUser, isAuthenticated, user, loading } =
+    useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [googleSubmitting, setGoogleSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState(location.state?.error || "");
+  const [fieldErrors, setFieldErrors] = useState({});
 
   const redirectTarget = location.state?.from || "/";
 
+  // Check if already logged in after auth state updates
+  useEffect(() => {
+    if (!loading && isAuthenticated && user) {
+      console.log("Already authenticated, redirecting...");
+      const isAdmin = hasAdminRole(user);
+      if (redirectTarget.startsWith("/admin") && !isAdmin) {
+        navigate("/", { replace: true });
+      } else {
+        navigate(redirectTarget, { replace: true });
+      }
+    }
+  }, [loading, isAuthenticated, user, navigate, redirectTarget]);
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    if (name === "email") setEmail(value);
+    if (name === "password") setPassword(value);
+
+    if (fieldErrors[name]) {
+      setFieldErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+    if (errorMessage) setErrorMessage("");
+  }
+
+  function validateForm() {
+    const errors = {};
+
+    if (!email.trim()) {
+      errors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errors.email = "Please enter a valid email address";
+    }
+
+    if (!password) {
+      errors.password = "Password is required";
+    }
+
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  }
+
   async function handleSubmit(event) {
     event.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     setSubmitting(true);
     setErrorMessage("");
+    setFieldErrors({});
 
     try {
-      const loginResult = await login({ identifier: email, email, password });
-      const currentUser = loginResult?.user || loginResult?.data?.user || null;
+      console.log("Attempting login with:", email);
 
-      if (redirectTarget.startsWith("/admin") && !hasAdminRole(currentUser)) {
-        navigate("/", { replace: true });
+      // Perform login
+      const loginResult = await login({ identifier: email, email, password });
+      console.log("Login result:", loginResult);
+
+      // Refresh user data after login
+      await refreshCurrentUser();
+    } catch (error) {
+      console.error("Full error object:", error);
+      console.error("Error response:", error.response);
+      console.error("Error status:", error.response?.status);
+      console.error("Error data:", error.response?.data);
+      console.error("Error message:", error.message);
+
+      // Check if it's a network error
+      if (
+        error.message === "Network Error" ||
+        error.code === "ERR_NETWORK" ||
+        !error.response
+      ) {
+        setErrorMessage(
+          "Cannot connect to server. Please make sure the backend is running on port 8080.",
+        );
+        setSubmitting(false);
         return;
       }
 
-      navigate(redirectTarget, { replace: true });
-    } catch (error) {
-      setErrorMessage(
-        error?.response?.data?.message ||
-          error?.message ||
-          "Login failed. Please check your details and try again.",
-      );
+      const status = error.response?.status;
+      const errorData = error.response?.data;
+
+      // Handle 401 Unauthorized - Wrong password
+      if (status === 401) {
+        setErrorMessage("Invalid email or password. Please try again.");
+        setFieldErrors({
+          email: "Invalid credentials",
+          password: "Invalid credentials",
+        });
+      }
+      // Handle 403 Forbidden
+      else if (status === 403) {
+        setErrorMessage("Your account is locked. Please contact support.");
+      }
+      // Handle 404 Not Found
+      else if (status === 404) {
+        setErrorMessage(
+          "Account not found. Please check your email or register.",
+        );
+        setFieldErrors({ email: "No account found with this email" });
+      }
+      // Handle 400 Bad Request
+      else if (status === 400) {
+        if (errorData?.message) {
+          setErrorMessage(errorData.message);
+        } else {
+          setErrorMessage("Invalid request. Please check your information.");
+        }
+      }
+      // Handle 500 Server Error
+      else if (status === 500) {
+        setErrorMessage("Server error. Please try again later.");
+      }
+      // Handle other errors
+      else {
+        setErrorMessage(
+          errorData?.message ||
+            errorData?.error ||
+            error?.message ||
+            "Login failed. Please try again.",
+        );
+      }
     } finally {
       setSubmitting(false);
     }
@@ -66,7 +172,32 @@ export default function LoginPage() {
 
   function handleGoogleLogin() {
     setGoogleSubmitting(true);
-    window.location.assign(authService.getGoogleLoginUrl());
+    const googleUrl = authService.getGoogleLoginUrl();
+    console.log("Redirecting to Google OAuth:", googleUrl);
+    window.location.href = googleUrl;
+  }
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  // Show loading state
+  if (loading) {
+    return (
+      <main className="premium-public-page">
+        <div
+          className="premium-container"
+          style={{ maxWidth: "480px", margin: "0 auto", paddingTop: "80px" }}
+        >
+          <div
+            className="premium-contact-panel"
+            style={{ padding: "48px 40px", textAlign: "center" }}
+          >
+            <div className="premium-loading">Loading...</div>
+          </div>
+        </div>
+      </main>
+    );
   }
 
   return (
@@ -79,13 +210,13 @@ export default function LoginPage() {
           minHeight: "100vh",
           display: "flex",
           alignItems: "center",
+          paddingTop: "80px",
         }}
       >
         <div
           className="premium-contact-panel"
-          style={{ padding: "48px 40px", textAlign: "center" }}
+          style={{ padding: "48px 40px", width: "100%" }}
         >
-          {/* Logo & Title - Centered */}
           <Link
             to="/"
             style={{
@@ -105,11 +236,19 @@ export default function LoginPage() {
                 color: "var(--app-text)",
               }}
             >
-              InkFront
+              Welcome Back
             </h1>
+            <p
+              style={{
+                marginTop: "8px",
+                color: "var(--app-muted)",
+                fontSize: "0.875rem",
+              }}
+            >
+              Sign in to your account
+            </p>
           </Link>
 
-          {/* Google Login */}
           <button
             type="button"
             className="premium-btn premium-btn-ghost"
@@ -120,7 +259,6 @@ export default function LoginPage() {
             {googleSubmitting ? "Redirecting..." : "Continue with Google"}
           </button>
 
-          {/* Divider */}
           <div
             style={{
               margin: "20px 0",
@@ -144,11 +282,10 @@ export default function LoginPage() {
                 fontSize: "0.8rem",
               }}
             >
-              or
+              or sign in with email
             </span>
           </div>
 
-          {/* Error Message */}
           {errorMessage && (
             <div
               className="premium-form-alert premium-form-alert-error"
@@ -158,56 +295,73 @@ export default function LoginPage() {
             </div>
           )}
 
-          {/* Login Form */}
           <form onSubmit={handleSubmit}>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email address"
-              required
-              disabled={submitting || googleSubmitting}
-              style={{
-                width: "100%",
-                marginBottom: "16px",
-                padding: "12px 16px",
-                borderRadius: "12px",
-                border: "1px solid var(--app-border)",
-                background: "var(--app-card)",
-                color: "var(--app-text)",
-              }}
-            />
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              required
-              disabled={submitting || googleSubmitting}
-              style={{
-                width: "100%",
-                marginBottom: "24px",
-                padding: "12px 16px",
-                borderRadius: "12px",
-                border: "1px solid var(--app-border)",
-                background: "var(--app-card)",
-                color: "var(--app-text)",
-              }}
-            />
+            <div className="premium-contact-form__field">
+              <label className="premium-contact-form__label">
+                <span>Email Address *</span>
+                <input
+                  type="email"
+                  name="email"
+                  value={email}
+                  onChange={handleChange}
+                  placeholder="you@example.com"
+                  className={`premium-contact-form__input ${fieldErrors.email ? "has-error" : ""}`}
+                  autoComplete="email"
+                  disabled={submitting || googleSubmitting}
+                />
+                {fieldErrors.email && (
+                  <span className="premium-error-message">
+                    {fieldErrors.email}
+                  </span>
+                )}
+              </label>
+            </div>
+
+            <div className="premium-contact-form__field">
+              <label className="premium-contact-form__label">
+                <span>Password *</span>
+                <div className="premium-password-wrapper">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={password}
+                    onChange={handleChange}
+                    placeholder="Enter your password"
+                    className={`premium-contact-form__input ${fieldErrors.password ? "has-error" : ""}`}
+                    autoComplete="current-password"
+                    disabled={submitting || googleSubmitting}
+                  />
+                  <button
+                    type="button"
+                    className="premium-password-toggle"
+                    onClick={togglePasswordVisibility}
+                    tabIndex="-1"
+                  >
+                    {showPassword ? "🙈" : "👁️"}
+                  </button>
+                </div>
+                {fieldErrors.password && (
+                  <span className="premium-error-message">
+                    {fieldErrors.password}
+                  </span>
+                )}
+              </label>
+            </div>
+
             <button
               type="submit"
               className="premium-btn premium-btn-primary"
               disabled={submitting || googleSubmitting}
-              style={{ width: "100%" }}
+              style={{ width: "100%", marginTop: "24px" }}
             >
-              {submitting ? "Signing in..." : "Login"}
+              {submitting ? "Signing in..." : "Sign In"}
             </button>
           </form>
 
-          {/* Register Link */}
           <p
             style={{
               marginTop: "24px",
+              textAlign: "center",
               color: "var(--app-muted)",
               fontSize: "0.85rem",
             }}

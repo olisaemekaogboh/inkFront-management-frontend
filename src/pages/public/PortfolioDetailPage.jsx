@@ -10,6 +10,97 @@ function text(...values) {
   );
 }
 
+// Map portfolio project slugs to your images (same as list page)
+const portfolioImageMap = {
+  "edubridge-school-platform": "/images/portfolio/school.jpg",
+  "quickship-logistics-dashboard": "/images/portfolio/logistics.png",
+  "halamart-marketplace": "/images/portfolio/market.png",
+  "payswift-bill-payments": "/images/portfolio/banking.png",
+  "savewise-investment-platform": "/images/portfolio/invest.png",
+  "propertyfinder-real-estate": "/images/portfolio/realEstate2.png",
+  "bloommusic-streaming": "/images/portfolio/music.png",
+  "medicare-facility-management": "/images/portfolio/health.png",
+  "farmconnect-agritech-marketplace": "/images/portfolio/agric.png",
+  "skillbridge-learning-platform": "/images/portfolio/learn.png",
+  "eventwave-ticketing-platform": "/images/portfolio/ticket.png",
+  "churchflow-ministry-platform": "/images/portfolio/realEstate.png",
+};
+
+function getPortfolioDetailImage(project) {
+  // Skip AI-generated images, use local instead
+  if (project.slug && portfolioImageMap[project.slug]) {
+    return portfolioImageMap[project.slug];
+  }
+
+  // Try to match by category
+  const category = (
+    project.clientIndustry ||
+    project.category ||
+    ""
+  ).toLowerCase();
+  const title = (project.title || "").toLowerCase();
+
+  if (category.includes("agric") || title.includes("farm")) {
+    return "/images/portfolio/agric.png";
+  }
+  if (
+    category.includes("fintech") ||
+    title.includes("bank") ||
+    title.includes("finance")
+  ) {
+    return "/images/portfolio/banking.png";
+  }
+  if (category.includes("ecommerce") || title.includes("market")) {
+    return "/images/portfolio/market.png";
+  }
+  if (category.includes("logistics")) {
+    return "/images/portfolio/logistics.png";
+  }
+  if (category.includes("health")) {
+    return "/images/portfolio/health.png";
+  }
+  if (category.includes("education")) {
+    return "/images/portfolio/learn.png";
+  }
+  if (category.includes("entertainment") || title.includes("music")) {
+    return "/images/portfolio/music.png";
+  }
+  if (category.includes("estate") || title.includes("property")) {
+    return "/images/portfolio/realEstate2.png";
+  }
+  if (category.includes("event") || title.includes("ticket")) {
+    return "/images/portfolio/ticket.png";
+  }
+
+  return "/images/portfolio/business.png";
+}
+
+function PortfolioDetailImage({ src, alt }) {
+  const [imageError, setImageError] = useState(false);
+
+  if (!src || imageError) {
+    return (
+      <div className="premium-detail-placeholder">
+        <span>📁</span>
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      style={{ width: "100%", height: "auto", borderRadius: "16px" }}
+      onError={(event) => {
+        console.warn(`Failed to load detail image: ${src}`);
+        setImageError(true);
+        event.currentTarget.style.display = "none";
+      }}
+    />
+  );
+}
+
 export default function PortfolioDetailPage() {
   const { slug } = useParams();
   const { language, t } = useLanguage();
@@ -77,11 +168,7 @@ export default function PortfolioDetailPage() {
     project.summary,
     t("portfolio.noDescription", "No project description available."),
   );
-  const imageUrl = text(
-    project.coverImageUrl,
-    project.imageUrl,
-    project.thumbnailUrl,
-  );
+  const imageUrl = getPortfolioDetailImage(project);
   const tag = text(
     project.projectType,
     project.clientIndustry,
@@ -103,18 +190,7 @@ export default function PortfolioDetailPage() {
             </div>
           </div>
           <div className="premium-detail-media">
-            {imageUrl ? (
-              <img
-                src={imageUrl}
-                alt={title}
-                loading="lazy"
-                onError={(e) => {
-                  e.target.style.display = "none";
-                }}
-              />
-            ) : (
-              <div className="premium-detail-placeholder">💼</div>
-            )}
+            <PortfolioDetailImage src={imageUrl} alt={title} />
           </div>
         </div>
       </section>

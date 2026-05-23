@@ -233,7 +233,9 @@ export default function PrivacyPolicyPage() {
             viewport={{ once: true }}
             variants={fadeUp}
           >
-            <span>{t("privacy.lastUpdatedLabel", "Last Updated")}</span>
+            <spans className="premium-eyebrow">
+              {t("privacy.lastUpdatedLabel", "Last Updated")}
+            </spans>
             <h2>{updatedDate}</h2>
             <p>
               {t(
@@ -243,7 +245,7 @@ export default function PrivacyPolicyPage() {
             </p>
           </motion.div>
 
-          <div style={{ display: "grid", gap: "18px", marginTop: "22px" }}>
+          <div className="premium-privacy-sections">
             {sections.map((section, index) => (
               <motion.article
                 key={section.title}
@@ -251,7 +253,10 @@ export default function PrivacyPolicyPage() {
                 initial={{ opacity: 0, y: 18 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
-                transition={{ delay: index * 0.025, duration: 0.45 }}
+                transition={{
+                  delay: Math.min(index * 0.025, 0.5),
+                  duration: 0.45,
+                }}
               >
                 <h2 style={{ fontSize: "1.35rem", marginBottom: "10px" }}>
                   {section.title}

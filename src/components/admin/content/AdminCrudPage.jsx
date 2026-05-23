@@ -13,6 +13,56 @@ function normalizeList(payload) {
 function normalizeItemForForm(item, initialValues) {
   const status = item?.status ?? (item?.active ? "PUBLISHED" : "DRAFT");
 
+  // For hero section specifically, map fields correctly
+  const isHero = initialValues.hasOwnProperty("placement");
+
+  if (isHero) {
+    // FIX: Ensure status is properly set from existing item
+    let finalStatus = item?.status;
+    if (!finalStatus && item?.active !== undefined) {
+      finalStatus = item.active ? "PUBLISHED" : "DRAFT";
+    }
+    if (!finalStatus && item?.id) {
+      // If it's an existing item but no status, default to PUBLISHED for display
+      finalStatus = "PUBLISHED";
+    }
+    if (!finalStatus) {
+      finalStatus = "DRAFT";
+    }
+
+    return {
+      ...initialValues,
+      ...item,
+      title: item?.title ?? initialValues.title ?? "",
+      subtitle: item?.subtitle ?? initialValues.subtitle ?? "",
+      body: item?.body ?? item?.description ?? initialValues.body ?? "",
+      backgroundImageUrl:
+        item?.backgroundImageUrl ??
+        item?.imageUrl ??
+        initialValues.backgroundImageUrl ??
+        "",
+      placement: item?.placement ?? initialValues.placement ?? "HOME",
+      primaryButtonLabel:
+        item?.primaryButtonLabel ?? initialValues.primaryButtonLabel ?? "",
+      primaryButtonUrl:
+        item?.primaryButtonUrl ?? initialValues.primaryButtonUrl ?? "",
+      secondaryButtonLabel:
+        item?.secondaryButtonLabel ?? initialValues.secondaryButtonLabel ?? "",
+      secondaryButtonUrl:
+        item?.secondaryButtonUrl ?? initialValues.secondaryButtonUrl ?? "",
+      language: item?.language ?? initialValues.language ?? "EN",
+      status: finalStatus,
+      active: finalStatus === "PUBLISHED",
+      featured: item?.featured ?? initialValues.featured ?? false,
+      displayOrder:
+        item?.displayOrder ??
+        item?.sortOrder ??
+        initialValues.displayOrder ??
+        0,
+    };
+  }
+
+  // For other sections (services, portfolio, etc.)
   return {
     ...initialValues,
     ...item,
@@ -32,34 +82,60 @@ function normalizeItemForForm(item, initialValues) {
     featured: Boolean(item?.featured),
   };
 }
-function buildPayload(form) {
+function buildPayload(form, editingItem = null) {
   const status = form.status || (form.active ? "PUBLISHED" : "DRAFT");
   const order = Number(form.sortOrder ?? form.displayOrder ?? 0);
 
+  // For hero section specifically
+  const isHero = form.hasOwnProperty("placement");
+
+  if (isHero) {
+    // FIX: Properly determine status for hero sections
+    let finalStatus = form.status;
+    if (!finalStatus && form.active !== undefined) {
+      finalStatus = form.active ? "PUBLISHED" : "DRAFT";
+    }
+    if (!finalStatus && editingItem?.status) {
+      finalStatus = editingItem.status;
+    }
+    if (!finalStatus) {
+      finalStatus = "DRAFT";
+    }
+
+    return {
+      language: form.language,
+      placement: form.placement,
+      title: form.title,
+      subtitle: form.subtitle,
+      body: form.body || form.description,
+      backgroundImageUrl: form.backgroundImageUrl || form.imageUrl,
+      primaryButtonLabel: form.primaryButtonLabel,
+      primaryButtonUrl: form.primaryButtonUrl,
+      secondaryButtonLabel: form.secondaryButtonLabel,
+      secondaryButtonUrl: form.secondaryButtonUrl,
+      status: finalStatus,
+      featured: Boolean(form.featured),
+      displayOrder: order,
+      sortOrder: order,
+      active: finalStatus === "PUBLISHED",
+    };
+  }
+
   return {
     ...form,
-
-    // Prefer the fields the admin actually edits in the form.
     name: form.title || form.name,
     title: form.title || form.name,
-
     shortDescription: form.summary || form.shortDescription,
     summary: form.summary || form.shortDescription,
-
     fullDescription: form.description || form.fullDescription,
     description: form.description || form.fullDescription,
-
     iconKey: form.icon || form.iconKey,
     icon: form.icon || form.iconKey,
-
     imageUrl: form.imageUrl,
-
     status,
     active: status === "PUBLISHED",
-
     displayOrder: order,
     sortOrder: order,
-
     featured: Boolean(form.featured),
   };
 }
@@ -135,7 +211,7 @@ export default function AdminCrudPage({ config }) {
     setError("");
 
     try {
-      const payload = buildPayload(form);
+      const payload = buildPayload(form, editingItem);
 
       if (editingItem?.id) {
         await adminContentService.update(
@@ -203,6 +279,9 @@ export default function AdminCrudPage({ config }) {
     }
   };
 
+  // Determine if this is a hero section to show different display
+  const isHeroSection = config.initialValues?.hasOwnProperty("placement");
+
   return (
     <section className="admin-crud-page">
       <div className="admin-crud-hero">
@@ -240,7 +319,9 @@ export default function AdminCrudPage({ config }) {
               <label
                 key={field.name}
                 className={
-                  field.type === "textarea" || field.name === "description"
+                  field.type === "textarea" ||
+                  field.name === "description" ||
+                  field.name === "body"
                     ? "admin-crud-field admin-crud-field--wide"
                     : "admin-crud-field"
                 }
@@ -271,6 +352,7 @@ export default function AdminCrudPage({ config }) {
                     onChange={(event) =>
                       handleChange(field, event.target.value)
                     }
+                    rows={4}
                   />
                 ) : field.type === "checkbox" ? (
                   <input
@@ -345,22 +427,36 @@ export default function AdminCrudPage({ config }) {
                     <td>
                       <div className="admin-crud-title-cell">
                         <strong>
-                          {item.title ||
-                            item.name ||
-                            item.clientName ||
-                            item.placement ||
-                            "Untitled"}
+                          {isHeroSection
+                            ? item.title || "Untitled"
+                            : item.title ||
+                              item.name ||
+                              item.clientName ||
+                              item.placement ||
+                              "Untitled"}
                         </strong>
                         <small>
-                          {item.slug ||
-                            item.summary ||
-                            item.quote ||
-                            item.logoUrl ||
-                            ""}
+                          {isHeroSection
+                            ? item.placement || ""
+                            : item.slug ||
+                              item.summary ||
+                              item.quote ||
+                              item.logoUrl ||
+                              ""}
                         </small>
+                        {isHeroSection && item.subtitle && (
+                          <small
+                            style={{
+                              display: "block",
+                              color: "var(--color-text-muted)",
+                            }}
+                          >
+                            {item.subtitle}
+                          </small>
+                        )}
                       </div>
                     </td>
-                    <td>{item.language || "EN"} </td>
+                    <td>{item.language || "EN"}</td>
                     <td>
                       <span
                         className={`admin-crud-status admin-crud-status--${(
@@ -371,7 +467,7 @@ export default function AdminCrudPage({ config }) {
                       </span>
                     </td>
                     <td>{String(Boolean(item.featured))}</td>
-                    <td>{item.sortOrder ?? item.displayOrder ?? 0}</td>
+                    <td>{item.displayOrder ?? item.sortOrder ?? 0}</td>
                     <td>
                       <div className="admin-crud-actions">
                         <button type="button" onClick={() => handleEdit(item)}>

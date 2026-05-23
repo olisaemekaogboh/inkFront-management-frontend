@@ -2,8 +2,6 @@ import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import useAuth from "../../hooks/useAuth";
-import SimpleThemeToggle from "../common/SimpleThemeToggle";
-import LanguageSwitcher from "../common/LanguageSwitcher";
 import "./AdminLayout.css";
 
 function InkFrontLogo() {
@@ -65,11 +63,18 @@ function getFirstName(user) {
 }
 
 export default function AdminLayout() {
-  const { user, logout } = useAuth();
+  const { user, logout, isAuthenticated, loading } = useAuth();
   const navigate = useNavigate();
 
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [desktopSidebarVisible, setDesktopSidebarVisible] = useState(false);
+
+  // ✅ Check authentication and redirect if not authenticated
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      navigate("/login", { replace: true });
+    }
+  }, [isAuthenticated, loading, navigate]);
 
   useEffect(() => {
     function handleResize() {
@@ -93,6 +98,19 @@ export default function AdminLayout() {
 
   const closeMobileSidebar = () => setMobileSidebarOpen(false);
   const sidebarShouldShow = desktopSidebarVisible || mobileSidebarOpen;
+
+  // Show loading or null while checking auth
+  if (loading) {
+    return (
+      <div className="admin-shell">
+        <div className="admin-loading">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <div className="admin-shell">
@@ -145,11 +163,6 @@ export default function AdminLayout() {
                 </NavLink>
               ))}
             </nav>
-
-            <div className="admin-shell__sidebar-footer">
-              <SimpleThemeToggle />
-              <LanguageSwitcher id="admin-language-switcher" />
-            </div>
           </motion.aside>
         )}
       </AnimatePresence>
@@ -170,12 +183,6 @@ export default function AdminLayout() {
           </div>
 
           <div className="admin-shell__topbar-actions">
-            <div className="admin-shell__desktop-control">
-              <SimpleThemeToggle />
-            </div>
-            <div className="admin-shell__desktop-control">
-              <LanguageSwitcher id="admin-topbar-switcher" />
-            </div>
             <Link
               to="/"
               className="admin-shell__button admin-shell__button--ghost"

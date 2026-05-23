@@ -1,3 +1,4 @@
+// services/authService.js
 import apiClient from "./apiClient";
 
 const API_BASE_URL =
@@ -7,18 +8,37 @@ const BACKEND_ORIGIN = API_BASE_URL.replace(/\/api\/?$/, "").replace(/\/$/, "");
 
 export const authService = {
   async me() {
-    const response = await apiClient.get("/auth/me");
-    return response.data;
+    try {
+      const response = await apiClient.get("/auth/me");
+      return response.data;
+    } catch (error) {
+      console.error("me() error:", error);
+      throw error;
+    }
   },
 
   async login(payload) {
-    const response = await apiClient.post("/auth/login", payload);
-    return response.data;
+    try {
+      const response = await apiClient.post("/auth/login", payload);
+      console.log("Login response status:", response.status);
+      console.log("Login response data:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Login API error - status:", error.response?.status);
+      console.error("Login API error - data:", error.response?.data);
+      // Re-throw the original error so the LoginPage can access error.response
+      throw error;
+    }
   },
 
   async register(payload) {
-    const response = await apiClient.post("/auth/register", payload);
-    return response.data;
+    try {
+      const response = await apiClient.post("/auth/register", payload);
+      return response.data;
+    } catch (error) {
+      console.error("Register API error:", error);
+      throw error;
+    }
   },
 
   async refresh() {

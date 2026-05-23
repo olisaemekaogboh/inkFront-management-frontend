@@ -20,6 +20,173 @@ function text(...values) {
   );
 }
 
+// Map portfolio project slugs to your images based on actual database slugs
+const portfolioImageMap = {
+  // Education
+  "edubridge-school-platform": "/images/portfolio/school.jpg",
+
+  // Logistics
+  "quickship-logistics-dashboard": "/images/portfolio/logistics.png",
+
+  // E-commerce / Marketplace
+  "halamart-marketplace": "/images/portfolio/market.png",
+
+  // Fintech
+  "payswift-bill-payments": "/images/portfolio/banking.png",
+  "savewise-investment-platform": "/images/portfolio/invest.png",
+
+  // Real Estate
+  "propertyfinder-real-estate": "/images/portfolio/realEstate2.png",
+
+  // Entertainment / Music
+  "bloommusic-streaming": "/images/portfolio/music.png",
+
+  // Healthcare
+  "medicare-facility-management": "/images/portfolio/health.png",
+
+  // Agriculture
+  "farmconnect-agritech-marketplace": "/images/portfolio/agric.png",
+
+  // Education Technology
+  "skillbridge-learning-platform": "/images/portfolio/learn.png",
+
+  // Events / Ticketing
+  "eventwave-ticketing-platform": "/images/portfolio/ticket.png",
+
+  // Faith & Community
+  "churchflow-ministry-platform": "/images/portfolio/realEstate.png",
+
+  // Business / Enterprise (default)
+  "business-management": "/images/portfolio/business.png",
+};
+
+// Default fallback images
+const defaultImages = [
+  "/images/portfolio/business.png",
+  "/images/portfolio/agric.png",
+  "/images/portfolio/banking.png",
+  "/images/portfolio/health.png",
+  "/images/portfolio/invest.png",
+  "/images/portfolio/learn.png",
+  "/images/portfolio/logistics.png",
+  "/images/portfolio/market.png",
+  "/images/portfolio/music.png",
+  "/images/portfolio/realEstate.png",
+  "/images/portfolio/realEstate2.png",
+  "/images/portfolio/ticket.png",
+];
+
+function getPortfolioImage(project, index) {
+  // First, try to get image from the project data
+  const projectImage = text(
+    project.coverImageUrl,
+    project.imageUrl,
+    project.thumbnailUrl,
+    project.heroImageUrl,
+    project.featuredImageUrl,
+  );
+
+  if (projectImage && !projectImage.includes("pollinations")) {
+    return projectImage;
+  }
+
+  // Use local image based on slug
+  if (project.slug && portfolioImageMap[project.slug]) {
+    return portfolioImageMap[project.slug];
+  }
+
+  // Try to match by category/industry
+  const category = (
+    project.clientIndustry ||
+    project.category ||
+    ""
+  ).toLowerCase();
+  const title = (project.title || "").toLowerCase();
+
+  if (
+    category.includes("agric") ||
+    title.includes("farm") ||
+    title.includes("agric")
+  ) {
+    return "/images/portfolio/agric.png";
+  }
+  if (
+    category.includes("fintech") ||
+    title.includes("bank") ||
+    title.includes("pay") ||
+    title.includes("finance")
+  ) {
+    return "/images/portfolio/banking.png";
+  }
+  if (
+    category.includes("ecommerce") ||
+    title.includes("market") ||
+    title.includes("shop") ||
+    title.includes("store")
+  ) {
+    return "/images/portfolio/market.png";
+  }
+  if (
+    category.includes("logistics") ||
+    title.includes("ship") ||
+    title.includes("delivery")
+  ) {
+    return "/images/portfolio/logistics.png";
+  }
+  if (
+    category.includes("health") ||
+    title.includes("medical") ||
+    title.includes("hospital")
+  ) {
+    return "/images/portfolio/health.png";
+  }
+  if (
+    category.includes("education") ||
+    title.includes("learn") ||
+    title.includes("course") ||
+    title.includes("school")
+  ) {
+    return "/images/portfolio/learn.png";
+  }
+  if (
+    category.includes("entertainment") ||
+    title.includes("music") ||
+    title.includes("stream")
+  ) {
+    return "/images/portfolio/music.png";
+  }
+  if (category.includes("estate") || title.includes("property")) {
+    return "/images/portfolio/realEstate2.png";
+  }
+  if (category.includes("event") || title.includes("ticket")) {
+    return "/images/portfolio/ticket.png";
+  }
+
+  // Default fallback based on index
+  return defaultImages[index % defaultImages.length];
+}
+
+// Enhanced image component with error handling
+function PortfolioImage({ src, alt, className }) {
+  const [imageError, setImageError] = useState(false);
+
+  if (!src || imageError) return null;
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      className={className}
+      onError={(event) => {
+        console.warn(`Failed to load portfolio image: ${src}`);
+        setImageError(true);
+        event.currentTarget.style.display = "none";
+      }}
+    />
+  );
+}
+
 export default function PortfolioListPage() {
   const { language, t } = useLanguage();
 
@@ -117,76 +284,80 @@ export default function PortfolioListPage() {
             </div>
           ) : (
             <div className="premium-work-grid">
-              {projects.map((project, index) => {
-                const title = text(
-                  project.title,
-                  project.name,
-                  t("portfolioPage.untitled", "Untitled Project"),
-                );
+              {projects
+                .map((project, index) => {
+                  // REMOVED the language filter - now shows ALL languages!
+                  // The API already filters by language, so we don't need to filter again
 
-                const summary = text(
-                  project.summary,
-                  project.shortDescription,
-                  project.description,
-                  t("portfolioPage.noSummary", "Project summary unavailable."),
-                );
+                  const title = text(
+                    project.title,
+                    project.name,
+                    t("portfolioPage.untitled", "Untitled Project"),
+                  );
 
-                const imageUrl = text(
-                  project.coverImageUrl,
-                  project.imageUrl,
-                  project.thumbnailUrl,
-                  project.heroImageUrl,
-                );
+                  const summary = text(
+                    project.summary,
+                    project.shortDescription,
+                    project.description,
+                    t(
+                      "portfolioPage.noSummary",
+                      "Project summary unavailable.",
+                    ),
+                  );
 
-                const tag = text(
-                  project.projectType,
-                  project.clientIndustry,
-                  project.category,
-                  t("portfolioPage.project", "Project"),
-                );
+                  const imageUrl = getPortfolioImage(project, index);
 
-                const to = project.slug
-                  ? `/portfolio/${project.slug}`
-                  : "/portfolio";
+                  const tag = text(
+                    project.projectType,
+                    project.clientIndustry,
+                    project.category,
+                    t("portfolioPage.project", "Project"),
+                  );
 
-                return (
-                  <motion.div
-                    key={project.id ?? project.slug ?? index}
-                    initial={{ opacity: 0, y: 22 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.04 }}
-                    viewport={{ once: true }}
-                  >
-                    <Link to={to} className="premium-work-card">
-                      <div className="premium-work-card__image">
-                        {imageUrl ? (
-                          <img
-                            src={imageUrl}
-                            alt={title}
-                            loading="lazy"
-                            onError={(event) => {
-                              event.currentTarget.style.display = "none";
-                            }}
-                          />
-                        ) : (
-                          <div className="premium-work-card__placeholder">
-                            <span>💼</span>
-                          </div>
-                        )}
-                      </div>
+                  const to = project.slug
+                    ? `/portfolio/${project.slug}`
+                    : "/portfolio";
 
-                      <div className="premium-work-card__content">
-                        <span className="premium-mini-badge">{tag}</span>
-                        <h3>{title}</h3>
-                        <p>{summary}</p>
-                        <strong>
-                          {t("common.viewProject", "View project")} →
-                        </strong>
-                      </div>
-                    </Link>
-                  </motion.div>
-                );
-              })}
+                  return (
+                    <motion.div
+                      key={project.id ?? project.slug ?? index}
+                      initial={{ opacity: 0, y: 22 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.04 }}
+                      viewport={{ once: true }}
+                    >
+                      <Link to={to} className="premium-work-card">
+                        <div className="premium-work-card__images">
+                          {imageUrl ? (
+                            <PortfolioImage
+                              src={imageUrl}
+                              alt={title}
+                              className="premium-work-card__img"
+                            />
+                          ) : (
+                            <div className="premium-work-card__placeholder">
+                              <span>💼</span>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="premium-work-card__content">
+                          <span className="premium-mini-badge">{tag}</span>
+                          <h3>{title}</h3>
+                          <p>
+                            {summary.length > 100
+                              ? summary.substring(0, 100) + "..."
+                              : summary}
+                          </p>
+                          <strong>
+                            {t("common.viewProject", "View project")} →
+                          </strong>
+                        </div>
+                      </Link>
+                    </motion.div>
+                  );
+                })
+                .filter(Boolean)}
             </div>
           )}
         </div>

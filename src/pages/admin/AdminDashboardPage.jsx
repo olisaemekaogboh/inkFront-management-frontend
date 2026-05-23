@@ -20,6 +20,7 @@ import blogService from "../../services/blogService";
 import { serviceCatalogService } from "../../services/serviceCatalogService";
 import { portfolioService } from "../../services/portfolioService";
 import { productBlueprintService } from "../../services/productBlueprintService";
+import useAuth from "../../hooks/useAuth";
 import "./AdminDashboardPage.css";
 
 const CHART_COLORS = ["#6366f1", "#10b981", "#f59e0b", "#8b5cf6"];
@@ -112,10 +113,15 @@ const getMessageEmail = (message) =>
 const getMessageStatus = (message) =>
   normalizeStatus(message?.status || message?.messageStatus || "new");
 
-const safeRequest = async (request, fallback) => {
+const safeRequest = async (request, fallback, retryCount = 0) => {
   try {
     return await request();
   } catch (error) {
+    // Retry up to 3 times on 401
+    if (error?.response?.status === 401 && retryCount < 3) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      return safeRequest(request, fallback, retryCount + 1);
+    }
     console.warn("Dashboard request failed:", error?.response?.data || error);
     return fallback;
   }
@@ -312,48 +318,92 @@ async function fetchDashboardStats() {
 }
 
 export default function AdminDashboardPage() {
+  const { isAuthenticated, loading: authLoading } = useAuth();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     let active = true;
+    let mounted = true;
 
     const loadDashboard = async () => {
+      // Wait for auth to be ready
+      if (authLoading) {
+        return;
+      }
+
+      if (!isAuthenticated) {
+        setLoading(false);
+        setErrorMessage("Please log in to view the dashboard.");
+        return;
+      }
+
       try {
         setLoading(true);
         setErrorMessage("");
 
         const data = await fetchDashboardStats();
 
-        if (active) {
+        if (active && mounted) {
           setStats(data);
         }
       } catch (error) {
         console.error("Failed to load dashboard:", error);
 
-        if (active) {
+        if (active && mounted) {
           setErrorMessage("Unable to load dashboard data.");
           setStats(null);
         }
       } finally {
-        if (active) {
+        if (active && mounted) {
           setLoading(false);
         }
       }
     };
 
-    loadDashboard();
+    // Small delay to ensure auth cookie is processed
+    const timer = setTimeout(() => {
+      loadDashboard();
+    }, 500);
 
     return () => {
       active = false;
+      mounted = false;
+      clearTimeout(timer);
     };
-  }, []);
+  }, [isAuthenticated, authLoading]);
 
   const hasDistributionData = useMemo(
     () => stats?.contentDistribution?.some((item) => item.count > 0),
     [stats],
   );
+
+  // Show loading while checking authentication
+  if (authLoading) {
+    return (
+      <div className="admin-dashboard">
+        <div className="admin-dashboard__loading">
+          <div className="admin-dashboard__spinner" />
+          <p>Authenticating...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show login required message
+  if (!isAuthenticated) {
+    return (
+      <div className="admin-dashboard">
+        <div className="admin-dashboard__loading">
+          <p>Please log in to access the dashboard.</p>
+          <Link to="/login" className="admin-dashboard__action-btn">
+            Go to Login
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -371,9 +421,17 @@ export default function AdminDashboardPage() {
       <div className="admin-dashboard">
         <div className="admin-dashboard__loading">
           <p>{errorMessage || "Unable to load dashboard data."}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="admin-dashboard__action-btn"
+            style={{ marginTop: "12px" }}
+          >
+            Retry
+          </button>
           <Link
             to="/admin/contact-messages"
             className="admin-dashboard__action-btn"
+            style={{ marginTop: "12px", marginLeft: "12px" }}
           >
             Open messages
           </Link>
