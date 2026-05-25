@@ -720,10 +720,25 @@ export default {
     featured: "Fitaccen",
     readMore: "Karanta labari",
     readTime: "minti 2 karatu",
-
+    minRead: "minti 2 karatu",
     emptyTitle: "Ba'a sami labarai ba",
     emptyText:
       "Labaran da aka buga don wannan harshe ko matattara zasu bayyana anan.",
+
+    watchVideo: "Kalli bidiyo",
+    gallery: "Hotuna",
+    articleSummary: "Takaitaccen labari",
+    summaryFallback:
+      "Hankali mai amfani daga InkFront ga masu kasuwanci da ƙungiyoyin dijital.",
+    discussProject: "Tattauna aikin ku",
+    moreFeatured: "Ƙarin fitattun",
+    relatedLabel: "Karatu mai alaƙa",
+    relatedTitle: "Ci gaba da bincike",
+    viewAll: "Duba duka",
+    noRelated: "Ƙarin labarai masu alaƙa za su bayyana nan ba da jimawa ba.",
+    notFoundTitle: "Ba a sami labari ba",
+    notFoundText: "Wataƙila an cire wannan labarin ko ba a buga shi ba.",
+    backToBlog: "Koma zuwa bulogi",
   },
   pages: {
     home: {

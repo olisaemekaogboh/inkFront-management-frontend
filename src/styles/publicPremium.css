@@ -2952,7 +2952,7 @@
 }
 
 .premium-carousel-card {
-  animation: fadeInUp 0.6s ease-out;
+  animation: fadeInUp 0.01s ease-out;
 }
 /* ============================================ */
 /* Auth Forms - Register & Login */

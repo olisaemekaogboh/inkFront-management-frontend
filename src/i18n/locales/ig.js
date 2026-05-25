@@ -718,9 +718,24 @@ export default {
     featured: "Ọpụrụiche",
     readMore: "Gụọ akụkọ",
     readTime: "nkeji 2 ọgụgụ",
-
+    minRead: "nkeji 2  ọgụgụ",
     emptyTitle: "Ọ nweghị akụkọ achọtara",
     emptyText: "Akụkọ ebipụtara maka asụsụ ma ọ bụ nzacha a ga-apụta ebe a.",
+
+    watchVideo: "Lee vidiyo",
+    gallery: "Nchịkọta foto",
+    articleSummary: "Nchịkọta edemede",
+    summaryFallback:
+      "Nghọta bara uru sitere na InkFront maka ndị nwe azụmahịa na ndị otu dijitalụ.",
+    discussProject: "Kwurịta ọrụ gị",
+    moreFeatured: "Ọzọ pụtara ìhè",
+    relatedLabel: "Ọgụgụ metụtara",
+    relatedTitle: "Gaa n'ihu na-enyocha",
+    viewAll: "Lee ha niile",
+    noRelated: "Edemede ndị ọzọ metụtara ga-apụta ebe a n'oge na-adịghị anya.",
+    notFoundTitle: "Ahụghị edemede",
+    notFoundText: "Enwere ike iwepụ ma ọ bụ bipụta edemede a.",
+    backToBlog: "Laghachi na blọọgụ",
   },
   pages: {
     home: {

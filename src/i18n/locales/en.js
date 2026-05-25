@@ -696,10 +696,25 @@ export default {
     featured: "Featured",
     readMore: "Read article",
     readTime: "2 min read",
-
+    minRead: "2 min read",
     emptyTitle: "No articles found",
     emptyText:
       "Published articles for this language or filter will appear here.",
+
+    watchVideo: "Watch video",
+    gallery: "Gallery",
+    articleSummary: "Article summary",
+    summaryFallback:
+      "A practical insight from InkFront for business owners and digital teams.",
+    discussProject: "Discuss your project",
+    moreFeatured: "More featured",
+    relatedLabel: "Related reading",
+    relatedTitle: "Continue exploring",
+    viewAll: "View all",
+    noRelated: "More related articles will appear here soon.",
+    notFoundTitle: "Article not found",
+    notFoundText: "This article may have been removed or unpublished.",
+    backToBlog: "Back to blog",
   },
 
   pages: {

@@ -1019,28 +1019,6 @@ export default function HomePage() {
                     className="premium-card-image"
                   />
                   <div className="premium-card-body">
-                    <div className="premium-icon">
-                      {(() => {
-                        const iconMap = {
-                          code: "💻",
-                          workflow: "⚙️",
-                          target: "🎯",
-                          "shopping-cart": "🛒",
-                          search: "🔎",
-                          layers: "🧩",
-                          smartphone: "📱",
-                        };
-                        const key =
-                          service.iconKey ||
-                          service.icon_key ||
-                          service.icon ||
-                          "";
-                        return (
-                          iconMap[key] ||
-                          ["🚀", "⚙️", "📊", "🎨", "💻", "📱"][index % 6]
-                        );
-                      })()}
-                    </div>
                     <h3>{title}</h3>
                     <p>{summary}</p>
 
@@ -1312,9 +1290,6 @@ export default function HomePage() {
       >
         <div className="premium-container">
           <div className="premium-services-banner">
-            <span className="premium-services-banner__icon" aria-hidden="true">
-              ⚡
-            </span>
             <h2 className="premium-services-banner__title">
               {t(
                 "pages.home.bannerTitle",

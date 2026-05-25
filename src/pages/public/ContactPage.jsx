@@ -361,7 +361,6 @@ export default function ContactPage() {
 
           <aside className="premium-contact-sidebar">
             <div className="premium-info-panel">
-              <span style={{ fontSize: "2rem" }}>📋</span>
               <h2>{t("pages.contact.inquiry", "Project inquiry")}</h2>
               <p>
                 {t(
@@ -372,7 +371,6 @@ export default function ContactPage() {
             </div>
 
             <div className="premium-info-panel">
-              <span style={{ fontSize: "2rem" }}>✅</span>
               <h3>
                 {t("pages.contact.nextSteps.title", "What happens next?")}
               </h3>
@@ -385,7 +383,6 @@ export default function ContactPage() {
             </div>
 
             <div className="premium-info-panel">
-              <span style={{ fontSize: "2rem" }}>📝</span>
               <h3>
                 {t(
                   "pages.contact.detailsToInclude.title",
@@ -401,7 +398,6 @@ export default function ContactPage() {
             </div>
 
             <div className="premium-info-panel">
-              <span style={{ fontSize: "2rem" }}>💬</span>
               <h3>{t("pages.contact.howWeRespond.title", "How we respond")}</h3>
               <p>
                 {t(
@@ -412,7 +408,6 @@ export default function ContactPage() {
             </div>
 
             <div className="premium-info-panel">
-              <span style={{ fontSize: "2rem" }}>🔒</span>
               <h3>{t("pages.contact.storedSafely.title", "Stored safely")}</h3>
               <p>
                 {t(

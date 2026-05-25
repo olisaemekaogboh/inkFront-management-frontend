@@ -58,7 +58,7 @@
   border: 1px solid var(--app-border);
   border-radius: 18px;
   padding: 14px 15px;
-  background: var(--app-surface);
+  background: rgb(66, 66, 66);
   color: var(--app-text);
   font: inherit;
   outline: none;

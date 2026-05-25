@@ -274,8 +274,6 @@ export default function ServicesPage() {
             transition={{ duration: 0.6 }}
             className="premium-services-banner"
           >
-            <span className="premium-services-banner__icon">💡</span>
-
             <h2 className="premium-services-banner__title">
               {t(
                 "servicesPage.bannerTitle",

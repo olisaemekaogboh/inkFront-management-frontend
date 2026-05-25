@@ -715,9 +715,24 @@ export default {
     featured: "Afihan",
     readMore: "Ka nkan",
     readTime: "iṣẹju 2 kika",
-    minRead: "iṣẹju ${minutes} kika",
+    minRead: "iṣẹju 2 kika",
     emptyTitle: "Ko si awọn nkan ti a ri",
     emptyText: "Awọn nkan ti a tẹjade fun ede tabi àlẹmọ yii yoo han nibi.",
+
+    watchVideo: "Wo fidio",
+    gallery: "Aworan",
+    articleSummary: "Akopọ nkan",
+    summaryFallback:
+      "Oye to wulo lati InkFront fun awọn onile iṣowo ati awọn ẹgbẹ oni-nọmba.",
+    discussProject: "Jiroro lori iṣẹ akanṣe rẹ",
+    moreFeatured: "Diẹ sii ti a ṣe afihan",
+    relatedLabel: "Kika ti o jọmọ",
+    relatedTitle: "Tẹsiwaju ṣawari",
+    viewAll: "Wo gbogbo",
+    noRelated: "Awọn nkan to jọmọ diẹ sii yoo han nibi laipẹ.",
+    notFoundTitle: "A ko ri nkan",
+    notFoundText: "O le ti yọ nkan yii kuro tabi ko ṣe atẹjade.",
+    backToBlog: "Pada si buloogu",
   },
   pages: {
     home: {
