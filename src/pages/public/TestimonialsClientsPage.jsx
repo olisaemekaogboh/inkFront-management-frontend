@@ -130,7 +130,7 @@ export default function TestimonialsClientsPage() {
 
           {loading ? (
             <div className="premium-loading">
-              {t("states.loadingPage", "Loading client content...")}
+              {t("states.loadingTestimonials", "Loading client content...")}
             </div>
           ) : testimonials.length === 0 ? (
             <div className="premium-empty-card">

@@ -106,7 +106,7 @@ export default function ProductBlueprintPage() {
             transition={{ duration: 0.65 }}
           >
             <span className="premium-eyebrow">
-              {t("nav.products", "Product Blueprint")}
+              {t("products.eyebrow", "Product Blueprint")}
             </span>
 
             <h1>{title}</h1>
@@ -139,7 +139,9 @@ export default function ProductBlueprintPage() {
                 }}
               />
             ) : (
-              <div className="premium-detail-placeholder">🧩</div>
+              <div className="premium-detail-placeholder">
+                {t("products.placeholderIcon", "🧩")}
+              </div>
             )}
           </motion.div>
         </div>

@@ -100,10 +100,6 @@ export default function ContactPage() {
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
 
-  /* FIX:
-     When site language changes, sync preferredLanguage dropdown.
-     Before it stayed on EN forever.
-  */
   useEffect(() => {
     setForm((current) => ({
       ...current,
@@ -200,7 +196,7 @@ export default function ContactPage() {
             <p>
               {t(
                 "pages.contact.subtitle",
-                "Send your project details directly to the InkFront admin team.",
+                "Send your project details directly to the InkFront admin team. Your inquiry will be saved, tracked, and followed up from the admin CRM.",
               )}
             </p>
           </motion.div>
@@ -211,6 +207,13 @@ export default function ContactPage() {
         <div className="premium-container premium-contact-grid">
           <article className="premium-contact-panel">
             <h2>{t("pages.contact.sendMessage", "Send us a message")}</h2>
+
+            <p>
+              {t(
+                "pages.contact.description",
+                "Tell us what you want to build. Include your project goal, preferred timeline, required features, and budget range if you already have one.",
+              )}
+            </p>
 
             {success && (
               <div className="premium-form-alert premium-form-alert-success">
@@ -232,6 +235,10 @@ export default function ContactPage() {
                     name="fullName"
                     value={form.fullName}
                     onChange={handleChange}
+                    placeholder={t(
+                      "forms.contact.fullNamePlaceholder",
+                      "Your full name",
+                    )}
                     required
                   />
                 </label>
@@ -243,6 +250,10 @@ export default function ContactPage() {
                     name="email"
                     value={form.email}
                     onChange={handleChange}
+                    placeholder={t(
+                      "forms.contact.emailPlaceholder",
+                      "you@example.com",
+                    )}
                     required
                   />
                 </label>
@@ -253,6 +264,7 @@ export default function ContactPage() {
                     name="phone"
                     value={form.phone}
                     onChange={handleChange}
+                    placeholder={t("forms.contact.phonePlaceholder", "+234...")}
                   />
                 </label>
 
@@ -262,6 +274,10 @@ export default function ContactPage() {
                     name="company"
                     value={form.company}
                     onChange={handleChange}
+                    placeholder={t(
+                      "forms.contact.companyPlaceholder",
+                      "Company or brand name",
+                    )}
                   />
                 </label>
               </div>
@@ -308,6 +324,10 @@ export default function ContactPage() {
                   name="subject"
                   value={form.subject}
                   onChange={handleChange}
+                  placeholder={t(
+                    "forms.contact.subjectPlaceholder",
+                    "What do you need?",
+                  )}
                   required
                 />
               </label>
@@ -318,6 +338,10 @@ export default function ContactPage() {
                   name="message"
                   value={form.message}
                   onChange={handleChange}
+                  placeholder={t(
+                    "forms.contact.messagePlaceholder",
+                    "Describe your project, timeline, budget range, required pages/features, and what problem you want to solve...",
+                  )}
                   required
                   rows={7}
                 />
@@ -337,11 +361,64 @@ export default function ContactPage() {
 
           <aside className="premium-contact-sidebar">
             <div className="premium-info-panel">
-              <span style={{ fontSize: "2rem" }}>🌍</span>
-              <h2>{LANGUAGE_LABELS[activeLanguage]}</h2>
+              <span style={{ fontSize: "2rem" }}>📋</span>
+              <h2>{t("pages.contact.inquiry", "Project inquiry")}</h2>
               <p>
-                Current site language is synced correctly with service options
-                and preferred language.
+                {t(
+                  "pages.contact.description",
+                  "Tell us what you want to build. Include your project goal, preferred timeline, required features, and budget range if you already have one.",
+                )}
+              </p>
+            </div>
+
+            <div className="premium-info-panel">
+              <span style={{ fontSize: "2rem" }}>✅</span>
+              <h3>
+                {t("pages.contact.nextSteps.title", "What happens next?")}
+              </h3>
+              <p>
+                {t(
+                  "pages.contact.nextSteps.description",
+                  "Your message is saved inside the admin Contact CRM, where the team can review it, assign it, update status, and follow up.",
+                )}
+              </p>
+            </div>
+
+            <div className="premium-info-panel">
+              <span style={{ fontSize: "2rem" }}>📝</span>
+              <h3>
+                {t(
+                  "pages.contact.detailsToInclude.title",
+                  "Best details to include",
+                )}
+              </h3>
+              <p>
+                {t(
+                  "pages.contact.detailsToInclude.description",
+                  "Include your business type, project goal, required features, timeline, budget range, and any reference websites you like.",
+                )}
+              </p>
+            </div>
+
+            <div className="premium-info-panel">
+              <span style={{ fontSize: "2rem" }}>💬</span>
+              <h3>{t("pages.contact.howWeRespond.title", "How we respond")}</h3>
+              <p>
+                {t(
+                  "pages.contact.howWeRespond.description",
+                  "We review the request and reply with a practical recommendation, possible scope, timeline, and next step.",
+                )}
+              </p>
+            </div>
+
+            <div className="premium-info-panel">
+              <span style={{ fontSize: "2rem" }}>🔒</span>
+              <h3>{t("pages.contact.storedSafely.title", "Stored safely")}</h3>
+              <p>
+                {t(
+                  "pages.contact.storedSafely.description",
+                  "Every inquiry is stored as a CRM message so no lead gets lost in email, chat, or manual notes.",
+                )}
               </p>
             </div>
           </aside>

@@ -54,7 +54,7 @@ export default {
     services: "Awọn iṣẹ",
     portfolio: "Awọn iṣẹ ti a ṣe",
     products: "Awọn ọja",
-    blog: "Oju ewe akọọlẹ",
+    blog: "Buloogu",
     clients: "Awọn alabara",
     contact: "Kan si",
     admin: "Alabojuto",
@@ -62,12 +62,32 @@ export default {
     logout: "Jade",
     account: "Akọọlẹ",
     dashboard: "Dashboard",
+    menu: "Akojọ aṣayan",
     openMenu: "Ṣii akojọ aṣayan",
     closeMenu: "Tii akojọ aṣayan",
   },
 
   footer: {
-    copyright: "© {year} {appName}. Gbogbo ẹtọ wa ni ipamọ.",
+    description:
+      "InkFront n kọ awọn oju opo wẹẹbu to dara julọ, awọn eto ifiṣura, awọn dashboards, awọn bulọọgi, awọn iwe iroyin, awọn ẹnu-ọna, ati awọn irinṣẹ sọfitiwia aṣa fun awọn iṣowo igbalode.",
+    explore: "Ṣawari",
+    company: "Ile-iṣẹ",
+    startTitle: "Bẹrẹ pẹlu InkFront",
+    startText:
+      "Ṣe o ṣetan lati ṣe igbega iṣowo rẹ lori ayelujara? Jẹ ki InkFront kọ eto oni-nọmba mimọ, ti igbalode fun ami iyasọtọ rẹ.",
+    contactButton: "Kan si InkFront",
+    phone: "+234 903 017 5230",
+    email: "info@inkfront.com",
+    address: "4 Basden Street, Fegge, Onitsha, Anambra, Nigeria",
+    viewMap: "Wo lori Google Maps",
+    rights: "Gbogbo ẹtọ wa ni ipamọ.",
+    terms: "Awọn ofin",
+    privacy: "Aṣiri",
+    contact: "Kan si",
+    cookies: "Kuki",
+    termsConditions: "Awọn Ofin & Ipo",
+    privacyPolicy: "Ilana Aṣiri",
+    cookiesPolicy: "Ilana Kuki",
   },
 
   auth: {
@@ -604,21 +624,129 @@ export default {
       },
     },
   },
-
+  portfolioPage: {
+    title: "Iṣẹ ti a yan ati awọn ikẹkọọ ọran",
+    description:
+      "Ṣawari awọn oju opo wẹẹbu, awọn pẹpẹ, awọn dashboards, ati awọn eto iṣowo ti a kọ lati ṣe iranlọwọ fun awọn ami iyasọtọ lati dagba lori ayelujara.",
+    empty: "Ko si awọn iṣẹ akanṣe portfolio ti o wa sibẹsibẹ.",
+    untitled: "Iṣẹ Akanṣe ti Ko Ni Akọle",
+    noSummary: "Akopọ iṣẹ akanṣe ko si.",
+    project: "Iṣẹ Akanṣe",
+    loadError: "A kuna lati gbe iṣẹ akanṣe portfolio.",
+  },
+  servicesPage: {
+    title: "Awọn iṣẹ ti o n mu iṣowo rẹ dagba",
+    description:
+      "Lati awọn oju opo wẹẹbu aṣa si awọn eto adaṣe kikun, a n kọ awọn ọja oni-nọmba ti o ṣe iranlọwọ fun ọ lati ṣiṣẹ ni ọgbọn, ta diẹ sii, ati dagba ni iyara.",
+    empty: "Ko si awọn iṣẹ ti o wa sibẹsibẹ.",
+    untitled: "Iṣẹ ti Ko Ni Akọle",
+    descriptionFallback: "Awọn alaye iṣẹ yoo han nibi.",
+    viewDetails: "Wo awọn alaye iṣẹ",
+    bannerTitle: "Awọn iṣẹ ti ifarada fun gbogbo ọja ti a n kọ",
+    bannerText:
+      "Gbogbo apẹrẹ ọja lori pẹpẹ wa ni a le kọ bi iṣẹ kikun. A n funni ni idiyele ti o rọ - lati awọn ifilọlẹ MVP ti o bẹrẹ ni",
+    bannerTextEnd:
+      "si awọn pẹpẹ ile-iṣẹ kikun. O n sanwo nikan fun ohun ti iṣowo rẹ nilo looto.",
+    ctaEyebrow: "Ṣetan lati bẹrẹ?",
+    ctaTitle: "Sọ fun wa ohun ti o nilo lati kọ",
+    ctaDescription:
+      "A yoo ba ọ mu pẹlu package iṣẹ ti o tọ ki a fun ọ ni ago ati idiyele ti o ṣe kedere - ko si awọn owo ti o farapamọ.",
+    ctaButton: "Gba ijumọsọrọ ọfẹ",
+  },
+  productsPage: {
+    title: "Awọn apẹrẹ ọja fun awọn iṣowo to ṣe pataki",
+    description:
+      "Ṣawari awọn igbekalẹ ọja oni-nọmba ti o ṣetan lati kọ fun awọn oju opo wẹẹbu, awọn eto ifiṣura, awọn ẹnu-ọna, awọn ile-iwe, iṣowo e-commerce, ati awọn dashboards iṣowo.",
+    empty: "Ko si awọn ọja ti o wa sibẹsibẹ.",
+    untitled: "Ọja ti Ko Ni Akọle",
+    noSummary: "Akopọ ọja ko si.",
+    blueprint: "Apẹrẹ",
+    viewBlueprint: "Wo apẹrẹ",
+  },
+  products: {
+    notFound: "A ko ri ọja.",
+    untitled: "Ọja ti Ko Ni Akọle",
+    noSummary: "Ko si akopọ ọja ti o wa.",
+    eyebrow: "Apẹrẹ Ọja",
+    challenge: "Ipenija",
+    solution: "Ojutu",
+    features: "Awọn Ifojusi Ẹya",
+    keyBenefits: "Awọn Anfani Pataki",
+    useCases: "Awọn Ọran Lilo",
+    targetUsers: "Awọn Olumulo ti A Pinnu",
+    techStack: "Akopọ Imọ-ẹrọ",
+    timeline: "Ago Ti A Ro",
+    ctaEyebrow: "Kọ pẹlu mimọ",
+    ctaTitle: "Ṣetan lati yi apẹrẹ yii pada si ọja gidi?",
+    ctaDescription:
+      "Jẹ ki InkFront ṣe iranlọwọ fun ọ lati yi ero rẹ pada si pẹpẹ iṣowo didan.",
+    placeholderIcon: "🧩",
+  },
+  clientsPage: {
+    title: "Awọn itan alabara, awọn ifihan agbara igbẹkẹle, ati ẹri iṣowo",
+    description:
+      "Awọn esi lati awọn ifaramọ alabara ati awọn ajo ti a ṣe atilẹyin pẹlu awọn oju opo wẹẹbu, awọn ọja oni-nọmba, ati awọn eto iṣowo.",
+    testimonialsEyebrow: "Awọn Ẹri",
+    testimonialsTitle: "Ohun ti awọn alabara n sọ nipa ṣiṣẹ pẹlu InkFront",
+    testimonialsDescription:
+      "Ẹri gidi yẹ ki o ṣe iranlọwọ fun awọn alabara iwaju lati loye didara, mimọ, ati alamọdaju iṣẹ rẹ.",
+    noTestimonials: "Ko si awọn ẹri ti o wa sibẹsibẹ.",
+    defaultQuote: "Ko si ọrọ ẹri.",
+    anonymous: "Alabara Ailorukọ",
+    client: "Alabara",
+    logosTitle: "Awọn ajo ti a gbẹkẹle ati awọn ami iyasọtọ alabara",
+    noLogos: "Ko si awọn aami alabara ti o wa sibẹsibẹ.",
+    ctaEyebrow: "Darapọ mọ itan aṣeyọri ti n bọ",
+    ctaTitle: "Jẹ ki a kọ pẹpẹ alamọdaju fun ami iyasọtọ rẹ.",
+    ctaDescription:
+      "Oju opo wẹẹbu rẹ yẹ ki o sọ igbẹkẹle, fi ẹri han, ati yi awọn alejo pada si awọn ibaraẹnisọrọ gidi.",
+  },
+  blog: {
+    eyebrow: "InkFront Buloogu",
+    title: "Awọn imọran, ilana, ati idagbasoke oni-nọmba",
+    subtitle:
+      "Ka awọn nkan ti o wulo lori awọn oju opo wẹẹbu, awọn eto ifiṣura, adaṣiṣẹ, hihan iṣowo, ati awọn iṣẹ oni-nọmba to dara julọ.",
+    readArticles: "Ka awọn nkan",
+    featuredLabel: "Awọn oye pataki",
+    noFeatured: "Awọn nkan pataki yoo han nibi ni kete ti wọn ba tẹjade.",
+    latestLabel: "Awọn nkan tuntun",
+    latestTitle: "Awọn ero titun fun ami iyasọtọ rẹ",
+    clearFilters: "Nu awọn àlẹmọ",
+    featured: "Afihan",
+    readMore: "Ka nkan",
+    readTime: "iṣẹju 2 kika",
+    minRead: "iṣẹju ${minutes} kika",
+    emptyTitle: "Ko si awọn nkan ti a ri",
+    emptyText: "Awọn nkan ti a tẹjade fun ede tabi àlẹmọ yii yoo han nibi.",
+  },
   pages: {
     home: {
       eyebrow: "InkFront Digital Systems",
       heroTitle: "Kọ wiwa oni-nọmba ti o dara julọ fun iṣowo rẹ",
       heroSubtitle:
         "InkFront n ṣe apẹrẹ ati kọ awọn oju opo wẹẹbu, awọn oju-iwe ọja, awọn ẹnu-ọna, ati awọn pẹpẹ iṣowo ti o ṣe iranlọwọ fun ami iyasọtọ rẹ lati dabi ẹni ti a gbẹkẹle, yi awọn oludari pada, ati dagba lori ayelujara.",
+      heroPanelEyebrow: "Ti a kọ fun idagba",
+      heroPanelTitle:
+        "Awọn oju opo wẹẹbu, awọn dashboards, awọn ẹnu-ọna, ati awọn eto ti o ṣetan fun ifilọlẹ.",
+      heroPanelItem1: "Iwaju",
+      heroPanelItem2: "Ẹhin",
+      heroPanelItem3: "Akoonu",
+      heroPanelStatus: "Nla",
       statsProjects: "Awọn iṣẹ akanṣe",
       statsServices: "Awọn iṣẹ pataki",
       statsBusiness: "Idojukọ iṣowo",
       statsSystem: "Eto iṣowo laaye",
       systemsTitle: "Awọn oju opo wẹẹbu. Awọn ẹnu-ọna. Awọn ọja.",
       whatWeDo: "Ohun ti a n ṣe",
+      processEyebrow: "Bi a ṣe n ṣiṣẹ",
+      processTitle:
+        "Ilana ti o ṣe kedere lati ero si eto ti o ṣetan fun ifilọlẹ.",
+      processDescription:
+        "A kii ṣe apẹrẹ awọn iboju nikan. A n ṣeto ṣiṣan iṣowo, akoonu, data ẹhin, iṣakoso alabojuto, ati iriri olumulo papọ.",
       productDirection: "Itọsọna ọja",
       productTitle: "Yi ero rẹ pada si eto iṣowo ti o ṣe kedere ti a le kọ.",
+      productSubtitle:
+        "Lo awọn apẹrẹ ọja InkFront lati ṣalaye awọn oju-iwe, awọn ẹya, akoonu, ṣiṣan alabojuto, ati itọsọna ifilọlẹ ṣaaju ki idagbasoke to bẹrẹ.",
       selectedWork: "Iṣẹ ti a yan",
       clientConfidence: "Igbẹkẹle alabara",
       testimonialSubtitle:
@@ -638,16 +766,71 @@ export default {
       happyClient: "Alabara Alayọ",
       defaultQuote:
         "Pẹpẹ didan ti o ṣe iranlọwọ fun iṣowo lati dabi alamọdaju diẹ sii lori ayelujara.",
+      bannerTitle:
+        "Ṣe o nilo oju opo wẹẹbu, ẹnu-ọna, eto ifiṣura, tabi pẹpẹ iṣowo kikun?",
+      bannerText:
+        "InkFront le ṣe iranlọwọ fun ọ lati gbe lati awọn ero ti o tuka si eto didan ti o ni awọn oju-iwe, akoonu, data ẹhin, ifamọra, awọn irinṣẹ alabojuto, ati iriri gbogbo eniyan ti o dahun.",
+      processSteps: {
+        discover: {
+          title: "Ṣawari",
+          text: "A n ṣalaye awọn ibi-afẹde iṣowo rẹ, awọn olugbo, awọn iṣẹ, ati iru eto ti o nilo.",
+        },
+        structure: {
+          title: "Ṣeto",
+          text: "A n ṣe maapu awọn oju-iwe, ṣiṣan akoonu, awọn iwulo alabojuto, irin-ajo olumulo, ati awoṣe data ẹhin.",
+        },
+        build: {
+          title: "Kọ",
+          text: "A n ṣe idagbasoke iwaju, ẹhin, iṣakoso akoonu, ifamọra, ati awọn iṣọpọ.",
+        },
+        launch: {
+          title: "Ifilọlẹ",
+          text: "A n ṣe didan idahun, iṣẹ ṣiṣe, awọn ipilẹ SEO, idanwo, ati imurasilẹ imuṣiṣẹ.",
+        },
+      },
+      logoFallback: {
+        websites: "Awọn oju opo wẹẹbu",
+        portals: "Awọn ẹnu-ọna",
+        bookings: "Awọn ifiṣura",
+        dashboards: "Awọn dashboards",
+        stores: "Awọn ile itaja",
+      },
       fallbackServices: {
         webDev: "Idagbasoke Oju Opo Wẹẹbu",
         webDevSummary:
           "Awọn oju opo wẹẹbu ti o yara, ti o dahun, ti o ṣetan SEO ti a kọ lati ṣe iranlọwọ fun iṣowo rẹ lati dabi ẹni ti a gbẹkẹle.",
+        webDevTimeline: "Awọn ọjọ 7–21",
+        webDevHighlights:
+          "Awọn oju-iwe ibalẹ, awọn oju opo wẹẹbu ile-iṣẹ, eto SEO, ṣiṣan olubasọrọ",
         software: "Sọfitiwia Aṣa",
         softwareSummary:
           "Awọn dashboards, awọn eto ifiṣura, awọn ẹnu-ọna, ati awọn irinṣẹ inu fun awọn iṣẹ gidi.",
+        softwareTimeline: "Awọn ọsẹ 3–8",
+        softwareHighlights:
+          "Awọn panẹli alabojuto, awọn ẹnu-ọna, awọn ṣiṣan ifiṣura, awọn dashboards ijabọ",
         strategy: "Ilana Oni-nọmba",
         strategySummary:
-          "Itọsọna ọja ti o ṣe kedere, sisan iyipada, ati igbero ifilọlẹ fun ami iyasọtọ rẹ.",
+          "Itọsọna ọja ti o ṣe kedere, ṣiṣan iyipada, ati igbero ifilọlẹ fun ami iyasọtọ rẹ.",
+        strategyTimeline: "Awọn ọjọ 3–10",
+        strategyHighlights:
+          "Eto ipese, eto aladun, ṣiṣe maapu oju-iwe, ero ifilọlẹ",
+        ecommerce: "Awọn Eto E-commerce",
+        ecommerceSummary:
+          "Awọn ile itaja ori ayelujara, awọn iwe akojọ ọja, awọn ṣiṣan aṣẹ, ati awọn iriri rira ti o ṣetan isanwo.",
+        ecommerceTimeline: "Awọn ọsẹ 2–6",
+        ecommerceHighlights: "Awọn ọja, awọn kẹkẹ, isanwo, iṣakoso aṣẹ",
+        booking: "Awọn Pẹpẹ Ifiṣura",
+        bookingSummary:
+          "Awọn eto ipinnu lati pade, iṣẹ, gbigbe, ati ifiṣura pẹlu iriri olumulo didan.",
+        bookingTimeline: "Awọn ọsẹ 2–5",
+        bookingHighlights:
+          "Ṣiṣeto akoko, awọn fọọmu, iṣakoso alabojuto, awọn ifitonileti",
+        training: "Ikẹkọ Koodu & Imọ-ẹrọ",
+        trainingSummary:
+          "Ikẹkọ ti o wulo fun awọn ẹgbẹ, awọn ọmọ ile-iwe, ati awọn oludasile ti o fẹ lati ni oye sọfitiwia igbalode.",
+        trainingTimeline: "Rọ",
+        trainingHighlights:
+          "React, Spring Boot, idagbasoke oju opo wẹẹbu, ikẹkọ orisun iṣẹ akanṣe",
       },
       fallbackProjects: {
         agencySite: "Pẹpẹ Oju Opo Wẹẹbu Ile-iṣẹ",
@@ -655,7 +838,7 @@ export default {
           "Oju opo wẹẹbu ile-iṣẹ didan pẹlu awọn oju-iwe iṣẹ ati gbigba oludari.",
         bookingSystem: "Eto Iṣakoso Ifiṣura",
         bookingSystemSummary:
-          "Sisan ifiṣura ti o mọ fun awọn iṣowo ti o da lori iṣẹ.",
+          "Ṣiṣan ifiṣura ti o mọ fun awọn iṣowo ti o da lori iṣẹ.",
         clientPortal: "Ẹnu-ọna Alabara",
         clientPortalSummary:
           "Iriri dashboard ti o ni aabo fun awọn alabara ati awọn alabojuto.",
@@ -664,6 +847,12 @@ export default {
         blueprint: "Apẹrẹ Ọja",
         blueprintSummary:
           "Ṣe maapu ero rẹ, awoṣe owo-wiwọle, irin-ajo olumulo, ati ọna ikọ ṣaaju idagbasoke.",
+        businessSite: "Ohun Elo Oju Opo Wẹẹbu Iṣowo",
+        businessSiteSummary:
+          "Igbekalẹ oju opo wẹẹbu ti o dara julọ fun awọn ami iyasọtọ ti o nilo igbẹkẹle, awọn oju-iwe, ati gbigba oludari.",
+        portalKit: "Ohun Elo Ẹnu-ọna Alabara",
+        portalKitSummary:
+          "Ipilẹ ẹnu-ọna alabara ti o ni aabo fun awọn dashboards, awọn profaili, awọn ibeere, ati awọn ṣiṣan iṣẹ alabojuto.",
       },
       fallbackTestimonials: {
         client1: {
@@ -771,6 +960,50 @@ export default {
             "A n kọ pẹlu React, Spring Boot, PostgreSQL, Docker, ati awọn amayederun awọsanma igbalode. Fun awọn ohun elo alagbeka, a n lo React Native tabi Flutter. A n yan akopọ ti o tọ fun awọn aini rẹ.",
         },
       },
+      stats: {
+        engineers: "Awọn onimọ-ẹrọ sọfitiwia",
+        experience: "Ọdun iriri",
+        focus: "Idojukọ Afirika",
+      },
+
+      bullets: {
+        item1:
+          "Atilẹyin nipasẹ ẹgbẹ awọn onimọ-ẹrọ sọfitiwia ti o rọ ti 5 si 15.",
+        item2: "Oye to lagbara ti ọgbọn iṣowo ati iriri olumulo.",
+        item3:
+          "O ju ọdun 10 ti iriri to wulo kọja awọn eto oju opo wẹẹbu ati sọfitiwia.",
+        item4: "Idojukọ lori Naijiria ni akọkọ, pẹlu ero idagbasoke Afirika.",
+      },
+
+      engineeringDepth: {
+        eyebrow: "Ijinle imọ-ẹrọ",
+        title: "A ṣajọpọ ọgbọn sọfitiwia pẹlu oye iṣowo.",
+        description:
+          "Iṣẹ wa kii ṣe nipa koodu nikan. A ronu bi iṣowo ṣe n gba awọn oludari, ṣakoso awọn alabara, ṣafihan awọn iṣẹ, ṣakoso akoonu, mu data, ati ṣẹda iriri didan fun awọn olumulo.",
+        item1: {
+          title: "Ọgbọn iṣowo akọkọ",
+          body: "Ṣaaju kikọ, a loye awọn iṣẹ rẹ, awọn olumulo, awọn iṣẹ, awọn ṣiṣan iṣẹ, ati awoṣe owo-wiwọle.",
+        },
+        item2: {
+          title: "Iriri olumulo mimọ",
+          body: "A ṣe apẹrẹ awọn oju-iwe, awọn dashboards, awọn fọọmu, ati awọn ṣiṣan ti o rọrun, ti o dara julọ, ati rọrun lati lo.",
+        },
+        item3: {
+          title: "Imọ-ẹrọ igbẹkẹle",
+          body: "A n kọ pẹlu ilana iwaju mimọ, awọn iṣẹ ẹhin, awọn DTO, awọn API, ifamọra, ati ọgbọn data data.",
+        },
+        item4: {
+          title: "Imọ ọja Afirika",
+          body: "A n kọ pẹlu imọ ti awọn otitọ iṣowo Naijiria ati Afirika: igbẹkẹle, iyara, lilo alagbeka, mimọ, ati ifarada.",
+        },
+      },
+
+      howWeWork: {
+        eyebrow: "Bi a ṣe n ṣiṣẹ",
+        title: "Lati ero si eto oni-nọmba didan.",
+        description:
+          "Gbogbo iṣẹ akanṣe n tẹle ilana ti o ṣe kedere ki pẹpẹ ikẹhin kii ṣe lẹwa nikan, ṣugbọn o wulo, o ṣetọju, ati ni ibamu pẹlu ọna ti iṣowo rẹ n ṣiṣẹ.",
+      },
     },
     services: {
       notFound: "A ko ri iṣẹ",
@@ -794,25 +1027,7 @@ export default {
         "Sọ fun wa ohun ti o nilo. A yoo ṣeduro package iṣẹ ti o tọ, ago, ati igbesẹ atẹle.",
       ctaButton: "Gba ijumọsọrọ ọfẹ",
     },
-    servicesPage: {
-      title: "Awọn iṣẹ ti o n mu iṣowo rẹ dagba",
-      description:
-        "Lati awọn oju opo wẹẹbu aṣa si awọn eto adaṣe kikun, a n kọ awọn ọja oni-nọmba ti o ṣe iranlọwọ fun ọ lati ṣiṣẹ ni ọgbọn, ta diẹ sii, ati dagba ni iyara.",
-      empty: "Ko si awọn iṣẹ ti o wa sibẹsibẹ.",
-      untitled: "Iṣẹ ti Ko Ni Akọle",
-      descriptionFallback: "Awọn alaye iṣẹ yoo han nibi.",
-      viewDetails: "Wo awọn alaye iṣẹ",
-      bannerTitle: "Awọn iṣẹ ti ifarada fun gbogbo ọja ti a n kọ",
-      bannerText:
-        "Gbogbo apẹrẹ ọja lori pẹpẹ wa ni a le kọ bi iṣẹ kikun. A n funni ni idiyele ti o rọ - lati awọn ifilọlẹ MVP ti o bẹrẹ ni",
-      bannerTextEnd:
-        "si awọn pẹpẹ ile-iṣẹ kikun. O n sanwo nikan fun ohun ti iṣowo rẹ nilo looto.",
-      ctaEyebrow: "Ṣetan lati bẹrẹ?",
-      ctaTitle: "Sọ fun wa ohun ti o nilo lati kọ",
-      ctaDescription:
-        "A yoo ba ọ mu pẹlu package iṣẹ ti o tọ ki a fun ọ ni ago ati idiyele ti o ṣe kedere - ko si awọn owo ti o farapamọ.",
-      ctaButton: "Gba ijumọsọrọ ọfẹ",
-    },
+
     portfolio: {
       notFound: "A ko ri iṣẹ akanṣe",
       untitled: "Iṣẹ Akanṣe ti Ko Ni Akọle",
@@ -826,66 +1041,13 @@ export default {
       ctaDescription:
         "Jẹ ki a ṣe apẹrẹ ki a kọ oju opo wẹẹbu iṣowo tabi eto ti o ṣe iranlọwọ fun ami iyasọtọ rẹ lati ṣe iyatọ.",
     },
-    portfolioPage: {
-      title: "Iṣẹ ti a yan ati awọn ikẹkọọ ọran",
-      description:
-        "Ṣawari awọn oju opo wẹẹbu, awọn pẹpẹ, awọn dashboards, ati awọn eto iṣowo ti a kọ lati ṣe iranlọwọ fun awọn ami iyasọtọ lati dagba lori ayelujara.",
-      empty: "Ko si awọn iṣẹ akanṣe portfolio ti o wa sibẹsibẹ.",
-      untitled: "Iṣẹ Akanṣe ti Ko Ni Akọle",
-      noSummary: "Akopọ iṣẹ akanṣe ko si.",
-      project: "Iṣẹ Akanṣe",
-    },
-    products: {
-      notFound: "A ko ri ọja.",
-      untitled: "Ọja ti Ko Ni Akọle",
-      noSummary: "Ko si akopọ ọja ti o wa.",
-      challenge: "Ipenija",
-      solution: "Ojutu",
-      features: "Awọn Ifojusi Ẹya",
-      keyBenefits: "Awọn Anfani Pataki",
-      useCases: "Awọn Ọran Lilo",
-      targetUsers: "Awọn Olumulo ti A Pinnu",
-      techStack: "Akopọ Imọ-ẹrọ",
-      timeline: "Ago Ti A Ro",
-      ctaEyebrow: "Kọ pẹlu mimọ",
-      ctaTitle: "Ṣetan lati yi apẹrẹ yii pada si ọja gidi?",
-      ctaDescription:
-        "Jẹ ki InkFront ṣe iranlọwọ fun ọ lati yi ero rẹ pada si pẹpẹ iṣowo didan.",
-    },
-    productsPage: {
-      title: "Awọn apẹrẹ ọja fun awọn iṣowo to ṣe pataki",
-      description:
-        "Ṣawari awọn igbekalẹ ọja oni-nọmba ti o ṣetan lati kọ fun awọn oju opo wẹẹbu, awọn eto ifiṣura, awọn ẹnu-ọna, awọn ile-iwe, iṣowo e-commerce, ati awọn dashboards iṣowo.",
-      empty: "Ko si awọn ọja ti o wa sibẹsibẹ.",
-      untitled: "Ọja ti Ko Ni Akọle",
-      noSummary: "Akopọ ọja ko si.",
-      blueprint: "Apẹrẹ",
-      viewBlueprint: "Wo apẹrẹ",
-    },
+
     blueprint: {
       challenge: "Ipenija",
       solution: "Ojutu",
       features: "Awọn Ẹya",
     },
-    clientsPage: {
-      title: "Awọn itan alabara, awọn ifihan agbara igbẹkẹle, ati ẹri iṣowo",
-      description:
-        "Awọn esi lati awọn ifaramọ alabara ati awọn ajo ti a ṣe atilẹyin pẹlu awọn oju opo wẹẹbu, awọn ọja oni-nọmba, ati awọn eto iṣowo.",
-      testimonialsEyebrow: "Awọn Ẹri",
-      testimonialsTitle: "Ohun ti awọn alabara n sọ nipa ṣiṣẹ pẹlu InkFront",
-      testimonialsDescription:
-        "Ẹri gidi yẹ ki o ṣe iranlọwọ fun awọn alabara iwaju lati loye didara, mimọ, ati alamọdaju iṣẹ rẹ.",
-      noTestimonials: "Ko si awọn ẹri ti o wa sibẹsibẹ.",
-      defaultQuote: "Ko si ọrọ ẹri.",
-      anonymous: "Alabara Ailorukọ",
-      client: "Alabara",
-      logosTitle: "Awọn ajo ti a gbẹkẹle ati awọn ami iyasọtọ alabara",
-      noLogos: "Ko si awọn aami alabara ti o wa sibẹsibẹ.",
-      ctaEyebrow: "Darapọ mọ itan aṣeyọri ti n bọ",
-      ctaTitle: "Jẹ ki a kọ pẹpẹ alamọdaju fun ami iyasọtọ rẹ.",
-      ctaDescription:
-        "Oju opo wẹẹbu rẹ yẹ ki o sọ igbẹkẹle, fi ẹri han, ati yi awọn alejo pada si awọn ibaraẹnisọrọ gidi.",
-    },
+
     contact: {
       title: "Jẹ ki a kọ eto oni-nọmba rẹ ti n bọ",
       subtitle:
@@ -1006,10 +1168,10 @@ export default {
   },
 
   states: {
+    loadingPortfolio: "N kojọpọ portfolio...",
+    error: "Nkan kan ti ṣiṣẹ ti ko tọ",
     loadingPage: "N kojọpọ oju-iwe...",
     emptyGeneric: "Ko si akoonu ti o wa sibẹsibẹ.",
-    emptyPortfolio: "Ko si awọn iṣẹ akanṣe portfolio ti a ri.",
-    emptyProducts: "Ko si awọn apẹrẹ ọja ti a ri.",
     errorTitle: "Nkan kan ti ṣiṣẹ ti ko tọ",
     errorGeneric: "A ko le gbe oju-iwe yii soke ni bayi.",
     notAvailable: "Ko si",
@@ -1017,8 +1179,11 @@ export default {
 
   forms: {
     newsletter: {
+      namePlaceholder: "Orukọ rẹ",
       emailPlaceholder: "Fi imeeli rẹ sii",
+      subscribe: "Forukọsilẹ",
       success: "Iforukọsilẹ ti ṣaṣeyọri.",
+      error: "Iforukọsilẹ kuna. Jọwọ tun gbiyanju.",
     },
     contact: {
       fullName: "Orukọ kikun",

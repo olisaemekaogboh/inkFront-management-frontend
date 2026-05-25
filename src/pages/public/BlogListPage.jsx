@@ -13,7 +13,7 @@ import "./BlogPages.css";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
 const staggerContainer = {
@@ -32,11 +32,18 @@ function getPageContent(pageData) {
   return [];
 }
 
-function formatDate(value) {
+function formatDate(value, language = "en") {
   if (!value) return "";
 
+  const localeMap = {
+    EN: "en",
+    HA: "ha",
+    IG: "ig",
+    YO: "yo",
+  };
+
   try {
-    return new Intl.DateTimeFormat("en", {
+    return new Intl.DateTimeFormat(localeMap[language] || "en", {
       month: "short",
       day: "numeric",
       year: "numeric",
@@ -46,8 +53,8 @@ function formatDate(value) {
   }
 }
 
-function getReadingTime(content) {
-  if (!content) return "2 min read";
+function getReadingTime(content, t) {
+  if (!content) return t("blog.readTime", "2 min read");
 
   const words = String(content)
     .replace(/<[^>]*>/g, " ")
@@ -56,7 +63,7 @@ function getReadingTime(content) {
     .filter(Boolean).length;
 
   const minutes = Math.max(1, Math.ceil(words / 220));
-  return `${minutes} min read`;
+  return t("blog.minRead", `${minutes} min read`);
 }
 
 function normalizePageMeta(pageData) {
@@ -238,7 +245,7 @@ export default function BlogListPage() {
 
               <div className="blog-hero__actions">
                 <Link to="/contact" className="premium-btn premium-btn-primary">
-                  {t("blog.startProject", "Start a project")}
+                  {t("common.startProject", "Start a project")}
                 </Link>
 
                 <a href="#blog-posts" className="premium-btn premium-btn-ghost">
@@ -262,8 +269,11 @@ export default function BlogListPage() {
                     >
                       <strong>{post.title}</strong>
                       <small>
-                        {formatDate(post.publishedAt || post.createdAt)} ·{" "}
-                        {getReadingTime(post.content)}
+                        {formatDate(
+                          post.publishedAt || post.createdAt,
+                          language,
+                        )}{" "}
+                        · {getReadingTime(post.content, t)}
                       </small>
                     </Link>
                   ))}
@@ -405,9 +415,12 @@ export default function BlogListPage() {
                       <div className="blog-card__meta">
                         {post.category ? <span>{post.category}</span> : null}
                         <span>
-                          {formatDate(post.publishedAt || post.createdAt)}
+                          {formatDate(
+                            post.publishedAt || post.createdAt,
+                            language,
+                          )}
                         </span>
-                        <span>{getReadingTime(post.content)}</span>
+                        <span>{getReadingTime(post.content, t)}</span>
                       </div>
 
                       <h3>

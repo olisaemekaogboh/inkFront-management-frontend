@@ -158,7 +158,7 @@ export default function ProductsPage() {
                       />
                     ) : (
                       <div className="premium-product-image premium-fallback-media">
-                        <span>🧩</span>
+                        <span>{t("productsPage.icon", "🧩")}</span>
                       </div>
                     )}
 

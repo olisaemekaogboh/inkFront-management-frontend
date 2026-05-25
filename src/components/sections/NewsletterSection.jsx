@@ -69,20 +69,20 @@ export default function NewsletterSection() {
       <div className="newsletter-section__inner">
         <div className="newsletter-section__copy">
           <span className="newsletter-section__eyebrow">
-            {t("newsletter.eyebrow", "Newsletter")}
+            {t("sections.newsletter.eyebrow", "Stay connected")}
           </span>
 
           <h2>
             {t(
-              "newsletter.title",
-              "Get practical digital growth ideas in your inbox.",
+              "sections.newsletter.title",
+              "Stay close to what we are building",
             )}
           </h2>
 
           <p>
             {t(
-              "newsletter.subtitle",
-              "Subscribe for website, automation, branding, and business system insights from InkFront.",
+              "sections.newsletter.description",
+              "Get thoughtful product and software insights in your inbox.",
             )}
           </p>
         </div>
@@ -93,22 +93,25 @@ export default function NewsletterSection() {
               type="text"
               value={form.fullName}
               onChange={(event) => updateField("fullName", event.target.value)}
-              placeholder={t("newsletter.namePlaceholder", "Your name")}
+              placeholder={t("forms.newsletter.namePlaceholder", "Your name")}
             />
 
             <input
               type="email"
               value={form.email}
               onChange={(event) => updateField("email", event.target.value)}
-              placeholder={t("newsletter.emailPlaceholder", "Email address")}
+              placeholder={t(
+                "forms.newsletter.emailPlaceholder",
+                "Enter your email",
+              )}
               required
             />
           </div>
 
           <button type="submit" disabled={loading}>
             {loading
-              ? t("states.saving", "Saving...")
-              : t("newsletter.subscribe", "Subscribe")}
+              ? t("states.saving", "Subscribing...")
+              : t("forms.newsletter.subscribe", "Subscribe")}
           </button>
 
           {notice ? (

@@ -218,6 +218,56 @@ function buildWorkSteps(t) {
   ];
 }
 
+// Build engineering depth items with translations
+function buildEngineeringDepthItems(t) {
+  return [
+    {
+      number: "01",
+      title: t(
+        "pages.about.engineeringDepth.item1.title",
+        "Business logic first",
+      ),
+      body: t(
+        "pages.about.engineeringDepth.item1.body",
+        "Before building, we understand your operations, users, services, workflows, and revenue model.",
+      ),
+    },
+    {
+      number: "02",
+      title: t(
+        "pages.about.engineeringDepth.item2.title",
+        "Clean user experience",
+      ),
+      body: t(
+        "pages.about.engineeringDepth.item2.body",
+        "We design pages, dashboards, forms, and flows that feel simple, premium, and easy to use.",
+      ),
+    },
+    {
+      number: "03",
+      title: t(
+        "pages.about.engineeringDepth.item3.title",
+        "Reliable engineering",
+      ),
+      body: t(
+        "pages.about.engineeringDepth.item3.body",
+        "We build with clean frontend structure, backend services, DTOs, APIs, authentication, and database logic.",
+      ),
+    },
+    {
+      number: "04",
+      title: t(
+        "pages.about.engineeringDepth.item4.title",
+        "African market awareness",
+      ),
+      body: t(
+        "pages.about.engineeringDepth.item4.body",
+        "We build with awareness of Nigerian and African business realities: trust, speed, mobile use, clarity, and affordability.",
+      ),
+    },
+  ];
+}
+
 export default function AboutPage() {
   const { language, t } = useLanguage();
 
@@ -285,6 +335,7 @@ export default function AboutPage() {
   const fallbackTestimonials = buildFallbackTestimonials(t);
   const fallbackFaqs = buildFallbackFaqs(t);
   const workSteps = buildWorkSteps(t);
+  const engineeringDepthItems = buildEngineeringDepthItems(t);
 
   const testimonialItems =
     normalizeList(testimonials.data).length > 0
@@ -393,17 +444,21 @@ export default function AboutPage() {
             <div className="premium-stats premium-about-stats">
               <div>
                 <strong>5–15</strong>
-                <span>Software engineers</span>
+                <span>
+                  {t("pages.about.stats.engineers", "Software engineers")}
+                </span>
               </div>
 
               <div>
                 <strong>10+</strong>
-                <span>Years experience</span>
+                <span>
+                  {t("pages.about.stats.experience", "Years experience")}
+                </span>
               </div>
 
               <div>
                 <strong>NG</strong>
-                <span>Africa focused</span>
+                <span>{t("pages.about.stats.focus", "Africa focused")}</span>
               </div>
             </div>
           </motion.div>
@@ -446,15 +501,30 @@ export default function AboutPage() {
             <p>{story}</p>
 
             <ul className="premium-detail-list" style={{ marginTop: 24 }}>
-              <li>Backed by a flexible team of 5 to 15 software engineers.</li>
               <li>
-                Strong understanding of business logic and user experience.
+                {t(
+                  "pages.about.bullets.item1",
+                  "Backed by a flexible team of 5 to 15 software engineers.",
+                )}
               </li>
               <li>
-                10+ years of practical experience across web and software
-                systems.
+                {t(
+                  "pages.about.bullets.item2",
+                  "Strong understanding of business logic and user experience.",
+                )}
               </li>
-              <li>Focused on Nigeria first, with an African growth mindset.</li>
+              <li>
+                {t(
+                  "pages.about.bullets.item3",
+                  "10+ years of practical experience across web and software systems.",
+                )}
+              </li>
+              <li>
+                {t(
+                  "pages.about.bullets.item4",
+                  "Focused on Nigeria first, with an African growth mindset.",
+                )}
+              </li>
             </ul>
           </article>
 
@@ -484,41 +554,26 @@ export default function AboutPage() {
         <div className="premium-container premium-split">
           <div>
             <span className="premium-eyebrow premium-eyebrow--light">
-              Engineering depth
+              {t("pages.about.engineeringDepth.eyebrow", "Engineering depth")}
             </span>
 
-            <h2>We combine software skill with business understanding.</h2>
+            <h2>
+              {t(
+                "pages.about.engineeringDepth.title",
+                "We combine software skill with business understanding.",
+              )}
+            </h2>
 
             <p>
-              Our work is not only about code. We think through how a business
-              receives leads, manages customers, presents services, controls
-              content, handles data, and creates a smooth experience for users.
+              {t(
+                "pages.about.engineeringDepth.description",
+                "Our work is not only about code. We think through how a business receives leads, manages customers, presents services, controls content, handles data, and creates a smooth experience for users.",
+              )}
             </p>
           </div>
 
           <div className="premium-blueprint-panel">
-            {[
-              {
-                number: "01",
-                title: "Business logic first",
-                body: "Before building, we understand your operations, users, services, workflows, and revenue model.",
-              },
-              {
-                number: "02",
-                title: "Clean user experience",
-                body: "We design pages, dashboards, forms, and flows that feel simple, premium, and easy to use.",
-              },
-              {
-                number: "03",
-                title: "Reliable engineering",
-                body: "We build with clean frontend structure, backend services, DTOs, APIs, authentication, and database logic.",
-              },
-              {
-                number: "04",
-                title: "African market awareness",
-                body: "We build with awareness of Nigerian and African business realities: trust, speed, mobile use, clarity, and affordability.",
-              },
-            ].map((item) => (
+            {engineeringDepthItems.map((item) => (
               <article key={item.number} className="premium-blueprint-item">
                 <strong>{item.number}</strong>
 
@@ -535,12 +590,20 @@ export default function AboutPage() {
       <section className="premium-section">
         <div className="premium-container">
           <div className="premium-section-head">
-            <span className="premium-eyebrow">How we work</span>
-            <h2>From idea to polished digital system.</h2>
+            <span className="premium-eyebrow">
+              {t("pages.about.howWeWork.eyebrow", "How we work")}
+            </span>
+            <h2>
+              {t(
+                "pages.about.howWeWork.title",
+                "From idea to polished digital system.",
+              )}
+            </h2>
             <p>
-              Every project follows a clear process so the final platform is not
-              just beautiful, but useful, maintainable, and aligned with the way
-              your business works.
+              {t(
+                "pages.about.howWeWork.description",
+                "Every project follows a clear process so the final platform is not just beautiful, but useful, maintainable, and aligned with the way your business works.",
+              )}
             </p>
           </div>
 

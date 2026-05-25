@@ -16,10 +16,14 @@ export default function NewsletterForm() {
 
     try {
       await newsletterService.subscribe({ email, language });
-      setMessage(t("forms.newsletter.success"));
+      setMessage(t("forms.newsletter.success", "Subscription successful!"));
       setEmail("");
     } catch (error) {
-      setMessage(error.message);
+      setMessage(
+        error?.response?.data?.message ||
+          error?.message ||
+          t("forms.newsletter.error", "Subscription failed. Please try again."),
+      );
     } finally {
       setSubmitting(false);
     }
@@ -31,11 +35,13 @@ export default function NewsletterForm() {
         type="email"
         value={email}
         onChange={(event) => setEmail(event.target.value)}
-        placeholder={t("forms.newsletter.emailPlaceholder")}
+        placeholder={t("forms.newsletter.emailPlaceholder", "Enter your email")}
         required
       />
       <Button type="submit" disabled={submitting}>
-        {submitting ? t("common.loading") : t("common.subscribe")}
+        {submitting
+          ? t("common.loading", "Loading...")
+          : t("common.subscribe", "Subscribe")}
       </Button>
       {message ? <p className="form-feedback">{message}</p> : null}
     </form>

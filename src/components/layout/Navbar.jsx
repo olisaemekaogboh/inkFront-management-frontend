@@ -24,9 +24,10 @@ export default function Navbar() {
   const { t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const closeTimeout = useRef(null);
+  const hoverTimeoutRef = useRef(null);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
+  const containerRef = useRef(null);
 
   const user = auth?.user || null;
   const isAuthenticated = Boolean(auth?.isAuthenticated);
@@ -55,17 +56,27 @@ export default function Navbar() {
     { to: "/contact", label: t("nav.contact", "Contact") },
   ];
 
-  const openMenu = useCallback(() => {
-    if (closeTimeout.current) {
-      clearTimeout(closeTimeout.current);
-      closeTimeout.current = null;
+  // Clean hover timeout
+  const clearHoverTimeout = useCallback(() => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
     }
-    setMenuOpen(true);
   }, []);
 
+  // Open menu - immediate
+  const openMenu = useCallback(() => {
+    clearHoverTimeout();
+    setMenuOpen(true);
+  }, [clearHoverTimeout]);
+
+  // Close menu with delay
   const closeMenu = useCallback(() => {
-    closeTimeout.current = setTimeout(() => setMenuOpen(false), 300);
-  }, []);
+    clearHoverTimeout();
+    hoverTimeoutRef.current = setTimeout(() => {
+      setMenuOpen(false);
+    }, 200);
+  }, [clearHoverTimeout]);
 
   // Handle scroll effect for navbar background
   useEffect(() => {
@@ -76,13 +87,16 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Handle click outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (
         menuRef.current &&
         !menuRef.current.contains(event.target) &&
         buttonRef.current &&
-        !buttonRef.current.contains(event.target)
+        !buttonRef.current.contains(event.target) &&
+        containerRef.current &&
+        !containerRef.current.contains(event.target)
       ) {
         setMenuOpen(false);
       }
@@ -90,6 +104,13 @@ export default function Navbar() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      clearHoverTimeout();
+    };
+  }, [clearHoverTimeout]);
 
   const handleNavigation = (to) => {
     setMenuOpen(false);
@@ -119,6 +140,7 @@ export default function Navbar() {
           </div>
 
           <div
+            ref={containerRef}
             className="premium-menu-container"
             onMouseEnter={openMenu}
             onMouseLeave={closeMenu}
@@ -126,10 +148,13 @@ export default function Navbar() {
             <button
               ref={buttonRef}
               className={`premium-menu-btn ${menuOpen ? "premium-menu-btn--active" : ""}`}
-              onClick={() => (menuOpen ? setMenuOpen(false) : openMenu())}
+              onClick={() => setMenuOpen(!menuOpen)}
               aria-expanded={menuOpen}
+              aria-label={t("nav.menu", "Menu")}
             >
-              <span className="premium-menu-btn__text">Menu</span>
+              <span className="premium-menu-btn__text">
+                {t("nav.menu", "Menu")}
+              </span>
               <svg
                 className={`premium-menu-btn__arrow ${menuOpen ? "premium-menu-btn__arrow--open" : ""}`}
                 viewBox="0 0 24 24"
@@ -149,7 +174,7 @@ export default function Navbar() {
                   initial={{ opacity: 0, y: -12, scale: 0.96 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -12, scale: 0.96 }}
-                  transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                  transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
                   onMouseEnter={openMenu}
                   onMouseLeave={closeMenu}
                 >
@@ -172,7 +197,7 @@ export default function Navbar() {
                         className="premium-dropdown__link premium-dropdown__link--admin"
                         onClick={() => handleNavigation("/admin")}
                       >
-                        📊 Dashboard
+                        {t("nav.dashboard", "📊 Dashboard")}
                       </button>
                     </>
                   )}
@@ -193,7 +218,7 @@ export default function Navbar() {
                         className="premium-dropdown__logout"
                         onClick={handleLogout}
                       >
-                        Logout
+                        {t("nav.logout", "Logout")}
                       </button>
                     </>
                   ) : (
@@ -201,7 +226,7 @@ export default function Navbar() {
                       className="premium-dropdown__login"
                       onClick={() => handleNavigation("/login")}
                     >
-                      Login
+                      {t("nav.login", "Login")}
                     </button>
                   )}
                 </motion.div>

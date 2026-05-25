@@ -62,12 +62,31 @@ export default {
     logout: "Logout",
     account: "Account",
     dashboard: "Dashboard",
+    menu: "Menu",
     openMenu: "Open menu",
     closeMenu: "Close menu",
   },
-
   footer: {
-    copyright: "© {year} {appName}. All rights reserved.",
+    description:
+      "InkFront builds premium websites, booking systems, dashboards, blogs, newsletters, portals, and custom software tools for modern businesses.",
+    explore: "Explore",
+    company: "Company",
+    startTitle: "Start with InkFront",
+    startText:
+      "Ready to upgrade your business online? Let InkFront build a clean, modern digital system for your brand.",
+    contactButton: "Contact InkFront",
+    phone: "+234 903 017 5230",
+    email: "info@inkfront.com",
+    address: "4 Basden Street, Fegge, Onitsha, Anambra, Nigeria",
+    viewMap: "View on Google Maps",
+    rights: "All rights reserved.",
+    terms: "Terms",
+    privacy: "Privacy",
+    contact: "Contact",
+    cookies: "Cookies",
+    termsConditions: "Terms & Conditions",
+    privacyPolicy: "Privacy Policy",
+    cookiesPolicy: "Cookies Policy",
   },
 
   auth: {
@@ -605,6 +624,83 @@ export default {
       },
     },
   },
+  portfolioPage: {
+    title: "Selected work and case studies",
+    description:
+      "Explore websites, platforms, dashboards, and business systems built to help brands grow online.",
+    empty: "No portfolio projects available yet.",
+    untitled: "Untitled Project",
+    noSummary: "Project summary unavailable.",
+    project: "Project",
+    loadError: "Failed to load portfolio.",
+  },
+  productsPage: {
+    title: "Product blueprints for serious businesses",
+    description:
+      "Explore ready-to-build digital product structures for websites, booking systems, portals, schools, e-commerce, and business dashboards.",
+    empty: "No products available yet.",
+    untitled: "Untitled Product",
+    noSummary: "Product summary unavailable.",
+    blueprint: "Blueprint",
+    viewBlueprint: "View blueprint",
+  },
+  products: {
+    notFound: "Product not found.",
+    untitled: "Untitled Product",
+    noSummary: "No product summary available.",
+    eyebrow: "Product Blueprint",
+    challenge: "Challenge",
+    solution: "Solution",
+    features: "Feature Highlights",
+    keyBenefits: "Key Benefits",
+    useCases: "Use Cases",
+    targetUsers: "Target Users",
+    techStack: "Technology Stack",
+    timeline: "Estimated Timeline",
+    ctaEyebrow: "Build with clarity",
+    ctaTitle: "Ready to turn this blueprint into a real product?",
+    ctaDescription:
+      "Let InkFront help you convert your idea into a polished business platform.",
+    placeholderIcon: "🧩",
+  },
+  clientsPage: {
+    title: "Client stories, trust signals, and business proof",
+    description:
+      "Feedback from client engagements and organizations supported with websites, digital products, and business systems.",
+    testimonialsEyebrow: "Testimonials",
+    testimonialsTitle: "What clients say about working with InkFront",
+    testimonialsDescription:
+      "Real feedback should help future clients understand the quality, clarity, and professionalism of your work.",
+    noTestimonials: "No testimonials available yet.",
+    defaultQuote: "No testimonial text.",
+    anonymous: "Anonymous Client",
+    client: "Client",
+    logosTitle: "Trusted organizations and client brands",
+    noLogos: "No client logos available yet.",
+    ctaEyebrow: "Join the next success story",
+    ctaTitle: "Let's build a professional platform for your brand.",
+    ctaDescription:
+      "Your website should communicate trust, show proof, and turn visitors into real conversations.",
+  },
+  blog: {
+    eyebrow: "InkFront Blog",
+    title: "Ideas, strategy, and digital growth",
+    subtitle:
+      "Read practical articles on websites, booking systems, automation, business visibility, and better digital operations.",
+    readArticles: "Read articles",
+    featuredLabel: "Featured insights",
+    noFeatured: "Featured articles will appear here once published.",
+    latestLabel: "Latest articles",
+    latestTitle: "Fresh thinking for your brand",
+    clearFilters: "Clear filters",
+    featured: "Featured",
+    readMore: "Read article",
+    readTime: "2 min read",
+
+    emptyTitle: "No articles found",
+    emptyText:
+      "Published articles for this language or filter will appear here.",
+  },
 
   pages: {
     home: {
@@ -612,14 +708,27 @@ export default {
       heroTitle: "Build a premium digital presence for your business",
       heroSubtitle:
         "InkFront designs and builds websites, product pages, portals, and business platforms that help your brand look trusted, convert leads, and scale online.",
+      heroPanelEyebrow: "Built for growth",
+      heroPanelTitle:
+        "Websites, dashboards, portals, and launch-ready systems.",
+      heroPanelItem1: "Frontend",
+      heroPanelItem2: "Backend",
+      heroPanelItem3: "Content",
+      heroPanelStatus: "Great",
       statsProjects: "Projects",
       statsServices: "Core services",
       statsBusiness: "Business focused",
       statsSystem: "Live business system",
       systemsTitle: "Websites. Portals. Products.",
       whatWeDo: "What we do",
+      processEyebrow: "How we build",
+      processTitle: "A clear process from idea to launch-ready system.",
+      processDescription:
+        "We do not just design screens. We structure the business flow, content, backend data, admin management, and user experience together.",
       productDirection: "Product direction",
       productTitle: "Turn your idea into a clear buildable business system.",
+      productSubtitle:
+        "Use InkFront product blueprints to define the pages, features, content, admin flow, and launch direction before development begins.",
       selectedWork: "Selected work",
       clientConfidence: "Client confidence",
       testimonialSubtitle:
@@ -639,16 +748,70 @@ export default {
       happyClient: "Happy Client",
       defaultQuote:
         "A polished platform that helps the business look more professional online.",
+      bannerTitle:
+        "Need a website, portal, booking system, or full business platform?",
+      bannerText:
+        "InkFront can help you move from scattered ideas to a polished system with pages, content, backend data, authentication, admin tools, and responsive public experience.",
+      processSteps: {
+        discover: {
+          title: "Discover",
+          text: "We clarify your business goals, audience, services, and the type of system you need.",
+        },
+        structure: {
+          title: "Structure",
+          text: "We map the pages, content flow, admin needs, user journey, and backend data model.",
+        },
+        build: {
+          title: "Build",
+          text: "We develop the frontend, backend, content management, authentication, and integrations.",
+        },
+        launch: {
+          title: "Launch",
+          text: "We polish responsiveness, performance, SEO basics, testing, and deployment readiness.",
+        },
+      },
+      logoFallback: {
+        websites: "Websites",
+        portals: "Portals",
+        bookings: "Bookings",
+        dashboards: "Dashboards",
+        stores: "Stores",
+      },
       fallbackServices: {
         webDev: "Website Development",
         webDevSummary:
           "Fast, responsive, SEO-ready websites built to help your business look trusted.",
+        webDevTimeline: "7–21 days",
+        webDevHighlights:
+          "Landing pages, company websites, SEO structure, contact flow",
         software: "Custom Software",
         softwareSummary:
           "Dashboards, booking systems, portals, and internal tools for real operations.",
+        softwareTimeline: "3–8 weeks",
+        softwareHighlights:
+          "Admin panels, portals, booking flows, reporting dashboards",
         strategy: "Digital Strategy",
         strategySummary:
           "Clear product direction, conversion flow, and launch planning for your brand.",
+        strategyTimeline: "3–10 days",
+        strategyHighlights:
+          "Offer structure, funnel planning, page mapping, launch plan",
+        ecommerce: "E-commerce Systems",
+        ecommerceSummary:
+          "Online stores, product catalogues, order flows, and payment-ready shopping experiences.",
+        ecommerceTimeline: "2–6 weeks",
+        ecommerceHighlights: "Products, carts, checkout, order management",
+        booking: "Booking Platforms",
+        bookingSummary:
+          "Appointment, service, transport, and reservation systems with smooth user experience.",
+        bookingTimeline: "2–5 weeks",
+        bookingHighlights: "Scheduling, forms, admin management, notifications",
+        training: "Coding & Tech Training",
+        trainingSummary:
+          "Practical training for teams, students, and founders who want to understand modern software.",
+        trainingTimeline: "Flexible",
+        trainingHighlights:
+          "React, Spring Boot, web development, project-based learning",
       },
       fallbackProjects: {
         agencySite: "Agency Website Platform",
@@ -665,6 +828,12 @@ export default {
         blueprint: "Product Blueprint",
         blueprintSummary:
           "Map your idea, revenue model, user journey, and build roadmap before development.",
+        businessSite: "Business Website Kit",
+        businessSiteSummary:
+          "A premium website structure for brands that need credibility, pages, and lead capture.",
+        portalKit: "Client Portal Kit",
+        portalKitSummary:
+          "A secure customer portal foundation for dashboards, profiles, requests, and admin workflows.",
       },
       fallbackTestimonials: {
         client1: {
@@ -771,6 +940,51 @@ export default {
             "We build with React, Spring Boot, PostgreSQL, Docker, and modern cloud infrastructure. For mobile apps, we use React Native or Flutter. We choose the right stack for your needs.",
         },
       },
+      // Add inside pages.about object:
+
+      stats: {
+        engineers: "Software engineers",
+        experience: "Years experience",
+        focus: "Africa focused",
+      },
+
+      bullets: {
+        item1: "Backed by a flexible team of 5 to 15 software engineers.",
+        item2: "Strong understanding of business logic and user experience.",
+        item3:
+          "10+ years of practical experience across web and software systems.",
+        item4: "Focused on Nigeria first, with an African growth mindset.",
+      },
+
+      engineeringDepth: {
+        eyebrow: "Engineering depth",
+        title: "We combine software skill with business understanding.",
+        description:
+          "Our work is not only about code. We think through how a business receives leads, manages customers, presents services, controls content, handles data, and creates a smooth experience for users.",
+        item1: {
+          title: "Business logic first",
+          body: "Before building, we understand your operations, users, services, workflows, and revenue model.",
+        },
+        item2: {
+          title: "Clean user experience",
+          body: "We design pages, dashboards, forms, and flows that feel simple, premium, and easy to use.",
+        },
+        item3: {
+          title: "Reliable engineering",
+          body: "We build with clean frontend structure, backend services, DTOs, APIs, authentication, and database logic.",
+        },
+        item4: {
+          title: "African market awareness",
+          body: "We build with awareness of Nigerian and African business realities: trust, speed, mobile use, clarity, and affordability.",
+        },
+      },
+
+      howWeWork: {
+        eyebrow: "How we work",
+        title: "From idea to polished digital system.",
+        description:
+          "Every project follows a clear process so the final platform is not just beautiful, but useful, maintainable, and aligned with the way your business works.",
+      },
     },
     services: {
       notFound: "Service not found",
@@ -826,66 +1040,13 @@ export default {
       ctaDescription:
         "Let's design and build a business website or system that helps your brand stand out.",
     },
-    portfolioPage: {
-      title: "Selected work and case studies",
-      description:
-        "Explore websites, platforms, dashboards, and business systems built to help brands grow online.",
-      empty: "No portfolio projects available yet.",
-      untitled: "Untitled Project",
-      noSummary: "Project summary unavailable.",
-      project: "Project",
-    },
-    products: {
-      notFound: "Product not found.",
-      untitled: "Untitled Product",
-      noSummary: "No product summary available.",
-      challenge: "Challenge",
-      solution: "Solution",
-      features: "Feature Highlights",
-      keyBenefits: "Key Benefits",
-      useCases: "Use Cases",
-      targetUsers: "Target Users",
-      techStack: "Technology Stack",
-      timeline: "Estimated Timeline",
-      ctaEyebrow: "Build with clarity",
-      ctaTitle: "Ready to turn this blueprint into a real product?",
-      ctaDescription:
-        "Let InkFront help you convert your idea into a polished business platform.",
-    },
-    productsPage: {
-      title: "Product blueprints for serious businesses",
-      description:
-        "Explore ready-to-build digital product structures for websites, booking systems, portals, schools, e-commerce, and business dashboards.",
-      empty: "No products available yet.",
-      untitled: "Untitled Product",
-      noSummary: "Product summary unavailable.",
-      blueprint: "Blueprint",
-      viewBlueprint: "View blueprint",
-    },
+
     blueprint: {
       challenge: "Challenge",
       solution: "Solution",
       features: "Features",
     },
-    clientsPage: {
-      title: "Client stories, trust signals, and business proof",
-      description:
-        "Feedback from client engagements and organizations supported with websites, digital products, and business systems.",
-      testimonialsEyebrow: "Testimonials",
-      testimonialsTitle: "What clients say about working with InkFront",
-      testimonialsDescription:
-        "Real feedback should help future clients understand the quality, clarity, and professionalism of your work.",
-      noTestimonials: "No testimonials available yet.",
-      defaultQuote: "No testimonial text.",
-      anonymous: "Anonymous Client",
-      client: "Client",
-      logosTitle: "Trusted organizations and client brands",
-      noLogos: "No client logos available yet.",
-      ctaEyebrow: "Join the next success story",
-      ctaTitle: "Let's build a professional platform for your brand.",
-      ctaDescription:
-        "Your website should communicate trust, show proof, and turn visitors into real conversations.",
-    },
+
     contact: {
       title: "Let's build your next digital system",
       subtitle:
@@ -1006,10 +1167,10 @@ export default {
   },
 
   states: {
+    loadingPortfolio: "Loading portfolio...",
+    error: "Something went wrong",
     loadingPage: "Loading page...",
     emptyGeneric: "No content available yet.",
-    emptyPortfolio: "No portfolio projects found.",
-    emptyProducts: "No product blueprints found.",
     errorTitle: "Something went wrong",
     errorGeneric: "We could not load this page right now.",
     notAvailable: "Not available",

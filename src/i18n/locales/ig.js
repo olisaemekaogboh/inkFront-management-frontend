@@ -62,12 +62,31 @@ export default {
     logout: "Pụọ",
     account: "Akaụntụ",
     dashboard: "Dashboard",
+    menu: "Nchịkọta",
     openMenu: "Mepee nchịkọta",
     closeMenu: "Mechie nchịkọta",
   },
-
   footer: {
-    copyright: "© {year} {appName}. Ikikere niile echekwara.",
+    description:
+      "InkFront na-ewu weebụsaịtị kachasị mma, sistemụ ndozi, dashboards, blọọgụ, akwụkwọ akụkọ, ọnụ ụzọ, na ngwa sọftụwia pụrụ iche maka azụmahịa ọgbara ọhụrụ.",
+    explore: "Nyochaa",
+    company: "Ụlọ ọrụ",
+    startTitle: "Bido na InkFront",
+    startText:
+      "Ị dị njikere imeziwanye azụmahịa gị n'ịntanetị? Ka InkFront wulite sistemụ dijitalụ dị ọcha, nke ọgbara ọhụrụ maka ika gị.",
+    contactButton: "Kpọtụrụ InkFront",
+    phone: "+234 903 017 5230",
+    email: "info@inkfront.com",
+    address: "4 Basden Street, Fegge, Onitsha, Anambra, Nigeria",
+    viewMap: "Lee na Google Maps",
+    rights: "Ikikere niile echekwara.",
+    terms: "Usoro",
+    privacy: "Nzuzo",
+    contact: "Kpọtụrụ",
+    cookies: "Kuki",
+    termsConditions: "Usoro & Ọnọdụ",
+    privacyPolicy: "Iwu Nzuzo",
+    cookiesPolicy: "Iwu Kuki",
   },
 
   auth: {
@@ -608,22 +627,130 @@ export default {
       },
     },
   },
+  portfolioPage: {
+    title: "Ọrụ ahọpụtara na ihe ọmụmụ",
+    description:
+      "Nyochaa weebụsaịtị, ikpo okwu, dashboard, na sistemụ azụmahịa e wuru iji nyere ikaeto aka itolite na ntanetị.",
+    empty: "Ọ nweghị ọrụ aka portfolio dị ugbu a.",
+    untitled: "Ọrụ Aka Enweghị Aha",
+    noSummary: "Nchịkọta ọrụ aka adịghị.",
+    project: "Ọrụ Aka",
+    loadError: "Ọdara ijikọ ọrụ aka portfolio.",
+  },
+  servicesPage: {
+    title: "Ọrụ ndị na-eme ka azụmahịa gị too",
+    description:
+      "Site na weebụsaịtị ahaziri ruo na sistemụ akpaaka zuru ezu, anyị na-ewu ngwa ahịa dijitalụ nke na-enyere gị aka ịrụ ọrụ nke ọma, ree karịa, na itolite ngwa ngwa.",
+    empty: "Ọ nweghị ọrụ dị ugbu a.",
+    untitled: "Ọrụ Enweghị Aha",
+    descriptionFallback: "Nkọwa ọrụ ga-apụta ebe a.",
+    viewDetails: "Lee nkọwa ọrụ",
+    bannerTitle: "Ọrụ ọnụ ala maka ngwa ahịa ọ bụla anyị na-ewu",
+    bannerText:
+      "Enwere ike iwu nhazi ngwa ahịa ọ bụla na ikpo okwu anyị dị ka ọrụ zuru ezu. Anyị na-enye ọnụahịa na-agbanwe agbanwe — site na mmalite MVP na-amalite na",
+    bannerTextEnd:
+      "ruo na ikpo okwu ụlọ ọrụ zuru ezu. Ị na-akwụ naanị maka ihe azụmahịa gị chọrọ n'ezie.",
+    ctaEyebrow: "Njikere ịmalite?",
+    ctaTitle: "Gwa anyị ihe ị chọrọ ka e wuo",
+    ctaDescription:
+      "Anyị ga-ejikọ gị na ngwugwu ọrụ kwesịrị ekwesị ma nye gị usoro iheomume doro anya na ọnụahịa — enweghị ụgwọ zoro ezo.",
+    ctaButton: "Nweta ndụmọdụ n'efu",
+  },
+  productsPage: {
+    title: "Nhazi ngwa ahịa maka azụmahịa siri ike",
+    description:
+      "Nyochaa nhazi ngwa ahịa dijitalụ dị njikere iwu maka weebụsaịtị, sistemụ ntinye akwụkwọ, ọnụ ụzọ, ụlọ akwụkwọ, e-commerce, na dashboard azụmahịa.",
+    empty: "Ọ nweghị ngwa ahịa dị ugbu a.",
+    untitled: "Ngwa Ahịa Enweghị Aha",
+    noSummary: "Nchịkọta ngwa ahịa adịghị.",
+    blueprint: "Nhazi",
+    viewBlueprint: "Lee nhazi",
+  },
+  products: {
+    notFound: "Ahụghị ngwa ahịa.",
+    untitled: "Ngwa Ahịa Enweghị Aha",
+    noSummary: "Ọ nweghị nchịkọta ngwa ahịa dị.",
+    eyebrow: "Atụmatụ Ngwa Ahịa",
+    challenge: "Ihe Ịma Aka",
+    solution: "Azịza",
+    features: "Ihe Ngosi Atụmatụ",
+    keyBenefits: "Uru Ndị Bụ Isi",
+    useCases: "Ọnọdụ Ojiji",
+    targetUsers: "Ndị Ọrụ Ezubere",
+    techStack: "Nchịkọta Teknụzụ",
+    timeline: "Usoro Iheomume E Mere Atụmatụ",
+    ctaEyebrow: "Jiri ido anya wuo",
+    ctaTitle: "Njikere ịtụgharị atụmatụ a ka ọ bụrụ ezigbo ngwa ahịa?",
+    ctaDescription:
+      "Ka InkFront nyere gị aka ịtụgharị echiche gị ka ọ bụrụ ikpo okwu azụmahịa a na-egbu maramara.",
+    placeholderIcon: "🧩",
+  },
+  clientsPage: {
+    title: "Akụkọ ndị ahịa, akara ntụkwasị obi, na ihe akaebe azụmahịa",
+    description:
+      "Nzaghachi sitere na mmekọ ndị ahịa na ụlọ ọrụ ndị akwadoro site na weebụsaịtị, ngwa ahịa dijitalụ, na sistemụ azụmahịa.",
+    testimonialsEyebrow: "Ịgba Akaebe",
+    testimonialsTitle: "Ihe ndị ahịa na-ekwu maka ịrụ ọrụ na InkFront",
+    testimonialsDescription:
+      "Ezigbo nzaghachi kwesịrị inyere ndị ahịa n'ọdịnihu aka ịghọta ịdị mma, ido anya, na ọkachamara nke ọrụ gị.",
+    noTestimonials: "Ọ nweghị ịgba akaebe dị ugbu a.",
+    defaultQuote: "Ọ nweghị ederede ịgba akaebe.",
+    anonymous: "Onye Ahịa Na-amaghị Aha",
+    client: "Onye Ahịa",
+    logosTitle: "Ụlọ ọrụ ndị a tụkwasịrị obi na ikaeto ndị ahịa",
+    noLogos: "Ọ nweghị akara ndị ahịa dị ugbu a.",
+    ctaEyebrow: "Sonye na akụkọ ịga nke ọma na-esote",
+    ctaTitle: "Ka anyị wuo ikpo okwu ọkachamara maka akara gị.",
+    ctaDescription:
+      "Weebụsaịtị gị kwesịrị ịkparịta ụka ntụkwasị obi, gosi ihe akaebe, ma tụgharịa ndị ọbịa ka ọ bụrụ ezigbo mkparịta ụka.",
+  },
+  blog: {
+    eyebrow: "InkFront Blọọgụ",
+    title: "Echiche, atụmatụ, na uto dijitalụ",
+    subtitle:
+      "Gụọ akụkọ bara uru gbasara weebụsaịtị, sistemụ ndozi, akpaaka, ọhụhụ azụmahịa, na ọrụ dijitalụ ka mma.",
+    readArticles: "Gụọ akụkọ",
+    featuredLabel: "Nghọta pụrụ iche",
+    noFeatured: "Akụkọ pụrụ iche ga-apụta ebe a ozugbo ebipụtara ha.",
+    latestLabel: "Akụkọ kachasị ọhụrụ",
+    latestTitle: "Echiche ọhụrụ maka ika gị",
+    clearFilters: "Hichapụ nzacha",
+    featured: "Ọpụrụiche",
+    readMore: "Gụọ akụkọ",
+    readTime: "nkeji 2 ọgụgụ",
 
+    emptyTitle: "Ọ nweghị akụkọ achọtara",
+    emptyText: "Akụkọ ebipụtara maka asụsụ ma ọ bụ nzacha a ga-apụta ebe a.",
+  },
   pages: {
     home: {
       eyebrow: "InkFront Digital Systems",
       heroTitle: "Wulite ọnụnọ dijitalụ kachasị mma maka azụmahịa gị",
       heroSubtitle:
-        "InkFront na-echepụta ma na-ewu weebụsaịtị, peeji ngwa ahịa, ọnụ ụzọ, na ikpo okwu azụmahịa nke na-enyere akara gị aka ịdị ka nke a tụkwasịrị obi, gbanwee ndu, na itolite na ntanetị.",
+        "InkFront na-echepụta ma na-ewu weebụsaịtị, peeji ngwaahịa, ọnụ ụzọ, na ikpo okwu azụmahịa nke na-enyere akara gị aka ịdị ka nke a tụkwasịrị obi, gbanwee ndu, na itolite na ntanetị.",
+      heroPanelEyebrow: "Ewuru maka uto",
+      heroPanelTitle:
+        "Weebụsaịtị, dashboards, ọnụ ụzọ, na sistemụ dị njikere ịmalite.",
+      heroPanelItem1: "Ihu",
+      heroPanelItem2: "Azụ",
+      heroPanelItem3: "Ọdịnaya",
+      heroPanelStatus: "Dị mma",
       statsProjects: "Ọrụ aka",
-      statsServices: "Ọrụ bụ isi",
+      statsServices: "Ọrụ isi",
       statsBusiness: "E lekwasịrị anya na azụmahịa",
       statsSystem: "Sistemụ azụmahịa dị ndụ",
-      systemsTitle: "Weebụsaịtị. Ọnụ ụzọ. Ngwa ahịa.",
+      systemsTitle: "Weebụsaịtị. Ọnụ ụzọ. Ngwaahịa.",
       whatWeDo: "Ihe anyị na-eme",
-      productDirection: "Ntụziaka ngwa ahịa",
+      processEyebrow: "Otu anyị si arụ ọrụ",
+      processTitle:
+        "Usoro doro anya site n'echiche ruo na sistemụ dị njikere ịmalite.",
+      processDescription:
+        "Anyị anaghị echepụta naanị ihuenyo. Anyị na-ahazi usoro azụmahịa, ọdịnaya, data azụ, njikwa nchịkwa, na ahụmịhe onye ọrụ ọnụ.",
+      productDirection: "Ntụziaka ngwaahịa",
       productTitle:
         "Tụgharịa echiche gị ka ọ bụrụ sistemụ azụmahịa doro anya enwere ike iwu.",
+      productSubtitle:
+        "Jiri atụmatụ ngwaahịa InkFront kọwaa peeji, atụmatụ, ọdịnaya, usoro nchịkwa, na ntụziaka mmalite tupu mmepe amalite.",
       selectedWork: "Ọrụ ahọpụtara",
       clientConfidence: "Ntụkwasị obi onye ahịa",
       testimonialSubtitle:
@@ -633,7 +760,7 @@ export default {
       managed: "Ejikwara",
       service: "Ọrụ",
       serviceDescription: "Ọrụ ọkachamara e mere iji kwado azụmahịa gị.",
-      productBlueprint: "Nhazi Ngwa Ahịa",
+      productBlueprint: "Atụmatụ Ngwaahịa",
       productBlueprintSummary:
         "Hazie onyinye, peeji, atụmatụ, na njem onye ahịa tupu mmepe amalite.",
       portfolioProject: "Ọrụ aka portfolio",
@@ -642,32 +769,92 @@ export default {
       happyClient: "Onye Ahịa Obi Ụtọ",
       defaultQuote:
         "Ikpo okwu a na-egbu maramara nke na-enyere azụmahịa aka ịdị ka ọkachamara karịa na ntanetị.",
+      bannerTitle:
+        "Ị chọrọ weebụsaịtị, ọnụ ụzọ, sistemụ ndozi, ma ọ bụ ikpo okwu azụmahịa zuru oke?",
+      bannerText:
+        "InkFront nwere ike inyere gị aka isi n'echiche gbasasịrị agbasasị gaa na sistemụ a na-egbu maramara nwere peeji, ọdịnaya, data azụ, nyocha, ngwa nchịkwa, na ahụmịhe ọha na-anabata ngwaọrụ.",
+      processSteps: {
+        discover: {
+          title: "Chọpụta",
+          text: "Anyị na-eme ka ebumnuche azụmahịa gị, ndị na-ege ntị, ọrụ, na ụdị sistemụ ị chọrọ doo anya.",
+        },
+        structure: {
+          title: "Hazie",
+          text: "Anyị na-ese peeji, usoro ọdịnaya, mkpa nchịkwa, njem onye ọrụ, na ụdị data azụ.",
+        },
+        build: {
+          title: "Wuo",
+          text: "Anyị na-emepụta ihu, azụ, njikwa ọdịnaya, nyocha, na njikọta.",
+        },
+        launch: {
+          title: "Mụọ",
+          text: "Anyị na-eme ka nzaghachi ngwaọrụ, arụmọrụ, ihe ndabere SEO, nnwale, na ịdị njikere mbupụ dị mma.",
+        },
+      },
+      logoFallback: {
+        websites: "Weebụsaịtị",
+        portals: "Ọnụ ụzọ",
+        bookings: "Ndozi",
+        dashboards: "Dashboards",
+        stores: "Ụlọ ahịa",
+      },
       fallbackServices: {
         webDev: "Mmepe Weebụsaịtị",
         webDevSummary:
           "Weebụsaịtị ọsọ ọsọ, na-anabata ngwaọrụ, dị njikere SEO e wuru iji nyere azụmahịa gị aka ịdị ka nke a tụkwasịrị obi.",
+        webDevTimeline: "Ụbọchị 7–21",
+        webDevHighlights:
+          "Peeji ọdịda, weebụsaịtị ụlọ ọrụ, nhazi SEO, usoro kọntaktị",
         software: "Ngwanrọ Ahaziri",
         softwareSummary:
-          "Dashboard, sistemụ ntinye akwụkwọ, ọnụ ụzọ, na ngwa ime ụlọ maka ezigbo ọrụ.",
+          "Dashboards, sistemụ ndozi, ọnụ ụzọ, na ngwa ime ụlọ maka ezigbo ọrụ.",
+        softwareTimeline: "Izu 3–8",
+        softwareHighlights:
+          "Paneli nchịkwa, ọnụ ụzọ, usoro ndozi, dashboards mkpesa",
         strategy: "Atụmatụ Dijitalụ",
         strategySummary:
-          "Ntụziaka ngwa ahịa doro anya, usoro ntụgharị, na atụmatụ mmalite maka akara gị.",
+          "Ntụziaka ngwaahịa doro anya, usoro ntụgharị, na atụmatụ mmalite maka akara gị.",
+        strategyTimeline: "Ụbọchị 3–10",
+        strategyHighlights:
+          "Nhazi onyinye, atụmatụ olulu, eserese peeji, atụmatụ mmalite",
+        ecommerce: "Sistemụ Azụmahịa E-commerce",
+        ecommerceSummary:
+          "Ụlọ ahịa ntanetị, katalọgụ ngwaahịa, usoro iwu, na ahụmịhe ịzụ ahịa dị njikere ịkwụ ụgwọ.",
+        ecommerceTimeline: "Izu 2–6",
+        ecommerceHighlights: "Ngwaahịa, ụgbọ, ịkwụ ụgwọ, njikwa iwu",
+        booking: "Ikpo Okwu Ndozi",
+        bookingSummary:
+          "Sistemụ nhọpụta, ọrụ, njem, na ndọtị nwere ahụmịhe onye ọrụ dị mma.",
+        bookingTimeline: "Izu 2–5",
+        bookingHighlights: "Nhazi oge, ụdị, njikwa nchịkwa, ọkwa",
+        training: "Ọzụzụ Koodu & Teknụzụ",
+        trainingSummary:
+          "Ọzụzụ bara uru maka ndị otu, ụmụ akwụkwọ, na ndị malitere iji ghọta ngwanrọ ọgbara ọhụrụ.",
+        trainingTimeline: "Na-agbanwe agbanwe",
+        trainingHighlights:
+          "React, Spring Boot, mmepe weebụ, mmụta dabere na ọrụ",
       },
       fallbackProjects: {
         agencySite: "Ikpo Okwu Weebụsaịtị Ụlọ Ọrụ",
         agencySiteSummary:
           "Weebụsaịtị ụlọ ọrụ a na-egbu maramara nwere peeji ọrụ na njide ndu.",
-        bookingSystem: "Sistemụ Njikwa Ntinye Akwụkwọ",
+        bookingSystem: "Sistemụ Njikwa Ndozi",
         bookingSystemSummary:
-          "Usoro ntinye akwụkwọ dị ọcha maka azụmahịa dabere na ọrụ.",
+          "Usoro ndozi dị ọcha maka azụmahịa dabere na ọrụ.",
         clientPortal: "Ọnụ Ụzọ Onye Ahịa",
         clientPortalSummary:
           "Ahụmịhe dashboard echekwara maka ndị ahịa na ndị nchịkwa.",
       },
       fallbackProducts: {
-        blueprint: "Nhazi Ngwa Ahịa",
+        blueprint: "Atụmatụ Ngwaahịa",
         blueprintSummary:
           "Sepụta echiche gị, ụdị ego enwetara, njem onye ọrụ, na ụzọ iwu tupu mmepe.",
+        businessSite: "Ngwungwu Weebụsaịtị Azụmahịa",
+        businessSiteSummary:
+          "Nhazi weebụsaịtị kachasị mma maka ika ndị chọrọ ntụkwasị obi, peeji, na njide ndu.",
+        portalKit: "Ngwungwu Ọnụ Ụzọ Onye Ahịa",
+        portalKitSummary:
+          "Ntọala ọnụ ụzọ ahịa echekwara maka dashboards, profaịlụ, arịrịọ, na usoro ọrụ nchịkwa.",
       },
       fallbackTestimonials: {
         client1: {
@@ -687,7 +874,7 @@ export default {
     about: {
       title: "Anyị na-ewu sistemụ dijitalụ maka azụmahịa ọgbara ọhụrụ",
       subtitle:
-        "InkFront na-enyere azụmahịa aka ịmalite weebụsaịtị kachasị mma, peeji ngwa ahịa, dashboard, ọnụ ụzọ, na ikpo okwu dijitalụ jikọtara azụ.",
+        "InkFront na-enyere azụmahịa aka ịmalite weebụsaịtị kachasị mma, peeji ngwaahịa, dashboard, ọnụ ụzọ, na ikpo okwu dijitalụ jikọtara azụ.",
       eyebrow: "Banyere InkFront",
       storyEyebrow: "Akụkọ anyị",
       storyTitle: "Ihe kpatara InkFront ji dị",
@@ -776,6 +963,50 @@ export default {
             "Anyị na-eji React, Spring Boot, PostgreSQL, Docker, na akụrụngwa igwe ojii ọgbara ọhụrụ ewu. Maka ngwa mkpanaka, anyị na-eji React Native ma ọ bụ Flutter. Anyị na-ahọrọ nchịkọta ziri ezi maka mkpa gị.",
         },
       },
+      stats: {
+        engineers: "Ndị injinia sọftụwia",
+        experience: "Afọ ahụmịhe",
+        focus: "Lekwasịrị anya n'Africa",
+      },
+
+      bullets: {
+        item1:
+          "Nkwado sitere n'aka ndị otu injinia sọftụwia na-agbanwe agbanwe nke 5 ruo 15.",
+        item2: "Nghọta siri ike nke mgbagha azụmahịa na ahụmịhe onye ọrụ.",
+        item3:
+          "Ihe karịrị afọ 10 nke ahụmịhe bara uru n'ofe sistemụ weebụ na sọftụwia.",
+        item4: "Lekwasịrị anya na Nigeria nke mbụ, na echiche uto nke Africa.",
+      },
+
+      engineeringDepth: {
+        eyebrow: "Omimi injinia",
+        title: "Anyị na-ejikọta nka sọftụwia na nghọta azụmahịa.",
+        description:
+          "Ọrụ anyị abụghị naanị koodu. Anyị na-eche maka otu azụmahịa si anabata ndu, jikwaa ndị ahịa, gosipụta ọrụ, chịkwaa ọdịnaya, jikwaa data, ma mepụta ahụmịhe dị mma maka ndị ọrụ.",
+        item1: {
+          title: "Mgbagha azụmahịa nke mbụ",
+          body: "Tupu iwu anyị, anyị na-aghọta ọrụ gị, ndị ọrụ, ọrụ, usoro ọrụ, na ụdị ego enwetara.",
+        },
+        item2: {
+          title: "Ahụmịhe onye ọrụ dị ọcha",
+          body: "Anyị na-emepụta peeji, dashboards, ụdị, na usoro ndị na-adị mfe, dị oke mma, ma dị mfe iji.",
+        },
+        item3: {
+          title: "Injinia a pụrụ ịdabere na ya",
+          body: "Anyị na-eji usoro ihu dị ọcha, ọrụ azụ, DTO, API, nyocha, na mgbagha ọdụ data wuo.",
+        },
+        item4: {
+          title: "Mmata ahịa Africa",
+          body: "Anyị na-eji mmata nke eziokwu azụmahịa Naijiria na Africa wuo: ntụkwasị obi, ọsọ, iji mkpanaka, ido anya, na ịdị ọnụ ala.",
+        },
+      },
+
+      howWeWork: {
+        eyebrow: "Otu anyị si arụ ọrụ",
+        title: "Site n'echiche ruo na sistemụ dijitalụ a nụchara anụcha.",
+        description:
+          "Ihe oru ọ bụla na-agbaso usoro doro anya ka ikpo okwu ikpeazụ wee bụrụ ọ bụghị naanị mara mma, kamakwa baa uru, a na-echekwa ya, ma kwekọọ n'ụzọ azụmahịa gị si arụ ọrụ.",
+      },
     },
     services: {
       notFound: "Ahụghị ọrụ",
@@ -800,25 +1031,7 @@ export default {
         "Gwa anyị ihe ị chọrọ. Anyị ga-atụ aro ngwugwu ọrụ kwesịrị ekwesị, usoro iheomume, na nzọụkwụ ọzọ.",
       ctaButton: "Nweta ndụmọdụ n'efu",
     },
-    servicesPage: {
-      title: "Ọrụ ndị na-eme ka azụmahịa gị too",
-      description:
-        "Site na weebụsaịtị ahaziri ruo na sistemụ akpaaka zuru ezu, anyị na-ewu ngwa ahịa dijitalụ nke na-enyere gị aka ịrụ ọrụ nke ọma, ree karịa, na itolite ngwa ngwa.",
-      empty: "Ọ nweghị ọrụ dị ugbu a.",
-      untitled: "Ọrụ Enweghị Aha",
-      descriptionFallback: "Nkọwa ọrụ ga-apụta ebe a.",
-      viewDetails: "Lee nkọwa ọrụ",
-      bannerTitle: "Ọrụ ọnụ ala maka ngwa ahịa ọ bụla anyị na-ewu",
-      bannerText:
-        "Enwere ike iwu nhazi ngwa ahịa ọ bụla na ikpo okwu anyị dị ka ọrụ zuru ezu. Anyị na-enye ọnụahịa na-agbanwe agbanwe — site na mmalite MVP na-amalite na",
-      bannerTextEnd:
-        "ruo na ikpo okwu ụlọ ọrụ zuru ezu. Ị na-akwụ naanị maka ihe azụmahịa gị chọrọ n'ezie.",
-      ctaEyebrow: "Njikere ịmalite?",
-      ctaTitle: "Gwa anyị ihe ị chọrọ ka e wuo",
-      ctaDescription:
-        "Anyị ga-ejikọ gị na ngwugwu ọrụ kwesịrị ekwesị ma nye gị usoro iheomume doro anya na ọnụahịa — enweghị ụgwọ zoro ezo.",
-      ctaButton: "Nweta ndụmọdụ n'efu",
-    },
+
     portfolio: {
       notFound: "Ahụghị ọrụ aka",
       untitled: "Ọrụ Aka Enweghị Aha",
@@ -832,66 +1045,13 @@ export default {
       ctaDescription:
         "Ka anyị chepụta ma wuo weebụsaịtị azụmahịa ma ọ bụ sistemụ nke na-enyere akara gị aka ịpụta ìhè.",
     },
-    portfolioPage: {
-      title: "Ọrụ ahọpụtara na ihe ọmụmụ",
-      description:
-        "Nyochaa weebụsaịtị, ikpo okwu, dashboard, na sistemụ azụmahịa e wuru iji nyere ikaeto aka itolite na ntanetị.",
-      empty: "Ọ nweghị ọrụ aka portfolio dị ugbu a.",
-      untitled: "Ọrụ Aka Enweghị Aha",
-      noSummary: "Nchịkọta ọrụ aka adịghị.",
-      project: "Ọrụ Aka",
-    },
-    products: {
-      notFound: "Ahụghị ngwa ahịa.",
-      untitled: "Ngwa Ahịa Enweghị Aha",
-      noSummary: "Ọ nweghị nchịkọta ngwa ahịa dị.",
-      challenge: "Ihe Ịma Aka",
-      solution: "Azịza",
-      features: "Ihe Ngosi Atụmatụ",
-      keyBenefits: "Uru Ndị Bụ Isi",
-      useCases: "Ọnọdụ Ojiji",
-      targetUsers: "Ndị Ọrụ Ezubere",
-      techStack: "Nchịkọta Teknụzụ",
-      timeline: "Usoro Iheomume E Mere Atụmatụ",
-      ctaEyebrow: "Jiri ido anya wuo",
-      ctaTitle: "Njikere ịtụgharị nhazi a ka ọ bụrụ ezigbo ngwa ahịa?",
-      ctaDescription:
-        "Ka InkFront nyere gị aka ịtụgharị echiche gị ka ọ bụrụ ikpo okwu azụmahịa a na-egbu maramara.",
-    },
-    productsPage: {
-      title: "Nhazi ngwa ahịa maka azụmahịa siri ike",
-      description:
-        "Nyochaa nhazi ngwa ahịa dijitalụ dị njikere iwu maka weebụsaịtị, sistemụ ntinye akwụkwọ, ọnụ ụzọ, ụlọ akwụkwọ, e-commerce, na dashboard azụmahịa.",
-      empty: "Ọ nweghị ngwa ahịa dị ugbu a.",
-      untitled: "Ngwa Ahịa Enweghị Aha",
-      noSummary: "Nchịkọta ngwa ahịa adịghị.",
-      blueprint: "Nhazi",
-      viewBlueprint: "Lee nhazi",
-    },
+
     blueprint: {
       challenge: "Ihe Ịma Aka",
       solution: "Azịza",
       features: "Atụmatụ",
     },
-    clientsPage: {
-      title: "Akụkọ ndị ahịa, akara ntụkwasị obi, na ihe akaebe azụmahịa",
-      description:
-        "Nzaghachi sitere na mmekọ ndị ahịa na ụlọ ọrụ ndị akwadoro site na weebụsaịtị, ngwa ahịa dijitalụ, na sistemụ azụmahịa.",
-      testimonialsEyebrow: "Ịgba Akaebe",
-      testimonialsTitle: "Ihe ndị ahịa na-ekwu maka ịrụ ọrụ na InkFront",
-      testimonialsDescription:
-        "Ezigbo nzaghachi kwesịrị inyere ndị ahịa n'ọdịnihu aka ịghọta ịdị mma, ido anya, na ọkachamara nke ọrụ gị.",
-      noTestimonials: "Ọ nweghị ịgba akaebe dị ugbu a.",
-      defaultQuote: "Ọ nweghị ederede ịgba akaebe.",
-      anonymous: "Onye Ahịa Na-amaghị Aha",
-      client: "Onye Ahịa",
-      logosTitle: "Ụlọ ọrụ ndị a tụkwasịrị obi na ikaeto ndị ahịa",
-      noLogos: "Ọ nweghị akara ndị ahịa dị ugbu a.",
-      ctaEyebrow: "Sonye na akụkọ ịga nke ọma na-esote",
-      ctaTitle: "Ka anyị wuo ikpo okwu ọkachamara maka akara gị.",
-      ctaDescription:
-        "Weebụsaịtị gị kwesịrị ịkparịta ụka ntụkwasị obi, gosi ihe akaebe, ma tụgharịa ndị ọbịa ka ọ bụrụ ezigbo mkparịta ụka.",
-    },
+
     contact: {
       title: "Ka anyị wuo sistemụ dijitalụ gị na-esote",
       subtitle:
@@ -1011,9 +1171,10 @@ export default {
         "Malite site na peeji ụlọ ma ọ bụ nyochaa ọrụ anyị na ọrụ na-adịbeghị anya.",
     },
   },
-
   states: {
     loadingPage: "Na-ebu peeji...",
+    loadingPortfolio: "Na-ebu portfolio...",
+    error: "Ọ dị ihe gara adabaghị",
     emptyGeneric: "Ọ nweghị ọdịnaya dị ugbu a.",
     emptyPortfolio: "Ọ nweghị ọrụ aka portfolio achọpụtara.",
     emptyProducts: "Ọ nweghị nhazi ngwa ahịa achọpụtara.",
@@ -1021,11 +1182,13 @@ export default {
     errorGeneric: "Anyị enweghị ike ibu peeji a ugbu a.",
     notAvailable: "Adịghị",
   },
-
   forms: {
     newsletter: {
+      namePlaceholder: "Aha gị",
       emailPlaceholder: "Tinye email gị",
+      subscribe: "Debanye aha",
       success: "Ndebanye aha gara nke ọma.",
+      error: "Ndebanye aha dara. Biko nwaa ọzọ.",
     },
     contact: {
       fullName: "Aha zuru ezu",

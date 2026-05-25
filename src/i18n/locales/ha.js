@@ -54,20 +54,40 @@ export default {
     services: "Ayyuka",
     portfolio: "Ayyukan da muka yi",
     products: "Kayayyaki",
-    blog: "Shafin labarai",
+    blog: "Bulogi",
     clients: "Abokan ciniki",
     contact: "Tuntuɓi",
-    admin: "Mai gudanarwa",
+    admin: "Admin",
     login: "Shiga",
     logout: "Fita",
     account: "Asusu",
     dashboard: "Dashboard",
-    openMenu: "Buɗe menu",
+    menu: "Menu",
+    openMenu: "Bude menu",
     closeMenu: "Rufe menu",
   },
 
   footer: {
-    copyright: "© {year} {appName}. Duk haƙƙoƙin an kiyaye.",
+    description:
+      "InkFront yana gina manyan gidajen yanar gizo, tsarin ajiya, dashboards, bulogi, wasiƙun labarai, hanyoyin shiga, da kayan aikin software na musamman don kasuwancin zamani.",
+    explore: "Bincika",
+    company: "Kamfani",
+    startTitle: "Fara da InkFront",
+    startText:
+      "Shin kuna shirye don haɓaka kasuwancin ku akan layi? Bari InkFront ta gina tsarin dijital mai tsabta, na zamani don alamar ku.",
+    contactButton: "Tuntuɓi InkFront",
+    phone: "+234 903 017 5230",
+    email: "info@inkfront.com",
+    address: "4 Basden Street, Fegge, Onitsha, Anambra, Nigeria",
+    viewMap: "Duba akan Taswirorin Google",
+    rights: "Duk haƙƙoƙin an kiyaye.",
+    terms: "Sharuɗɗa",
+    privacy: "Sirri",
+    contact: "Tuntuɓi",
+    cookies: "Kukis",
+    termsConditions: "Sharuɗɗa & Yanayi",
+    privacyPolicy: "Manufar Sirri",
+    cookiesPolicy: "Manufar Kukis",
   },
 
   auth: {
@@ -608,24 +628,134 @@ export default {
       },
     },
   },
+  portfolioPage: {
+    title: "Ayyukan da aka zaɓa da nazarce-nazarce",
+    description:
+      "Bincika gidajen yanar gizo, dandamali, dashboards, da tsarin kasuwanci waɗanda aka gina don taimaka wa alamomi su haɓaka akan layi.",
+    empty: "Babu ayyukan hannu na portfolio da ake da su tukuna.",
+    untitled: "Aikin Hannu marar Suna",
+    noSummary: "Babu taƙaitaccen aikin hannu.",
+    project: "Aikin Hannu",
+    loadError: "An kasa loda fayil ɗin ayyuka.",
+  },
+  servicesPage: {
+    title: "Ayyuka waɗanda ke haɓaka kasuwancinku",
+    description:
+      "Daga gidajen yanar gizo na musamman zuwa cikakkun tsarin sarrafa kansa, muna gina kayayyakin dijital waɗanda ke taimaka muku yin aiki da wayo, sayarwa da yawa, da haɓakawa da sauri.",
+    empty: "Babu ayyuka da ake da su tukuna.",
+    untitled: "Sabis marar suna",
+    descriptionFallback: "Cikakkun bayanan sabis zasu bayyana anan.",
+    viewDetails: "Duba cikakkun bayanan sabis",
+    bannerTitle: "Ayyuka masu araha ga kowane kayayyakin da muke ginawa",
+    bannerText:
+      "Ana iya gina kowane tsarin kayayyaki akan dandamalinmu azaman cikakken sabis. Muna ba da farashi mai sassauƙa - daga ƙaddamar da MVP farawa daga",
+    bannerTextEnd:
+      "zuwa cikakkun dandamali na masana'antu. Kuna biyan kuɗi kawai don abin da kasuwancinku ke buƙata da gaske.",
+    ctaEyebrow: "Shirye don farawa?",
+    ctaTitle: "Faɗa mana abin da kuke buƙatar ginawa",
+    ctaDescription:
+      "Za mu haɗa ku da fakitin sabis ɗin da ya dace kuma mu ba ku jadawalin lokaci da farashi bayyananne - babu ɓoyayyun kuɗaɗe.",
+    ctaButton: "Sami shawara kyauta",
+  },
+  productsPage: {
+    title: "Tsarukan kayayyaki don manyan kasuwanci",
+    description:
+      "Bincika tsarin kayayyakin dijital da aka shirya don ginawa don gidajen yanar gizo, tsarin ajiya, hanyoyin shiga, makarantu, kasuwancin yanar gizo, da dashboards na kasuwanci.",
+    empty: "Babu kayayyaki da ake da su tukuna.",
+    untitled: "Kayayyaki marar suna",
+    noSummary: "Babu taƙaitaccen bayanin kayayyaki.",
+    blueprint: "Tsari",
+    viewBlueprint: "Duba tsari",
+  },
+  products: {
+    notFound: "Ba a sami samfur ba.",
+    untitled: "Samfur marar Suna",
+    noSummary: "Babu taƙaitaccen bayanin samfur.",
+    eyebrow: "Tsarin Samfur",
+    challenge: "Kalubale",
+    solution: "Magani",
+    features: "Fitattun Siffofi",
+    keyBenefits: "Muhimman Fa'idodi",
+    useCases: "Yanayin Amfani",
+    targetUsers: "Masu Amfani da aka Nufa",
+    techStack: "Tarin Fasaha",
+    timeline: "Tsarin Lokaci da aka Ƙidaya",
+    ctaEyebrow: "Gina da haske",
+    ctaTitle: "Shirya don juya wannan tsarin zuwa samfur na gaske?",
+    ctaDescription:
+      "Bari InkFront ya taimake ku canza ra'ayinku zuwa ingantaccen dandamalin kasuwanci.",
+    placeholderIcon: "🧩",
+  },
+  clientsPage: {
+    title: "Labarun abokan ciniki, alamun amana, da shaidar kasuwanci",
+    description:
+      "Ra'ayoyi daga hulɗar abokan ciniki da ƙungiyoyin da aka tallafa da gidajen yanar gizo, kayayyakin dijital, da tsarin kasuwanci.",
+    testimonialsEyebrow: "Shaidar",
+    testimonialsTitle:
+      "Abin da abokan ciniki ke cewa game da aiki tare da InkFront",
+    testimonialsDescription:
+      "Ra'ayi na gaske ya kamata ya taimaka wa abokan ciniki na gaba su fahimci inganci, haske, da ƙwarewar aikin ku.",
+    noTestimonials: "Babu shaidar da ake da su tukuna.",
+    defaultQuote: "Babu rubutun shaida.",
+    anonymous: "Abokin Ciniki da Ba a San Sunansa ba",
+    client: "Abokin ciniki",
+    logosTitle: "Ƙungiyoyi da alamomin abokan ciniki amintattu",
+    noLogos: "Babu tambarin abokan ciniki da ake da su tukuna.",
+    ctaEyebrow: "Shiga labarin nasara na gaba",
+    ctaTitle: "Bari mu gina dandamalin ƙwararru don alamar ku.",
+    ctaDescription:
+      "Gidan yanar gizonku ya kamata ya sadar da amana, nuna shaida, kuma ya juya baƙi zuwa tattaunawa ta gaske.",
+  },
+  blog: {
+    eyebrow: "InkFront Blog",
+    title: "Ra'ayoyi, dabaru, da ci gaban dijital",
+    subtitle:
+      "Karanta labarai masu amfani akan gidajen yanar gizo, tsarin ajiya, sarrafa kansa, ganin kasuwanci, da ingantattun ayyukan dijital.",
+    readArticles: "Karanta labarai",
+    featuredLabel: "Fitattun bayanai",
+    noFeatured: "Fitattun labarai zasu bayyana anan da zarar an buga su.",
+    latestLabel: "Sabbin labarai",
+    latestTitle: "Sabbin tunani don alamar ku",
+    clearFilters: "Share matattara",
+    featured: "Fitaccen",
+    readMore: "Karanta labari",
+    readTime: "minti 2 karatu",
 
+    emptyTitle: "Ba'a sami labarai ba",
+    emptyText:
+      "Labaran da aka buga don wannan harshe ko matattara zasu bayyana anan.",
+  },
   pages: {
     home: {
       eyebrow: "InkFront Digital Systems",
       heroTitle: "Gina ingantaccen kasancewar dijital don kasuwancinku",
       heroSubtitle:
         "InkFront yana tsarawa da gina gidajen yanar gizo, shafukan kayayyaki, hanyoyin shiga, da dandamali na kasuwanci waɗanda ke taimaka wa alamar ku ta zama amintacciya, canza masu nema, da haɓaka akan layi.",
+      heroPanelEyebrow: "An gina don haɓaka",
+      heroPanelTitle:
+        "Gidajen yanar gizo, dashboards, hanyoyin shiga, da tsare-tsaren shirye don ƙaddamarwa.",
+      heroPanelItem1: "Gaba",
+      heroPanelItem2: "Baya",
+      heroPanelItem3: "Abun ciki",
+      heroPanelStatus: "Mai kyau",
       statsProjects: "Ayyukan hannu",
       statsServices: "Ayyuka na asali",
       statsBusiness: "Mai da hankali kan kasuwanci",
       statsSystem: "Tsarin kasuwanci mai rai",
       systemsTitle: "Gidajen yanar gizo. Hanyoyin shiga. Kayayyaki.",
       whatWeDo: "Abin da muke yi",
-      productDirection: "Hanyar kayayyaki",
+      processEyebrow: "Yadda muke aiki",
+      processTitle:
+        "Tsari mai haske daga ra'ayi zuwa tsarin shirye don ƙaddamarwa.",
+      processDescription:
+        "Ba wai kawai muna tsara fuskar allo ba. Muna tsara tsarin kasuwanci, abun ciki, bayanan baya, sarrafa gudanarwa, da ƙwarewar mai amfani tare.",
+      productDirection: "Jagorancin kayayyaki",
       productTitle:
         "Juya ra'ayinku zuwa tsarin kasuwanci bayyananne wanda za a iya ginawa.",
+      productSubtitle:
+        "Yi amfani da tsare-tsaren kayayyaki na InkFront don ayyana shafuka, fasali, abun ciki, tsarin gudanarwa, da jagorancin ƙaddamarwa kafin ci gaba ya fara.",
       selectedWork: "Ayyukan da aka zaɓa",
-      clientConfidence: "Amanar abokin ciniki",
+      clientConfidence: "Amincin abokin ciniki",
       testimonialSubtitle:
         "Sadarwa bayyananna, ƙira ta zamani, da tsare-tsare waɗanda ke sauƙaƙa sarrafa kasuwancinku.",
       trustedBy: "Amintattu daga alamun da ke haɓaka",
@@ -636,7 +766,7 @@ export default {
         "Sabis na ƙwararru wanda aka ƙera don tallafawa kasuwancinku.",
       productBlueprint: "Tsarin Kayayyaki",
       productBlueprintSummary:
-        "Tsara tayin, shafuka, fasali, da tafiyar abokin ciniki kafin a fara haɓakawa.",
+        "Tsara tayin, shafuka, fasali, da tafiyar abokin ciniki kafin ci gaba ya fara.",
       portfolioProject: "Aikin hannu na portfolio",
       portfolioSummary:
         "Aikin dijital mai tsafta wanda aka gina don tasirin kasuwanci.",
@@ -644,16 +774,70 @@ export default {
       happyClient: "Abokin Ciniki Mai Farin Ciki",
       defaultQuote:
         "Dandamali mai walƙiya wanda ke taimaka wa kasuwanci ya zama mafi ƙwararru akan layi.",
+      bannerTitle:
+        "Kuna buƙatar gidan yanar gizo, hanyar shiga, tsarin ajiya, ko cikakken dandamalin kasuwanci?",
+      bannerText:
+        "InkFront na iya taimaka muku motsawa daga ra'ayoyin da suka watsu zuwa tsari mai walƙiya mai shafuka, abun ciki, bayanan baya, tantancewa, kayan aikin gudanarwa, da ƙwarewar jama'a mai amsawa.",
+      processSteps: {
+        discover: {
+          title: "Ganowa",
+          text: "Muna bayyana burin kasuwancinku, masu sauraro, ayyuka, da nau'in tsarin da kuke buƙata.",
+        },
+        structure: {
+          title: "Tsarawa",
+          text: "Muna tsara shafuka, kwararar abun ciki, buƙatun gudanarwa, tafiyar mai amfani, da ƙirar bayanan baya.",
+        },
+        build: {
+          title: "Ginawa",
+          text: "Muna haɓaka gaba, baya, sarrafa abun ciki, tantancewa, da haɗin kai.",
+        },
+        launch: {
+          title: "Ƙaddamarwa",
+          text: "Muna goge amsawa, aiki, tushen SEO, gwaji, da shirye-shiryen turawa.",
+        },
+      },
+      logoFallback: {
+        websites: "Gidajen yanar gizo",
+        portals: "Hanyoyin shiga",
+        bookings: "Ajiya",
+        dashboards: "Dashboards",
+        stores: "Shaguna",
+      },
       fallbackServices: {
         webDev: "Haɓaka Gidan Yanar Gizo",
         webDevSummary:
           "Gidajen yanar gizo masu sauri, masu amsawa, shirye don SEO waɗanda aka gina don taimaka wa kasuwancinku ya zama amintacce.",
+        webDevTimeline: "Kwanaki 7–21",
+        webDevHighlights:
+          "Shafukan saukowa, gidajen yanar gizo na kamfani, tsarin SEO, kwararar sadarwa",
         software: "Software na Musamman",
         softwareSummary:
           "Dashboards, tsarin ajiya, hanyoyin shiga, da kayan aikin ciki don ayyuka na gaske.",
+        softwareTimeline: "Makonni 3–8",
+        softwareHighlights:
+          "Fasfo na gudanarwa, hanyoyin shiga, kwararar ajiya, dashboards rahoto",
         strategy: "Dabarun Dijital",
         strategySummary:
-          "Hanyar kayayyaki bayyananna, tafiyar canzawa, da shirin ƙaddamarwa don alamar ku.",
+          "Jagorancin kayayyaki bayyananne, kwararar juyawa, da shirin ƙaddamarwa don alamar ku.",
+        strategyTimeline: "Kwanaki 3–10",
+        strategyHighlights:
+          "Tsarin tayin, tsarin mazurari, taswirar shafi, shirin ƙaddamarwa",
+        ecommerce: "Tsarin Kasuwancin E-commerce",
+        ecommerceSummary:
+          "Shagunan kan layi, kasidar kayayyaki, kwararar oda, da abubuwan siyayya masu shirye don biya.",
+        ecommerceTimeline: "Makonni 2–6",
+        ecommerceHighlights: "Kayayyaki, darusa, biya, sarrafa oda",
+        booking: "Dandamalin Ajiya",
+        bookingSummary:
+          "Tsarin alƙawari, sabis, sufuri, da ajiya tare da ƙwarewar mai amfani mai santsi.",
+        bookingTimeline: "Makonni 2–5",
+        bookingHighlights: "Jadawalin, fom, sarrafa gudanarwa, sanarwa",
+        training: "Koyarwar Coding & Fasaha",
+        trainingSummary:
+          "Koyarwa mai amfani ga ƙungiyoyi, ɗalibai, da masu farawa waɗanda ke son fahimtar software na zamani.",
+        trainingTimeline: "Mai sassauƙa",
+        trainingHighlights:
+          "React, Spring Boot, haɓaka gidan yanar gizo, koyo na tushen aiki",
       },
       fallbackProjects: {
         agencySite: "Dandamalin Gidan Yanar Gizo na Hukuma",
@@ -661,7 +845,7 @@ export default {
           "Gidan yanar gizo na kamfani mai walƙiya tare da shafukan ayyuka da kama masu nema.",
         bookingSystem: "Tsarin Sarrafa Ajiya",
         bookingSystemSummary:
-          "Tafiyar ajiya mai tsafta don kasuwancin tushen sabis.",
+          "Kwararar ajiya mai tsafta don kasuwancin tushen sabis.",
         clientPortal: "Hanyar Shiga ta Abokin Ciniki",
         clientPortalSummary:
           "Ƙwarewar dashboard mai aminci ga abokan ciniki da masu gudanarwa.",
@@ -669,7 +853,13 @@ export default {
       fallbackProducts: {
         blueprint: "Tsarin Kayayyaki",
         blueprintSummary:
-          "Tsara ra'ayinku, tsarin samun kuɗi, tafiyar mai amfani, da taswirar ginawa kafin haɓakawa.",
+          "Tsara ra'ayinku, tsarin samun kuɗi, tafiyar mai amfani, da taswirar gina kafin ci gaba.",
+        businessSite: "Kayan Gidan Yanar Gizo na Kasuwanci",
+        businessSiteSummary:
+          "Tsarin gidan yanar gizo na musamman don alamomin da suke buƙatar aminci, shafuka, da kama masu nema.",
+        portalKit: "Kayan Hanyar Shiga ta Abokin Ciniki",
+        portalKitSummary:
+          "Tushen hanyar shiga abokin ciniki mai aminci don dashboards, bayanan martaba, buƙatun, da ayyukan gudanarwa.",
       },
       fallbackTestimonials: {
         client1: {
@@ -689,19 +879,19 @@ export default {
     about: {
       title: "Muna gina tsare-tsaren dijital don kasuwancin zamani",
       subtitle:
-        "InkFront yana taimaka wa kasuwanci su ƙaddamar da ingantattun gidajen yanar gizo, shafukan kayayyaki, dashboards, hanyoyin shiga, da dandamali na dijital masu haɗin baya.",
+        "InkFront na taimaka wa kasuwanci su ƙaddamar da manyan gidajen yanar gizo, shafukan samfur, dashboards, hanyoyin shiga, da dandamalin dijital masu haɗin baya.",
       eyebrow: "Game da InkFront",
-      storyEyebrow: "Labarinmu",
+      storyEyebrow: "Labarin mu",
       storyTitle: "Dalilin da yasa InkFront yake wanzuwa",
       storyFallback:
-        "InkFront yana wanzuwa don taimaka wa kasuwanci su matsa daga tarwatsattun ra'ayoyi da raunin kasancewar kan layi zuwa ingantattun dandamali na dijital, amintattu, kuma masu iya haɓakawa.",
-      missionTitle: "Manufarmu",
+        "InkFront ya wanzu don taimaka wa kasuwanci su matsa daga warwatse ra'ayoyi da rashin ƙarfi akan layi zuwa ingantattun dandamali na dijital, amintattu, kuma masu iya haɓakawa.",
+      missionTitle: "Manufar mu",
       missionFallback:
         "Don tsarawa da gina tsare-tsaren dijital masu amfani waɗanda ke taimaka wa kasuwanci sadarwa a fili, aiki da kyau, da haɓaka da tabbaci.",
-      visionTitle: "Hangenmu",
+      visionTitle: "Hangen mu",
       visionFallback:
         "Don zama amintaccen abokin haɗin gwiwar fasaha ga kasuwanci waɗanda ke son ƙira mai tsafta, tsayayyen tsarin baya, da haɓakar dijital na dogon lokaci.",
-      valuesTitle: "Ƙimominmu",
+      valuesTitle: "Ƙimomin mu",
       valuesFallback:
         "Muna ɗaukar bayyananniyar fahimta, dogaro, tasirin kasuwanci, aiwatarwa mai tsafta, da sadarwa ta gaskiya da muhimmanci.",
       howWeWorkEyebrow: "Yadda muke aiki",
@@ -712,11 +902,11 @@ export default {
       workSteps: {
         understand: {
           title: "Fahimci kasuwancin",
-          body: "Muna bayyana tayin, masu sauraro, shafuka, tafiyar aiki, da burin kasuwanci kafin ginawa.",
+          body: "Muna bayyana tayin, masu sauraro, shafuka, ayyuka, da burin kasuwanci kafin ginawa.",
         },
         design: {
-          title: "Ƙirƙiri ƙwarewar",
-          body: "Muna siffata shimfiɗa, tafiyar abun ciki, da tafiyar mai amfani don dandamali ya ji ingantacce kuma mai sauƙin amfani.",
+          title: "Zana ƙwarewar",
+          body: "Muna siffanta shimfiɗa, kwararar abun ciki, da tafiyar mai amfani don dandamali ya ji ingantacce kuma mai sauƙin amfani.",
         },
         build: {
           title: "Gina da tsararrun tsare-tsare",
@@ -727,7 +917,7 @@ export default {
         t1: {
           role: "Wanda Ya Kafa",
           quote:
-            "InkFront ya gina dandamalin sarrafa makarantarmu daidai yadda muka bayyana shi. Ƙira mai tsafta, baya mai ƙarfi. Malamanmu da iyayenmu suna son amfani da shi.",
+            "InkFront ya gina dandamalin sarrafa makarantarmu daidai yadda muka bayyana shi. Zane mai tsafta, baya mai ƙarfi. Malamanmu da iyayenmu suna son amfani da shi.",
         },
         t2: {
           role: "Shugaba",
@@ -769,13 +959,58 @@ export default {
         f5: {
           question: "Nawa ne aikin da aka saba kashewa?",
           answer:
-            "Fakitin MVP ɗinmu suna farawa daga $2,500 don cikakken gidan yanar gizo na kasuwanci. Dandamali na musamman suna daga $5,000-$25,000+ dangane da sarƙaƙiya. Kowane aikin yana samun shawarar farashi da aka ƙayyade a gaba.",
+            "Fakitin MVP ɗinmu suna farawa daga $2,500 don cikakken gidan yanar gizo na kasuwanci. Dandamali na musamman suna daga $5,000–$25,000+ dangane da sarƙaƙiya. Kowane aikin yana samun shawarar farashi da aka ƙayyade a gaba.",
         },
         f6: {
           question: "Waɗanne fasahohi kuke amfani da su?",
           answer:
             "Muna ginawa da React, Spring Boot, PostgreSQL, Docker, da kayan aikin girgije na zamani. Don ƙa'idodin wayar hannu, muna amfani da React Native ko Flutter. Muna zaɓar tarin da ya dace don buƙatunku.",
         },
+      },
+      stats: {
+        engineers: "Injiniyoyin software",
+        experience: "Shekarun gwaninta",
+        focus: "Mai da hankali ga Afirka",
+      },
+
+      bullets: {
+        item1:
+          "Goyan bayan ƙungiyar injiniyoyin software masu sassauƙa na 5 zuwa 15.",
+        item2: "Kyakkyawar fahimtar dabarun kasuwanci da ƙwarewar mai amfani.",
+        item3:
+          "Fiye da shekaru 10 na gwaninta a fadin tsarin yanar gizo da software.",
+        item4:
+          "Mai da hankali ga Najeriya da farko, tare da tunanin ci gaban Afirka.",
+      },
+
+      engineeringDepth: {
+        eyebrow: "Zurfin injiniyanci",
+        title: "Muna haɗa ƙwarewar software tare da fahimtar kasuwanci.",
+        description:
+          "Aikinmu ba game da lambar kawai ba ne. Muna tunanin yadda kasuwanci ke karɓar jagorori, sarrafa abokan ciniki, gabatar da ayyuka, sarrafa abun ciki, sarrafa bayanai, da ƙirƙirar ƙwarewa mai sauƙi ga masu amfani.",
+        item1: {
+          title: "Dabarun kasuwanci na farko",
+          body: "Kafin ginawa, muna fahimtar ayyukanku, masu amfani, ayyuka, ayyukan aiki, da tsarin samun kuɗi.",
+        },
+        item2: {
+          title: "Ƙwarewar mai amfani mai tsabta",
+          body: "Muna tsara shafuka, dashboards, fom, da kwararar ruwa waɗanda suke da sauƙi, na musamman, da sauƙin amfani.",
+        },
+        item3: {
+          title: "Injiniyanci abin dogaro",
+          body: "Muna ginawa tare da tsarin gaba mai tsabta, ayyukan baya, DTOs, APIs, tantancewa, da dabarun bayanai.",
+        },
+        item4: {
+          title: "Fahimtar kasuwar Afirka",
+          body: "Muna ginawa tare da fahimtar gaskiyar kasuwancin Najeriya da Afirka: amana, sauri, amfani da wayar hannu, bayyananne, da araha.",
+        },
+      },
+
+      howWeWork: {
+        eyebrow: "Yadda muke aiki",
+        title: "Daga ra'ayi zuwa tsarin dijital mai kyau.",
+        description:
+          "Kowane aiki yana bin tsari bayyananne don dandamali na ƙarshe ya kasance ba kawai kyakkyawa ba, amma mai amfani, mai kulawa, kuma mai daidaita da yadda kasuwancinku yake aiki.",
       },
     },
     services: {
@@ -801,25 +1036,7 @@ export default {
         "Faɗa mana abin da kuke buƙata. Za mu ba da shawarar fakitin sabis ɗin da ya dace, jadawalin lokaci, da mataki na gaba.",
       ctaButton: "Sami shawara kyauta",
     },
-    servicesPage: {
-      title: "Ayyuka waɗanda ke haɓaka kasuwancinku",
-      description:
-        "Daga gidajen yanar gizo na musamman zuwa cikakkun tsarin sarrafa kansa, muna gina kayayyakin dijital waɗanda ke taimaka muku yin aiki da wayo, sayarwa da yawa, da haɓakawa da sauri.",
-      empty: "Babu ayyuka da ake da su tukuna.",
-      untitled: "Sabis marar suna",
-      descriptionFallback: "Cikakkun bayanan sabis zasu bayyana anan.",
-      viewDetails: "Duba cikakkun bayanan sabis",
-      bannerTitle: "Ayyuka masu araha ga kowane kayayyakin da muke ginawa",
-      bannerText:
-        "Ana iya gina kowane tsarin kayayyaki akan dandamalinmu azaman cikakken sabis. Muna ba da farashi mai sassauƙa - daga ƙaddamar da MVP farawa daga",
-      bannerTextEnd:
-        "zuwa cikakkun dandamali na masana'antu. Kuna biyan kuɗi kawai don abin da kasuwancinku ke buƙata da gaske.",
-      ctaEyebrow: "Shirye don farawa?",
-      ctaTitle: "Faɗa mana abin da kuke buƙatar ginawa",
-      ctaDescription:
-        "Za mu haɗa ku da fakitin sabis ɗin da ya dace kuma mu ba ku jadawalin lokaci da farashi bayyananne - babu ɓoyayyun kuɗaɗe.",
-      ctaButton: "Sami shawara kyauta",
-    },
+
     portfolio: {
       notFound: "Ba a sami aikin hannu ba",
       untitled: "Aikin hannu marar suna",
@@ -833,67 +1050,13 @@ export default {
       ctaDescription:
         "Bari mu tsara mu gina gidan yanar gizo na kasuwanci ko tsari wanda ke taimaka wa alamar ku ta fice.",
     },
-    portfolioPage: {
-      title: "Ayyukan da aka zaɓa da nazarce-nazarce",
-      description:
-        "Bincika gidajen yanar gizo, dandamali, dashboards, da tsarin kasuwanci waɗanda aka gina don taimaka wa alamomi su haɓaka akan layi.",
-      empty: "Babu ayyukan hannu na portfolio da ake da su tukuna.",
-      untitled: "Aikin hannu marar suna",
-      noSummary: "Babu taƙaitaccen aikin hannu.",
-      project: "Aikin hannu",
-    },
-    products: {
-      notFound: "Ba a sami kayayyaki ba.",
-      untitled: "Kayayyaki marar suna",
-      noSummary: "Babu taƙaitaccen bayanin kayayyaki.",
-      challenge: "Ƙalubale",
-      solution: "Mafita",
-      features: "Fitattun Fasali",
-      keyBenefits: "Fa'idodi Masu Muhimmanci",
-      useCases: "Hanyoyin Amfani",
-      targetUsers: "Masu Amfani da Aka Nufa",
-      techStack: "Tarin Fasaha",
-      timeline: "Jadawalin Lokaci da Aka Ƙaddara",
-      ctaEyebrow: "Gina da haske",
-      ctaTitle: "Shirye don juya wannan tsarin zuwa kayayyaki na gaske?",
-      ctaDescription:
-        "Bari InkFront ya taimake ku canza ra'ayinku zuwa ingantaccen dandamalin kasuwanci.",
-    },
-    productsPage: {
-      title: "Tsarukan kayayyaki don manyan kasuwanci",
-      description:
-        "Bincika tsarin kayayyakin dijital da aka shirya don ginawa don gidajen yanar gizo, tsarin ajiya, hanyoyin shiga, makarantu, kasuwancin yanar gizo, da dashboards na kasuwanci.",
-      empty: "Babu kayayyaki da ake da su tukuna.",
-      untitled: "Kayayyaki marar suna",
-      noSummary: "Babu taƙaitaccen bayanin kayayyaki.",
-      blueprint: "Tsari",
-      viewBlueprint: "Duba tsari",
-    },
+
     blueprint: {
       challenge: "Ƙalubale",
       solution: "Mafita",
       features: "Fasali",
     },
-    clientsPage: {
-      title: "Labarun abokan ciniki, alamun amana, da shaidar kasuwanci",
-      description:
-        "Ra'ayoyi daga hulɗar abokan ciniki da ƙungiyoyin da aka tallafa da gidajen yanar gizo, kayayyakin dijital, da tsarin kasuwanci.",
-      testimonialsEyebrow: "Shaidar",
-      testimonialsTitle:
-        "Abin da abokan ciniki ke cewa game da aiki tare da InkFront",
-      testimonialsDescription:
-        "Ra'ayi na gaske ya kamata ya taimaka wa abokan ciniki na gaba su fahimci inganci, haske, da ƙwarewar aikin ku.",
-      noTestimonials: "Babu shaidar da ake da su tukuna.",
-      defaultQuote: "Babu rubutun shaida.",
-      anonymous: "Abokin Ciniki da Ba a San Sunansa ba",
-      client: "Abokin ciniki",
-      logosTitle: "Ƙungiyoyi da alamomin abokan ciniki amintattu",
-      noLogos: "Babu tambarin abokan ciniki da ake da su tukuna.",
-      ctaEyebrow: "Shiga labarin nasara na gaba",
-      ctaTitle: "Bari mu gina dandamalin ƙwararru don alamar ku.",
-      ctaDescription:
-        "Gidan yanar gizonku ya kamata ya sadar da amana, nuna shaida, kuma ya juya baƙi zuwa tattaunawa ta gaske.",
-    },
+
     contact: {
       title: "Bari mu gina tsarin dijital ɗinku na gaba",
       subtitle:
@@ -1015,19 +1178,22 @@ export default {
   },
 
   states: {
-    loadingPage: "Ana ɗorawa shafi...",
-    emptyGeneric: "Babu abun ciki da ake da shi tukuna.",
-    emptyPortfolio: "Ba a sami ayyukan hannu na portfolio ba.",
-    emptyProducts: "Ba a sami tsare-tsaren kayayyaki ba.",
+    loadingPortfolio: "Ana loda fayil ɗin ayyuka...",
+    error: "Wani abu ya faru ba daidai ba",
+    loadingPage: "Ana loda shafi...",
+    emptyGeneric: "Babu wani abun ciki da ake samu tukuna.",
     errorTitle: "Wani abu ya faru ba daidai ba",
-    errorGeneric: "Ba za mu iya ɗora wannan shafin ba a yanzu.",
-    notAvailable: "Ba ya samuwa",
+    errorGeneric: "Ba za mu iya loda wannan shafin ba a yanzu.",
+    notAvailable: "Babu samuwa",
   },
 
   forms: {
     newsletter: {
+      namePlaceholder: "Sunanka",
       emailPlaceholder: "Shigar da imel ɗinku",
+      subscribe: "Biyan kuɗi",
       success: "Biyan kuɗi ya yi nasara.",
+      error: "Biyan kuɗi ya kasa. Da fatan za a sake gwadawa.",
     },
     contact: {
       fullName: "Cikakken suna",

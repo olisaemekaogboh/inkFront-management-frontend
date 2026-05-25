@@ -1,18 +1,20 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "../../contexts/ThemeContext";
+import useLanguage from "../../hooks/useLanguage";
 
 export default function SimpleThemeToggle() {
   const { themePreference, setTheme } = useTheme();
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [hoverTimeout, setHoverTimeout] = useState(null);
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
 
   const themes = [
-    { value: "light", label: "Light", icon: "☀️" },
-    { value: "dark", label: "Dark", icon: "🌙" },
-    { value: "system", label: "System", icon: "💻" },
+    { value: "light", label: t("theme.light", "Light"), icon: "☀️" },
+    { value: "dark", label: t("theme.dark", "Dark"), icon: "🌙" },
+    { value: "system", label: t("theme.system", "System"), icon: "💻" },
   ];
 
   const currentTheme =
@@ -62,7 +64,7 @@ export default function SimpleThemeToggle() {
         ref={buttonRef}
         className={`theme-toggle__button ${isOpen ? "theme-toggle__button--active" : ""}`}
         onClick={() => setIsOpen(!isOpen)}
-        aria-label="Change theme"
+        aria-label={t("common.theme", "Change theme")}
         aria-expanded={isOpen}
       >
         <span className="theme-toggle__icon">{currentTheme.icon}</span>
