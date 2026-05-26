@@ -204,7 +204,7 @@ function formatDate(value, language = "EN") {
   }
 }
 
-function CountUpNumber({ value, suffix = "", duration = 1.4 }) {
+function CountUpNumber({ value, suffix = "", duration = 4.4 }) {
   const [displayValue, setDisplayValue] = useState(0);
 
   useEffect(() => {

@@ -30,21 +30,9 @@ export default function Footer() {
       { to: "/clients", label: t("nav.clients", "Clients") },
     ],
     company: [
+      { to: "/", label: t("nav.home", "Home") },
       { to: "/about", label: t("nav.about", "About InkFront") },
       { to: "/contact", label: t("nav.contact", "Contact") },
-      { to: "/login", label: t("nav.login", "Login") },
-      {
-        to: "/terms",
-        label: t("footer.termsConditions", "Terms & Conditions"),
-      },
-      {
-        to: "/privacy",
-        label: t("footer.privacyPolicy", "Privacy Policy"),
-      },
-      {
-        to: "/cookies",
-        label: t("footer.cookiesPolicy", "Cookies Policy"),
-      },
     ],
   };
 
