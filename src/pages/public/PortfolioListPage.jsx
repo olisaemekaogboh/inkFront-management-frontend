@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import useLanguage from "../../hooks/useLanguage";
+import useFetchOnMount from "../../hooks/useFetchOnMount";
+import { heroService } from "../../services/heroService";
 import { publicApi } from "../../services/publicApi";
+import LoadingSpinner from "../../components/common/LoadingSpinner";
+import ErrorState from "../../components/common/ErrorState";
 import "../../styles/publicPremium.css";
 
 function normalizeList(response) {
@@ -20,10 +24,22 @@ function text(...values) {
   );
 }
 
+function getImageUrl(item) {
+  return text(
+    item?.imageUrl,
+    item?.coverImageUrl,
+    item?.featuredImageUrl,
+    item?.thumbnailUrl,
+    item?.backgroundImageUrl,
+    item?.bannerImageUrl,
+    item?.mediaUrl,
+  );
+}
+
 // Map portfolio project slugs to your images based on actual database slugs
 const portfolioImageMap = {
   // Education
-  "edubridge-school-platform": "/images/portfolio/school.jpg",
+  "edubridge-school-platform": "/images/portfolio/school.png",
 
   // Logistics
   "quickship-logistics-dashboard": "/images/portfolio/logistics.png",
@@ -190,6 +206,19 @@ function PortfolioImage({ src, alt, className }) {
 export default function PortfolioListPage() {
   const { language, t } = useLanguage();
 
+  // Fetch hero data - matching About, Contact, and Services pages
+  const fetchHero = useCallback(
+    () =>
+      heroService.getHeroSections({
+        language,
+        placement: "PORTFOLIO",
+        featuredOnly: true,
+      }),
+    [language],
+  );
+
+  const hero = useFetchOnMount(fetchHero, [language]);
+
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -234,31 +263,80 @@ export default function PortfolioListPage() {
     };
   }, [language, t]);
 
+  // Show loading state while hero is being fetched
+  if (hero.loading) {
+    return (
+      <LoadingSpinner label={t("states.loadingPage", "Loading page...")} />
+    );
+  }
+
+  // Show error state if hero fetch fails
+  if (hero.error) {
+    return <ErrorState message={hero.error} />;
+  }
+
+  // Get hero data
+  const heroItem = normalizeList(hero.data)[0] || null;
+
+  const heroTitle = text(
+    heroItem?.title,
+    t("portfolioPage.title", "Selected work and case studies"),
+  );
+
+  const heroSubtitle = text(
+    heroItem?.subtitle,
+    heroItem?.description,
+    t(
+      "portfolioPage.description",
+      "Explore websites, platforms, dashboards, and business systems built to help brands grow online.",
+    ),
+  );
+
+  const imageUrl = getImageUrl(heroItem);
+
   return (
     <main className="premium-public-page">
-      <section className="premium-hero premium-compact-hero">
-        <div className="premium-container">
+      {/* Hero section - matching About, Contact, and Services pages */}
+      <section className="premium-detail-hero">
+        <div
+          className={
+            imageUrl
+              ? "premium-container premium-detail-grid"
+              : "premium-container premium-page-intro"
+          }
+        >
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65 }}
-            className="premium-page-intro"
           >
             <span className="premium-eyebrow">
               {t("nav.portfolio", "Portfolio")}
             </span>
 
-            <h1>
-              {t("portfolioPage.title", "Selected work and case studies")}
-            </h1>
-
-            <p>
-              {t(
-                "portfolioPage.description",
-                "Explore websites, platforms, dashboards, and business systems built to help brands grow online.",
-              )}
-            </p>
+            <h1>{heroTitle}</h1>
+            <p>{heroSubtitle}</p>
           </motion.div>
+
+          {imageUrl ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.65 }}
+              className="premium-detail-media"
+            >
+              <img
+                src={imageUrl}
+                alt={heroTitle}
+                loading="lazy"
+                onError={(event) => {
+                  event.currentTarget.closest(
+                    ".premium-detail-media",
+                  ).style.display = "none";
+                }}
+              />
+            </motion.div>
+          ) : null}
         </div>
       </section>
 
@@ -286,9 +364,6 @@ export default function PortfolioListPage() {
             <div className="premium-work-grid">
               {projects
                 .map((project, index) => {
-                  // REMOVED the language filter - now shows ALL languages!
-                  // The API already filters by language, so we don't need to filter again
-
                   const title = text(
                     project.title,
                     project.name,

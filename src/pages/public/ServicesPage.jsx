@@ -1,8 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import useLanguage from "../../hooks/useLanguage";
+import useFetchOnMount from "../../hooks/useFetchOnMount";
+import { heroService } from "../../services/heroService";
 import { publicApi } from "../../services/publicApi";
+import LoadingSpinner from "../../components/common/LoadingSpinner";
+import ErrorState from "../../components/common/ErrorState";
 import "../../styles/publicPremium.css";
 
 const SERVICE_HIGHLIGHT_KEYS = {
@@ -52,6 +56,18 @@ function text(...values) {
   );
 }
 
+function getImageUrl(item) {
+  return text(
+    item?.imageUrl,
+    item?.coverImageUrl,
+    item?.featuredImageUrl,
+    item?.thumbnailUrl,
+    item?.backgroundImageUrl,
+    item?.bannerImageUrl,
+    item?.mediaUrl,
+  );
+}
+
 function imageOf(item) {
   return text(
     item?.imageUrl,
@@ -80,6 +96,19 @@ function PremiumImage({ src, alt, className }) {
 
 export default function ServicesPage() {
   const { language, t } = useLanguage();
+
+  // Fetch hero data - same pattern as About and Contact pages
+  const fetchHero = useCallback(
+    () =>
+      heroService.getHeroSections({
+        language,
+        placement: "SERVICES",
+        featuredOnly: true,
+      }),
+    [language],
+  );
+
+  const hero = useFetchOnMount(fetchHero, [language]);
 
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -237,31 +266,80 @@ export default function ServicesPage() {
     return key ? serviceHighlights[key] : null;
   };
 
+  // Show loading state while hero is being fetched
+  if (hero.loading) {
+    return (
+      <LoadingSpinner label={t("states.loadingPage", "Loading page...")} />
+    );
+  }
+
+  // Show error state if hero fetch fails
+  if (hero.error) {
+    return <ErrorState message={hero.error} />;
+  }
+
+  // Get hero data
+  const heroItem = normalizeList(hero.data)[0] || null;
+
+  const heroTitle = text(
+    heroItem?.title,
+    t("servicesPage.title", "Services that grow your business"),
+  );
+
+  const heroSubtitle = text(
+    heroItem?.subtitle,
+    heroItem?.description,
+    t(
+      "servicesPage.description",
+      "From custom websites to full automation systems, we build digital products that help you work smarter, sell more, and scale faster.",
+    ),
+  );
+
+  const imageUrl = getImageUrl(heroItem);
+
   return (
     <main className="premium-public-page">
-      <section className="premium-hero premium-compact-hero">
-        <div className="premium-container">
+      {/* Hero section - matching About and Contact page structure */}
+      <section className="premium-detail-hero">
+        <div
+          className={
+            imageUrl
+              ? "premium-container premium-detail-grid"
+              : "premium-container premium-page-intro"
+          }
+        >
           <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeUp}
-            className="premium-page-intro"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65 }}
           >
             <span className="premium-eyebrow">
               {t("nav.services", "Services")}
             </span>
 
-            <h1>
-              {t("servicesPage.title", "Services that grow your business")}
-            </h1>
-
-            <p>
-              {t(
-                "servicesPage.description",
-                "From custom websites to full automation systems, we build digital products that help you work smarter, sell more, and scale faster.",
-              )}
-            </p>
+            <h1>{heroTitle}</h1>
+            <p>{heroSubtitle}</p>
           </motion.div>
+
+          {imageUrl ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.65 }}
+              className="premium-detail-media"
+            >
+              <img
+                src={imageUrl}
+                alt={heroTitle}
+                loading="lazy"
+                onError={(event) => {
+                  event.currentTarget.closest(
+                    ".premium-detail-media",
+                  ).style.display = "none";
+                }}
+              />
+            </motion.div>
+          ) : null}
         </div>
       </section>
 

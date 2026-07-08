@@ -12,7 +12,7 @@ function text(...values) {
 
 // Map portfolio project slugs to your images (same as list page)
 const portfolioImageMap = {
-  "edubridge-school-platform": "/images/portfolio/school.jpg",
+  "edubridge-school-platform": "/images/portfolio/school.png",
   "quickship-logistics-dashboard": "/images/portfolio/logistics.png",
   "halamart-marketplace": "/images/portfolio/market.png",
   "payswift-bill-payments": "/images/portfolio/banking.png",

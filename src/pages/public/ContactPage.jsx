@@ -1,7 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import useLanguage from "../../hooks/useLanguage";
+import useFetchOnMount from "../../hooks/useFetchOnMount";
+import { heroService } from "../../services/heroService";
 import { publicApi } from "../../services/publicApi";
+import LoadingSpinner from "../../components/common/LoadingSpinner";
+import ErrorState from "../../components/common/ErrorState";
 import NewsletterSection from "../../components/sections/NewsletterSection";
 import "../../styles/publicPremium.css";
 
@@ -70,6 +74,33 @@ const initialForm = {
   message: "",
 };
 
+function normalizeList(value) {
+  if (Array.isArray(value)) return value;
+  if (Array.isArray(value?.content)) return value.content;
+  if (Array.isArray(value?.data?.content)) return value.data.content;
+  if (Array.isArray(value?.data)) return value.data;
+  if (Array.isArray(value?.items)) return value.items;
+  return [];
+}
+
+function text(...values) {
+  return (
+    values.find((value) => typeof value === "string" && value.trim()) || ""
+  );
+}
+
+function getImageUrl(item) {
+  return text(
+    item?.imageUrl,
+    item?.coverImageUrl,
+    item?.featuredImageUrl,
+    item?.thumbnailUrl,
+    item?.backgroundImageUrl,
+    item?.bannerImageUrl,
+    item?.mediaUrl,
+  );
+}
+
 function cleanPayload(form) {
   return {
     fullName: form.fullName.trim(),
@@ -85,6 +116,19 @@ function cleanPayload(form) {
 
 export default function ContactPage() {
   const { language, t } = useLanguage();
+
+  // Memoize the fetch function to prevent recreating it on every render
+  const fetchHero = useCallback(
+    () =>
+      heroService.getHeroSections({
+        language,
+        placement: "CONTACT",
+        featuredOnly: true,
+      }),
+    [language],
+  );
+
+  const hero = useFetchOnMount(fetchHero, [language]);
 
   const activeLanguage = useMemo(() => {
     const code = `${language || "EN"}`.toUpperCase();
@@ -175,31 +219,80 @@ export default function ContactPage() {
     return SERVICE_OPTIONS[activeLanguage] || SERVICE_OPTIONS.EN;
   }, [activeLanguage]);
 
+  // Show loading state while hero is being fetched
+  if (hero.loading) {
+    return (
+      <LoadingSpinner label={t("states.loadingPage", "Loading page...")} />
+    );
+  }
+
+  // Show error state if hero fetch fails
+  if (hero.error) {
+    return <ErrorState message={hero.error} />;
+  }
+
+  // Get hero data
+  const heroItem = normalizeList(hero.data)[0] || null;
+
+  const heroTitle = text(
+    heroItem?.title,
+    t("pages.contact.title", "Let's build your next digital system"),
+  );
+
+  const heroSubtitle = text(
+    heroItem?.subtitle,
+    heroItem?.description,
+    t(
+      "pages.contact.subtitle",
+      "Send your project details directly to the InkFront admin team. Your inquiry will be saved, tracked, and followed up from the admin CRM.",
+    ),
+  );
+
+  const imageUrl = getImageUrl(heroItem);
+
   return (
     <main className="premium-public-page">
-      <section className="premium-hero premium-compact-hero">
-        <div className="premium-container">
+      {/* Hero section - matching About page structure with image */}
+      <section className="premium-detail-hero">
+        <div
+          className={
+            imageUrl
+              ? "premium-container premium-detail-grid"
+              : "premium-container premium-page-intro"
+          }
+        >
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65 }}
-            className="premium-page-intro"
           >
             <span className="premium-eyebrow">
               {t("nav.contact", "Contact")}
             </span>
 
-            <h1>
-              {t("pages.contact.title", "Let's build your next digital system")}
-            </h1>
-
-            <p>
-              {t(
-                "pages.contact.subtitle",
-                "Send your project details directly to the InkFront admin team. Your inquiry will be saved, tracked, and followed up from the admin CRM.",
-              )}
-            </p>
+            <h1>{heroTitle}</h1>
+            <p>{heroSubtitle}</p>
           </motion.div>
+
+          {imageUrl ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.65 }}
+              className="premium-detail-media"
+            >
+              <img
+                src={imageUrl}
+                alt={heroTitle}
+                loading="lazy"
+                onError={(event) => {
+                  event.currentTarget.closest(
+                    ".premium-detail-media",
+                  ).style.display = "none";
+                }}
+              />
+            </motion.div>
+          ) : null}
         </div>
       </section>
 

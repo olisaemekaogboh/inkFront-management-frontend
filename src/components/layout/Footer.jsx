@@ -163,8 +163,15 @@ export default function Footer() {
             transition={{ duration: 0.55, delay: 0.24 }}
             viewport={{ once: true }}
           >
-            <h3>{t("footer.startTitle", "Start with InkFront")}</h3>
-
+            <h3
+              style={{
+                textAlign: "center",
+                maxWidth: "600px",
+                margin: "0 auto",
+              }}
+            >
+              {t("footer.startTitle", "Start with InkFront")}
+            </h3>
             <p>
               {t(
                 "footer.startText",
@@ -182,17 +189,17 @@ export default function Footer() {
               <span>
                 {t(
                   "footer.address",
-                  "4 Basden Street, Fegge, Onitsha, Anambra, Nigeria",
+                  "4 Garden Street, Fegge, Onitsha, Anambra, Nigeria",
                 )}
               </span>
-              <a
+              {/* <a
                 href={googleMapsUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="premium-footer__map-link"
               >
                 🗺️ {t("footer.viewMap", "View on Google Maps")} →
-              </a>
+              </a> */}
             </div>
           </motion.div>
         </div>

@@ -78,7 +78,7 @@ export default {
     contactButton: "Tuntuɓi InkFront",
     phone: "+234 903 017 5230",
     email: "info@inkfront.com",
-    address: "4 Basden Street, Fegge, Onitsha, Anambra, Nigeria",
+    address: "4 Garden Street, Fegge, Onitsha, Anambra, Nigeria",
     viewMap: "Duba akan Taswirorin Google",
     rights: "Duk haƙƙoƙin an kiyaye.",
     terms: "Sharuɗɗa",
@@ -739,6 +739,8 @@ export default {
     notFoundTitle: "Ba a sami labari ba",
     notFoundText: "Wataƙila an cire wannan labarin ko ba a buga shi ba.",
     backToBlog: "Koma zuwa bulogi",
+    fromOurBlog: "Daga shafin mu",
+    latestInsights: "SABABBU BAYANAI",
   },
   pages: {
     home: {

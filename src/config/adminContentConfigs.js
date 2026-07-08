@@ -170,6 +170,7 @@ export const adminContentConfigs = {
       sortOrder: 0,
     },
   },
+
   homepageSections: {
     endpoint: "/admin/homepage-sections",
     title: "Homepage Sections",
@@ -250,6 +251,7 @@ export const adminContentConfigs = {
       sortOrder: 0,
     },
   },
+
   hero: {
     endpoint: "/admin/hero-sections",
     title: "Hero Sections",
@@ -268,7 +270,15 @@ export const adminContentConfigs = {
         name: "placement",
         label: "Placement",
         type: "select",
-        options: ["HOME", "ABOUT", "SERVICES", "CONTACT"],
+        options: [
+          "HOME",
+          "ABOUT",
+          "SERVICES",
+          "CONTACT",
+          "PORTFOLIO",
+          "PRODUCTS",
+          "CLIENTS",
+        ],
         required: true,
       },
       { name: "title", label: "Title", required: true, type: "text" },
@@ -315,8 +325,8 @@ export const adminContentConfigs = {
       secondaryButtonLabel: "Explore services",
       secondaryButtonUrl: "/services",
       backgroundImageUrl: "",
-      status: "PUBLISHED", // CHANGE THIS FROM "DRAFT" TO "PUBLISHED"
-      featured: true, // CHANGE THIS FROM false TO true
+      status: "PUBLISHED",
+      featured: true,
       displayOrder: 0,
     },
   },

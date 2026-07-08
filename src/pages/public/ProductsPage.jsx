@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import useLanguage from "../../hooks/useLanguage";
+import useFetchOnMount from "../../hooks/useFetchOnMount";
+import { heroService } from "../../services/heroService";
 import { publicApi } from "../../services/publicApi";
+import LoadingSpinner from "../../components/common/LoadingSpinner";
+import ErrorState from "../../components/common/ErrorState";
 import "../../styles/publicPremium.css";
 
 function normalizeList(response) {
@@ -20,8 +24,33 @@ function text(...values) {
   );
 }
 
+function getImageUrl(item) {
+  return text(
+    item?.imageUrl,
+    item?.coverImageUrl,
+    item?.featuredImageUrl,
+    item?.thumbnailUrl,
+    item?.backgroundImageUrl,
+    item?.bannerImageUrl,
+    item?.mediaUrl,
+  );
+}
+
 export default function ProductsPage() {
   const { language, t } = useLanguage();
+
+  // Fetch hero data - matching About, Contact, Services, and Portfolio pages
+  const fetchHero = useCallback(
+    () =>
+      heroService.getHeroSections({
+        language,
+        placement: "PRODUCTS",
+        featuredOnly: true,
+      }),
+    [language],
+  );
+
+  const hero = useFetchOnMount(fetchHero, [language]);
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -65,34 +94,80 @@ export default function ProductsPage() {
     };
   }, [language, t]);
 
+  // Show loading state while hero is being fetched
+  if (hero.loading) {
+    return (
+      <LoadingSpinner label={t("states.loadingPage", "Loading page...")} />
+    );
+  }
+
+  // Show error state if hero fetch fails
+  if (hero.error) {
+    return <ErrorState message={hero.error} />;
+  }
+
+  // Get hero data
+  const heroItem = normalizeList(hero.data)[0] || null;
+
+  const heroTitle = text(
+    heroItem?.title,
+    t("productsPage.title", "Product blueprints for serious businesses"),
+  );
+
+  const heroSubtitle = text(
+    heroItem?.subtitle,
+    heroItem?.description,
+    t(
+      "productsPage.description",
+      "Explore ready-to-build digital product structures for websites, booking systems, portals, schools, e-commerce, and business dashboards.",
+    ),
+  );
+
+  const imageUrl = getImageUrl(heroItem);
+
   return (
     <main className="premium-public-page">
-      <section className="premium-hero premium-compact-hero">
-        <div className="premium-container">
+      {/* Hero section - matching About, Contact, Services, and Portfolio pages */}
+      <section className="premium-detail-hero">
+        <div
+          className={
+            imageUrl
+              ? "premium-container premium-detail-grid"
+              : "premium-container premium-page-intro"
+          }
+        >
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65 }}
-            className="premium-page-intro"
           >
             <span className="premium-eyebrow">
               {t("nav.products", "Products")}
             </span>
 
-            <h1>
-              {t(
-                "productsPage.title",
-                "Product blueprints for serious businesses",
-              )}
-            </h1>
-
-            <p>
-              {t(
-                "productsPage.description",
-                "Explore ready-to-build digital product structures for websites, booking systems, portals, schools, e-commerce, and business dashboards.",
-              )}
-            </p>
+            <h1>{heroTitle}</h1>
+            <p>{heroSubtitle}</p>
           </motion.div>
+
+          {imageUrl ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.65 }}
+              className="premium-detail-media"
+            >
+              <img
+                src={imageUrl}
+                alt={heroTitle}
+                loading="lazy"
+                onError={(event) => {
+                  event.currentTarget.closest(
+                    ".premium-detail-media",
+                  ).style.display = "none";
+                }}
+              />
+            </motion.div>
+          ) : null}
         </div>
       </section>
 

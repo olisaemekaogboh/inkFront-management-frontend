@@ -45,9 +45,9 @@ const getImage = (item) =>
 
 // Portfolio image mapping based on project slugs and categories
 const portfolioImageMap = {
-  "edubridge-school-platform": "/images/portfolio/school.jpg",
+  "edubridge-school-platform": "/images/portfolio/school.png",
   "skillbridge-learning-platform": "/images/portfolio/learn.png",
-  "school-management-system": "/images/portfolio/school.jpg",
+  "school-management-system": "/images/portfolio/school.png",
   "quickship-logistics-dashboard": "/images/portfolio/logistics.png",
   "logistics-management": "/images/portfolio/logistics.png",
   "halamart-marketplace": "/images/portfolio/market.png",
@@ -87,7 +87,7 @@ const defaultImages = [
   "/images/portfolio/realEstate.png",
   "/images/portfolio/realEstate2.png",
   "/images/portfolio/ticket.png",
-  "/images/portfolio/school.jpg",
+  "/images/portfolio/school.png",
 ];
 
 function getPortfolioImage(project, index) {
@@ -884,32 +884,6 @@ export default function HomePage() {
                 eager
               />
             )}
-
-            <div className="premium-dashboard-card">
-              <span>
-                {t("pages.home.heroPanelEyebrow", "Built for growth")}
-              </span>
-              <h2>
-                {t(
-                  "pages.home.heroPanelTitle",
-                  "Websites, dashboards, portals, and launch-ready systems.",
-                )}
-              </h2>
-              <div className="premium-dashboard-list">
-                <div>
-                  <span>{t("pages.home.heroPanelItem1", "Frontend")}</span>
-                  <strong>{t("pages.home.heroPanelStatus", "Great")}</strong>
-                </div>
-                <div>
-                  <span>{t("pages.home.heroPanelItem2", "Backend")}</span>
-                  <strong>{t("pages.home.heroPanelStatus", "Great")}</strong>
-                </div>
-                <div>
-                  <span>{t("pages.home.heroPanelItem3", "Content")}</span>
-                  <strong>{t("pages.home.heroPanelStatus", "Great")}</strong>
-                </div>
-              </div>
-            </div>
           </motion.div>
         </div>
       </section>
@@ -1235,9 +1209,9 @@ export default function HomePage() {
             <div className="premium-section-head premium-section-head-row">
               <div>
                 <span className="premium-eyebrow">
-                  {t("common.latestInsights", "Latest insights")}
+                  {t("blog.latestInsights", "Latest insights")}
                 </span>
-                <h2>{t("common.fromOurBlog", "From our blog")}</h2>
+                <h2>{t("blog.fromOurBlog", "From our blog")}</h2>
               </div>
               <Link to="/blog" className="premium-btn premium-btn-ghost">
                 {t("common.viewAll", "View all")} →

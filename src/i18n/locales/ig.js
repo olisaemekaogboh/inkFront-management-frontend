@@ -77,7 +77,7 @@ export default {
     contactButton: "Kpọtụrụ InkFront",
     phone: "+234 903 017 5230",
     email: "info@inkfront.com",
-    address: "4 Basden Street, Fegge, Onitsha, Anambra, Nigeria",
+    address: "4 Garden Street, Fegge, Onitsha, Anambra, Nigeria",
     viewMap: "Lee na Google Maps",
     rights: "Ikikere niile echekwara.",
     terms: "Usoro",
@@ -736,6 +736,8 @@ export default {
     notFoundTitle: "Ahụghị edemede",
     notFoundText: "Enwere ike iwepụ ma ọ bụ bipụta edemede a.",
     backToBlog: "Laghachi na blọọgụ",
+    fromOurBlog: "Site na blọọgụ anyị",
+    latestInsights: "ỌHỤRỌ ỌHỤRỤ",
   },
   pages: {
     home: {
