@@ -1,8 +1,7 @@
 import axios from "axios";
 import { DEFAULT_LANGUAGE, LANGUAGE_STORAGE_KEY } from "../i18n/languages";
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const http = axios.create({
   baseURL: API_BASE_URL.replace(/\/$/, ""),
