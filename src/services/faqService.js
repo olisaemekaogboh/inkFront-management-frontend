@@ -26,7 +26,7 @@ export const faqService = {
     });
 
     const response = await fetch(
-      `${API_BASE_URL}/api/public/faqs?${params.toString()}`,
+      `${API_BASE_URL}/public/faqs?${params.toString()}`,
       {
         method: "GET",
         credentials: "include",
