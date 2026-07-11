@@ -1,7 +1,7 @@
 import { publicApi } from "./publicApi";
 
 const normalizeLanguage = (language) => language || "EN";
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const faqService = {
   async getFaqItems({
     language = "EN",
@@ -26,7 +26,7 @@ export const faqService = {
     });
 
     const response = await fetch(
-      `http://localhost:8080/api/public/faqs?${params.toString()}`,
+      `${API_BASE_URL}/api/public/faqs?${params.toString()}`,
       {
         method: "GET",
         credentials: "include",
@@ -35,7 +35,6 @@ export const faqService = {
         },
       },
     );
-
     if (!response.ok) {
       throw new Error("Failed to load FAQs");
     }
