@@ -41,74 +41,69 @@ import LoginSuccessPage from "./pages/auth/LoginSuccessPage";
 
 export default function App() {
   return (
-    <AuthProvider>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/login/success" element={<LoginSuccessPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/login/success" element={<LoginSuccessPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+
+      <Route
+        element={
+          <PublicAuthRoute>
+            <PublicLayout />
+          </PublicAuthRoute>
+        }
+      >
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+
+        <Route path="/services" element={<ServicesPage />} />
+        <Route path="/services/:slug" element={<ServiceDetailPage />} />
+
+        <Route path="/portfolio" element={<PortfolioListPage />} />
+        <Route path="/portfolio/:slug" element={<PortfolioDetailPage />} />
+
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/products/:slug" element={<ProductBlueprintPage />} />
+
+        <Route path="/blog" element={<BlogListPage />} />
+        <Route path="/blog/:slug" element={<BlogDetailPage />} />
+
+        <Route path="/clients" element={<TestimonialsClientsPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/privacy" element={<PrivacyPolicyPage />} />
+        <Route path="/cookies" element={<CookiesPolicyPage />} />
+      </Route>
+
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute requireAdmin>
+            <AdminLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<AdminDashboardPage />} />
+        <Route path="contact-messages" element={<AdminContactMessagesPage />} />
+        <Route path="blog-posts" element={<AdminBlogPostsPage />} />
+        <Route path="newsletter" element={<AdminNewsletterPage />} />
+
+        <Route path="services" element={<AdminServicesPage />} />
+        <Route path="client-logos" element={<AdminClientLogosPage />} />
+        <Route path="clients" element={<AdminClientLogosPage />} />
+        <Route path="portfolio" element={<AdminPortfolioPage />} />
+        <Route path="products" element={<AdminProductsPage />} />
+        <Route path="testimonials" element={<AdminTestimonialsPage />} />
+        <Route path="hero-sections" element={<AdminHeroSectionsPage />} />
 
         <Route
-          element={
-            <PublicAuthRoute>
-              <PublicLayout />
-            </PublicAuthRoute>
-          }
-        >
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
+          path="homepage-sections"
+          element={<AdminHomepageSectionsPage />}
+        />
+      </Route>
 
-          <Route path="/services" element={<ServicesPage />} />
-          <Route path="/services/:slug" element={<ServiceDetailPage />} />
-
-          <Route path="/portfolio" element={<PortfolioListPage />} />
-          <Route path="/portfolio/:slug" element={<PortfolioDetailPage />} />
-
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/products/:slug" element={<ProductBlueprintPage />} />
-
-          <Route path="/blog" element={<BlogListPage />} />
-          <Route path="/blog/:slug" element={<BlogDetailPage />} />
-
-          <Route path="/clients" element={<TestimonialsClientsPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-
-          <Route path="/terms" element={<TermsPage />} />
-          <Route path="/privacy" element={<PrivacyPolicyPage />} />
-          <Route path="/cookies" element={<CookiesPolicyPage />} />
-        </Route>
-
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute requireAdmin>
-              <AdminLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<AdminDashboardPage />} />
-          <Route
-            path="contact-messages"
-            element={<AdminContactMessagesPage />}
-          />
-          <Route path="blog-posts" element={<AdminBlogPostsPage />} />
-          <Route path="newsletter" element={<AdminNewsletterPage />} />
-
-          <Route path="services" element={<AdminServicesPage />} />
-          <Route path="client-logos" element={<AdminClientLogosPage />} />
-          <Route path="clients" element={<AdminClientLogosPage />} />
-          <Route path="portfolio" element={<AdminPortfolioPage />} />
-          <Route path="products" element={<AdminProductsPage />} />
-          <Route path="testimonials" element={<AdminTestimonialsPage />} />
-          <Route path="hero-sections" element={<AdminHeroSectionsPage />} />
-
-          <Route
-            path="homepage-sections"
-            element={<AdminHomepageSectionsPage />}
-          />
-        </Route>
-
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </AuthProvider>
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   );
 }
