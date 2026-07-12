@@ -203,11 +203,11 @@ export default function LoginPage() {
         className="premium-container"
         style={{
           maxWidth: "480px",
-          margin: "-30px auto",
+          margin: "-40px auto",
           minHeight: "100vh",
           display: "flex",
           alignItems: "center",
-          paddingTop: "-30px",
+          paddingTop: "0",
         }}
       >
         <div
