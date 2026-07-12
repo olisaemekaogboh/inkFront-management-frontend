@@ -17,13 +17,13 @@
 }
 .premium-public-page,
 .premium-home-page {
-  padding-top: 40px;
+  padding-top: 50px;
 }
 
 @media (max-width: 768px) {
   .premium-public-page,
   .premium-home-page {
-    padding-top: 40px;
+    padding-top: 50px;
   }
 }
 
