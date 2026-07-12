@@ -7,24 +7,24 @@
   min-height: 100vh;
   background: var(--color-bg);
   color: var(--color-text);
-  padding-top: 20px; /* Space for fixed navbar */
+  padding-top: 10px; /* Space for fixed navbar */
 }
 
 @media (max-width: 768px) {
   .blog-page {
-    padding-top: 70px;
+    padding-top: 10px;
   }
 }
 
 
 
 .blog-hero {
-  padding: 40px 0 42px;
+  padding: 10px 0 42px;
 }
 
 @media (max-width: 720px) {
   .blog-hero {
-    padding-top: 20px;
+    padding-top: 5px;
   }
 }
 
