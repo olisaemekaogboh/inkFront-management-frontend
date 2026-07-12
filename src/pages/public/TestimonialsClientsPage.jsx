@@ -327,20 +327,7 @@ export default function TestimonialsClientsPage() {
                   <strong>{name}</strong>
                 );
 
-                if (logo.websiteUrl) {
-                  return (
-                    <a
-                      key={logo.id ?? index}
-                      href={logo.websiteUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="premium-logo-card"
-                    >
-                      {content}
-                    </a>
-                  );
-                }
-
+                // Return div instead of a - REMOVED LINK
                 return (
                   <div key={logo.id ?? index} className="premium-logo-card">
                     {content}
