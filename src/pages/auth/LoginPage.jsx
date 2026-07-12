@@ -185,10 +185,7 @@ export default function LoginPage() {
   if (loading) {
     return (
       <main className="premium-public-page">
-        <div
-          className="premium-container"
-          style={{ maxWidth: "480px", margin: "0 auto", paddingTop: "80px" }}
-        >
+        <div className="premium-container">
           <div
             className="premium-contact-panel"
             style={{ padding: "48px 40px", textAlign: "center" }}
@@ -210,7 +207,7 @@ export default function LoginPage() {
           minHeight: "100vh",
           display: "flex",
           alignItems: "center",
-          paddingTop: "80px",
+          paddingTop: "30px",
         }}
       >
         <div
