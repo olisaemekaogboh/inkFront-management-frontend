@@ -7,7 +7,7 @@
   min-height: 100vh;
   background: var(--color-bg);
   color: var(--color-text);
-  padding-top: 80px; /* Space for fixed navbar */
+  padding-top: 50px; /* Space for fixed navbar */
 }
 
 @media (max-width: 768px) {
