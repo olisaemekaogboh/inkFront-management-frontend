@@ -451,3 +451,47 @@
   }
 
 }
+/* ============================================ */
+/* MOBILE CONTROLS INSIDE DROPDOWN */
+/* ============================================ */
+
+.premium-dropdown__mobile-controls {
+  display: none;
+  padding: 12px 20px 8px;
+  gap: 12px;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border, #e2e8f0);
+  flex-wrap: wrap;
+}
+
+[data-theme="dark"] .premium-dropdown__mobile-controls {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.premium-dropdown__mobile-controls > * {
+  flex: 0 0 auto;
+}
+
+/* Show mobile controls on small screens */
+@media (max-width: 768px) {
+  .premium-dropdown__mobile-controls {
+    display: flex;
+  }
+}
+
+/* Style the controls inside dropdown for better appearance */
+.premium-dropdown__mobile-controls .simple-theme-toggle,
+.premium-dropdown__mobile-controls .language-switcher {
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  border-radius: 20px;
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid var(--color-border, #e2e8f0);
+}
+
+[data-theme="dark"] .premium-dropdown__mobile-controls .simple-theme-toggle,
+[data-theme="dark"] .premium-dropdown__mobile-controls .language-switcher {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+}

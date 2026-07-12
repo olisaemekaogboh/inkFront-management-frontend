@@ -178,6 +178,14 @@ export default function Navbar() {
                   onMouseEnter={openMenu}
                   onMouseLeave={closeMenu}
                 >
+                  {/* Mobile Controls - Theme Toggle & Language Switcher */}
+                  <div className="premium-dropdown__mobile-controls">
+                    <SimpleThemeToggle />
+                    <LanguageSwitcher id="navbar-language-switcher-mobile" />
+                  </div>
+
+                  <div className="premium-dropdown__divider premium-dropdown__divider--mobile" />
+
                   <div className="premium-dropdown__links">
                     {navLinks.map((link) => (
                       <button
