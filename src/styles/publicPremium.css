@@ -2983,6 +2983,11 @@ body {
 /* ============================================ */
 /* Auth Forms - Register & Login */
 /* ============================================ */
+/* Login & Register pages */
+.premium-contact-panel {
+    margin-top: 0;
+}
+
 
 .premium-contact-form__label {
   display: flex;
