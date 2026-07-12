@@ -207,7 +207,7 @@ export default function LoginPage() {
           minHeight: "100vh",
           display: "flex",
           alignItems: "center",
-          paddingTop: "30px",
+          paddingTop: "0",
         }}
       >
         <div
