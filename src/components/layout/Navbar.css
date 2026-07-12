@@ -26,15 +26,23 @@
   background: rgba(15, 23, 42, 0.95);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
-
+.premium-navbar__logo-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .premium-navbar--seamless .premium-navbar__inner {
   max-width: 1280px;
   margin: 0 auto;
   padding: 20px 24px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition: padding 0.3s ease;
+
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 /* Shrink padding when scrolled */
@@ -47,10 +55,10 @@
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  flex-shrink: 0;
-  transition: transform 0.3s ease;
-}
 
+  flex: 1;
+  min-width: 0;
+}
 .premium-navbar--seamless .premium-navbar__logo:hover {
   transform: scale(1.02);
 }
@@ -111,6 +119,9 @@
   display: flex;
   align-items: center;
   gap: 12px;
+
+  flex-shrink: 1;
+  min-width: 0;
 }
 
 .premium-navbar--seamless .premium-navbar__controls {
@@ -143,7 +154,8 @@
 .premium-menu-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
+   justify-content: center;
+  gap: 6px;
   padding: 8px 20px;
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -154,6 +166,8 @@
   border-radius: 40px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(8px);
+   flex-shrink: 0;
+  white-space: nowrap;
 }
 
 /* When scrolled, button becomes solid */
@@ -381,3 +395,59 @@
 .premium-dropdown::-webkit-scrollbar-thumb:hover {
   background: #2563eb;
 } 
+@media (max-width: 480px) {
+
+  .premium-navbar--seamless .premium-navbar__inner {
+    padding: 10px 12px;
+  }
+
+  .premium-navbar__right {
+    gap: 6px;
+  }
+
+  .premium-menu-btn {
+    padding: 6px 10px;
+    font-size: .78rem;
+  }
+
+  .premium-menu-btn__text {
+    display: none;
+  }
+
+  .premium-menu-btn__arrow {
+    width: 16px;
+    height: 16px;
+  }
+
+  .premium-navbar__logo-text {
+    font-size: .95rem;
+  }
+
+  .inkfront-brand-mark {
+    width: 28px;
+    height: 28px;
+  }
+
+  .inkfront-brand-mark svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .premium-dropdown {
+    right: 8px;
+    left: 8px;
+    width: auto;
+  }
+
+}
+@media (max-width: 360px) {
+
+  .premium-navbar__logo-text {
+    display: none;
+  }
+
+  .premium-navbar__inner {
+    padding: 10px;
+  }
+
+}
