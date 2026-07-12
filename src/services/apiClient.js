@@ -75,13 +75,10 @@ apiClient.interceptors.response.use(
         return Promise.reject(refreshError);
       }
     }
-   
+
     // For all other errors, pass the original error with response
     return Promise.reject(error);
   },
 );
- console.log("API BASE URL =", import.meta.env.VITE_API_BASE_URL);
-    console.log("Axios Base URL =", apiClient.defaults.baseURL);
-
 
 export default apiClient;

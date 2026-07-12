@@ -57,8 +57,10 @@
 .premium-navbar--seamless .premium-navbar__logo-text {
   font-size: 1.25rem;
   font-weight: 700;
-  color:  linear-gradient(135deg, #2563eb, #f0f2f7);
-
+  background: linear-gradient(135deg, #2563eb, #f0f2f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   transition: all 0.3s ease;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
@@ -146,13 +148,19 @@
   padding: 8px 20px;
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  color: skyblue;
+  color: #ffffff;
   cursor: pointer;
   font-weight: 500;
   font-size: 0.9rem;
   border-radius: 40px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
+
+[data-theme="dark"] .premium-menu-btn {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 /* When scrolled, button becomes solid */
@@ -237,6 +245,10 @@
   transition: all 0.2s ease;
 }
 
+[data-theme="dark"] .premium-dropdown__link {
+  color: #e2e8f0;
+}
+
 .premium-dropdown__link:hover {
   background: rgba(59, 130, 246, 0.1);
   color: #3b82f6;
@@ -269,9 +281,17 @@
   margin-bottom: 2px;
 }
 
+[data-theme="dark"] .premium-dropdown__user-name {
+  color: #e2e8f0;
+}
+
 .premium-dropdown__user-email {
   font-size: 0.72rem;
   color: var(--color-text-muted, #64748b);
+}
+
+[data-theme="dark"] .premium-dropdown__user-email {
+  color: #94a3b8;
 }
 
 .premium-dropdown__login,
@@ -304,6 +324,7 @@
 @media (max-width: 768px) {
   .premium-navbar--seamless .premium-navbar__inner {
     padding: 14px 16px;
+    flex-wrap: nowrap;
   }
 
   .premium-navbar--seamless.premium-navbar--scrolled .premium-navbar__inner {
@@ -315,11 +336,11 @@
   }
 
   .premium-navbar__controls--desktop { 
-    display: none; 
+    display: none !important; 
   }
   
   .premium-navbar__controls--mobile { 
-    display: flex; 
+    display: flex !important; 
   }
   
   .premium-dropdown__divider--mobile { 
@@ -329,17 +350,94 @@
   .premium-menu-btn {
     padding: 6px 14px;
     font-size: 0.82rem;
+    gap: 6px;
+  }
+
+  .premium-menu-btn__text {
+    display: inline; /* Keep text visible on mobile */
+  }
+
+  /* Mobile: Theme toggle and language switcher inside dropdown */
+  .premium-dropdown .premium-navbar__controls--mobile {
+    display: flex !important;
+    padding: 8px 20px;
+    gap: 8px;
+    border-bottom: 1px solid var(--color-border, #e2e8f0);
+    margin-bottom: 4px;
+  }
+
+  [data-theme="dark"] .premium-dropdown .premium-navbar__controls--mobile {
+    border-color: rgba(255, 255, 255, 0.08);
   }
 
   .premium-dropdown {
     position: fixed;
-    top: 56px;
+    top: 60px;
     right: 12px;
-    left: auto;
-    width: 260px;
+    left: 12px;
+    width: auto;
     max-height: calc(100vh - 80px);
     overflow-y: auto;
     border-radius: 14px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .premium-navbar--seamless .premium-navbar__inner {
+    padding: 10px 12px;
+  }
+
+  .premium-navbar--seamless .premium-navbar__logo-text {
+    font-size: 0.9rem;
+  }
+
+  .inkfront-brand-mark {
+    width: 28px;
+    height: 28px;
+  }
+
+  .inkfront-brand-mark svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .premium-menu-btn {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    gap: 4px;
+  }
+
+  .premium-menu-btn__text {
+    font-size: 0.75rem;
+  }
+
+  .premium-dropdown {
+    top: 52px;
+    right: 8px;
+    left: 8px;
+    border-radius: 12px;
+  }
+
+  .premium-dropdown__link {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+
+  .premium-dropdown__user {
+    padding: 10px 16px 6px;
+  }
+
+  .premium-dropdown__user-name {
+    font-size: 0.8rem;
+  }
+
+  .premium-dropdown__login,
+  .premium-dropdown__logout {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    margin: 6px 12px 12px;
+    width: calc(100% - 24px);
   }
 }
 
@@ -370,6 +468,10 @@
 .premium-dropdown::-webkit-scrollbar-track {
   background: var(--color-border, #e2e8f0);
   border-radius: 10px;
+}
+
+[data-theme="dark"] .premium-dropdown::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .premium-dropdown::-webkit-scrollbar-thumb {
