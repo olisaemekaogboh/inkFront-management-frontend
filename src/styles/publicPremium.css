@@ -1,3 +1,4 @@
+
 /* ============================================ */
 /* publicPremium.css - InkFront public premium UI */
 /* ============================================ */
@@ -3178,46 +3179,6 @@ body {
     grid-template-columns: 1fr;
     gap: 0;
   }
-}
-/* ============================================ */
-/* LOGIN PAGE - No Scroll */
-/* ============================================ */
-
-.login-page {
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-top: 0 !important; /* Override the default padding */
-}
-
-.login-page .premium-container {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-}
-
-.login-page .premium-contact-panel {
-  max-height: 90vh;
-  overflow-y: auto;
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-}
-
-/* Hide scrollbar on the login panel */
-.login-page .premium-contact-panel::-webkit-scrollbar {
-  display: none;
-  width: 0;
-  height: 0;
-}
-
-.login-page .premium-contact-panel {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 }
 /* ============================================ */
 /* 404 NOT FOUND PAGE - MODERN STYLES */
