@@ -18,6 +18,36 @@ function InkFrontLogo() {
   );
 }
 
+// Hamburger Icon Component
+function HamburgerIcon({ isOpen }) {
+  return (
+    <svg
+      className={`hamburger-icon ${isOpen ? "hamburger-icon--open" : ""}`}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {isOpen ? (
+        // X icon when open
+        <>
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </>
+      ) : (
+        // Three stripes when closed
+        <>
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </>
+      )}
+    </svg>
+  );
+}
+
 export default function Navbar() {
   const navigate = useNavigate();
   const auth = useAuth();
@@ -133,12 +163,7 @@ export default function Navbar() {
           <span className="premium-navbar__logo-text">InkFront</span>
         </Link>
 
-        {/* <div className="premium-navbar__right">
-          <div className="premium-navbar__controls premium-navbar__controls--desktop">
-            <SimpleThemeToggle />
-            <LanguageSwitcher id="navbar-language-switcher" />
-          </div> */}
-
+        <div className="premium-navbar__right">
           <div
             ref={containerRef}
             className="premium-menu-container"
@@ -152,18 +177,7 @@ export default function Navbar() {
               aria-expanded={menuOpen}
               aria-label={t("nav.menu", "Menu")}
             >
-              <span className="premium-menu-btn__text">
-                {t("nav.menu", "Menu")}
-              </span>
-              <svg
-                className={`premium-menu-btn__arrow ${menuOpen ? "premium-menu-btn__arrow--open" : ""}`}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
+              <HamburgerIcon isOpen={menuOpen} />
             </button>
 
             <AnimatePresence>
@@ -178,13 +192,13 @@ export default function Navbar() {
                   onMouseEnter={openMenu}
                   onMouseLeave={closeMenu}
                 >
-                  {/* Mobile Controls - Theme Toggle & Language Switcher */}
-                  <div className="premium-dropdown__mobile-controls">
+                  {/* Theme Toggle & Language Switcher inside dropdown */}
+                  <div className="premium-dropdown__controls">
                     <SimpleThemeToggle />
                     <LanguageSwitcher id="navbar-language-switcher-mobile" />
                   </div>
 
-                  <div className="premium-dropdown__divider premium-dropdown__divider--mobile" />
+                  <div className="premium-dropdown__divider" />
 
                   <div className="premium-dropdown__links">
                     {navLinks.map((link) => (
