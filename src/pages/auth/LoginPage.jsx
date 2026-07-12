@@ -184,11 +184,8 @@ export default function LoginPage() {
   // Show loading state
   if (loading) {
     return (
-      <main className="premium-public-page">
-        <div
-          className="premium-container"
-          style={{ maxWidth: "480px", margin: "0 auto", paddingTop: "80px" }}
-        >
+      <main className="premium-public-page login-page">
+        <div className="premium-container">
           <div
             className="premium-contact-panel"
             style={{ padding: "48px 40px", textAlign: "center" }}
@@ -201,18 +198,12 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="premium-public-page">
-      <div
-        className="premium-container"
-        style={{
-          maxWidth: "480px",
-          margin: "0 auto",
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          paddingTop: "80px",
-        }}
-      >
+    <main className="premium-public-page login-page">
+      <div className="premium-container">
+        <div
+          className="premium-contact-panel"
+          style={{ padding: "48px 40px", width: "100%" }}
+        ></div>
         <div
           className="premium-contact-panel"
           style={{ padding: "48px 40px", width: "100%" }}
