@@ -1,7 +1,13 @@
 /* ============================================ */
 /* publicPremium.css - InkFront public premium UI */
 /* ============================================ */
-
+* {
+    outline: 1px solid red;
+}
+html,
+body {
+    overflow-x: clip;
+}
 
 .premium-public-page {
   --app-bg: #ffffff;
@@ -65,9 +71,8 @@
 .premium-home-hero {
   position: relative;
   overflow: hidden;
-  min-height: calc(100vh - 60px);
-  display: grid;
-  align-items: center;
+  min-height: 100vh;
+  
 }
 
 .premium-compact-hero {
