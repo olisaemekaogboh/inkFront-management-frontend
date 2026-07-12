@@ -133,11 +133,11 @@ export default function Navbar() {
           <span className="premium-navbar__logo-text">InkFront</span>
         </Link>
 
-        <div className="premium-navbar__right">
+        {/* <div className="premium-navbar__right">
           <div className="premium-navbar__controls premium-navbar__controls--desktop">
             <SimpleThemeToggle />
             <LanguageSwitcher id="navbar-language-switcher" />
-          </div>
+          </div> */}
 
           <div
             ref={containerRef}
