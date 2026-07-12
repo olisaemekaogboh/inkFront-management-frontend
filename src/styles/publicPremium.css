@@ -1,12 +1,30 @@
 /* ============================================ */
 /* publicPremium.css - InkFront public premium UI */
 /* ============================================ */
-* {
-    outline: 1px solid red;
+
+/* ============================================ */
+/* HIDE SCROLLBAR - Keep scroll functionality */
+/* ============================================ */
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
+
+/* Hide scrollbar for IE, Edge and Firefox */
+html, body, * {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 html,
 body {
-    overflow-x: clip;
+  overflow-y: scroll; /* Keep scroll functionality */
+  overflow-x: hidden;
 }
 
 .premium-public-page {
