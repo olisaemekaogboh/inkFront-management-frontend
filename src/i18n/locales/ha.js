@@ -1122,7 +1122,7 @@ export default {
       description: "Ƙarfin sabis na asali don isar da software na zamani.",
     },
     portfolio: {
-      title: "Portfolio",
+      title: "Fayil ɗin Ayyuka",
       description:
         "Ayyukan da aka zaɓa a faɗin kayayyaki, dandamali, da canjin dijital.",
     },

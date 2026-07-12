@@ -1118,7 +1118,7 @@ export default {
       description: "Ikike ọrụ bụ isi maka nnyefe ngwanrọ ọgbara ọhụrụ.",
     },
     portfolio: {
-      title: "Portfolio",
+      title: "Ọrụ Anyị Rụrụ",
       description:
         "Ọrụ ahọpụtara n'ofe ngwa ahịa, ikpo okwu, na mgbanwe dijitalụ.",
     },

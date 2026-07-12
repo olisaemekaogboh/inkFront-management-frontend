@@ -1112,7 +1112,7 @@ export default {
       description: "Awọn agbara iṣẹ pataki fun ifijiṣẹ sọfitiwia igbalode.",
     },
     portfolio: {
-      title: "Portfolio",
+      title: "Àkójọpọ̀ Iṣẹ́",
       description:
         "Iṣẹ ti a yan kọja awọn ọja, awọn pẹpẹ, ati iyipada oni-nọmba.",
     },
