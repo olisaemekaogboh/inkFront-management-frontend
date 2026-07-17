@@ -198,7 +198,7 @@ function PortfolioImage({
         src={src}
         alt={alt}
         loading={priority ? "eager" : "lazy"}
-        fetchpriority={priority ? "high" : "auto"}
+        fetchPriority={priority ? "high" : "auto"}
         className={className}
         style={{
           opacity: isLoaded ? 1 : 0,
@@ -263,6 +263,32 @@ export default function PortfolioListPage() {
       imageUrl: getImageUrl(heroItem),
     };
   }, [hero.data, t]);
+
+  // Memoize projects data processing
+  const processedProjects = useMemo(() => {
+    return projects.map((project, index) => ({
+      ...project,
+      processedTitle: text(
+        project.title,
+        project.name,
+        t("portfolioPage.untitled", "Untitled Project"),
+      ),
+      processedSummary: text(
+        project.summary,
+        project.shortDescription,
+        project.description,
+        t("portfolioPage.noSummary", "Project summary unavailable."),
+      ),
+      processedImageUrl: getPortfolioImage(project, index),
+      processedTag: text(
+        project.projectType,
+        project.clientIndustry,
+        project.category,
+        t("portfolioPage.project", "Project"),
+      ),
+      processedLink: project.slug ? `/portfolio/${project.slug}` : "/portfolio",
+    }));
+  }, [projects, t]);
 
   // Preload hero image when URL is available
   useEffect(() => {
@@ -399,84 +425,63 @@ export default function PortfolioListPage() {
             </div>
           ) : (
             <div className="premium-work-grid">
-              {projects
-                .map((project, index) => {
-                  const title = text(
-                    project.title,
-                    project.name,
-                    t("portfolioPage.untitled", "Untitled Project"),
-                  );
+              {processedProjects.map((project, index) => {
+                const {
+                  processedTitle: title,
+                  processedSummary: summary,
+                  processedImageUrl: imageUrl,
+                  processedTag: tag,
+                  processedLink: to,
+                  id,
+                  slug,
+                } = project;
 
-                  const summary = text(
-                    project.summary,
-                    project.shortDescription,
-                    project.description,
-                    t(
-                      "portfolioPage.noSummary",
-                      "Project summary unavailable.",
-                    ),
-                  );
+                return (
+                  <motion.div
+                    key={id ?? slug ?? index}
+                    initial={{ opacity: 0, y: 22 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.5,
+                      delay: Math.min(index * 0.04, 0.5),
+                    }}
+                    viewport={{ once: true }}
+                  >
+                    <Link to={to} className="premium-work-card">
+                      <div
+                        className="premium-work-card__images"
+                        style={{ position: "relative", overflow: "hidden" }}
+                      >
+                        {imageUrl ? (
+                          <PortfolioImage
+                            src={imageUrl}
+                            alt={title}
+                            className="premium-work-card__img"
+                            priority={false}
+                          />
+                        ) : (
+                          <div className="premium-work-card__placeholder">
+                            <span>💼</span>
+                          </div>
+                        )}
+                      </div>
 
-                  const imageUrl = getPortfolioImage(project, index);
-
-                  const tag = text(
-                    project.projectType,
-                    project.clientIndustry,
-                    project.category,
-                    t("portfolioPage.project", "Project"),
-                  );
-
-                  const to = project.slug
-                    ? `/portfolio/${project.slug}`
-                    : "/portfolio";
-
-                  return (
-                    <motion.div
-                      key={project.id ?? project.slug ?? index}
-                      initial={{ opacity: 0, y: 22 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{
-                        duration: 0.5,
-                        delay: Math.min(index * 0.04, 0.5),
-                      }}
-                      viewport={{ once: true }}
-                    >
-                      <Link to={to} className="premium-work-card">
-                        <div
-                          className="premium-work-card__images"
-                          style={{ position: "relative", overflow: "hidden" }}
-                        >
-                          {imageUrl ? (
-                            <PortfolioImage
-                              src={imageUrl}
-                              alt={title}
-                              className="premium-work-card__img"
-                              priority={false}
-                            />
-                          ) : (
-                            <div className="premium-work-card__placeholder">
-                              <span>💼</span>
-                            </div>
-                          )}
-                        </div>
-
-                        <div className="premium-work-card__content">
-                          <span className="premium-mini-badge">{tag}</span>
-                          <h3>{title}</h3>
-                          <p>
-                            {summary.length > 100
-                              ? summary.substring(0, 100) + "..."
-                              : summary}
-                          </p>
-                          <strong>
-                            {t("common.viewProject", "View project")} →
-                          </strong>
-                        </div>
-                      </Link>
-                    </motion.div>
-                  );
-                })
-                .filter(Boolean)}
+                      <div className="premium-work-card__content">
+                        <span className="premium-mini-badge">{tag}</span>
+                        <h3>{title}</h3>
+                        <p>
+                          {summary.length > 100
+                            ? summary.substring(0, 100) + "..."
+                            : summary}
+                        </p>
+                        <strong>
+                          {t("common.viewProject", "View project")} →
+                        </strong>
+                      </div>
+                    </Link>
+                  </motion.div>
+                );
+              })}
             </div>
           )}
         </div>

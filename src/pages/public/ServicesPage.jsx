@@ -204,13 +204,7 @@ export default function ServicesPage() {
     };
   }, [hero.data, t]);
 
-  // Preload hero image when URL is available
-  useEffect(() => {
-    if (heroData.imageUrl) {
-      preloadImage(heroData.imageUrl);
-    }
-  }, [heroData.imageUrl]);
-
+  // Memoize service highlights
   const serviceHighlights = useMemo(
     () => ({
       websiteDevelopment: {
@@ -315,6 +309,46 @@ export default function ServicesPage() {
     [t],
   );
 
+  // Memoize processed services data
+  const processedServices = useMemo(() => {
+    return services.map((service, index) => ({
+      ...service,
+      processedTitle: text(
+        service.name,
+        service.title,
+        t("servicesPage.untitled", "Untitled Service"),
+      ),
+      processedDescription: text(
+        service.shortDescription,
+        service.short_description,
+        service.summary,
+        t(
+          "servicesPage.descriptionFallback",
+          "Service details will appear here.",
+        ),
+      ),
+      processedImageUrl: imageOf(service),
+      processedIcon: (() => {
+        const key =
+          service?.iconKey || service?.icon_key || service?.icon || "";
+        return iconMap[key] || fallbackIcons[index % fallbackIcons.length];
+      })(),
+      processedCategory: service.category || t("nav.services", "Service"),
+      processedHighlight: (() => {
+        const key = SERVICE_HIGHLIGHT_KEYS[service.slug];
+        return key ? serviceHighlights[key] : null;
+      })(),
+      processedLink: service.slug ? `/services/${service.slug}` : null,
+    }));
+  }, [services, t, serviceHighlights]);
+
+  // Preload hero image when URL is available
+  useEffect(() => {
+    if (heroData.imageUrl) {
+      preloadImage(heroData.imageUrl);
+    }
+  }, [heroData.imageUrl]);
+
   useEffect(() => {
     let active = true;
 
@@ -352,16 +386,6 @@ export default function ServicesPage() {
       active = false;
     };
   }, [language, t]);
-
-  const getServiceIcon = (service, index) => {
-    const key = service?.iconKey || service?.icon_key || service?.icon || "";
-    return iconMap[key] || fallbackIcons[index % fallbackIcons.length];
-  };
-
-  const getServiceHighlight = (slug) => {
-    const key = SERVICE_HIGHLIGHT_KEYS[slug];
-    return key ? serviceHighlights[key] : null;
-  };
 
   // Show loading state while hero is being fetched
   if (hero.loading) {
@@ -483,29 +507,22 @@ export default function ServicesPage() {
               viewport={{ once: true }}
               className="premium-product-grid"
             >
-              {services.map((service, index) => {
-                const title = text(
-                  service.name,
-                  service.title,
-                  t("servicesPage.untitled", "Untitled Service"),
-                );
-
-                const description = text(
-                  service.shortDescription,
-                  service.short_description,
-                  service.summary,
-                  t(
-                    "servicesPage.descriptionFallback",
-                    "Service details will appear here.",
-                  ),
-                );
-
-                const imageUrl = imageOf(service);
-                const highlights = getServiceHighlight(service.slug);
+              {processedServices.map((service) => {
+                const {
+                  id,
+                  slug,
+                  processedTitle: title,
+                  processedDescription: description,
+                  processedImageUrl: imageUrl,
+                  processedIcon: icon,
+                  processedCategory: category,
+                  processedHighlight: highlights,
+                  processedLink: link,
+                } = service;
 
                 return (
                   <motion.article
-                    key={service.id ?? service.slug ?? index}
+                    key={id ?? slug ?? title}
                     variants={fadeUp}
                     className="premium-product-card"
                   >
@@ -529,14 +546,12 @@ export default function ServicesPage() {
                       </div>
                     ) : (
                       <div className="premium-product-image premium-fallback-media">
-                        <span>{getServiceIcon(service, index)}</span>
+                        <span>{icon}</span>
                       </div>
                     )}
 
                     <div className="premium-product-body">
-                      <span className="premium-mini-badge">
-                        {service.category || t("nav.services", "Service")}
-                      </span>
+                      <span className="premium-mini-badge">{category}</span>
 
                       <h3>{title}</h3>
                       <p>{description}</p>
@@ -552,11 +567,8 @@ export default function ServicesPage() {
                         </div>
                       ) : null}
 
-                      {service.slug ? (
-                        <Link
-                          to={`/services/${service.slug}`}
-                          className="premium-text-link"
-                        >
+                      {link ? (
+                        <Link to={link} className="premium-text-link">
                           {t(
                             "servicesPage.viewDetails",
                             "View service details",

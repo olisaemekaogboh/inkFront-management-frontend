@@ -41,6 +41,13 @@ function getImageUrl(item) {
   );
 }
 
+// Preload image function
+function preloadImage(url) {
+  if (!url) return;
+  const img = new Image();
+  img.src = url;
+}
+
 // Optimized image component with priority support and placeholder
 function OptimizedImage({
   src,
@@ -145,6 +152,51 @@ export default function TestimonialsClientsPage() {
       imageUrl: getImageUrl(heroItem),
     };
   }, [hero.data, t]);
+
+  // Memoize processed testimonials
+  const processedTestimonials = useMemo(() => {
+    return testimonials.map((item, index) => ({
+      ...item,
+      processedQuote: text(
+        item.quote,
+        item.message,
+        item.content,
+        item.text,
+        t("clientsPage.defaultQuote", "No testimonial text."),
+      ),
+      processedName: text(
+        item.clientName,
+        item.name,
+        item.author,
+        t("clientsPage.anonymous", "Anonymous Client"),
+      ),
+      processedRoleLine: [item.clientRole, item.role, item.organization]
+        .filter(Boolean)
+        .join(" • "),
+      processedAvatarUrl: text(item.avatarUrl, item.imageUrl, item.photoUrl),
+      processedDelay: Math.min(index * 0.04, 0.5),
+    }));
+  }, [testimonials, t]);
+
+  // Memoize processed client logos
+  const processedClientLogos = useMemo(() => {
+    return clientLogos.map((logo, index) => ({
+      ...logo,
+      processedName: text(
+        logo.name,
+        logo.clientName,
+        `${t("clientsPage.client", "Client")} ${index + 1}`,
+      ),
+      processedLogoUrl: text(logo.logoUrl, logo.imageUrl),
+    }));
+  }, [clientLogos, t]);
+
+  // Preload hero image when URL is available
+  useEffect(() => {
+    if (heroData.imageUrl) {
+      preloadImage(heroData.imageUrl);
+    }
+  }, [heroData.imageUrl]);
 
   useEffect(() => {
     let active = true;
@@ -289,37 +341,22 @@ export default function TestimonialsClientsPage() {
             </div>
           ) : (
             <div className="premium-testimonial-grid premium-testimonial-grid-large">
-              {testimonials.map((item, index) => {
-                const quote = text(
-                  item.quote,
-                  item.message,
-                  item.content,
-                  t("clientsPage.defaultQuote", "No testimonial text."),
-                );
-
-                const name = text(
-                  item.clientName,
-                  item.name,
-                  item.author,
-                  t("clientsPage.anonymous", "Anonymous Client"),
-                );
-
-                const roleLine = [item.clientRole, item.role, item.organization]
-                  .filter(Boolean)
-                  .join(" • ");
-
-                const avatarUrl = text(
-                  item.avatarUrl,
-                  item.imageUrl,
-                  item.photoUrl,
-                );
+              {processedTestimonials.map((item) => {
+                const {
+                  id,
+                  processedQuote: quote,
+                  processedName: name,
+                  processedRoleLine: roleLine,
+                  processedAvatarUrl: avatarUrl,
+                  processedDelay: delay,
+                } = item;
 
                 return (
                   <motion.article
-                    key={item.id ?? index}
+                    key={id ?? quote.slice(0, 20)}
                     initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.55, delay: index * 0.04 }}
+                    transition={{ duration: 0.55, delay }}
                     viewport={{ once: true }}
                     className="premium-testimonial-card"
                   >
@@ -383,13 +420,12 @@ export default function TestimonialsClientsPage() {
             </div>
           ) : (
             <div className="premium-logo-grid">
-              {clientLogos.map((logo, index) => {
-                const name = text(
-                  logo.name,
-                  logo.clientName,
-                  `${t("clientsPage.client", "Client")} ${index + 1}`,
-                );
-                const logoUrl = text(logo.logoUrl, logo.imageUrl);
+              {processedClientLogos.map((logo) => {
+                const {
+                  id,
+                  processedName: name,
+                  processedLogoUrl: logoUrl,
+                } = logo;
 
                 const content = logoUrl ? (
                   <div
@@ -412,7 +448,7 @@ export default function TestimonialsClientsPage() {
                 );
 
                 return (
-                  <div key={logo.id ?? index} className="premium-logo-card">
+                  <div key={id ?? name} className="premium-logo-card">
                     {content}
                   </div>
                 );

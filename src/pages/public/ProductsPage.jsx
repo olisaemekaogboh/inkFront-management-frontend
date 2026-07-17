@@ -146,6 +146,33 @@ export default function ProductsPage() {
     };
   }, [hero.data, t]);
 
+  // Memoize processed products data
+  const processedProducts = useMemo(() => {
+    return products.map((product, index) => ({
+      ...product,
+      processedTitle: text(
+        product.title,
+        product.name,
+        t("productsPage.untitled", "Untitled Product"),
+      ),
+      processedSummary: text(
+        product.summary,
+        product.shortDescription,
+        product.solutionOverview,
+        product.description,
+        t("productsPage.noSummary", "Product summary unavailable."),
+      ),
+      processedImageUrl: text(
+        product.heroImageUrl,
+        product.imageUrl,
+        product.coverImageUrl,
+        product.thumbnailUrl,
+      ),
+      processedLink: product.slug ? `/products/${product.slug}` : "#",
+      blueprintNumber: String(index + 1).padStart(2, "0"),
+    }));
+  }, [products, t]);
+
   // Preload hero image when URL is available
   useEffect(() => {
     if (heroData.imageUrl) {
@@ -274,38 +301,28 @@ export default function ProductsPage() {
             </div>
           ) : (
             <div className="premium-product-grid">
-              {products.map((product, index) => {
-                const title = text(
-                  product.title,
-                  product.name,
-                  t("productsPage.untitled", "Untitled Product"),
-                );
-
-                const summary = text(
-                  product.summary,
-                  product.shortDescription,
-                  product.solutionOverview,
-                  product.description,
-                  t("productsPage.noSummary", "Product summary unavailable."),
-                );
-
-                const imageUrl = text(
-                  product.heroImageUrl,
-                  product.imageUrl,
-                  product.coverImageUrl,
-                  product.thumbnailUrl,
-                );
-
-                const to = product.slug ? `/products/${product.slug}` : "#";
+              {processedProducts.map((product) => {
+                const {
+                  id,
+                  slug,
+                  processedTitle: title,
+                  processedSummary: summary,
+                  processedImageUrl: imageUrl,
+                  processedLink: to,
+                  blueprintNumber,
+                } = product;
 
                 return (
                   <motion.article
-                    key={product.id ?? product.slug ?? index}
+                    key={id ?? slug ?? blueprintNumber}
                     initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{
                       duration: 0.55,
-                      delay: Math.min(index * 0.04, 0.5),
+                      delay: Math.min(
+                        (parseInt(blueprintNumber) - 1) * 0.04,
+                        0.5,
+                      ),
                     }}
                     viewport={{ once: true }}
                     className="premium-product-card"
@@ -337,13 +354,13 @@ export default function ProductsPage() {
                     <div className="premium-product-body">
                       <span className="premium-mini-badge">
                         {t("productsPage.blueprint", "Blueprint")}{" "}
-                        {String(index + 1).padStart(2, "0")}
+                        {blueprintNumber}
                       </span>
 
                       <h3>{title}</h3>
                       <p>{summary}</p>
 
-                      {product.slug ? (
+                      {slug ? (
                         <Link to={to} className="premium-text-link">
                           {t("productsPage.viewBlueprint", "View blueprint")} →
                         </Link>

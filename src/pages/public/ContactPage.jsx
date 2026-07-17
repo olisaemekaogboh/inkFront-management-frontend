@@ -233,20 +233,12 @@ export default function ContactPage() {
     };
   }, [hero.data, t]);
 
-  // Preload hero image when URL is available
-  useEffect(() => {
-    if (heroData.imageUrl) {
-      preloadImage(heroData.imageUrl);
-    }
-  }, [heroData.imageUrl]);
-
-  useEffect(() => {
-    setForm((current) => ({
-      ...current,
-      preferredLanguage: activeLanguage,
-    }));
+  // Memoize service options based on active language
+  const serviceOptions = useMemo(() => {
+    return SERVICE_OPTIONS[activeLanguage] || SERVICE_OPTIONS.EN;
   }, [activeLanguage]);
 
+  // Memoize form validation
   const canSubmit = useMemo(() => {
     return (
       form.fullName.trim() &&
@@ -254,66 +246,87 @@ export default function ContactPage() {
       form.subject.trim() &&
       form.message.trim()
     );
-  }, [form]);
+  }, [form.fullName, form.email, form.subject, form.message]);
 
-  function handleChange(event) {
-    const { name, value } = event.target;
+  // Preload hero image when URL is available
+  useEffect(() => {
+    if (heroData.imageUrl) {
+      preloadImage(heroData.imageUrl);
+    }
+  }, [heroData.imageUrl]);
 
+  // Update form when active language changes
+  useEffect(() => {
     setForm((current) => ({
       ...current,
-      [name]: value,
+      preferredLanguage: activeLanguage,
     }));
-
-    if (success) setSuccess("");
-    if (error) setError("");
-  }
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-
-    if (!canSubmit) {
-      setError(
-        t(
-          "forms.contact.validationError",
-          "Please fill in your name, email, subject, and message.",
-        ),
-      );
-      return;
-    }
-
-    try {
-      setSubmitting(true);
-      setSuccess("");
-      setError("");
-
-      await publicApi.submitContactMessage(cleanPayload(form));
-
-      setForm({
-        ...initialForm,
-        preferredLanguage: activeLanguage,
-      });
-
-      setSuccess(
-        t(
-          "forms.contact.success",
-          "Message sent successfully. The InkFront admin team will review it and get back to you soon.",
-        ),
-      );
-    } catch (err) {
-      setError(
-        err?.response?.data?.message ||
-          err?.response?.data?.error ||
-          err?.message ||
-          t("forms.contact.error", "Failed to send message. Please try again."),
-      );
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
-  const serviceOptions = useMemo(() => {
-    return SERVICE_OPTIONS[activeLanguage] || SERVICE_OPTIONS.EN;
   }, [activeLanguage]);
+
+  // Memoize form handlers
+  const handleChange = useCallback(
+    (event) => {
+      const { name, value } = event.target;
+
+      setForm((current) => ({
+        ...current,
+        [name]: value,
+      }));
+
+      if (success) setSuccess("");
+      if (error) setError("");
+    },
+    [success, error],
+  );
+
+  const handleSubmit = useCallback(
+    async (event) => {
+      event.preventDefault();
+
+      if (!canSubmit) {
+        setError(
+          t(
+            "forms.contact.validationError",
+            "Please fill in your name, email, subject, and message.",
+          ),
+        );
+        return;
+      }
+
+      try {
+        setSubmitting(true);
+        setSuccess("");
+        setError("");
+
+        await publicApi.submitContactMessage(cleanPayload(form));
+
+        setForm({
+          ...initialForm,
+          preferredLanguage: activeLanguage,
+        });
+
+        setSuccess(
+          t(
+            "forms.contact.success",
+            "Message sent successfully. The InkFront admin team will review it and get back to you soon.",
+          ),
+        );
+      } catch (err) {
+        setError(
+          err?.response?.data?.message ||
+            err?.response?.data?.error ||
+            err?.message ||
+            t(
+              "forms.contact.error",
+              "Failed to send message. Please try again.",
+            ),
+        );
+      } finally {
+        setSubmitting(false);
+      }
+    },
+    [canSubmit, form, activeLanguage, t],
+  );
 
   // Show loading state while hero is being fetched
   if (hero.loading) {
