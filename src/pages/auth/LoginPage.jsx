@@ -203,7 +203,7 @@ export default function LoginPage() {
         className="premium-container"
         style={{
           maxWidth: "480px",
-          margin: "-40px auto",
+          margin: "-50px auto",
           minHeight: "100vh",
           display: "flex",
           alignItems: "center",
@@ -233,7 +233,7 @@ export default function LoginPage() {
                 color: "var(--app-text)",
               }}
             >
-              Welcome Back
+              Welcome
             </h1>
             <p
               style={{

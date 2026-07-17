@@ -462,7 +462,6 @@ export default function AboutPage() {
               </div>
             </div>
           </motion.div>
-
           {imageUrl ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.96 }}
@@ -473,7 +472,8 @@ export default function AboutPage() {
               <img
                 src={imageUrl}
                 alt={heroTitle}
-                loading="lazy"
+                loading="eager"
+                fetchpriority="high"
                 onError={(event) => {
                   event.currentTarget.closest(
                     ".premium-detail-media",
