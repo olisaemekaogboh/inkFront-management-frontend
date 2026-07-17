@@ -203,7 +203,7 @@ export default function LoginPage() {
         className="premium-container"
         style={{
           maxWidth: "480px",
-          margin: "-50px auto",
+          margin: "-70px ",
           minHeight: "100vh",
           display: "flex",
           alignItems: "center",
