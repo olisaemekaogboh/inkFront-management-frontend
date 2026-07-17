@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import useLanguage from "../../hooks/useLanguage";
 import useFetchOnMount from "../../hooks/useFetchOnMount";
@@ -36,47 +36,22 @@ function getImageUrl(item) {
   );
 }
 
-// Map portfolio project slugs to your images based on actual database slugs
 const portfolioImageMap = {
-  // Education
   "edubridge-school-platform": "/images/portfolio/school.png",
-
-  // Logistics
   "quickship-logistics-dashboard": "/images/portfolio/logistics.png",
-
-  // E-commerce / Marketplace
   "halamart-marketplace": "/images/portfolio/market.png",
-
-  // Fintech
   "payswift-bill-payments": "/images/portfolio/banking.png",
   "savewise-investment-platform": "/images/portfolio/invest.png",
-
-  // Real Estate
   "propertyfinder-real-estate": "/images/portfolio/realEstate2.png",
-
-  // Entertainment / Music
   "bloommusic-streaming": "/images/portfolio/music.png",
-
-  // Healthcare
   "medicare-facility-management": "/images/portfolio/health.png",
-
-  // Agriculture
   "farmconnect-agritech-marketplace": "/images/portfolio/agric.png",
-
-  // Education Technology
   "skillbridge-learning-platform": "/images/portfolio/learn.png",
-
-  // Events / Ticketing
   "eventwave-ticketing-platform": "/images/portfolio/ticket.png",
-
-  // Faith & Community
   "churchflow-ministry-platform": "/images/portfolio/realEstate.png",
-
-  // Business / Enterprise (default)
   "business-management": "/images/portfolio/business.png",
 };
 
-// Default fallback images
 const defaultImages = [
   "/images/portfolio/business.png",
   "/images/portfolio/agric.png",
@@ -92,8 +67,14 @@ const defaultImages = [
   "/images/portfolio/ticket.png",
 ];
 
+// Preload critical images
+function preloadImage(url) {
+  if (!url) return;
+  const img = new Image();
+  img.src = url;
+}
+
 function getPortfolioImage(project, index) {
-  // First, try to get image from the project data
   const projectImage = text(
     project.coverImageUrl,
     project.imageUrl,
@@ -106,12 +87,10 @@ function getPortfolioImage(project, index) {
     return projectImage;
   }
 
-  // Use local image based on slug
   if (project.slug && portfolioImageMap[project.slug]) {
     return portfolioImageMap[project.slug];
   }
 
-  // Try to match by category/industry
   const category = (
     project.clientIndustry ||
     project.category ||
@@ -178,35 +157,75 @@ function getPortfolioImage(project, index) {
     return "/images/portfolio/ticket.png";
   }
 
-  // Default fallback based on index
   return defaultImages[index % defaultImages.length];
 }
 
-// Enhanced image component with error handling
-function PortfolioImage({ src, alt, className }) {
+// Enhanced PortfolioImage component with priority support and better error handling
+function PortfolioImage({
+  src,
+  alt,
+  className,
+  priority = false,
+  onLoad,
+  containerClassName = "",
+}) {
   const [imageError, setImageError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   if (!src || imageError) return null;
 
   return (
-    <img
-      src={src}
-      alt={alt}
-      loading="lazy"
-      className={className}
-      onError={(event) => {
-        console.warn(`Failed to load portfolio image: ${src}`);
-        setImageError(true);
-        event.currentTarget.style.display = "none";
-      }}
-    />
+    <div
+      className={containerClassName}
+      style={{ position: "relative", width: "100%", height: "100%" }}
+    >
+      {!isLoaded && (
+        <div
+          className="image-placeholder"
+          style={{
+            width: "100%",
+            height: "100%",
+            background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 1,
+            borderRadius: "inherit",
+          }}
+        />
+      )}
+      <img
+        src={src}
+        alt={alt}
+        loading={priority ? "eager" : "lazy"}
+        fetchpriority={priority ? "high" : "auto"}
+        className={className}
+        style={{
+          opacity: isLoaded ? 1 : 0,
+          transition: "opacity 0.3s ease-in-out",
+          position: "relative",
+          zIndex: 2,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+        }}
+        onLoad={() => {
+          setIsLoaded(true);
+          if (onLoad) onLoad();
+        }}
+        onError={(event) => {
+          console.warn(`Failed to load image: ${src}`);
+          setImageError(true);
+          event.currentTarget.style.display = "none";
+        }}
+      />
+    </div>
   );
 }
 
 export default function PortfolioListPage() {
   const { language, t } = useLanguage();
 
-  // Fetch hero data - matching About, Contact, and Services pages
   const fetchHero = useCallback(
     () =>
       heroService.getHeroSections({
@@ -222,6 +241,35 @@ export default function PortfolioListPage() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [heroImageLoaded, setHeroImageLoaded] = useState(false);
+
+  // Memoize hero data to avoid recalculations
+  const heroData = useMemo(() => {
+    const heroItem = normalizeList(hero.data)[0] || null;
+    return {
+      item: heroItem,
+      title: text(
+        heroItem?.title,
+        t("portfolioPage.title", "Selected work and case studies"),
+      ),
+      subtitle: text(
+        heroItem?.subtitle,
+        heroItem?.description,
+        t(
+          "portfolioPage.description",
+          "Explore websites, platforms, dashboards, and business systems built to help brands grow online.",
+        ),
+      ),
+      imageUrl: getImageUrl(heroItem),
+    };
+  }, [hero.data, t]);
+
+  // Preload hero image when URL is available
+  useEffect(() => {
+    if (heroData.imageUrl) {
+      preloadImage(heroData.imageUrl);
+    }
+  }, [heroData.imageUrl]);
 
   useEffect(() => {
     let active = true;
@@ -275,28 +323,15 @@ export default function PortfolioListPage() {
     return <ErrorState message={hero.error} />;
   }
 
-  // Get hero data
-  const heroItem = normalizeList(hero.data)[0] || null;
-
-  const heroTitle = text(
-    heroItem?.title,
-    t("portfolioPage.title", "Selected work and case studies"),
-  );
-
-  const heroSubtitle = text(
-    heroItem?.subtitle,
-    heroItem?.description,
-    t(
-      "portfolioPage.description",
-      "Explore websites, platforms, dashboards, and business systems built to help brands grow online.",
-    ),
-  );
-
-  const imageUrl = getImageUrl(heroItem);
+  const {
+    item: heroItem,
+    title: heroTitle,
+    subtitle: heroSubtitle,
+    imageUrl,
+  } = heroData;
 
   return (
     <main className="premium-public-page">
-      {/* Hero section - matching About, Contact, and Services pages */}
       <section className="premium-detail-hero">
         <div
           className={
@@ -313,7 +348,6 @@ export default function PortfolioListPage() {
             <span className="premium-eyebrow">
               {t("nav.portfolio", "Portfolio")}
             </span>
-
             <h1>{heroTitle}</h1>
             <p>{heroSubtitle}</p>
           </motion.div>
@@ -324,16 +358,19 @@ export default function PortfolioListPage() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.65 }}
               className="premium-detail-media"
+              style={{
+                position: "relative",
+                overflow: "hidden",
+                minHeight: "200px",
+              }}
             >
-              <img
+              <PortfolioImage
                 src={imageUrl}
                 alt={heroTitle}
-                loading="lazy"
-                onError={(event) => {
-                  event.currentTarget.closest(
-                    ".premium-detail-media",
-                  ).style.display = "none";
-                }}
+                className="premium-work-card__img"
+                priority={true}
+                onLoad={() => setHeroImageLoaded(true)}
+                containerClassName="hero-image-container"
               />
             </motion.div>
           ) : null}
@@ -398,16 +435,23 @@ export default function PortfolioListPage() {
                       key={project.id ?? project.slug ?? index}
                       initial={{ opacity: 0, y: 22 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.04 }}
+                      transition={{
+                        duration: 0.5,
+                        delay: Math.min(index * 0.04, 0.5),
+                      }}
                       viewport={{ once: true }}
                     >
                       <Link to={to} className="premium-work-card">
-                        <div className="premium-work-card__images">
+                        <div
+                          className="premium-work-card__images"
+                          style={{ position: "relative", overflow: "hidden" }}
+                        >
                           {imageUrl ? (
                             <PortfolioImage
                               src={imageUrl}
                               alt={title}
                               className="premium-work-card__img"
+                              priority={false}
                             />
                           ) : (
                             <div className="premium-work-card__placeholder">

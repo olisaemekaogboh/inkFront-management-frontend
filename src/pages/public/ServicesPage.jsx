@@ -78,18 +78,86 @@ function imageOf(item) {
   );
 }
 
+// Preload image function
+function preloadImage(url) {
+  if (!url) return;
+  const img = new Image();
+  img.src = url;
+}
+
+// Optimized image component with priority support and placeholder
+function OptimizedImage({
+  src,
+  alt,
+  className,
+  priority = false,
+  onLoad,
+  placeholder = true,
+  objectFit = "cover",
+}) {
+  const [imageError, setImageError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  if (!src || imageError) return null;
+
+  return (
+    <div style={{ position: "relative", width: "100%", height: "100%" }}>
+      {placeholder && !isLoaded && (
+        <div
+          className="image-placeholder"
+          style={{
+            width: "100%",
+            height: "100%",
+            background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 1,
+            borderRadius: "inherit",
+          }}
+        />
+      )}
+      <img
+        src={src}
+        alt={alt}
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : "auto"}
+        className={className}
+        style={{
+          opacity: isLoaded ? 1 : 0,
+          transition: "opacity 0.3s ease-in-out",
+          position: "relative",
+          zIndex: 2,
+          width: "100%",
+          height: "100%",
+          objectFit: objectFit,
+        }}
+        onLoad={() => {
+          setIsLoaded(true);
+          if (onLoad) onLoad();
+        }}
+        onError={(event) => {
+          console.warn(`Failed to load image: ${src}`);
+          setImageError(true);
+          event.currentTarget.style.display = "none";
+        }}
+      />
+    </div>
+  );
+}
+
+// Legacy PremiumImage component for backward compatibility
 function PremiumImage({ src, alt, className }) {
   if (!src) return null;
 
   return (
-    <img
+    <OptimizedImage
       src={src}
       alt={alt}
-      loading="lazy"
       className={className}
-      onError={(event) => {
-        event.currentTarget.style.display = "none";
-      }}
+      priority={false}
+      placeholder={true}
+      objectFit="cover"
     />
   );
 }
@@ -113,6 +181,35 @@ export default function ServicesPage() {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [heroImageLoaded, setHeroImageLoaded] = useState(false);
+
+  // Memoize hero data to avoid recalculations
+  const heroData = useMemo(() => {
+    const heroItem = normalizeList(hero.data)[0] || null;
+    return {
+      item: heroItem,
+      title: text(
+        heroItem?.title,
+        t("servicesPage.title", "Services that grow your business"),
+      ),
+      subtitle: text(
+        heroItem?.subtitle,
+        heroItem?.description,
+        t(
+          "servicesPage.description",
+          "From custom websites to full automation systems, we build digital products that help you work smarter, sell more, and scale faster.",
+        ),
+      ),
+      imageUrl: getImageUrl(heroItem),
+    };
+  }, [hero.data, t]);
+
+  // Preload hero image when URL is available
+  useEffect(() => {
+    if (heroData.imageUrl) {
+      preloadImage(heroData.imageUrl);
+    }
+  }, [heroData.imageUrl]);
 
   const serviceHighlights = useMemo(
     () => ({
@@ -278,28 +375,11 @@ export default function ServicesPage() {
     return <ErrorState message={hero.error} />;
   }
 
-  // Get hero data
-  const heroItem = normalizeList(hero.data)[0] || null;
-
-  const heroTitle = text(
-    heroItem?.title,
-    t("servicesPage.title", "Services that grow your business"),
-  );
-
-  const heroSubtitle = text(
-    heroItem?.subtitle,
-    heroItem?.description,
-    t(
-      "servicesPage.description",
-      "From custom websites to full automation systems, we build digital products that help you work smarter, sell more, and scale faster.",
-    ),
-  );
-
-  const imageUrl = getImageUrl(heroItem);
+  const { title: heroTitle, subtitle: heroSubtitle, imageUrl } = heroData;
 
   return (
     <main className="premium-public-page">
-      {/* Hero section - matching About and Contact page structure */}
+      {/* Hero section - optimized with priority loading */}
       <section className="premium-detail-hero">
         <div
           className={
@@ -327,16 +407,20 @@ export default function ServicesPage() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.65 }}
               className="premium-detail-media"
+              style={{
+                position: "relative",
+                overflow: "hidden",
+                minHeight: "200px",
+              }}
             >
-              <img
+              <OptimizedImage
                 src={imageUrl}
                 alt={heroTitle}
-                loading="lazy"
-                onError={(event) => {
-                  event.currentTarget.closest(
-                    ".premium-detail-media",
-                  ).style.display = "none";
-                }}
+                className="premium-detail-media__img"
+                priority={true}
+                onLoad={() => setHeroImageLoaded(true)}
+                placeholder={true}
+                objectFit="cover"
               />
             </motion.div>
           ) : null}
@@ -426,11 +510,23 @@ export default function ServicesPage() {
                     className="premium-product-card"
                   >
                     {imageUrl ? (
-                      <PremiumImage
-                        src={imageUrl}
-                        alt={title}
-                        className="premium-product-image"
-                      />
+                      <div
+                        className="premium-product-image-wrapper"
+                        style={{
+                          position: "relative",
+                          width: "100%",
+                          height: "200px",
+                        }}
+                      >
+                        <OptimizedImage
+                          src={imageUrl}
+                          alt={title}
+                          className="premium-product-image"
+                          priority={false}
+                          placeholder={true}
+                          objectFit="cover"
+                        />
+                      </div>
                     ) : (
                       <div className="premium-product-image premium-fallback-media">
                         <span>{getServiceIcon(service, index)}</span>

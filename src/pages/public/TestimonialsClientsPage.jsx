@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import useLanguage from "../../hooks/useLanguage";
@@ -41,6 +41,66 @@ function getImageUrl(item) {
   );
 }
 
+// Optimized image component with priority support and placeholder
+function OptimizedImage({
+  src,
+  alt,
+  className,
+  priority = false,
+  onLoad,
+  placeholder = true,
+}) {
+  const [imageError, setImageError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  if (!src || imageError) return null;
+
+  return (
+    <div style={{ position: "relative", width: "100%", height: "100%" }}>
+      {placeholder && !isLoaded && (
+        <div
+          className="image-placeholder"
+          style={{
+            width: "100%",
+            height: "100%",
+            background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 1,
+            borderRadius: "inherit",
+          }}
+        />
+      )}
+      <img
+        src={src}
+        alt={alt}
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : "auto"}
+        className={className}
+        style={{
+          opacity: isLoaded ? 1 : 0,
+          transition: "opacity 0.3s ease-in-out",
+          position: "relative",
+          zIndex: 2,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+        }}
+        onLoad={() => {
+          setIsLoaded(true);
+          if (onLoad) onLoad();
+        }}
+        onError={(event) => {
+          console.warn(`Failed to load image: ${src}`);
+          setImageError(true);
+          event.currentTarget.style.display = "none";
+        }}
+      />
+    </div>
+  );
+}
+
 export default function TestimonialsClientsPage() {
   const { language, t } = useLanguage();
 
@@ -60,6 +120,31 @@ export default function TestimonialsClientsPage() {
   const [testimonials, setTestimonials] = useState([]);
   const [clientLogos, setClientLogos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [heroImageLoaded, setHeroImageLoaded] = useState(false);
+
+  // Memoize hero data to avoid recalculations
+  const heroData = useMemo(() => {
+    const heroItem = normalizeList(hero.data)[0] || null;
+    return {
+      item: heroItem,
+      title: text(
+        heroItem?.title,
+        t(
+          "clientsPage.title",
+          "Client stories, trust signals, and business proof",
+        ),
+      ),
+      subtitle: text(
+        heroItem?.subtitle,
+        heroItem?.description,
+        t(
+          "clientsPage.description",
+          "Feedback from client engagements and organizations supported with websites, digital products, and business systems.",
+        ),
+      ),
+      imageUrl: getImageUrl(heroItem),
+    };
+  }, [hero.data, t]);
 
   useEffect(() => {
     let active = true;
@@ -118,28 +203,11 @@ export default function TestimonialsClientsPage() {
     return <ErrorState message={hero.error} />;
   }
 
-  // Get hero data
-  const heroItem = normalizeList(hero.data)[0] || null;
-
-  const heroTitle = text(
-    heroItem?.title,
-    t("clientsPage.title", "Client stories, trust signals, and business proof"),
-  );
-
-  const heroSubtitle = text(
-    heroItem?.subtitle,
-    heroItem?.description,
-    t(
-      "clientsPage.description",
-      "Feedback from client engagements and organizations supported with websites, digital products, and business systems.",
-    ),
-  );
-
-  const imageUrl = getImageUrl(heroItem);
+  const { title: heroTitle, subtitle: heroSubtitle, imageUrl } = heroData;
 
   return (
     <main className="premium-public-page">
-      {/* Hero section - matching all other pages */}
+      {/* Hero section - optimized with priority loading */}
       <section className="premium-detail-hero">
         <div
           className={
@@ -167,16 +235,19 @@ export default function TestimonialsClientsPage() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.65 }}
               className="premium-detail-media"
+              style={{
+                position: "relative",
+                overflow: "hidden",
+                minHeight: "200px",
+              }}
             >
-              <img
+              <OptimizedImage
                 src={imageUrl}
                 alt={heroTitle}
-                loading="lazy"
-                onError={(event) => {
-                  event.currentTarget.closest(
-                    ".premium-detail-media",
-                  ).style.display = "none";
-                }}
+                className="premium-detail-media__img"
+                priority={true}
+                onLoad={() => setHeroImageLoaded(true)}
+                placeholder={true}
               />
             </motion.div>
           ) : null}
@@ -258,15 +329,22 @@ export default function TestimonialsClientsPage() {
 
                     <div className="premium-person">
                       {avatarUrl ? (
-                        <img
-                          src={avatarUrl}
-                          alt={name}
-                          className="premium-avatar"
-                          loading="lazy"
-                          onError={(event) => {
-                            event.currentTarget.style.display = "none";
+                        <div
+                          style={{
+                            position: "relative",
+                            width: "48px",
+                            height: "48px",
+                            flexShrink: 0,
                           }}
-                        />
+                        >
+                          <OptimizedImage
+                            src={avatarUrl}
+                            alt={name}
+                            className="premium-avatar"
+                            priority={false}
+                            placeholder={false}
+                          />
+                        </div>
                       ) : (
                         <div className="premium-avatar premium-avatar-fallback">
                           {name.charAt(0).toUpperCase()}
@@ -314,20 +392,25 @@ export default function TestimonialsClientsPage() {
                 const logoUrl = text(logo.logoUrl, logo.imageUrl);
 
                 const content = logoUrl ? (
-                  <img
-                    src={logoUrl}
-                    alt={name}
-                    className="premium-logo-img"
-                    loading="lazy"
-                    onError={(event) => {
-                      event.currentTarget.style.display = "none";
+                  <div
+                    style={{
+                      position: "relative",
+                      width: "100%",
+                      height: "60px",
                     }}
-                  />
+                  >
+                    <OptimizedImage
+                      src={logoUrl}
+                      alt={name}
+                      className="premium-logo-img"
+                      priority={false}
+                      placeholder={false}
+                    />
+                  </div>
                 ) : (
                   <strong>{name}</strong>
                 );
 
-                // Return div instead of a - REMOVED LINK
                 return (
                   <div key={logo.id ?? index} className="premium-logo-card">
                     {content}

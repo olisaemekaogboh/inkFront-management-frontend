@@ -114,6 +114,73 @@ function cleanPayload(form) {
   };
 }
 
+// Preload image function
+function preloadImage(url) {
+  if (!url) return;
+  const img = new Image();
+  img.src = url;
+}
+
+// Optimized image component with priority support
+function OptimizedImage({
+  src,
+  alt,
+  className,
+  priority = false,
+  onLoad,
+  objectFit = "cover",
+}) {
+  const [imageError, setImageError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  if (!src || imageError) return null;
+
+  return (
+    <div style={{ position: "relative", width: "100%", height: "100%" }}>
+      {!isLoaded && (
+        <div
+          className="image-placeholder"
+          style={{
+            width: "100%",
+            height: "100%",
+            background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 1,
+            borderRadius: "inherit",
+          }}
+        />
+      )}
+      <img
+        src={src}
+        alt={alt}
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : "auto"}
+        className={className}
+        style={{
+          opacity: isLoaded ? 1 : 0,
+          transition: "opacity 0.3s ease-in-out",
+          position: "relative",
+          zIndex: 2,
+          width: "100%",
+          height: "100%",
+          objectFit: objectFit,
+        }}
+        onLoad={() => {
+          setIsLoaded(true);
+          if (onLoad) onLoad();
+        }}
+        onError={(event) => {
+          console.warn(`Failed to load image: ${src}`);
+          setImageError(true);
+          event.currentTarget.style.display = "none";
+        }}
+      />
+    </div>
+  );
+}
+
 export default function ContactPage() {
   const { language, t } = useLanguage();
 
@@ -143,6 +210,35 @@ export default function ContactPage() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [heroImageLoaded, setHeroImageLoaded] = useState(false);
+
+  // Memoize hero data to avoid recalculations
+  const heroData = useMemo(() => {
+    const heroItem = normalizeList(hero.data)[0] || null;
+    return {
+      item: heroItem,
+      title: text(
+        heroItem?.title,
+        t("pages.contact.title", "Let's build your next digital system"),
+      ),
+      subtitle: text(
+        heroItem?.subtitle,
+        heroItem?.description,
+        t(
+          "pages.contact.subtitle",
+          "Send your project details directly to the InkFront admin team. Your inquiry will be saved, tracked, and followed up from the admin CRM.",
+        ),
+      ),
+      imageUrl: getImageUrl(heroItem),
+    };
+  }, [hero.data, t]);
+
+  // Preload hero image when URL is available
+  useEffect(() => {
+    if (heroData.imageUrl) {
+      preloadImage(heroData.imageUrl);
+    }
+  }, [heroData.imageUrl]);
 
   useEffect(() => {
     setForm((current) => ({
@@ -231,28 +327,11 @@ export default function ContactPage() {
     return <ErrorState message={hero.error} />;
   }
 
-  // Get hero data
-  const heroItem = normalizeList(hero.data)[0] || null;
-
-  const heroTitle = text(
-    heroItem?.title,
-    t("pages.contact.title", "Let's build your next digital system"),
-  );
-
-  const heroSubtitle = text(
-    heroItem?.subtitle,
-    heroItem?.description,
-    t(
-      "pages.contact.subtitle",
-      "Send your project details directly to the InkFront admin team. Your inquiry will be saved, tracked, and followed up from the admin CRM.",
-    ),
-  );
-
-  const imageUrl = getImageUrl(heroItem);
+  const { title: heroTitle, subtitle: heroSubtitle, imageUrl } = heroData;
 
   return (
     <main className="premium-public-page">
-      {/* Hero section - matching About page structure with image */}
+      {/* Hero section - optimized with priority loading */}
       <section className="premium-detail-hero">
         <div
           className={
@@ -280,16 +359,19 @@ export default function ContactPage() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.65 }}
               className="premium-detail-media"
+              style={{
+                position: "relative",
+                overflow: "hidden",
+                minHeight: "200px",
+              }}
             >
-              <img
+              <OptimizedImage
                 src={imageUrl}
                 alt={heroTitle}
-                loading="lazy"
-                onError={(event) => {
-                  event.currentTarget.closest(
-                    ".premium-detail-media",
-                  ).style.display = "none";
-                }}
+                className="premium-detail-media__img"
+                priority={true}
+                onLoad={() => setHeroImageLoaded(true)}
+                objectFit="cover"
               />
             </motion.div>
           ) : null}

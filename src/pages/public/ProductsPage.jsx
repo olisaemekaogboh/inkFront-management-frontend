@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import useLanguage from "../../hooks/useLanguage";
 import useFetchOnMount from "../../hooks/useFetchOnMount";
@@ -36,6 +36,74 @@ function getImageUrl(item) {
   );
 }
 
+// Preload image function
+function preloadImage(url) {
+  if (!url) return;
+  const img = new Image();
+  img.src = url;
+}
+
+// Optimized image component with priority support and placeholder
+function OptimizedImage({
+  src,
+  alt,
+  className,
+  priority = false,
+  onLoad,
+  placeholder = true,
+  objectFit = "cover",
+}) {
+  const [imageError, setImageError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  if (!src || imageError) return null;
+
+  return (
+    <div style={{ position: "relative", width: "100%", height: "100%" }}>
+      {placeholder && !isLoaded && (
+        <div
+          className="image-placeholder"
+          style={{
+            width: "100%",
+            height: "100%",
+            background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 1,
+            borderRadius: "inherit",
+          }}
+        />
+      )}
+      <img
+        src={src}
+        alt={alt}
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : "auto"}
+        className={className}
+        style={{
+          opacity: isLoaded ? 1 : 0,
+          transition: "opacity 0.3s ease-in-out",
+          position: "relative",
+          zIndex: 2,
+          width: "100%",
+          height: "100%",
+          objectFit: objectFit,
+        }}
+        onLoad={() => {
+          setIsLoaded(true);
+          if (onLoad) onLoad();
+        }}
+        onError={(event) => {
+          console.warn(`Failed to load image: ${src}`);
+          setImageError(true);
+          event.currentTarget.style.display = "none";
+        }}
+      />
+    </div>
+  );
+}
+
 export default function ProductsPage() {
   const { language, t } = useLanguage();
 
@@ -55,6 +123,35 @@ export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [heroImageLoaded, setHeroImageLoaded] = useState(false);
+
+  // Memoize hero data to avoid recalculations
+  const heroData = useMemo(() => {
+    const heroItem = normalizeList(hero.data)[0] || null;
+    return {
+      item: heroItem,
+      title: text(
+        heroItem?.title,
+        t("productsPage.title", "Product blueprints for serious businesses"),
+      ),
+      subtitle: text(
+        heroItem?.subtitle,
+        heroItem?.description,
+        t(
+          "productsPage.description",
+          "Explore ready-to-build digital product structures for websites, booking systems, portals, schools, e-commerce, and business dashboards.",
+        ),
+      ),
+      imageUrl: getImageUrl(heroItem),
+    };
+  }, [hero.data, t]);
+
+  // Preload hero image when URL is available
+  useEffect(() => {
+    if (heroData.imageUrl) {
+      preloadImage(heroData.imageUrl);
+    }
+  }, [heroData.imageUrl]);
 
   useEffect(() => {
     let active = true;
@@ -106,28 +203,11 @@ export default function ProductsPage() {
     return <ErrorState message={hero.error} />;
   }
 
-  // Get hero data
-  const heroItem = normalizeList(hero.data)[0] || null;
-
-  const heroTitle = text(
-    heroItem?.title,
-    t("productsPage.title", "Product blueprints for serious businesses"),
-  );
-
-  const heroSubtitle = text(
-    heroItem?.subtitle,
-    heroItem?.description,
-    t(
-      "productsPage.description",
-      "Explore ready-to-build digital product structures for websites, booking systems, portals, schools, e-commerce, and business dashboards.",
-    ),
-  );
-
-  const imageUrl = getImageUrl(heroItem);
+  const { title: heroTitle, subtitle: heroSubtitle, imageUrl } = heroData;
 
   return (
     <main className="premium-public-page">
-      {/* Hero section - matching About, Contact, Services, and Portfolio pages */}
+      {/* Hero section - optimized with priority loading */}
       <section className="premium-detail-hero">
         <div
           className={
@@ -155,16 +235,20 @@ export default function ProductsPage() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.65 }}
               className="premium-detail-media"
+              style={{
+                position: "relative",
+                overflow: "hidden",
+                minHeight: "200px",
+              }}
             >
-              <img
+              <OptimizedImage
                 src={imageUrl}
                 alt={heroTitle}
-                loading="lazy"
-                onError={(event) => {
-                  event.currentTarget.closest(
-                    ".premium-detail-media",
-                  ).style.display = "none";
-                }}
+                className="premium-detail-media__img"
+                priority={true}
+                onLoad={() => setHeroImageLoaded(true)}
+                placeholder={true}
+                objectFit="cover"
               />
             </motion.div>
           ) : null}
@@ -212,25 +296,38 @@ export default function ProductsPage() {
                   product.thumbnailUrl,
                 );
 
+                const to = product.slug ? `/products/${product.slug}` : "#";
+
                 return (
                   <motion.article
                     key={product.id ?? product.slug ?? index}
                     initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.55, delay: index * 0.04 }}
+                    transition={{
+                      duration: 0.55,
+                      delay: Math.min(index * 0.04, 0.5),
+                    }}
                     viewport={{ once: true }}
                     className="premium-product-card"
                   >
                     {imageUrl ? (
-                      <img
-                        src={imageUrl}
-                        alt={title}
-                        className="premium-product-image"
-                        loading="lazy"
-                        onError={(event) => {
-                          event.currentTarget.style.display = "none";
+                      <div
+                        className="premium-product-image-wrapper"
+                        style={{
+                          position: "relative",
+                          width: "100%",
+                          height: "200px",
                         }}
-                      />
+                      >
+                        <OptimizedImage
+                          src={imageUrl}
+                          alt={title}
+                          className="premium-product-image"
+                          priority={false}
+                          placeholder={true}
+                          objectFit="cover"
+                        />
+                      </div>
                     ) : (
                       <div className="premium-product-image premium-fallback-media">
                         <span>{t("productsPage.icon", "🧩")}</span>
@@ -247,10 +344,7 @@ export default function ProductsPage() {
                       <p>{summary}</p>
 
                       {product.slug ? (
-                        <Link
-                          to={`/products/${product.slug}`}
-                          className="premium-text-link"
-                        >
+                        <Link to={to} className="premium-text-link">
                           {t("productsPage.viewBlueprint", "View blueprint")} →
                         </Link>
                       ) : null}

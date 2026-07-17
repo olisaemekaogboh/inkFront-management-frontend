@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import useLanguage from "../../hooks/useLanguage";
@@ -20,12 +20,108 @@ function formatBulletList(textString) {
   return textString.split("\n").filter((line) => line.trim());
 }
 
+// Preload image function
+function preloadImage(url) {
+  if (!url) return;
+  const img = new Image();
+  img.src = url;
+}
+
+// Optimized image component with priority support and placeholder
+function OptimizedImage({
+  src,
+  alt,
+  className,
+  priority = false,
+  onLoad,
+  placeholder = true,
+  objectFit = "cover",
+}) {
+  const [imageError, setImageError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  if (!src || imageError) return null;
+
+  return (
+    <div style={{ position: "relative", width: "100%", height: "100%" }}>
+      {placeholder && !isLoaded && (
+        <div
+          className="image-placeholder"
+          style={{
+            width: "100%",
+            height: "100%",
+            background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 1,
+            borderRadius: "inherit",
+          }}
+        />
+      )}
+      <img
+        src={src}
+        alt={alt}
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : "auto"}
+        className={className}
+        style={{
+          opacity: isLoaded ? 1 : 0,
+          transition: "opacity 0.3s ease-in-out",
+          position: "relative",
+          zIndex: 2,
+          width: "100%",
+          height: "100%",
+          objectFit: objectFit,
+        }}
+        onLoad={() => {
+          setIsLoaded(true);
+          if (onLoad) onLoad();
+        }}
+        onError={(event) => {
+          console.warn(`Failed to load image: ${src}`);
+          setImageError(true);
+          event.currentTarget.style.display = "none";
+        }}
+      />
+    </div>
+  );
+}
+
 export default function ProductBlueprintPage() {
   const { slug } = useParams();
   const { language, t } = useLanguage();
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [heroImageLoaded, setHeroImageLoaded] = useState(false);
+
+  // Memoize product data to avoid recalculations
+  const productData = useMemo(() => {
+    if (!product) return null;
+
+    return {
+      title: text(
+        product.title,
+        product.name,
+        t("products.untitled", "Untitled Product"),
+      ),
+      summary: text(
+        product.summary,
+        t("products.noSummary", "No product summary available."),
+      ),
+      imageUrl: getImage(product),
+      benefitsList: formatBulletList(product.keyBenefits),
+      useCasesList: formatBulletList(product.useCases),
+    };
+  }, [product, t]);
+
+  // Preload hero image when URL is available
+  useEffect(() => {
+    if (productData?.imageUrl) {
+      preloadImage(productData.imageUrl);
+    }
+  }, [productData?.imageUrl]);
 
   useEffect(() => {
     let active = true;
@@ -81,23 +177,11 @@ export default function ProductBlueprintPage() {
     );
   }
 
-  const title = text(
-    product.title,
-    product.name,
-    t("products.untitled", "Untitled Product"),
-  );
-  const summary = text(
-    product.summary,
-    t("products.noSummary", "No product summary available."),
-  );
-  const imageUrl = getImage(product);
-
-  const benefitsList = formatBulletList(product.keyBenefits);
-  const useCasesList = formatBulletList(product.useCases);
+  const { title, summary, imageUrl, benefitsList, useCasesList } = productData;
 
   return (
     <main className="premium-public-page">
-      {/* Hero Section */}
+      {/* Hero Section - optimized with priority loading */}
       <section className="premium-detail-hero">
         <div className="premium-container premium-detail-grid">
           <motion.div
@@ -128,15 +212,21 @@ export default function ProductBlueprintPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.65 }}
             className="premium-detail-media"
+            style={{
+              position: "relative",
+              overflow: "hidden",
+              minHeight: "200px",
+            }}
           >
             {imageUrl ? (
-              <img
+              <OptimizedImage
                 src={imageUrl}
                 alt={title}
-                loading="lazy"
-                onError={(event) => {
-                  event.currentTarget.style.display = "none";
-                }}
+                className="premium-detail-media__img"
+                priority={true}
+                onLoad={() => setHeroImageLoaded(true)}
+                placeholder={true}
+                objectFit="cover"
               />
             ) : (
               <div className="premium-detail-placeholder">
