@@ -262,6 +262,7 @@ export default function RegisterPage() {
           display: "flex",
           alignItems: "center",
           paddingTop: "20px",
+          paddingBottom: "20px",
         }}
       >
         <div
