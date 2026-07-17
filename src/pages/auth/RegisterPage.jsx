@@ -261,7 +261,7 @@ export default function RegisterPage() {
           minHeight: "100vh",
           display: "flex",
           alignItems: "center",
-          paddingTop: "0",
+          paddingTop: "20px",
         }}
       >
         <div
