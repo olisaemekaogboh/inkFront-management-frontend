@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useMemo } from "react";
 import useLanguage from "../../hooks/useLanguage";
 import useFetchOnMount from "../../hooks/useFetchOnMount";
 import { heroService } from "../../services/heroService";
@@ -308,116 +309,192 @@ export default function AboutPage() {
     [language],
   );
 
-  if (
-    hero.loading ||
-    settings.loading ||
-    testimonials.loading ||
-    faqs.loading
-  ) {
+  // Memoize all computed values
+  const heroItem = useMemo(
+    () => normalizeList(hero.data)[0] ?? null,
+    [hero.data],
+  );
+
+  const siteSettings = useMemo(
+    () => (settings.loading ? {} : normalizeSettings(settings.data)),
+    [settings.data, settings.loading],
+  );
+
+  const fallbackTestimonials = useMemo(() => buildFallbackTestimonials(t), [t]);
+
+  const fallbackFaqs = useMemo(() => buildFallbackFaqs(t), [t]);
+
+  const workSteps = useMemo(() => buildWorkSteps(t), [t]);
+
+  const engineeringDepthItems = useMemo(
+    () => buildEngineeringDepthItems(t),
+    [t],
+  );
+
+  const testimonialData = useMemo(
+    () => normalizeList(testimonials.data),
+    [testimonials.data],
+  );
+
+  const testimonialItems = useMemo(
+    () =>
+      testimonials.loading
+        ? fallbackTestimonials
+        : testimonialData.length
+          ? testimonialData
+          : fallbackTestimonials,
+    [testimonials.loading, testimonialData, fallbackTestimonials],
+  );
+
+  const faqData = useMemo(() => normalizeList(faqs.data), [faqs.data]);
+
+  const faqItems = useMemo(
+    () =>
+      faqs.loading ? fallbackFaqs : faqData.length ? faqData : fallbackFaqs,
+    [faqs.loading, faqData, fallbackFaqs],
+  );
+
+  const getSetting = useMemo(
+    () =>
+      (key, fallback = "") =>
+        text(siteSettings[key], siteSettings[`about.${key}`], fallback),
+    [siteSettings],
+  );
+
+  const heroTitle = useMemo(
+    () =>
+      text(
+        heroItem?.title,
+        getSetting("heroTitle"),
+        t(
+          "pages.about.title",
+          "African-driven software engineering for serious business growth",
+        ),
+      ),
+    [heroItem?.title, getSetting, t],
+  );
+
+  const heroSubtitle = useMemo(
+    () =>
+      text(
+        heroItem?.subtitle,
+        heroItem?.description,
+        getSetting("heroSubtitle"),
+        t(
+          "pages.about.subtitle",
+          "InkFront is backed by a team of 5 to 15 software engineers with 10+ years of experience building business websites, dashboards, portals, and custom platforms that combine strong business logic with excellent user experience across Nigeria and Africa.",
+        ),
+      ),
+    [heroItem?.subtitle, heroItem?.description, getSetting, t],
+  );
+
+  const rawImageUrl = useMemo(
+    () => getImageUrl(heroItem, siteSettings),
+    [heroItem, siteSettings],
+  );
+
+  const imageUrl = useMemo(
+    () =>
+      rawImageUrl?.includes("images.unsplash.com")
+        ? `${rawImageUrl}?auto=format&fit=crop&w=1600&q=80`
+        : rawImageUrl,
+    [rawImageUrl],
+  );
+
+  const story = useMemo(
+    () =>
+      getSetting(
+        "story",
+        t(
+          "pages.about.storyFallback",
+          "InkFront exists because many African businesses do not just need a website — they need digital systems that understand how their business actually works. Our team combines software engineering, business thinking, product structure, and user experience design to help companies move from scattered manual processes to polished platforms that customers can trust and teams can manage with confidence.",
+        ),
+      ),
+    [getSetting, t],
+  );
+
+  const missionTitle = useMemo(
+    () =>
+      getSetting(
+        "missionTitle",
+        t("pages.about.missionTitle", "Our African-driven mission"),
+      ),
+    [getSetting, t],
+  );
+
+  const mission = useMemo(
+    () =>
+      getSetting(
+        "missionText",
+        getSetting(
+          "mission",
+          t(
+            "pages.about.missionFallback",
+            "Our mission is to build practical, reliable, and beautiful digital systems for African businesses that want to compete with confidence. We help founders, schools, logistics companies, agencies, creators, and service businesses turn local knowledge into world-class digital experiences. We believe African businesses deserve platforms that are fast, clear, secure, easy to manage, and designed around real customer behavior.",
+          ),
+        ),
+      ),
+    [getSetting, t],
+  );
+
+  const visionTitle = useMemo(
+    () =>
+      getSetting(
+        "visionTitle",
+        t("pages.about.visionTitle", "Our African technology vision"),
+      ),
+    [getSetting, t],
+  );
+
+  const vision = useMemo(
+    () =>
+      getSetting(
+        "visionText",
+        getSetting(
+          "vision",
+          t(
+            "pages.about.visionFallback",
+            "Our vision is to become one of Africa's most trusted digital product partners — a team known for building platforms that make businesses easier to run, easier to understand, and easier to scale. We see a future where African companies no longer depend on weak templates or disconnected tools, but own clean, scalable software systems built for their market, their customers, and their growth.",
+          ),
+        ),
+      ),
+    [getSetting, t],
+  );
+
+  const values = useMemo(
+    () =>
+      getSetting(
+        "values",
+        t(
+          "pages.about.valuesFallback",
+          "We value clear thinking, honest communication, business-first engineering, user-friendly design, reliability, speed, documentation, and long-term partnership. Every project should solve a real problem, reduce confusion, improve customer trust, and give the business owner more control.",
+        ),
+      ),
+    [getSetting, t],
+  );
+
+  // Loading state
+  if (hero.loading) {
     return (
       <LoadingSpinner label={t("states.loadingPage", "Loading page...")} />
     );
   }
 
-  if (hero.error || settings.error || testimonials.error || faqs.error) {
-    return (
-      <ErrorState
-        message={
-          hero.error || settings.error || testimonials.error || faqs.error
-        }
-      />
-    );
+  // Error state
+  if (hero.error) {
+    return <ErrorState message={hero.error} />;
   }
 
-  const heroItem = normalizeList(hero.data)[0] || null;
-  const siteSettings = normalizeSettings(settings.data);
-
-  const fallbackTestimonials = buildFallbackTestimonials(t);
-  const fallbackFaqs = buildFallbackFaqs(t);
-  const workSteps = buildWorkSteps(t);
-  const engineeringDepthItems = buildEngineeringDepthItems(t);
-
-  const testimonialItems =
-    normalizeList(testimonials.data).length > 0
-      ? normalizeList(testimonials.data)
-      : fallbackTestimonials;
-
-  const faqItems =
-    normalizeList(faqs.data).length > 0
-      ? normalizeList(faqs.data)
-      : fallbackFaqs;
-
-  const getSetting = (key, fallback = "") =>
-    text(siteSettings[key], siteSettings[`about.${key}`], fallback);
-
-  const heroTitle = text(
-    heroItem?.title,
-    getSetting("heroTitle"),
-    t(
-      "pages.about.title",
-      "African-driven software engineering for serious business growth",
-    ),
-  );
-
-  const heroSubtitle = text(
-    heroItem?.subtitle,
-    heroItem?.description,
-    getSetting("heroSubtitle"),
-    t(
-      "pages.about.subtitle",
-      "InkFront is backed by a team of 5 to 15 software engineers with 10+ years of experience building business websites, dashboards, portals, and custom platforms that combine strong business logic with excellent user experience across Nigeria and Africa.",
-    ),
-  );
-
-  const imageUrl = getImageUrl(heroItem, siteSettings);
-
-  const story = getSetting(
-    "story",
-    t(
-      "pages.about.storyFallback",
-      "InkFront exists because many African businesses do not just need a website — they need digital systems that understand how their business actually works. Our team combines software engineering, business thinking, product structure, and user experience design to help companies move from scattered manual processes to polished platforms that customers can trust and teams can manage with confidence.",
-    ),
-  );
-
-  const missionTitle = getSetting(
-    "missionTitle",
-    t("pages.about.missionTitle", "Our African-driven mission"),
-  );
-
-  const mission = getSetting(
-    "missionText",
-    getSetting(
-      "mission",
-      t(
-        "pages.about.missionFallback",
-        "Our mission is to build practical, reliable, and beautiful digital systems for African businesses that want to compete with confidence. We help founders, schools, logistics companies, agencies, creators, and service businesses turn local knowledge into world-class digital experiences. We believe African businesses deserve platforms that are fast, clear, secure, easy to manage, and designed around real customer behavior.",
-      ),
-    ),
-  );
-
-  const visionTitle = getSetting(
-    "visionTitle",
-    t("pages.about.visionTitle", "Our African technology vision"),
-  );
-
-  const vision = getSetting(
-    "visionText",
-    getSetting(
-      "vision",
-      t(
-        "pages.about.visionFallback",
-        "Our vision is to become one of Africa’s most trusted digital product partners — a team known for building platforms that make businesses easier to run, easier to understand, and easier to scale. We see a future where African companies no longer depend on weak templates or disconnected tools, but own clean, scalable software systems built for their market, their customers, and their growth.",
-      ),
-    ),
-  );
-
-  const values = getSetting(
-    "values",
-    t(
-      "pages.about.valuesFallback",
-      "We value clear thinking, honest communication, business-first engineering, user-friendly design, reliability, speed, documentation, and long-term partnership. Every project should solve a real problem, reduce confusion, improve customer trust, and give the business owner more control.",
-    ),
-  );
+  // Log errors but don't block rendering
+  if (settings.error) {
+    console.error("Settings error:", settings.error);
+  }
+  if (testimonials.error) {
+    console.error("Testimonials error:", testimonials.error);
+  }
+  if (faqs.error) {
+    console.error("FAQs error:", faqs.error);
+  }
 
   return (
     <main className="premium-public-page">
@@ -473,7 +550,8 @@ export default function AboutPage() {
                 src={imageUrl}
                 alt={heroTitle}
                 loading="eager"
-                fetchpriority="high"
+                fetchPriority="high"
+                decoding="async"
                 onError={(event) => {
                   event.currentTarget.closest(
                     ".premium-detail-media",
