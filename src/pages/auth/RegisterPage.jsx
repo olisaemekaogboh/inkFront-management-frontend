@@ -257,7 +257,7 @@ export default function RegisterPage() {
         className="premium-container"
         style={{
           maxWidth: "560px",
-          margin: "-70px auto",
+          margin: "-50px auto",
           minHeight: "100vh",
           display: "flex",
           alignItems: "center",
