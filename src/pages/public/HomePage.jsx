@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useState, useRef } from "react";
-import { motion, animate } from "framer-motion";
+import { useEffect, useMemo, useState, useRef, memo, useCallback } from "react";
+import { LazyMotion, domAnimation, m, animate } from "framer-motion";
 import { Link } from "react-router-dom";
 import useLanguage from "../../hooks/useLanguage";
-
 import useFetchOnMount from "../../hooks/useFetchOnMount";
 import NewsletterSection from "../../components/sections/NewsletterSection";
 import { heroService } from "../../services/heroService";
@@ -13,6 +12,79 @@ import { testimonialService } from "../../services/testimonialService";
 import { clientLogoService } from "../../services/clientLogoService";
 import blogService from "../../services/blogService";
 import "../../styles/publicPremium.css";
+
+// ==================== CONSTANTS ====================
+
+const FADE_UP_VARIANTS = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: "easeOut" },
+  },
+};
+
+const STAGGER_VARIANTS = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.09 } },
+};
+
+const SECTION_REVEAL_VARIANTS = {
+  hidden: { opacity: 0, y: 34 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.65, ease: "easeOut" },
+  },
+};
+
+const PORTFOLIO_IMAGE_MAP = {
+  "edubridge-school-platform": "/images/portfolio/school.png",
+  "skillbridge-learning-platform": "/images/portfolio/learn.png",
+  "school-management-system": "/images/portfolio/school.png",
+  "quickship-logistics-dashboard": "/images/portfolio/logistics.png",
+  "logistics-management": "/images/portfolio/logistics.png",
+  "halamart-marketplace": "/images/portfolio/market.png",
+  "ecommerce-platform": "/images/portfolio/market.png",
+  "payswift-bill-payments": "/images/portfolio/banking.png",
+  "savewise-investment-platform": "/images/portfolio/invest.png",
+  "fintech-solution": "/images/portfolio/banking.png",
+  "propertyfinder-real-estate": "/images/portfolio/realEstate2.png",
+  "real-estate-platform": "/images/portfolio/realEstate2.png",
+  "bloommusic-streaming": "/images/portfolio/music.png",
+  "music-platform": "/images/portfolio/music.png",
+  "medicare-facility-management": "/images/portfolio/health.png",
+  "healthcare-system": "/images/portfolio/health.png",
+  "farmconnect-agritech-marketplace": "/images/portfolio/agric.png",
+  "agritech-platform": "/images/portfolio/agric.png",
+  "eventwave-ticketing-platform": "/images/portfolio/ticket.png",
+  "event-platform": "/images/portfolio/ticket.png",
+  "churchflow-ministry-platform": "/images/portfolio/realEstate.png",
+  "church-management": "/images/portfolio/realEstate.png",
+  "business-management": "/images/portfolio/business.png",
+  "enterprise-solution": "/images/portfolio/business.png",
+  "client-portal": "/images/portfolio/business.png",
+  "agency-website-platform": "/images/portfolio/business.png",
+  "booking-management-system": "/images/portfolio/market.png",
+};
+
+const DEFAULT_IMAGES = [
+  "/images/portfolio/business.png",
+  "/images/portfolio/agric.png",
+  "/images/portfolio/banking.png",
+  "/images/portfolio/health.png",
+  "/images/portfolio/invest.png",
+  "/images/portfolio/learn.png",
+  "/images/portfolio/logistics.png",
+  "/images/portfolio/market.png",
+  "/images/portfolio/music.png",
+  "/images/portfolio/realEstate.png",
+  "/images/portfolio/realEstate2.png",
+  "/images/portfolio/ticket.png",
+  "/images/portfolio/school.png",
+];
+
+// ==================== UTILITY FUNCTIONS ====================
 
 const normalizeList = (value) => {
   if (Array.isArray(value)) return value;
@@ -43,54 +115,22 @@ const getImage = (item) =>
     item?.avatarUrl,
   );
 
-// Portfolio image mapping based on project slugs and categories
-const portfolioImageMap = {
-  "edubridge-school-platform": "/images/portfolio/school.png",
-  "skillbridge-learning-platform": "/images/portfolio/learn.png",
-  "school-management-system": "/images/portfolio/school.png",
-  "quickship-logistics-dashboard": "/images/portfolio/logistics.png",
-  "logistics-management": "/images/portfolio/logistics.png",
-  "halamart-marketplace": "/images/portfolio/market.png",
-  "ecommerce-platform": "/images/portfolio/market.png",
-  "payswift-bill-payments": "/images/portfolio/banking.png",
-  "savewise-investment-platform": "/images/portfolio/invest.png",
-  "fintech-solution": "/images/portfolio/banking.png",
-  "propertyfinder-real-estate": "/images/portfolio/realEstate2.png",
-  "real-estate-platform": "/images/portfolio/realEstate2.png",
-  "bloommusic-streaming": "/images/portfolio/music.png",
-  "music-platform": "/images/portfolio/music.png",
-  "medicare-facility-management": "/images/portfolio/health.png",
-  "healthcare-system": "/images/portfolio/health.png",
-  "farmconnect-agritech-marketplace": "/images/portfolio/agric.png",
-  "agritech-platform": "/images/portfolio/agric.png",
-  "eventwave-ticketing-platform": "/images/portfolio/ticket.png",
-  "event-platform": "/images/portfolio/ticket.png",
-  "churchflow-ministry-platform": "/images/portfolio/realEstate.png",
-  "church-management": "/images/portfolio/realEstate.png",
-  "business-management": "/images/portfolio/business.png",
-  "enterprise-solution": "/images/portfolio/business.png",
-  "client-portal": "/images/portfolio/business.png",
-  "agency-website-platform": "/images/portfolio/business.png",
-  "booking-management-system": "/images/portfolio/market.png",
+const optimizeImageUrl = (url) => {
+  if (!url) return url;
+
+  if (url.includes("images.unsplash.com")) {
+    const hasParams = url.includes("?");
+    return `${url}${hasParams ? "&" : "?"}auto=format&fit=crop&w=1600&q=80`;
+  }
+
+  if (url.includes("cloudinary.com")) {
+    return url;
+  }
+
+  return url;
 };
 
-const defaultImages = [
-  "/images/portfolio/business.png",
-  "/images/portfolio/agric.png",
-  "/images/portfolio/banking.png",
-  "/images/portfolio/health.png",
-  "/images/portfolio/invest.png",
-  "/images/portfolio/learn.png",
-  "/images/portfolio/logistics.png",
-  "/images/portfolio/market.png",
-  "/images/portfolio/music.png",
-  "/images/portfolio/realEstate.png",
-  "/images/portfolio/realEstate2.png",
-  "/images/portfolio/ticket.png",
-  "/images/portfolio/school.png",
-];
-
-function getPortfolioImage(project, index) {
+const getPortfolioImage = (project, index) => {
   const projectImage = getImage(project);
 
   if (
@@ -101,8 +141,8 @@ function getPortfolioImage(project, index) {
     return projectImage;
   }
 
-  if (project.slug && portfolioImageMap[project.slug]) {
-    return portfolioImageMap[project.slug];
+  if (project.slug && PORTFOLIO_IMAGE_MAP[project.slug]) {
+    return PORTFOLIO_IMAGE_MAP[project.slug];
   }
 
   const category = (
@@ -113,85 +153,34 @@ function getPortfolioImage(project, index) {
   ).toLowerCase();
   const title = (project.title || project.name || "").toLowerCase();
 
-  if (
-    category.includes("agric") ||
-    title.includes("farm") ||
-    title.includes("agric")
-  ) {
-    return "/images/portfolio/agric.png";
-  }
-  if (
-    category.includes("fintech") ||
-    title.includes("bank") ||
-    title.includes("pay") ||
-    title.includes("finance")
-  ) {
-    return "/images/portfolio/banking.png";
-  }
-  if (
-    category.includes("ecommerce") ||
-    title.includes("market") ||
-    title.includes("shop") ||
-    title.includes("store")
-  ) {
-    return "/images/portfolio/market.png";
-  }
-  if (
-    category.includes("logistics") ||
-    title.includes("ship") ||
-    title.includes("delivery")
-  ) {
-    return "/images/portfolio/logistics.png";
-  }
-  if (
-    category.includes("health") ||
-    title.includes("medical") ||
-    title.includes("hospital")
-  ) {
-    return "/images/portfolio/health.png";
-  }
-  if (
-    category.includes("education") ||
-    title.includes("learn") ||
-    title.includes("course") ||
-    title.includes("school")
-  ) {
-    return "/images/portfolio/learn.png";
-  }
-  if (
-    category.includes("entertainment") ||
-    title.includes("music") ||
-    title.includes("stream")
-  ) {
-    return "/images/portfolio/music.png";
-  }
-  if (
-    category.includes("estate") ||
-    title.includes("property") ||
-    title.includes("real estate")
-  ) {
-    return "/images/portfolio/realEstate2.png";
-  }
-  if (
-    category.includes("event") ||
-    title.includes("ticket") ||
-    title.includes("booking")
-  ) {
-    return "/images/portfolio/ticket.png";
+  const categoryMap = {
+    agric: ["agric", "farm", "agric"],
+    banking: ["fintech", "bank", "pay", "finance"],
+    market: ["ecommerce", "market", "shop", "store"],
+    logistics: ["logistics", "ship", "delivery"],
+    health: ["health", "medical", "hospital"],
+    learn: ["education", "learn", "course", "school"],
+    music: ["entertainment", "music", "stream"],
+    realEstate2: ["estate", "property", "real estate"],
+    ticket: ["event", "ticket", "booking"],
+  };
+
+  for (const [key, terms] of Object.entries(categoryMap)) {
+    if (terms.some((term) => category.includes(term) || title.includes(term))) {
+      const matchedKey = Object.keys(PORTFOLIO_IMAGE_MAP).find((k) =>
+        k.includes(key),
+      );
+      if (matchedKey) return PORTFOLIO_IMAGE_MAP[matchedKey];
+    }
   }
 
-  return defaultImages[index % defaultImages.length];
-}
+  return DEFAULT_IMAGES[index % DEFAULT_IMAGES.length];
+};
 
-function formatDate(value, language = "EN") {
+const formatDate = (value, language = "EN") => {
   if (!value) return "";
 
-  const localeMap = {
-    EN: "en",
-    HA: "ha",
-    IG: "ig",
-    YO: "yo",
-  };
+  const localeMap = { EN: "en", HA: "ha", IG: "ig", YO: "yo" };
 
   try {
     return new Intl.DateTimeFormat(localeMap[language] || "en", {
@@ -202,78 +191,16 @@ function formatDate(value, language = "EN") {
   } catch {
     return "";
   }
-}
-
-function CountUpNumber({ value, suffix = "", duration = 4.4 }) {
-  const [displayValue, setDisplayValue] = useState(0);
-
-  useEffect(() => {
-    const controls = animate(0, value, {
-      duration,
-      ease: "easeOut",
-      onUpdate: (latest) => setDisplayValue(Math.round(latest)),
-    });
-
-    return () => controls.stop();
-  }, [value, duration]);
-
-  return (
-    <>
-      {displayValue}
-      {suffix}
-    </>
-  );
-}
-
-const PremiumImage = ({ src, alt, className, eager = false }) => {
-  const [imageError, setImageError] = useState(false);
-
-  if (!src || imageError) return null;
-
-  return (
-    <img
-      src={src}
-      alt={alt}
-      className={className}
-      loading={eager ? "eager" : "lazy"}
-      decoding="async"
-      onError={(event) => {
-        console.warn(`Failed to load image: ${src}`);
-        setImageError(true);
-        event.currentTarget.style.display = "none";
-      }}
-    />
-  );
 };
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.55, ease: "easeOut" },
-  },
+const truncateText = (text, maxLength = 120) => {
+  if (!text) return "";
+  return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
 };
 
-const stagger = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.09,
-    },
-  },
-};
+// ==================== FALLBACK DATA ====================
 
-const sectionReveal = {
-  hidden: { opacity: 0, y: 34 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.65, ease: "easeOut" },
-  },
-};
-
-const fallbackServices = (t) => [
+const getFallbackServices = (t) => [
   {
     id: "web-dev",
     title: t("pages.home.fallbackServices.webDev"),
@@ -345,7 +272,7 @@ const fallbackServices = (t) => [
   },
 ];
 
-const fallbackProjects = (t) => [
+const getFallbackProjects = (t) => [
   {
     id: "agency-site",
     title: t("pages.home.fallbackProjects.agencySite"),
@@ -366,7 +293,7 @@ const fallbackProjects = (t) => [
   },
 ];
 
-const fallbackProducts = (t) => [
+const getFallbackProducts = (t) => [
   {
     id: "blueprint",
     title: t("pages.home.fallbackProducts.blueprint"),
@@ -396,7 +323,7 @@ const fallbackProducts = (t) => [
   },
 ];
 
-const fallbackTestimonials = (t) => [
+const getFallbackTestimonials = (t) => [
   {
     id: "one",
     clientName: t("pages.home.fallbackTestimonials.client1.name"),
@@ -411,7 +338,7 @@ const fallbackTestimonials = (t) => [
   },
 ];
 
-const processSteps = (t) => [
+const getProcessSteps = (t) => [
   {
     title: t("pages.home.processSteps.discover.title", "Discover"),
     text: t(
@@ -442,7 +369,7 @@ const processSteps = (t) => [
   },
 ];
 
-const fallbackLogoItems = (t) => [
+const getFallbackLogoItems = (t) => [
   t("pages.home.logoFallback.websites", "Websites"),
   t("pages.home.logoFallback.portals", "Portals"),
   t("pages.home.logoFallback.bookings", "Bookings"),
@@ -450,25 +377,273 @@ const fallbackLogoItems = (t) => [
   t("pages.home.logoFallback.stores", "Stores"),
 ];
 
-const BlogCard = ({ post, t, language }) => {
-  const formattedDate = formatDate(
-    post.publishedAt || post.createdAt,
-    language,
+// ==================== COUNT UP NUMBER ====================
+
+const CountUpNumber = memo(({ value, suffix = "", duration = 4.4 }) => {
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    const controls = animate(0, value, {
+      duration,
+      ease: "easeOut",
+      onUpdate: (latest) => setDisplayValue(Math.round(latest)),
+    });
+
+    return () => controls.stop();
+  }, [value, duration]);
+
+  return (
+    <>
+      {displayValue}
+      {suffix}
+    </>
+  );
+});
+
+CountUpNumber.displayName = "CountUpNumber";
+
+// ==================== PREMIUM IMAGE ====================
+
+const PremiumImage = memo(({ src, alt, className, eager = false, onError }) => {
+  const [imageError, setImageError] = useState(false);
+  const optimizedSrc = useMemo(() => optimizeImageUrl(src), [src]);
+
+  if (!src || imageError) return null;
+
+  return (
+    <img
+      src={optimizedSrc}
+      alt={alt || ""}
+      className={className}
+      loading={eager ? "eager" : "lazy"}
+      fetchPriority={eager ? "high" : "auto"}
+      decoding="async"
+      onError={(event) => {
+        setImageError(true);
+        if (onError) onError(event);
+      }}
+    />
+  );
+});
+
+PremiumImage.displayName = "PremiumImage";
+
+// ==================== SKELETON COMPONENTS ====================
+
+const SectionSkeleton = memo(({ type = "card", count = 3 }) => {
+  if (type === "card") {
+    return (
+      <div className="premium-card-grid skeleton-grid">
+        {[...Array(count)].map((_, i) => (
+          <div key={i} className="premium-service-card skeleton-card">
+            <div className="skeleton-image" />
+            <div className="premium-card-body">
+              <div className="skeleton-text skeleton-title" />
+              <div className="skeleton-text skeleton-description" />
+              <div className="skeleton-text skeleton-description" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (type === "work") {
+    return (
+      <div className="premium-work-grid skeleton-grid">
+        {[...Array(count)].map((_, i) => (
+          <div key={i} className="premium-work-card skeleton-card">
+            <div className="skeleton-image" />
+            <div className="premium-work-card__content">
+              <div className="skeleton-text skeleton-title" />
+              <div className="skeleton-text skeleton-description" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (type === "blog") {
+    return (
+      <div className="premium-blog-grid skeleton-grid">
+        {[...Array(count)].map((_, i) => (
+          <div key={i} className="premium-blog-card skeleton-card">
+            <div className="skeleton-image" />
+            <div className="premium-blog-card__content">
+              <div className="skeleton-text skeleton-title" />
+              <div className="skeleton-text skeleton-description" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return null;
+});
+
+SectionSkeleton.displayName = "SectionSkeleton";
+
+// ==================== SERVICE CARD ====================
+
+const ServiceCard = memo(({ service, t }) => {
+  const title = getText(
+    service.title,
+    service.name,
+    t("pages.home.service", "Service"),
+  );
+  const summary = getText(
+    service.summary,
+    service.shortDescription,
+    service.description,
+    t(
+      "pages.home.serviceDescription",
+      "A professional service designed to support your business.",
+    ),
+  );
+  const image = getImage(service);
+
+  return (
+    <m.article
+      variants={FADE_UP_VARIANTS}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      className="premium-service-card"
+    >
+      <PremiumImage src={image} alt={title} className="premium-card-image" />
+      <div className="premium-card-body">
+        <h3>{title}</h3>
+        <p>{summary}</p>
+
+        {(service.timeline || service.highlights) && (
+          <div className="premium-service-highlights">
+            {service.timeline && (
+              <div className="premium-service-highlights__timeline">
+                {t("common.timeline", "Timeline")}: {service.timeline}
+              </div>
+            )}
+            {service.highlights && (
+              <div className="premium-service-highlights__preview">
+                {service.highlights}
+              </div>
+            )}
+          </div>
+        )}
+
+        <Link to="/services" className="premium-text-link">
+          {t("common.learnMore", "Learn more")} →
+        </Link>
+      </div>
+    </m.article>
+  );
+});
+
+ServiceCard.displayName = "ServiceCard";
+
+// ==================== PORTFOLIO CARD ====================
+
+const PortfolioCard = memo(({ project, index, t }) => {
+  const title = getText(
+    project.title,
+    project.name,
+    t("pages.home.portfolioProject", "Portfolio project"),
+  );
+  const summary = getText(
+    project.summary,
+    project.description,
+    t(
+      "pages.home.portfolioSummary",
+      "A clean digital project built for business impact.",
+    ),
+  );
+  const image = getPortfolioImage(project, index);
+  const link = project.slug ? `/portfolio/${project.slug}` : "/portfolio";
+  const truncatedSummary = useMemo(() => truncateText(summary, 100), [summary]);
+
+  return (
+    <Link key={project.id || title} to={link} className="premium-work-card">
+      <div className="premium-work-card__images">
+        {image ? (
+          <PremiumImage
+            src={image}
+            alt={title}
+            className="premium-work-image"
+          />
+        ) : (
+          <div
+            className="premium-work-image premium-fallback-media"
+            aria-hidden="true"
+          >
+            <span>✦</span>
+          </div>
+        )}
+      </div>
+
+      <div className="premium-work-card__content">
+        <h3>{title}</h3>
+        <p>{truncatedSummary}</p>
+        <strong>{t("common.viewDetails", "View details")} →</strong>
+      </div>
+    </Link>
+  );
+});
+
+PortfolioCard.displayName = "PortfolioCard";
+
+// ==================== PRODUCT BLUEPRINT CARD ====================
+
+const ProductBlueprintCard = memo(({ product, index, t }) => {
+  const title = getText(
+    product.title,
+    product.name,
+    t("pages.home.productBlueprint", "Product Blueprint"),
+  );
+  const summary = getText(
+    product.summary,
+    product.description,
+    t(
+      "pages.home.productBlueprintSummary",
+      "Plan the offer, pages, features, and customer journey before development starts.",
+    ),
+  );
+  const link = product.slug ? `/products/${product.slug}` : "/products";
+
+  return (
+    <Link to={link} className="premium-blueprint-item">
+      <strong>{String(index + 1).padStart(2, "0")}</strong>
+      <div>
+        <h3>{title}</h3>
+        <p>{summary}</p>
+      </div>
+    </Link>
+  );
+});
+
+ProductBlueprintCard.displayName = "ProductBlueprintCard";
+
+// ==================== BLOG CARD ====================
+
+const BlogCard = memo(({ post, t, language }) => {
+  const formattedDate = useMemo(
+    () => formatDate(post.publishedAt || post.createdAt, language),
+    [post.publishedAt, post.createdAt, language],
   );
   const image = getText(
     post.featuredImageUrl,
     post.imageUrl,
     post.coverImageUrl,
   );
-
   const title = getText(post.title, t("common.untitled", "Untitled article"));
   const excerpt = getText(post.excerpt, post.summary, post.description);
+  const truncatedExcerpt = useMemo(() => truncateText(excerpt, 120), [excerpt]);
 
   return (
     <article className="premium-blog-card">
       {image && (
         <Link to={`/blog/${post.slug}`} className="premium-blog-card__image">
-          <img src={image} alt={title} loading="lazy" />
+          <PremiumImage src={image} alt={title} />
         </Link>
       )}
 
@@ -486,10 +661,8 @@ const BlogCard = ({ post, t, language }) => {
           <Link to={`/blog/${post.slug}`}>{title}</Link>
         </h3>
 
-        {excerpt && (
-          <p className="premium-blog-card__excerpt">
-            {excerpt.length > 120 ? `${excerpt.substring(0, 120)}...` : excerpt}
-          </p>
+        {truncatedExcerpt && (
+          <p className="premium-blog-card__excerpt">{truncatedExcerpt}</p>
         )}
 
         <Link to={`/blog/${post.slug}`} className="premium-blog-card__link">
@@ -498,52 +671,64 @@ const BlogCard = ({ post, t, language }) => {
       </div>
     </article>
   );
-};
+});
 
-const TestimonialCarousel = ({ testimonials, t }) => {
+BlogCard.displayName = "BlogCard";
+
+// ==================== CLIENT LOGO ====================
+
+const ClientLogo = memo(({ logo, index, t }) => {
+  const name = getText(
+    logo.name,
+    logo.clientName,
+    `${t("pages.home.client", "Client")} ${index + 1}`,
+  );
+  const image = getImage(logo);
+
+  return (
+    <div className="premium-logo-card">
+      <PremiumImage src={image} alt={name} className="premium-logo-img" />
+      {!image && <strong>{name}</strong>}
+    </div>
+  );
+});
+
+ClientLogo.displayName = "ClientLogo";
+
+// ==================== TESTIMONIAL CAROUSEL ====================
+
+const TestimonialCarousel = memo(({ testimonials, t }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const intervalRef = useRef(null);
 
-  useEffect(() => {
-    if (isPlaying && testimonials.length > 1) {
-      intervalRef.current = setInterval(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
-      }, 6000);
-    }
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [isPlaying, testimonials.length]);
-
-  const handleMouseEnter = () => setIsPlaying(false);
-  const handleMouseLeave = () => setIsPlaying(true);
-
-  const goToSlide = (index) => {
+  const goToSlide = useCallback((index) => {
     setCurrentIndex(index);
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      if (isPlaying && testimonials.length > 1) {
-        intervalRef.current = setInterval(() => {
-          setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
-        }, 6000);
-      }
-    }
-  };
+  }, []);
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
-  };
+  }, [testimonials.length]);
 
-  const prevSlide = () => {
+  const prevSlide = useCallback(() => {
     setCurrentIndex(
       (prevIndex) =>
         (prevIndex - 1 + testimonials.length) % testimonials.length,
     );
-  };
+  }, [testimonials.length]);
+
+  useEffect(() => {
+    if (isPlaying && testimonials.length > 1) {
+      intervalRef.current = setInterval(nextSlide, 6000);
+    }
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [isPlaying, testimonials.length, nextSlide]);
+
+  const handleMouseEnter = useCallback(() => setIsPlaying(false), []);
+  const handleMouseLeave = useCallback(() => setIsPlaying(true), []);
 
   if (!testimonials.length) return null;
 
@@ -586,11 +771,9 @@ const TestimonialCarousel = ({ testimonials, t }) => {
               t("pages.home.happyClient", "Happy Client");
 
             return (
-              <motion.div
+              <m.div
                 key={testimonial.id || name + index}
-                className={`premium-carousel-slide ${
-                  index === currentIndex ? "active" : ""
-                }`}
+                className={`premium-carousel-slide ${index === currentIndex ? "active" : ""}`}
                 initial={{ opacity: 0, x: 100 }}
                 animate={{
                   opacity: index === currentIndex ? 1 : 0,
@@ -601,7 +784,7 @@ const TestimonialCarousel = ({ testimonials, t }) => {
               >
                 <article className="premium-testimonial-card premium-carousel-card">
                   <div className="premium-quote-mark" aria-hidden="true">
-                    “
+                    "
                   </div>
                   <p className="premium-testimonial-quote">{quote}</p>
                   <div className="premium-person">
@@ -612,7 +795,10 @@ const TestimonialCarousel = ({ testimonials, t }) => {
                         className="premium-avatar"
                       />
                     ) : (
-                      <div className="premium-avatar premium-avatar-fallback">
+                      <div
+                        className="premium-avatar premium-avatar-fallback"
+                        aria-hidden="true"
+                      >
                         {name.charAt(0)}
                       </div>
                     )}
@@ -622,7 +808,7 @@ const TestimonialCarousel = ({ testimonials, t }) => {
                     </div>
                   </div>
                 </article>
-              </motion.div>
+              </m.div>
             );
           })}
         </div>
@@ -641,9 +827,7 @@ const TestimonialCarousel = ({ testimonials, t }) => {
           {testimonials.map((_, index) => (
             <button
               key={index}
-              className={`premium-carousel-dot ${
-                index === currentIndex ? "active" : ""
-              }`}
+              className={`premium-carousel-dot ${index === currentIndex ? "active" : ""}`}
               onClick={() => goToSlide(index)}
               aria-label={`Go to testimonial ${index + 1}`}
             />
@@ -652,12 +836,94 @@ const TestimonialCarousel = ({ testimonials, t }) => {
       )}
     </div>
   );
-};
+});
+
+TestimonialCarousel.displayName = "TestimonialCarousel";
+
+// ==================== HOME HERO ====================
+
+const HomeHero = memo(({ heroTitle, heroSubtitle, heroImage, t }) => {
+  return (
+    <section className="premium-hero premium-home-hero">
+      <div className="premium-container premium-hero-grid">
+        <m.div
+          variants={STAGGER_VARIANTS}
+          initial="hidden"
+          animate="visible"
+          className="premium-hero-copy"
+        >
+          <m.span variants={FADE_UP_VARIANTS} className="premium-eyebrow">
+            {t("pages.home.eyebrow")}
+          </m.span>
+
+          <m.h1 variants={FADE_UP_VARIANTS}>{heroTitle}</m.h1>
+
+          <m.p variants={FADE_UP_VARIANTS} className="premium-hero-text">
+            {heroSubtitle}
+          </m.p>
+
+          <m.div variants={FADE_UP_VARIANTS} className="premium-actions">
+            <Link to="/contact" className="premium-btn premium-btn-primary">
+              {t("common.contactUs", "Contact us")}
+            </Link>
+            <Link to="/services" className="premium-btn premium-btn-ghost">
+              {t("nav.services", "Services")}
+            </Link>
+          </m.div>
+
+          <m.div variants={FADE_UP_VARIANTS} className="premium-stats">
+            <div>
+              <strong>
+                <CountUpNumber value={50} suffix="+" />
+              </strong>
+              <span>{t("pages.home.statsProjects")}</span>
+            </div>
+            <div>
+              <strong>
+                <CountUpNumber value={7} />
+              </strong>
+              <span>{t("pages.home.statsServices")}</span>
+            </div>
+            <div>
+              <strong>
+                <CountUpNumber value={100} suffix="%" />
+              </strong>
+              <span>{t("pages.home.statsBusiness")}</span>
+            </div>
+          </m.div>
+        </m.div>
+
+        <m.div
+          variants={FADE_UP_VARIANTS}
+          initial="hidden"
+          animate="visible"
+          className={`premium-hero-visual ${!heroImage ? "premium-hero-visual--empty" : ""}`}
+        >
+          {heroImage && (
+            <PremiumImage
+              src={heroImage}
+              alt={heroTitle}
+              className="premium-hero-img"
+              eager
+            />
+          )}
+        </m.div>
+      </div>
+    </section>
+  );
+});
+
+HomeHero.displayName = "HomeHero";
+
+// ==================== MAIN COMPONENT ====================
 
 export default function HomePage() {
   const { language, t } = useLanguage();
   const [featuredPosts, setFeaturedPosts] = useState([]);
   const [blogLoading, setBlogLoading] = useState(true);
+  const [blogError, setBlogError] = useState("");
+
+  // ==================== INDEPENDENT FETCHING ====================
 
   const hero = useFetchOnMount(
     () =>
@@ -724,12 +990,15 @@ export default function HomePage() {
     [language],
   );
 
+  // ==================== BLOG FETCHING (INDEPENDENT) ====================
+
   useEffect(() => {
     let active = true;
 
     const loadFeaturedPosts = async () => {
       try {
         setBlogLoading(true);
+        setBlogError("");
         const data = await blogService.getFeaturedPosts({ language });
         const list = normalizeList(data);
 
@@ -738,7 +1007,12 @@ export default function HomePage() {
         }
       } catch (error) {
         console.error("Failed to load featured posts.", error);
-        if (active) setFeaturedPosts([]);
+        if (active) {
+          setFeaturedPosts([]);
+          setBlogError(
+            t("states.failedToLoadBlog", "Failed to load blog posts"),
+          );
+        }
       } finally {
         if (active) setBlogLoading(false);
       }
@@ -749,9 +1023,11 @@ export default function HomePage() {
     return () => {
       active = false;
     };
-  }, [language]);
+  }, [language, t]);
 
-  const heroItem = useMemo(() => {
+  // ==================== MEMOIZED DATA ====================
+
+  const heroData = useMemo(() => {
     let heroList = [];
 
     if (hero.data?.data && Array.isArray(hero.data.data)) {
@@ -784,423 +1060,210 @@ export default function HomePage() {
     return sortedHeroes[0] || null;
   }, [hero.data, language]);
 
-  const heroTitle = heroItem?.title || t("pages.home.heroTitle");
+  const heroTitle = heroData?.title || t("pages.home.heroTitle");
   const heroSubtitle =
-    heroItem?.subtitle || heroItem?.description || t("pages.home.heroSubtitle");
+    heroData?.subtitle || heroData?.description || t("pages.home.heroSubtitle");
   const heroImage =
-    heroItem?.backgroundImageUrl || heroItem?.imageUrl || getImage(heroItem);
+    heroData?.backgroundImageUrl || heroData?.imageUrl || getImage(heroData);
 
-  const serviceItems = normalizeList(services.data);
-  const projectItems = normalizeList(portfolio.data);
-  const productItems = normalizeList(products.data);
-  const testimonialItems = normalizeList(testimonials.data);
-  const logoItems = normalizeList(clientLogos.data);
+  const serviceItems = useMemo(
+    () => normalizeList(services.data),
+    [services.data],
+  );
+  const projectItems = useMemo(
+    () => normalizeList(portfolio.data),
+    [portfolio.data],
+  );
+  const productItems = useMemo(
+    () => normalizeList(products.data),
+    [products.data],
+  );
+  const testimonialItems = useMemo(
+    () => normalizeList(testimonials.data),
+    [testimonials.data],
+  );
+  const logoItems = useMemo(
+    () => normalizeList(clientLogos.data),
+    [clientLogos.data],
+  );
 
   const finalServices = serviceItems.length
     ? serviceItems
-    : fallbackServices(t);
+    : getFallbackServices(t);
   const finalProjects = projectItems.length
     ? projectItems
-    : fallbackProjects(t);
+    : getFallbackProjects(t);
   const finalProducts = productItems.length
     ? productItems
-    : fallbackProducts(t);
+    : getFallbackProducts(t);
   const finalTestimonials = testimonialItems.length
     ? testimonialItems
-    : fallbackTestimonials(t);
+    : getFallbackTestimonials(t);
   const finalLogos = logoItems.length ? logoItems : [];
+  const fallbackLogos = getFallbackLogoItems(t);
 
-  const loading =
-    hero.loading ||
-    services.loading ||
-    portfolio.loading ||
-    products.loading ||
-    testimonials.loading;
+  const processSteps = useMemo(() => getProcessSteps(t), [t]);
 
-  return (
-    <main className="premium-public-page premium-home-page">
-      <section className="premium-hero premium-home-hero">
-        <div className="premium-container premium-hero-grid">
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            animate="visible"
-            className="premium-hero-copy"
-          >
-            <motion.span variants={fadeUp} className="premium-eyebrow">
-              {t("pages.home.eyebrow")}
-            </motion.span>
+  // ==================== LOADING & ERROR STATES ====================
 
-            <motion.h1 variants={fadeUp}>{heroTitle}</motion.h1>
-
-            <motion.p variants={fadeUp} className="premium-hero-text">
-              {heroSubtitle}
-            </motion.p>
-
-            <motion.div variants={fadeUp} className="premium-actions">
-              <Link to="/contact" className="premium-btn premium-btn-primary">
-                {t("common.contactUs", "Contact us")}
-              </Link>
-              <Link to="/services" className="premium-btn premium-btn-ghost">
-                {t("nav.services", "Services")}
-              </Link>
-            </motion.div>
-
-            <motion.div variants={fadeUp} className="premium-stats">
-              <div>
-                <strong>
-                  <CountUpNumber value={50} suffix="+" />
-                </strong>
-                <span>{t("pages.home.statsProjects")}</span>
-              </div>
-              <div>
-                <strong>
-                  <CountUpNumber value={7} />
-                </strong>
-                <span>{t("pages.home.statsServices")}</span>
-              </div>
-              <div>
-                <strong>
-                  <CountUpNumber value={100} suffix="%" />
-                </strong>
-                <span>{t("pages.home.statsBusiness")}</span>
-              </div>
-            </motion.div>
-          </motion.div>
-
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            className={`premium-hero-visual ${
-              !heroImage ? "premium-hero-visual--empty" : ""
-            }`}
-          >
-            {heroImage && (
-              <PremiumImage
-                src={heroImage}
-                alt={heroTitle}
-                className="premium-hero-img"
-                eager
-              />
-            )}
-          </motion.div>
-        </div>
-      </section>
-
-      {loading && (
-        <section className="premium-container">
-          <div className="premium-loading premium-loading-modern">
-            <span className="premium-loading-dot" />
-            {t("common.loading", "Loading...")}
+  if (hero.loading) {
+    return (
+      <main className="premium-public-page premium-home-page">
+        <section className="premium-hero premium-home-hero">
+          <div className="premium-container premium-hero-grid">
+            <div className="premium-hero-copy">
+              <div className="skeleton-text skeleton-eyebrow" />
+              <div className="skeleton-text skeleton-title-large" />
+              <div className="skeleton-text skeleton-description" />
+              <div className="skeleton-actions" />
+            </div>
+            <div className="premium-hero-visual">
+              <div className="skeleton-image skeleton-hero-image" />
+            </div>
           </div>
         </section>
-      )}
+      </main>
+    );
+  }
 
-      <motion.section
-        className="premium-logo-strip"
-        variants={sectionReveal}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.16 }}
-      >
-        <div className="premium-container">
-          <span>{t("pages.home.trustedBy", "Trusted by growing brands")}</span>
+  if (hero.error) {
+    return <ErrorState message={hero.error} />;
+  }
 
-          {finalLogos.length > 0 ? (
+  // ==================== RENDER ====================
+
+  return (
+    <LazyMotion features={domAnimation}>
+      <main className="premium-public-page premium-home-page">
+        <HomeHero
+          heroTitle={heroTitle}
+          heroSubtitle={heroSubtitle}
+          heroImage={heroImage}
+          t={t}
+        />
+
+        {/* TRUSTED BRANDS */}
+        <m.section
+          className="premium-logo-strip"
+          variants={SECTION_REVEAL_VARIANTS}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.16 }}
+        >
+          <div className="premium-container">
+            <span>
+              {t("pages.home.trustedBy", "Trusted by growing brands")}
+            </span>
+
             <div className="premium-logo-grid">
-              {finalLogos.slice(0, 10).map((logo, index) => {
-                const name = getText(
-                  logo.name,
-                  logo.clientName,
-                  `${t("pages.home.client", "Client")} ${index + 1}`,
-                );
-                const image = getImage(logo);
-
-                return (
-                  <div key={logo.id || name} className="premium-logo-card">
-                    <PremiumImage
-                      src={image}
-                      alt={name}
-                      className="premium-logo-img"
-                    />
-                    {!image && <strong>{name}</strong>}
-                  </div>
-                );
-              })}
+              {finalLogos.length > 0
+                ? finalLogos
+                    .slice(0, 10)
+                    .map((logo, index) => (
+                      <ClientLogo
+                        key={logo.id || index}
+                        logo={logo}
+                        index={index}
+                        t={t}
+                      />
+                    ))
+                : fallbackLogos.map((item) => (
+                    <div key={item} className="premium-logo-card">
+                      <strong>{item}</strong>
+                    </div>
+                  ))}
             </div>
-          ) : (
-            <div className="premium-logo-grid">
-              {fallbackLogoItems(t).map((item) => (
-                <div key={item} className="premium-logo-card">
-                  <strong>{item}</strong>
+          </div>
+        </m.section>
+
+        {/* SERVICES */}
+        <m.section
+          className="premium-section"
+          variants={SECTION_REVEAL_VARIANTS}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.16 }}
+        >
+          <div className="premium-container">
+            <div className="premium-section-head">
+              <span className="premium-eyebrow">
+                {t("pages.home.whatWeDo")}
+              </span>
+              <h2>{t("sections.services.title", "Services")}</h2>
+              <p>
+                {t(
+                  "sections.services.description",
+                  "Core service capabilities for modern software delivery.",
+                )}
+              </p>
+            </div>
+
+            {services.loading ? (
+              <SectionSkeleton type="card" count={6} />
+            ) : services.error ? (
+              <div className="premium-empty-card">
+                <strong>{t("states.error", "Something went wrong")}</strong>
+                <p>{services.error}</p>
+              </div>
+            ) : (
+              <div className="premium-card-grid">
+                {finalServices.slice(0, 6).map((service) => (
+                  <ServiceCard
+                    key={service.id || getText(service.title)}
+                    service={service}
+                    t={t}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </m.section>
+
+        {/* PROCESS */}
+        <m.section
+          className="premium-section premium-section-dark"
+          variants={SECTION_REVEAL_VARIANTS}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.16 }}
+        >
+          <div className="premium-container premium-split">
+            <div>
+              <span className="premium-eyebrow premium-eyebrow--light">
+                {t("pages.home.processEyebrow", "How we build")}
+              </span>
+              <h2>
+                {t(
+                  "pages.home.processTitle",
+                  "A clear process from idea to launch-ready system.",
+                )}
+              </h2>
+              <p>
+                {t(
+                  "pages.home.processDescription",
+                  "We do not just design screens. We structure the business flow, content, backend data, admin management, and user experience together.",
+                )}
+              </p>
+            </div>
+
+            <div className="premium-blueprint-panel">
+              {processSteps.map((step, index) => (
+                <div key={step.title} className="premium-blueprint-item">
+                  <strong>{String(index + 1).padStart(2, "0")}</strong>
+                  <div>
+                    <h3>{step.title}</h3>
+                    <p>{step.text}</p>
+                  </div>
                 </div>
               ))}
             </div>
-          )}
-        </div>
-      </motion.section>
-
-      <motion.section
-        className="premium-section"
-        variants={sectionReveal}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.16 }}
-      >
-        <div className="premium-container">
-          <div className="premium-section-head">
-            <span className="premium-eyebrow">{t("pages.home.whatWeDo")}</span>
-            <h2>{t("sections.services.title", "Services")}</h2>
-            <p>
-              {t(
-                "sections.services.description",
-                "Core service capabilities for modern software delivery.",
-              )}
-            </p>
           </div>
+        </m.section>
 
-          <div className="premium-card-grid">
-            {finalServices.slice(0, 6).map((service, index) => {
-              const title = getText(
-                service.title,
-                service.name,
-                t("pages.home.service", "Service"),
-              );
-              const summary = getText(
-                service.summary,
-                service.shortDescription,
-                service.description,
-                t(
-                  "pages.home.serviceDescription",
-                  "A professional service designed to support your business.",
-                ),
-              );
-              const image = getImage(service);
-
-              return (
-                <motion.article
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.2 }}
-                  key={service.id || title}
-                  className="premium-service-card"
-                >
-                  <PremiumImage
-                    src={image}
-                    alt={title}
-                    className="premium-card-image"
-                  />
-                  <div className="premium-card-body">
-                    <h3>{title}</h3>
-                    <p>{summary}</p>
-
-                    {(service.timeline || service.highlights) && (
-                      <div className="premium-service-highlights">
-                        {service.timeline && (
-                          <div className="premium-service-highlights__timeline">
-                            {t("common.timeline", "Timeline")}:{" "}
-                            {service.timeline}
-                          </div>
-                        )}
-                        {service.highlights && (
-                          <div className="premium-service-highlights__preview">
-                            {service.highlights}
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    <Link to="/services" className="premium-text-link">
-                      {t("common.learnMore", "Learn more")} →
-                    </Link>
-                  </div>
-                </motion.article>
-              );
-            })}
-          </div>
-        </div>
-      </motion.section>
-
-      <motion.section
-        className="premium-section premium-section-dark"
-        variants={sectionReveal}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.16 }}
-      >
-        <div className="premium-container premium-split">
-          <div>
-            <span className="premium-eyebrow premium-eyebrow--light">
-              {t("pages.home.processEyebrow", "How we build")}
-            </span>
-            <h2>
-              {t(
-                "pages.home.processTitle",
-                "A clear process from idea to launch-ready system.",
-              )}
-            </h2>
-            <p>
-              {t(
-                "pages.home.processDescription",
-                "We do not just design screens. We structure the business flow, content, backend data, admin management, and user experience together.",
-              )}
-            </p>
-          </div>
-
-          <div className="premium-blueprint-panel">
-            {processSteps(t).map((step, index) => (
-              <div key={step.title} className="premium-blueprint-item">
-                <strong>{String(index + 1).padStart(2, "0")}</strong>
-                <div>
-                  <h3>{step.title}</h3>
-                  <p>{step.text}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </motion.section>
-
-      <motion.section
-        className="premium-section"
-        variants={sectionReveal}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.16 }}
-      >
-        <div className="premium-container">
-          <div className="premium-section-head premium-section-head-row">
-            <div>
-              <span className="premium-eyebrow">
-                {t("pages.home.selectedWork")}
-              </span>
-              <h2>{t("sections.portfolio.title", "Portfolio")}</h2>
-            </div>
-            <Link to="/portfolio" className="premium-btn premium-btn-ghost">
-              {t("common.viewAll", "View all")}
-            </Link>
-          </div>
-
-          <div className="premium-work-grid">
-            {finalProjects.slice(0, 6).map((project, index) => {
-              const title = getText(
-                project.title,
-                project.name,
-                t("pages.home.portfolioProject", "Portfolio project"),
-              );
-              const summary = getText(
-                project.summary,
-                project.description,
-                t(
-                  "pages.home.portfolioSummary",
-                  "A clean digital project built for business impact.",
-                ),
-              );
-              const image = getPortfolioImage(project, index);
-
-              return (
-                <Link
-                  key={project.id || title}
-                  to={
-                    project.slug ? `/portfolio/${project.slug}` : "/portfolio"
-                  }
-                  className="premium-work-card"
-                >
-                  <div className="premium-work-card__images">
-                    {image ? (
-                      <img
-                        src={image}
-                        alt={title}
-                        className="premium-work-image"
-                        loading="lazy"
-                        onError={(e) => {
-                          e.target.style.display = "none";
-                        }}
-                      />
-                    ) : (
-                      <div className="premium-work-image premium-fallback-media">
-                        <span aria-hidden="true">✦</span>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="premium-work-card__content">
-                    <h3>{title}</h3>
-                    <p>
-                      {summary && summary.length > 100
-                        ? summary.substring(0, 100) + "..."
-                        : summary}
-                    </p>
-                    <strong>{t("common.viewDetails", "View details")} →</strong>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </motion.section>
-
-      <motion.section
-        className="premium-section premium-section-dark"
-        variants={sectionReveal}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.16 }}
-      >
-        <div className="premium-container premium-split">
-          <div>
-            <span className="premium-eyebrow premium-eyebrow--light">
-              {t("pages.home.productDirection")}
-            </span>
-            <h2>{t("pages.home.productTitle")}</h2>
-            <p>
-              {t(
-                "pages.home.productSubtitle",
-                "Use InkFront product blueprints to define the pages, features, content, admin flow, and launch direction before development begins.",
-              )}
-            </p>
-          </div>
-
-          <div className="premium-blueprint-panel">
-            {finalProducts.slice(0, 3).map((product, index) => {
-              const title = getText(
-                product.title,
-                product.name,
-                t("pages.home.productBlueprint", "Product Blueprint"),
-              );
-              const summary = getText(
-                product.summary,
-                product.description,
-                t(
-                  "pages.home.productBlueprintSummary",
-                  "Plan the offer, pages, features, and customer journey before development starts.",
-                ),
-              );
-
-              return (
-                <Link
-                  key={product.id || title}
-                  to={product.slug ? `/products/${product.slug}` : "/products"}
-                  className="premium-blueprint-item"
-                >
-                  <strong>{String(index + 1).padStart(2, "0")}</strong>
-                  <div>
-                    <h3>{title}</h3>
-                    <p>{summary}</p>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </motion.section>
-
-      {!blogLoading && featuredPosts.length > 0 && (
-        <motion.section
+        {/* PORTFOLIO */}
+        <m.section
           className="premium-section"
-          variants={sectionReveal}
+          variants={SECTION_REVEAL_VARIANTS}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.16 }}
@@ -1209,123 +1272,368 @@ export default function HomePage() {
             <div className="premium-section-head premium-section-head-row">
               <div>
                 <span className="premium-eyebrow">
-                  {t("blog.latestInsights", "Latest insights")}
+                  {t("pages.home.selectedWork")}
                 </span>
-                <h2>{t("blog.fromOurBlog", "From our blog")}</h2>
+                <h2>{t("sections.portfolio.title", "Portfolio")}</h2>
               </div>
-              <Link to="/blog" className="premium-btn premium-btn-ghost">
-                {t("common.viewAll", "View all")} →
+              <Link to="/portfolio" className="premium-btn premium-btn-ghost">
+                {t("common.viewAll", "View all")}
               </Link>
             </div>
 
-            <div className="premium-blog-grid">
-              {featuredPosts.slice(0, 3).map((post, index) => (
-                <motion.div
-                  key={post.id || post.slug || index}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.2 }}
-                >
-                  <BlogCard post={post} t={t} language={language} />
-                </motion.div>
-              ))}
+            {portfolio.loading ? (
+              <SectionSkeleton type="work" count={6} />
+            ) : portfolio.error ? (
+              <div className="premium-empty-card">
+                <strong>{t("states.error", "Something went wrong")}</strong>
+                <p>{portfolio.error}</p>
+              </div>
+            ) : (
+              <div className="premium-work-grid">
+                {finalProjects.slice(0, 6).map((project, index) => (
+                  <PortfolioCard
+                    key={project.id || index}
+                    project={project}
+                    index={index}
+                    t={t}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </m.section>
+
+        {/* PRODUCTS */}
+        <m.section
+          className="premium-section premium-section-dark"
+          variants={SECTION_REVEAL_VARIANTS}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.16 }}
+        >
+          <div className="premium-container premium-split">
+            <div>
+              <span className="premium-eyebrow premium-eyebrow--light">
+                {t("pages.home.productDirection")}
+              </span>
+              <h2>{t("pages.home.productTitle")}</h2>
+              <p>
+                {t(
+                  "pages.home.productSubtitle",
+                  "Use InkFront product blueprints to define the pages, features, content, admin flow, and launch direction before development begins.",
+                )}
+              </p>
+            </div>
+
+            <div className="premium-blueprint-panel">
+              {products.loading ? (
+                <div className="skeleton-blueprint-items">
+                  {[...Array(3)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="premium-blueprint-item skeleton-blueprint"
+                    >
+                      <div className="skeleton-text skeleton-title" />
+                      <div className="skeleton-text skeleton-description" />
+                    </div>
+                  ))}
+                </div>
+              ) : products.error ? (
+                <div className="premium-empty-card">
+                  <strong>{t("states.error", "Something went wrong")}</strong>
+                  <p>{products.error}</p>
+                </div>
+              ) : (
+                finalProducts
+                  .slice(0, 3)
+                  .map((product, index) => (
+                    <ProductBlueprintCard
+                      key={product.id || index}
+                      product={product}
+                      index={index}
+                      t={t}
+                    />
+                  ))
+              )}
             </div>
           </div>
-        </motion.section>
-      )}
+        </m.section>
 
-      <motion.section
-        className="premium-section premium-testimonial-section"
-        variants={sectionReveal}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.16 }}
-      >
-        <div className="premium-container">
-          <div className="premium-section-head">
-            <span className="premium-eyebrow">
-              {t("pages.home.clientConfidence")}
-            </span>
-            <h2>{t("sections.testimonials.title", "What clients say")}</h2>
-            <p>{t("pages.home.testimonialSubtitle")}</p>
+        {/* BLOG */}
+        {!blogLoading && !blogError && featuredPosts.length > 0 && (
+          <m.section
+            className="premium-section"
+            variants={SECTION_REVEAL_VARIANTS}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.16 }}
+          >
+            <div className="premium-container">
+              <div className="premium-section-head premium-section-head-row">
+                <div>
+                  <span className="premium-eyebrow">
+                    {t("blog.latestInsights", "Latest insights")}
+                  </span>
+                  <h2>{t("blog.fromOurBlog", "From our blog")}</h2>
+                </div>
+                <Link to="/blog" className="premium-btn premium-btn-ghost">
+                  {t("common.viewAll", "View all")} →
+                </Link>
+              </div>
+
+              {blogLoading ? (
+                <SectionSkeleton type="blog" count={3} />
+              ) : (
+                <div className="premium-blog-grid">
+                  {featuredPosts.slice(0, 3).map((post, index) => (
+                    <m.div
+                      key={post.id || post.slug || index}
+                      variants={FADE_UP_VARIANTS}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true, amount: 0.2 }}
+                    >
+                      <BlogCard post={post} t={t} language={language} />
+                    </m.div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </m.section>
+        )}
+
+        {/* TESTIMONIALS */}
+        <m.section
+          className="premium-section premium-testimonial-section"
+          variants={SECTION_REVEAL_VARIANTS}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.16 }}
+        >
+          <div className="premium-container">
+            <div className="premium-section-head">
+              <span className="premium-eyebrow">
+                {t("pages.home.clientConfidence")}
+              </span>
+              <h2>{t("sections.testimonials.title", "What clients say")}</h2>
+              <p>{t("pages.home.testimonialSubtitle")}</p>
+            </div>
+
+            {testimonials.loading ? (
+              <div className="testimonial-skeleton">
+                <div className="skeleton-text skeleton-quote" />
+                <div className="skeleton-text skeleton-description" />
+                <div className="skeleton-person" />
+              </div>
+            ) : testimonials.error ? (
+              <div className="premium-empty-card">
+                <strong>{t("states.error", "Something went wrong")}</strong>
+                <p>{testimonials.error}</p>
+              </div>
+            ) : (
+              <TestimonialCarousel testimonials={finalTestimonials} t={t} />
+            )}
           </div>
+        </m.section>
 
-          <TestimonialCarousel testimonials={finalTestimonials} t={t} />
-        </div>
-      </motion.section>
+        {/* BANNER */}
+        <m.section
+          className="premium-section"
+          variants={SECTION_REVEAL_VARIANTS}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.16 }}
+        >
+          <div className="premium-container">
+            <div className="premium-services-banner">
+              <h2 className="premium-services-banner__title">
+                {t(
+                  "pages.home.bannerTitle",
+                  "Need a website, portal, booking system, or full business platform?",
+                )}
+              </h2>
+              <p className="premium-services-banner__text">
+                {t(
+                  "pages.home.bannerText",
+                  "InkFront can help you move from scattered ideas to a polished system with pages, content, backend data, authentication, admin tools, and responsive public experience.",
+                )}
+              </p>
 
-      <motion.section
-        className="premium-section"
-        variants={sectionReveal}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.16 }}
-      >
-        <div className="premium-container">
-          <div className="premium-services-banner">
-            <h2 className="premium-services-banner__title">
+              <div className="premium-actions premium-actions-center">
+                <Link to="/contact" className="premium-btn premium-btn-primary">
+                  {t("common.contactUs", "Contact us")}
+                </Link>
+                <Link to="/products" className="premium-btn premium-btn-ghost">
+                  {t("nav.products", "Products")}
+                </Link>
+              </div>
+            </div>
+          </div>
+        </m.section>
+
+        {/* CTA */}
+        <m.section
+          className="premium-cta"
+          variants={SECTION_REVEAL_VARIANTS}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.16 }}
+        >
+          <div className="premium-container premium-cta-inner">
+            <span className="premium-eyebrow premium-eyebrow--light">
+              {t("pages.home.ready")}
+            </span>
+            <h2>
               {t(
-                "pages.home.bannerTitle",
-                "Need a website, portal, booking system, or full business platform?",
+                "cta.home.title",
+                "Ready to build something clear, useful, and scalable?",
               )}
             </h2>
-            <p className="premium-services-banner__text">
+            <p>
               {t(
-                "pages.home.bannerText",
-                "InkFront can help you move from scattered ideas to a polished system with pages, content, backend data, authentication, admin tools, and responsive public experience.",
+                "cta.home.description",
+                "Let's shape the next version of your product, platform, or digital experience.",
               )}
             </p>
-
             <div className="premium-actions premium-actions-center">
               <Link to="/contact" className="premium-btn premium-btn-primary">
                 {t("common.contactUs", "Contact us")}
               </Link>
-              <Link to="/products" className="premium-btn premium-btn-ghost">
-                {t("nav.products", "Products")}
+              <Link to="/services" className="premium-btn premium-btn-light">
+                {t("nav.services", "Services")}
               </Link>
             </div>
           </div>
-        </div>
-      </motion.section>
 
-      <motion.section
-        className="premium-cta"
-        variants={sectionReveal}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.16 }}
-      >
-        <div className="premium-container premium-cta-inner">
-          <span className="premium-eyebrow premium-eyebrow--light">
-            {t("pages.home.ready")}
-          </span>
-          <h2>
-            {t(
-              "cta.home.title",
-              "Ready to build something clear, useful, and scalable?",
-            )}
-          </h2>
-          <p>
-            {t(
-              "cta.home.description",
-              "Let's shape the next version of your product, platform, or digital experience.",
-            )}
-          </p>
-          <div className="premium-actions premium-actions-center">
-            <Link to="/contact" className="premium-btn premium-btn-primary">
-              {t("common.contactUs", "Contact us")}
-            </Link>
-            <Link to="/services" className="premium-btn premium-btn-light">
-              {t("nav.services", "Services")}
-            </Link>
+          <div className="premium-container">
+            <NewsletterSection />
           </div>
-        </div>
-
-        <div className="premium-container">
-          <NewsletterSection />
-        </div>
-      </motion.section>
-    </main>
+        </m.section>
+      </main>
+    </LazyMotion>
   );
 }
+
+// ==================== ERROR STATE ====================
+
+import ErrorState from "../../components/common/ErrorState";
+
+// ==================== CSS CLASSES NEEDED ====================
+/*
+  Add these CSS classes to your stylesheet:
+
+  .skeleton-text {
+    height: 14px;
+    background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+
+  .skeleton-eyebrow {
+    width: 120px;
+    height: 16px;
+  }
+
+  .skeleton-title-large {
+    height: 48px;
+    width: 80%;
+  }
+
+  .skeleton-title {
+    height: 20px;
+    width: 70%;
+  }
+
+  .skeleton-description {
+    width: 90%;
+  }
+
+  .skeleton-image {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-hero-image {
+    height: 400px;
+    border-radius: 12px;
+  }
+
+  .skeleton-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .skeleton-actions > div {
+    width: 120px;
+    height: 44px;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-person {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .skeleton-person > div:first-child {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-quote {
+    height: 60px;
+    width: 60%;
+  }
+
+  .skeleton-grid {
+    gap: 2rem;
+  }
+
+  .skeleton-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .skeleton-blueprint {
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .skeleton-blueprint-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .testimonial-skeleton {
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+*/
