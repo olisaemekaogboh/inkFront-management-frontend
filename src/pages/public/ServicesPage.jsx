@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState, useCallback } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useMemo, useState, useCallback, memo } from "react";
+import { LazyMotion, domAnimation, m } from "framer-motion";
 import { Link } from "react-router-dom";
 import useLanguage from "../../hooks/useLanguage";
 import useFetchOnMount from "../../hooks/useFetchOnMount";
@@ -8,6 +8,8 @@ import { publicApi } from "../../services/publicApi";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
 import ErrorState from "../../components/common/ErrorState";
 import "../../styles/publicPremium.css";
+
+// ==================== CONSTANTS ====================
 
 const SERVICE_HIGHLIGHT_KEYS = {
   "website-development": "websiteDevelopment",
@@ -19,19 +21,9 @@ const SERVICE_HIGHLIGHT_KEYS = {
   "mobile-app-development": "mobileAppDevelopment",
 };
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
+const FALLBACK_ICONS = ["🚀", "⚙️", "📊", "🎨", "💻", "📱", "🔧", "💡"];
 
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-};
-
-const fallbackIcons = ["🚀", "⚙️", "📊", "🎨", "💻", "📱", "🔧", "💡"];
-
-const iconMap = {
+const ICON_MAP = {
   code: "💻",
   workflow: "⚙️",
   target: "🎯",
@@ -40,6 +32,18 @@ const iconMap = {
   layers: "🧩",
   smartphone: "📱",
 };
+
+const FADE_UP_VARIANTS = {
+  hidden: { opacity: 0, y: 28 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
+
+const STAGGER_VARIANTS = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1 } },
+};
+
+// ==================== UTILITY FUNCTIONS ====================
 
 function normalizeList(response) {
   if (Array.isArray(response)) return response;
@@ -78,15 +82,34 @@ function imageOf(item) {
   );
 }
 
-// Preload image function
-function preloadImage(url) {
-  if (!url) return;
-  const img = new Image();
-  img.src = url;
+function optimizeImageUrl(url) {
+  if (!url) return url;
+
+  if (url.includes("images.unsplash.com")) {
+    const hasParams = url.includes("?");
+    return `${url}${hasParams ? "&" : "?"}auto=format&fit=crop&w=1600&q=80`;
+  }
+
+  if (url.includes("cloudinary.com")) {
+    return url;
+  }
+
+  return url;
 }
 
-// Optimized image component with priority support and placeholder
-function OptimizedImage({
+function getServiceIcon(service, index) {
+  const key = service?.iconKey || service?.icon_key || service?.icon || "";
+  return ICON_MAP[key] || FALLBACK_ICONS[index % FALLBACK_ICONS.length];
+}
+
+function getServiceHighlight(service, highlights) {
+  const key = SERVICE_HIGHLIGHT_KEYS[service.slug];
+  return key ? highlights[key] : null;
+}
+
+// ==================== OPTIMIZED IMAGE COMPONENT ====================
+
+const OptimizedImage = memo(function OptimizedImage({
   src,
   alt,
   className,
@@ -97,75 +120,339 @@ function OptimizedImage({
 }) {
   const [imageError, setImageError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const optimizedSrc = useMemo(() => optimizeImageUrl(src), [src]);
 
   if (!src || imageError) return null;
 
   return (
-    <div style={{ position: "relative", width: "100%", height: "100%" }}>
-      {placeholder && !isLoaded && (
-        <div
-          className="image-placeholder"
-          style={{
-            width: "100%",
-            height: "100%",
-            background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            zIndex: 1,
-            borderRadius: "inherit",
-          }}
-        />
-      )}
+    <div className="optimized-image-wrapper">
+      {placeholder && !isLoaded && <div className="image-placeholder" />}
       <img
-        src={src}
-        alt={alt}
+        src={optimizedSrc}
+        alt={alt || ""}
         loading={priority ? "eager" : "lazy"}
         fetchPriority={priority ? "high" : "auto"}
+        decoding="async"
         className={className}
         style={{
           opacity: isLoaded ? 1 : 0,
           transition: "opacity 0.3s ease-in-out",
-          position: "relative",
-          zIndex: 2,
-          width: "100%",
-          height: "100%",
-          objectFit: objectFit,
         }}
         onLoad={() => {
           setIsLoaded(true);
           if (onLoad) onLoad();
         }}
-        onError={(event) => {
-          console.warn(`Failed to load image: ${src}`);
+        onError={() => {
           setImageError(true);
-          event.currentTarget.style.display = "none";
         }}
       />
     </div>
   );
-}
+});
 
-// Legacy PremiumImage component for backward compatibility
-function PremiumImage({ src, alt, className }) {
-  if (!src) return null;
+OptimizedImage.displayName = "OptimizedImage";
+
+// ==================== MEMOIZED CHILD COMPONENTS ====================
+
+const ServicesHero = memo(function ServicesHero({ title, subtitle, imageUrl }) {
+  const { t } = useLanguage();
 
   return (
-    <OptimizedImage
-      src={src}
-      alt={alt}
-      className={className}
-      priority={false}
-      placeholder={true}
-      objectFit="cover"
-    />
+    <section className="premium-detail-hero">
+      <div
+        className={
+          imageUrl
+            ? "premium-container premium-detail-grid"
+            : "premium-container premium-page-intro"
+        }
+      >
+        <m.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65 }}
+        >
+          <span className="premium-eyebrow">
+            {t("nav.services", "Services")}
+          </span>
+          <h1>{title}</h1>
+          <p>{subtitle}</p>
+        </m.div>
+
+        {imageUrl && (
+          <m.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.65 }}
+            className="premium-detail-media"
+          >
+            <OptimizedImage
+              src={imageUrl}
+              alt={title}
+              className="premium-detail-media__img"
+              priority={true}
+              placeholder={true}
+              objectFit="cover"
+            />
+          </m.div>
+        )}
+      </div>
+    </section>
   );
-}
+});
+
+ServicesHero.displayName = "ServicesHero";
+
+const ServicesBanner = memo(function ServicesBanner() {
+  const { t } = useLanguage();
+
+  return (
+    <section className="premium-section" style={{ paddingBottom: 0 }}>
+      <div className="premium-container">
+        <m.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="premium-services-banner"
+        >
+          <h2 className="premium-services-banner__title">
+            {t(
+              "servicesPage.bannerTitle",
+              "Affordable services for every product we build",
+            )}
+          </h2>
+
+          <p className="premium-services-banner__text">
+            {t(
+              "servicesPage.bannerText",
+              "Every product blueprint on our platform can be built as a full service. We offer flexible pricing — from MVP launches starting at",
+            )}{" "}
+            <strong>₦300,000</strong>{" "}
+            {t(
+              "servicesPage.bannerTextEnd",
+              "to full enterprise platforms. You only pay for what your business truly needs.",
+            )}
+          </p>
+        </m.div>
+      </div>
+    </section>
+  );
+});
+
+ServicesBanner.displayName = "ServicesBanner";
+
+const ServiceCard = memo(function ServiceCard({
+  service,
+  index,
+  highlights,
+  t,
+}) {
+  const {
+    id,
+    slug,
+    processedTitle: title,
+    processedDescription: description,
+    processedImageUrl: imageUrl,
+    processedIcon: icon,
+    processedCategory: category,
+    processedHighlight: highlight,
+    processedLink: link,
+  } = service;
+
+  return (
+    <m.article variants={FADE_UP_VARIANTS} className="premium-product-card">
+      {imageUrl ? (
+        <div className="premium-product-image-wrapper">
+          <OptimizedImage
+            src={imageUrl}
+            alt={title}
+            className="premium-product-image"
+            priority={false}
+            placeholder={true}
+            objectFit="cover"
+          />
+        </div>
+      ) : (
+        <div className="premium-product-image premium-fallback-media">
+          <span>{icon}</span>
+        </div>
+      )}
+
+      <div className="premium-product-body">
+        <span className="premium-mini-badge">{category}</span>
+
+        <h3>{title}</h3>
+        <p>{description}</p>
+
+        {highlight && (
+          <div className="premium-service-highlights">
+            <p className="premium-service-highlights__timeline">
+              ⏱ {highlight.timeline}
+            </p>
+            <p className="premium-service-highlights__preview">
+              {highlight.body.slice(0, 120)}...
+            </p>
+          </div>
+        )}
+
+        {link && (
+          <Link to={link} className="premium-text-link">
+            {t("servicesPage.viewDetails", "View service details")} →
+          </Link>
+        )}
+      </div>
+    </m.article>
+  );
+});
+
+ServiceCard.displayName = "ServiceCard";
+
+const ServicesGrid = memo(function ServicesGrid({
+  services,
+  loading,
+  error,
+  highlights,
+  t,
+}) {
+  const processedServices = useMemo(() => {
+    return services.map((service, index) => ({
+      ...service,
+      processedTitle: text(
+        service.name,
+        service.title,
+        t("servicesPage.untitled", "Untitled Service"),
+      ),
+      processedDescription: text(
+        service.shortDescription,
+        service.short_description,
+        service.summary,
+        t(
+          "servicesPage.descriptionFallback",
+          "Service details will appear here.",
+        ),
+      ),
+      processedImageUrl: imageOf(service),
+      processedIcon: getServiceIcon(service, index),
+      processedCategory: service.category || t("nav.services", "Service"),
+      processedHighlight: getServiceHighlight(service, highlights),
+      processedLink: service.slug ? `/services/${service.slug}` : null,
+    }));
+  }, [services, t, highlights]);
+
+  if (loading) {
+    return (
+      <div className="premium-product-grid">
+        {[...Array(6)].map((_, index) => (
+          <div key={index} className="premium-product-card skeleton-card">
+            <div className="skeleton-image" />
+            <div className="premium-product-body">
+              <div className="skeleton-text skeleton-title" />
+              <div className="skeleton-text skeleton-description" />
+              <div className="skeleton-text skeleton-description" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="premium-empty-card">
+        <strong>{t("states.error", "Something went wrong")}</strong>
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  if (services.length === 0) {
+    return (
+      <div className="premium-empty-card">
+        <strong>{t("servicesPage.empty", "No services available yet.")}</strong>
+      </div>
+    );
+  }
+
+  return (
+    <m.div
+      variants={STAGGER_VARIANTS}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      className="premium-product-grid"
+    >
+      {processedServices.map((service, index) => (
+        <ServiceCard
+          key={service.id ?? service.slug ?? service.processedTitle}
+          service={service}
+          index={index}
+          highlights={highlights}
+          t={t}
+        />
+      ))}
+    </m.div>
+  );
+});
+
+ServicesGrid.displayName = "ServicesGrid";
+
+const CTASection = memo(function CTASection() {
+  const { t } = useLanguage();
+
+  return (
+    <section className="premium-cta">
+      <div className="premium-container premium-cta-inner">
+        <span className="premium-eyebrow premium-eyebrow--light">
+          {t("servicesPage.ctaEyebrow", "Ready to start?")}
+        </span>
+
+        <h2>{t("servicesPage.ctaTitle", "Tell us what you need built")}</h2>
+
+        <p>
+          {t(
+            "servicesPage.ctaDescription",
+            "We'll match you with the right service package and give you a clear timeline and price — no hidden fees.",
+          )}
+        </p>
+
+        <Link to="/contact" className="premium-btn premium-btn-light">
+          {t("servicesPage.ctaButton", "Get a free consultation")} →
+        </Link>
+      </div>
+    </section>
+  );
+});
+
+CTASection.displayName = "CTASection";
+
+// ==================== SKELETON LOADING COMPONENT ====================
+
+const ServicesSkeleton = memo(function ServicesSkeleton() {
+  return (
+    <div className="premium-product-grid">
+      {[...Array(6)].map((_, index) => (
+        <div key={index} className="premium-product-card skeleton-card">
+          <div className="skeleton-image" />
+          <div className="premium-product-body">
+            <div className="skeleton-text skeleton-title" />
+            <div className="skeleton-text skeleton-description" />
+            <div className="skeleton-text skeleton-description" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+});
+
+ServicesSkeleton.displayName = "ServicesSkeleton";
+
+// ==================== MAIN COMPONENT ====================
 
 export default function ServicesPage() {
   const { language, t } = useLanguage();
 
-  // Fetch hero data - same pattern as About and Contact pages
+  // ==================== DATA FETCHING ====================
+
   const fetchHero = useCallback(
     () =>
       heroService.getHeroSections({
@@ -179,11 +466,11 @@ export default function ServicesPage() {
   const hero = useFetchOnMount(fetchHero, [language]);
 
   const [services, setServices] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [heroImageLoaded, setHeroImageLoaded] = useState(false);
+  const [loadingServices, setLoadingServices] = useState(true);
+  const [servicesError, setServicesError] = useState("");
 
-  // Memoize hero data to avoid recalculations
+  // ==================== MEMOIZED DATA ====================
+
   const heroData = useMemo(() => {
     const heroItem = normalizeList(hero.data)[0] || null;
     return {
@@ -204,7 +491,6 @@ export default function ServicesPage() {
     };
   }, [hero.data, t]);
 
-  // Memoize service highlights
   const serviceHighlights = useMemo(
     () => ({
       websiteDevelopment: {
@@ -309,53 +595,15 @@ export default function ServicesPage() {
     [t],
   );
 
-  // Memoize processed services data
-  const processedServices = useMemo(() => {
-    return services.map((service, index) => ({
-      ...service,
-      processedTitle: text(
-        service.name,
-        service.title,
-        t("servicesPage.untitled", "Untitled Service"),
-      ),
-      processedDescription: text(
-        service.shortDescription,
-        service.short_description,
-        service.summary,
-        t(
-          "servicesPage.descriptionFallback",
-          "Service details will appear here.",
-        ),
-      ),
-      processedImageUrl: imageOf(service),
-      processedIcon: (() => {
-        const key =
-          service?.iconKey || service?.icon_key || service?.icon || "";
-        return iconMap[key] || fallbackIcons[index % fallbackIcons.length];
-      })(),
-      processedCategory: service.category || t("nav.services", "Service"),
-      processedHighlight: (() => {
-        const key = SERVICE_HIGHLIGHT_KEYS[service.slug];
-        return key ? serviceHighlights[key] : null;
-      })(),
-      processedLink: service.slug ? `/services/${service.slug}` : null,
-    }));
-  }, [services, t, serviceHighlights]);
-
-  // Preload hero image when URL is available
-  useEffect(() => {
-    if (heroData.imageUrl) {
-      preloadImage(heroData.imageUrl);
-    }
-  }, [heroData.imageUrl]);
+  // ==================== SIDE EFFECTS ====================
 
   useEffect(() => {
     let active = true;
 
     async function loadServices() {
       try {
-        setLoading(true);
-        setError("");
+        setLoadingServices(true);
+        setServicesError("");
 
         const response = await publicApi.getServices({
           language: language || "EN",
@@ -364,19 +612,23 @@ export default function ServicesPage() {
           size: 12,
         });
 
-        if (active) setServices(normalizeList(response));
+        if (active) {
+          setServices(normalizeList(response));
+        }
       } catch (err) {
         if (active) {
           setServices([]);
-          setError(
+          const errorMessage =
             err?.response?.data?.message ||
-              err?.response?.data?.error ||
-              err?.message ||
-              t("states.failedToLoadServices", "Failed to load services"),
-          );
+            err?.response?.data?.error ||
+            err?.message ||
+            t("states.failedToLoadServices", "Failed to load services");
+          setServicesError(errorMessage);
         }
       } finally {
-        if (active) setLoading(false);
+        if (active) {
+          setLoadingServices(false);
+        }
       }
     }
 
@@ -387,224 +639,127 @@ export default function ServicesPage() {
     };
   }, [language, t]);
 
-  // Show loading state while hero is being fetched
+  // ==================== LOADING & ERROR STATES ====================
+
   if (hero.loading) {
     return (
       <LoadingSpinner label={t("states.loadingPage", "Loading page...")} />
     );
   }
 
-  // Show error state if hero fetch fails
   if (hero.error) {
     return <ErrorState message={hero.error} />;
   }
 
-  const { title: heroTitle, subtitle: heroSubtitle, imageUrl } = heroData;
+  // ==================== RENDER ====================
 
   return (
-    <main className="premium-public-page">
-      {/* Hero section - optimized with priority loading */}
-      <section className="premium-detail-hero">
-        <div
-          className={
-            imageUrl
-              ? "premium-container premium-detail-grid"
-              : "premium-container premium-page-intro"
-          }
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65 }}
-          >
-            <span className="premium-eyebrow">
-              {t("nav.services", "Services")}
-            </span>
+    <LazyMotion features={domAnimation}>
+      <main className="premium-public-page">
+        <ServicesHero
+          title={heroData.title}
+          subtitle={heroData.subtitle}
+          imageUrl={heroData.imageUrl}
+        />
 
-            <h1>{heroTitle}</h1>
-            <p>{heroSubtitle}</p>
-          </motion.div>
+        <ServicesBanner />
 
-          {imageUrl ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.65 }}
-              className="premium-detail-media"
-              style={{
-                position: "relative",
-                overflow: "hidden",
-                minHeight: "200px",
-              }}
-            >
-              <OptimizedImage
-                src={imageUrl}
-                alt={heroTitle}
-                className="premium-detail-media__img"
-                priority={true}
-                onLoad={() => setHeroImageLoaded(true)}
-                placeholder={true}
-                objectFit="cover"
-              />
-            </motion.div>
-          ) : null}
-        </div>
-      </section>
+        <section className="premium-section">
+          <div className="premium-container">
+            <ServicesGrid
+              services={services}
+              loading={loadingServices}
+              error={servicesError}
+              highlights={serviceHighlights}
+              t={t}
+            />
+          </div>
+        </section>
 
-      <section className="premium-section" style={{ paddingBottom: 0 }}>
-        <div className="premium-container">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="premium-services-banner"
-          >
-            <h2 className="premium-services-banner__title">
-              {t(
-                "servicesPage.bannerTitle",
-                "Affordable services for every product we build",
-              )}
-            </h2>
-
-            <p className="premium-services-banner__text">
-              {t(
-                "servicesPage.bannerText",
-                "Every product blueprint on our platform can be built as a full service. We offer flexible pricing — from MVP launches starting at",
-              )}{" "}
-              <strong>₦300,000</strong>{" "}
-              {t(
-                "servicesPage.bannerTextEnd",
-                "to full enterprise platforms. You only pay for what your business truly needs.",
-              )}
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="premium-section">
-        <div className="premium-container">
-          {loading ? (
-            <div className="premium-loading">
-              {t("states.loadingServices", "Loading services...")}
-            </div>
-          ) : error ? (
-            <div className="premium-empty-card">
-              <strong>{t("states.error", "Something went wrong")}</strong>
-              <p>{error}</p>
-            </div>
-          ) : services.length === 0 ? (
-            <div className="premium-empty-card">
-              <strong>
-                {t("servicesPage.empty", "No services available yet.")}
-              </strong>
-            </div>
-          ) : (
-            <motion.div
-              variants={stagger}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="premium-product-grid"
-            >
-              {processedServices.map((service) => {
-                const {
-                  id,
-                  slug,
-                  processedTitle: title,
-                  processedDescription: description,
-                  processedImageUrl: imageUrl,
-                  processedIcon: icon,
-                  processedCategory: category,
-                  processedHighlight: highlights,
-                  processedLink: link,
-                } = service;
-
-                return (
-                  <motion.article
-                    key={id ?? slug ?? title}
-                    variants={fadeUp}
-                    className="premium-product-card"
-                  >
-                    {imageUrl ? (
-                      <div
-                        className="premium-product-image-wrapper"
-                        style={{
-                          position: "relative",
-                          width: "100%",
-                          height: "200px",
-                        }}
-                      >
-                        <OptimizedImage
-                          src={imageUrl}
-                          alt={title}
-                          className="premium-product-image"
-                          priority={false}
-                          placeholder={true}
-                          objectFit="cover"
-                        />
-                      </div>
-                    ) : (
-                      <div className="premium-product-image premium-fallback-media">
-                        <span>{icon}</span>
-                      </div>
-                    )}
-
-                    <div className="premium-product-body">
-                      <span className="premium-mini-badge">{category}</span>
-
-                      <h3>{title}</h3>
-                      <p>{description}</p>
-
-                      {highlights ? (
-                        <div className="premium-service-highlights">
-                          <p className="premium-service-highlights__timeline">
-                            ⏱ {highlights.timeline}
-                          </p>
-                          <p className="premium-service-highlights__preview">
-                            {highlights.body.slice(0, 120)}...
-                          </p>
-                        </div>
-                      ) : null}
-
-                      {link ? (
-                        <Link to={link} className="premium-text-link">
-                          {t(
-                            "servicesPage.viewDetails",
-                            "View service details",
-                          )}{" "}
-                          →
-                        </Link>
-                      ) : null}
-                    </div>
-                  </motion.article>
-                );
-              })}
-            </motion.div>
-          )}
-        </div>
-      </section>
-
-      <section className="premium-cta">
-        <div className="premium-container premium-cta-inner">
-          <span className="premium-eyebrow premium-eyebrow--light">
-            {t("servicesPage.ctaEyebrow", "Ready to start?")}
-          </span>
-
-          <h2>{t("servicesPage.ctaTitle", "Tell us what you need built")}</h2>
-
-          <p>
-            {t(
-              "servicesPage.ctaDescription",
-              "We'll match you with the right service package and give you a clear timeline and price — no hidden fees.",
-            )}
-          </p>
-
-          <Link to="/contact" className="premium-btn premium-btn-light">
-            {t("servicesPage.ctaButton", "Get a free consultation")} →
-          </Link>
-        </div>
-      </section>
-    </main>
+        <CTASection />
+      </main>
+    </LazyMotion>
   );
 }
+
+// ==================== CSS CLASSES NEEDED ====================
+/* 
+  Add these CSS classes to your stylesheet:
+
+  .optimized-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .image-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: inherit;
+    z-index: 1;
+  }
+
+  .skeleton-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .skeleton-image {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-text {
+    height: 14px;
+    background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+
+  .skeleton-title {
+    height: 20px;
+    width: 70%;
+  }
+
+  .skeleton-description {
+    width: 90%;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .premium-product-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+  }
+
+  .premium-product-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .premium-detail-media {
+    position: relative;
+    overflow: hidden;
+    min-height: 200px;
+  }
+*/
