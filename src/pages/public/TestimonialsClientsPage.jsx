@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState, useCallback, useMemo, memo } from "react";
+import { LazyMotion, domAnimation, m } from "framer-motion";
 import { Link } from "react-router-dom";
 import useLanguage from "../../hooks/useLanguage";
 import useFetchOnMount from "../../hooks/useFetchOnMount";
@@ -9,10 +9,19 @@ import LoadingSpinner from "../../components/common/LoadingSpinner";
 import ErrorState from "../../components/common/ErrorState";
 import "../../styles/publicPremium.css";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+// ==================== CONSTANTS ====================
+
+const FADE_UP_VARIANTS = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55 } },
 };
+
+const STAGGER_VARIANTS = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.04 } },
+};
+
+// ==================== UTILITY FUNCTIONS ====================
 
 function normalizeList(response) {
   if (Array.isArray(response)) return response;
@@ -41,15 +50,69 @@ function getImageUrl(item) {
   );
 }
 
-// Preload image function
-function preloadImage(url) {
-  if (!url) return;
-  const img = new Image();
-  img.src = url;
+function optimizeImageUrl(url) {
+  if (!url) return url;
+
+  if (url.includes("images.unsplash.com")) {
+    const hasParams = url.includes("?");
+    return `${url}${hasParams ? "&" : "?"}auto=format&fit=crop&w=1200&q=80`;
+  }
+
+  if (url.includes("cloudinary.com")) {
+    return url;
+  }
+
+  return url;
 }
 
-// Optimized image component with priority support and placeholder
-function OptimizedImage({
+function getProcessedQuote(item, t) {
+  return text(
+    item.quote,
+    item.message,
+    item.content,
+    item.text,
+    t("clientsPage.defaultQuote", "No testimonial text."),
+  );
+}
+
+function getProcessedName(item, t) {
+  return text(
+    item.clientName,
+    item.name,
+    item.author,
+    t("clientsPage.anonymous", "Anonymous Client"),
+  );
+}
+
+function getProcessedRoleLine(item) {
+  return [item.clientRole, item.role, item.organization]
+    .filter(Boolean)
+    .join(" • ");
+}
+
+function getProcessedAvatarUrl(item) {
+  return text(item.avatarUrl, item.imageUrl, item.photoUrl);
+}
+
+function getProcessedLogoName(logo, t, index) {
+  return text(
+    logo.name,
+    logo.clientName,
+    `${t("clientsPage.client", "Client")} ${index + 1}`,
+  );
+}
+
+function getProcessedLogoUrl(logo) {
+  return text(logo.logoUrl, logo.imageUrl);
+}
+
+function getDelay(index) {
+  return Math.min(index * 0.04, 0.5);
+}
+
+// ==================== OPTIMIZED IMAGE COMPONENT ====================
+
+const OptimizedImage = memo(function OptimizedImage({
   src,
   alt,
   className,
@@ -59,59 +122,343 @@ function OptimizedImage({
 }) {
   const [imageError, setImageError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const optimizedSrc = useMemo(() => optimizeImageUrl(src), [src]);
 
   if (!src || imageError) return null;
 
   return (
-    <div style={{ position: "relative", width: "100%", height: "100%" }}>
-      {placeholder && !isLoaded && (
-        <div
-          className="image-placeholder"
-          style={{
-            width: "100%",
-            height: "100%",
-            background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            zIndex: 1,
-            borderRadius: "inherit",
-          }}
-        />
-      )}
+    <div className="optimized-image-wrapper">
+      {placeholder && !isLoaded && <div className="image-placeholder" />}
       <img
-        src={src}
-        alt={alt}
+        src={optimizedSrc}
+        alt={alt || ""}
         loading={priority ? "eager" : "lazy"}
         fetchPriority={priority ? "high" : "auto"}
+        decoding="async"
         className={className}
         style={{
           opacity: isLoaded ? 1 : 0,
           transition: "opacity 0.3s ease-in-out",
-          position: "relative",
-          zIndex: 2,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
         }}
         onLoad={() => {
           setIsLoaded(true);
           if (onLoad) onLoad();
         }}
-        onError={(event) => {
-          console.warn(`Failed to load image: ${src}`);
+        onError={() => {
           setImageError(true);
-          event.currentTarget.style.display = "none";
         }}
       />
     </div>
   );
-}
+});
+
+OptimizedImage.displayName = "OptimizedImage";
+
+// ==================== MEMOIZED CHILD COMPONENTS ====================
+
+const ClientsHero = memo(function ClientsHero({ title, subtitle, imageUrl }) {
+  const { t } = useLanguage();
+
+  return (
+    <section className="premium-detail-hero">
+      <div
+        className={
+          imageUrl
+            ? "premium-container premium-detail-grid"
+            : "premium-container premium-page-intro"
+        }
+      >
+        <m.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65 }}
+        >
+          <span className="premium-eyebrow">{t("nav.clients", "Clients")}</span>
+          <h1>{title}</h1>
+          <p>{subtitle}</p>
+        </m.div>
+
+        {imageUrl && (
+          <m.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.65 }}
+            className="premium-detail-media"
+          >
+            <OptimizedImage
+              src={imageUrl}
+              alt={title}
+              className="premium-detail-media__img"
+              priority={true}
+              placeholder={true}
+            />
+          </m.div>
+        )}
+      </div>
+    </section>
+  );
+});
+
+ClientsHero.displayName = "ClientsHero";
+
+const TestimonialCard = memo(function TestimonialCard({ testimonial, t }) {
+  const {
+    id,
+    processedQuote: quote,
+    processedName: name,
+    processedRoleLine: roleLine,
+    processedAvatarUrl: avatarUrl,
+    processedDelay: delay,
+  } = testimonial;
+
+  return (
+    <m.article
+      key={id ?? quote.slice(0, 20)}
+      variants={FADE_UP_VARIANTS}
+      custom={delay}
+      className="premium-testimonial-card"
+      role="article"
+      aria-label={`Testimonial from ${name}`}
+    >
+      <div className="premium-quote-mark" aria-hidden="true">
+        "
+      </div>
+
+      <p>"{quote}"</p>
+
+      <div className="premium-person">
+        {avatarUrl ? (
+          <div className="premium-avatar-wrapper">
+            <OptimizedImage
+              src={avatarUrl}
+              alt={name}
+              className="premium-avatar"
+              priority={false}
+              placeholder={false}
+            />
+          </div>
+        ) : (
+          <div
+            className="premium-avatar premium-avatar-fallback"
+            aria-hidden="true"
+          >
+            {name.charAt(0).toUpperCase()}
+          </div>
+        )}
+
+        <div>
+          <strong>{name}</strong>
+          <span>{roleLine || t("clientsPage.client", "Client")}</span>
+        </div>
+      </div>
+    </m.article>
+  );
+});
+
+TestimonialCard.displayName = "TestimonialCard";
+
+const TestimonialsSection = memo(function TestimonialsSection({
+  testimonials,
+  loading,
+  error,
+  t,
+}) {
+  const processedTestimonials = useMemo(() => {
+    return testimonials.map((item, index) => ({
+      ...item,
+      processedQuote: getProcessedQuote(item, t),
+      processedName: getProcessedName(item, t),
+      processedRoleLine: getProcessedRoleLine(item),
+      processedAvatarUrl: getProcessedAvatarUrl(item),
+      processedDelay: getDelay(index),
+    }));
+  }, [testimonials, t]);
+
+  if (loading) {
+    return (
+      <div className="premium-testimonial-grid premium-testimonial-grid-large">
+        {[...Array(6)].map((_, index) => (
+          <div key={index} className="premium-testimonial-card skeleton-card">
+            <div className="skeleton-quote" />
+            <div className="skeleton-text skeleton-text-long" />
+            <div className="skeleton-text skeleton-text-medium" />
+            <div className="skeleton-person">
+              <div className="skeleton-avatar" />
+              <div>
+                <div className="skeleton-text skeleton-title" />
+                <div className="skeleton-text skeleton-description" />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="premium-empty-card">
+        <strong>{t("states.error", "Something went wrong")}</strong>
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  if (testimonials.length === 0) {
+    return (
+      <div className="premium-empty-card">
+        <strong>
+          {t("clientsPage.noTestimonials", "No testimonials available yet.")}
+        </strong>
+      </div>
+    );
+  }
+
+  return (
+    <m.div
+      variants={STAGGER_VARIANTS}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      className="premium-testimonial-grid premium-testimonial-grid-large"
+    >
+      {processedTestimonials.map((testimonial) => (
+        <TestimonialCard
+          key={testimonial.id ?? testimonial.processedQuote.slice(0, 20)}
+          testimonial={testimonial}
+          t={t}
+        />
+      ))}
+    </m.div>
+  );
+});
+
+TestimonialsSection.displayName = "TestimonialsSection";
+
+const ClientLogoCard = memo(function ClientLogoCard({ logo, t }) {
+  const { id, processedName: name, processedLogoUrl: logoUrl } = logo;
+
+  if (logoUrl) {
+    return (
+      <div
+        className="premium-logo-card"
+        role="img"
+        aria-label={`Logo for ${name}`}
+      >
+        <div className="premium-logo-wrapper">
+          <OptimizedImage
+            src={logoUrl}
+            alt={name}
+            className="premium-logo-img"
+            priority={false}
+            placeholder={false}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="premium-logo-card premium-logo-text">
+      <strong>{name}</strong>
+    </div>
+  );
+});
+
+ClientLogoCard.displayName = "ClientLogoCard";
+
+const ClientLogoSection = memo(function ClientLogoSection({
+  logos,
+  loading,
+  error,
+  t,
+}) {
+  const processedLogos = useMemo(() => {
+    return logos.map((logo, index) => ({
+      ...logo,
+      processedName: getProcessedLogoName(logo, t, index),
+      processedLogoUrl: getProcessedLogoUrl(logo),
+    }));
+  }, [logos, t]);
+
+  if (loading) {
+    return (
+      <div className="premium-logo-grid">
+        {[...Array(8)].map((_, index) => (
+          <div key={index} className="premium-logo-card skeleton-logo" />
+        ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="premium-empty-card">
+        <strong>{t("states.error", "Something went wrong")}</strong>
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  if (logos.length === 0) {
+    return (
+      <div className="premium-empty-card">
+        <strong>
+          {t("clientsPage.noLogos", "No client logos available yet.")}
+        </strong>
+      </div>
+    );
+  }
+
+  return (
+    <div className="premium-logo-grid">
+      {processedLogos.map((logo) => (
+        <ClientLogoCard key={logo.id ?? logo.processedName} logo={logo} t={t} />
+      ))}
+    </div>
+  );
+});
+
+ClientLogoSection.displayName = "ClientLogoSection";
+
+const CTASection = memo(function CTASection() {
+  const { t } = useLanguage();
+
+  return (
+    <section className="premium-cta">
+      <div className="premium-container premium-cta-inner">
+        <span className="premium-eyebrow premium-eyebrow--light">
+          {t("clientsPage.ctaEyebrow", "Join the next success story")}
+        </span>
+        <h2>
+          {t(
+            "clientsPage.ctaTitle",
+            "Let's build a professional platform for your brand.",
+          )}
+        </h2>
+        <p>
+          {t(
+            "clientsPage.ctaDescription",
+            "Your website should communicate trust, show proof, and turn visitors into real conversations.",
+          )}
+        </p>
+        <Link to="/contact" className="premium-btn premium-btn-light">
+          {t("common.contactUs", "Start a project")} →
+        </Link>
+      </div>
+    </section>
+  );
+});
+
+CTASection.displayName = "CTASection";
+
+// ==================== MAIN COMPONENT ====================
 
 export default function TestimonialsClientsPage() {
   const { language, t } = useLanguage();
 
-  // Fetch hero data - matching all other pages
+  // ==================== DATA FETCHING ====================
+
   const fetchHero = useCallback(
     () =>
       heroService.getHeroSections({
@@ -126,10 +473,13 @@ export default function TestimonialsClientsPage() {
 
   const [testimonials, setTestimonials] = useState([]);
   const [clientLogos, setClientLogos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [heroImageLoaded, setHeroImageLoaded] = useState(false);
+  const [loadingTestimonials, setLoadingTestimonials] = useState(true);
+  const [loadingLogos, setLoadingLogos] = useState(true);
+  const [testimonialsError, setTestimonialsError] = useState("");
+  const [logosError, setLogosError] = useState("");
 
-  // Memoize hero data to avoid recalculations
+  // ==================== MEMOIZED DATA ====================
+
   const heroData = useMemo(() => {
     const heroItem = normalizeList(hero.data)[0] || null;
     return {
@@ -153,333 +503,283 @@ export default function TestimonialsClientsPage() {
     };
   }, [hero.data, t]);
 
-  // Memoize processed testimonials
-  const processedTestimonials = useMemo(() => {
-    return testimonials.map((item, index) => ({
-      ...item,
-      processedQuote: text(
-        item.quote,
-        item.message,
-        item.content,
-        item.text,
-        t("clientsPage.defaultQuote", "No testimonial text."),
-      ),
-      processedName: text(
-        item.clientName,
-        item.name,
-        item.author,
-        t("clientsPage.anonymous", "Anonymous Client"),
-      ),
-      processedRoleLine: [item.clientRole, item.role, item.organization]
-        .filter(Boolean)
-        .join(" • "),
-      processedAvatarUrl: text(item.avatarUrl, item.imageUrl, item.photoUrl),
-      processedDelay: Math.min(index * 0.04, 0.5),
-    }));
-  }, [testimonials, t]);
-
-  // Memoize processed client logos
-  const processedClientLogos = useMemo(() => {
-    return clientLogos.map((logo, index) => ({
-      ...logo,
-      processedName: text(
-        logo.name,
-        logo.clientName,
-        `${t("clientsPage.client", "Client")} ${index + 1}`,
-      ),
-      processedLogoUrl: text(logo.logoUrl, logo.imageUrl),
-    }));
-  }, [clientLogos, t]);
-
-  // Preload hero image when URL is available
-  useEffect(() => {
-    if (heroData.imageUrl) {
-      preloadImage(heroData.imageUrl);
-    }
-  }, [heroData.imageUrl]);
+  // ==================== SIDE EFFECTS ====================
 
   useEffect(() => {
     let active = true;
 
-    async function loadClientContent() {
+    async function loadTestimonials() {
       try {
-        setLoading(true);
+        setLoadingTestimonials(true);
+        setTestimonialsError("");
 
-        const [testimonialData, logoData] = await Promise.all([
-          publicApi.getTestimonials({
-            language: language || "EN",
-            featuredOnly: false,
-            page: 0,
-            size: 12,
-          }),
-          publicApi.getClientLogos({
-            language: language || "EN",
-            featuredOnly: false,
-            page: 0,
-            size: 12,
-          }),
-        ]);
+        const response = await publicApi.getTestimonials({
+          language: language || "EN",
+          featuredOnly: false,
+          page: 0,
+          size: 12,
+        });
 
         if (active) {
-          setTestimonials(normalizeList(testimonialData));
-          setClientLogos(normalizeList(logoData));
+          setTestimonials(normalizeList(response));
         }
-      } catch {
+      } catch (err) {
         if (active) {
           setTestimonials([]);
-          setClientLogos([]);
+          const errorMessage =
+            err?.response?.data?.message ||
+            err?.response?.data?.error ||
+            err?.message ||
+            t("states.failedToLoadTestimonials", "Failed to load testimonials");
+          setTestimonialsError(errorMessage);
         }
       } finally {
         if (active) {
-          setLoading(false);
+          setLoadingTestimonials(false);
         }
       }
     }
 
-    loadClientContent();
+    async function loadLogos() {
+      try {
+        setLoadingLogos(true);
+        setLogosError("");
+
+        const response = await publicApi.getClientLogos({
+          language: language || "EN",
+          featuredOnly: false,
+          page: 0,
+          size: 12,
+        });
+
+        if (active) {
+          setClientLogos(normalizeList(response));
+        }
+      } catch (err) {
+        if (active) {
+          setClientLogos([]);
+          const errorMessage =
+            err?.response?.data?.message ||
+            err?.response?.data?.error ||
+            err?.message ||
+            t("states.failedToLoadLogos", "Failed to load client logos");
+          setLogosError(errorMessage);
+        }
+      } finally {
+        if (active) {
+          setLoadingLogos(false);
+        }
+      }
+    }
+
+    loadTestimonials();
+    loadLogos();
 
     return () => {
       active = false;
     };
-  }, [language]);
+  }, [language, t]);
 
-  // Show loading state while hero is being fetched
+  // ==================== LOADING & ERROR STATES ====================
+
   if (hero.loading) {
     return (
       <LoadingSpinner label={t("states.loadingPage", "Loading page...")} />
     );
   }
 
-  // Show error state if hero fetch fails
   if (hero.error) {
     return <ErrorState message={hero.error} />;
   }
 
-  const { title: heroTitle, subtitle: heroSubtitle, imageUrl } = heroData;
+  // ==================== RENDER ====================
 
   return (
-    <main className="premium-public-page">
-      {/* Hero section - optimized with priority loading */}
-      <section className="premium-detail-hero">
-        <div
-          className={
-            imageUrl
-              ? "premium-container premium-detail-grid"
-              : "premium-container premium-page-intro"
-          }
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65 }}
-          >
-            <span className="premium-eyebrow">
-              {t("nav.clients", "Clients")}
-            </span>
+    <LazyMotion features={domAnimation}>
+      <main className="premium-public-page">
+        <ClientsHero
+          title={heroData.title}
+          subtitle={heroData.subtitle}
+          imageUrl={heroData.imageUrl}
+        />
 
-            <h1>{heroTitle}</h1>
-            <p>{heroSubtitle}</p>
-          </motion.div>
-
-          {imageUrl ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.65 }}
-              className="premium-detail-media"
-              style={{
-                position: "relative",
-                overflow: "hidden",
-                minHeight: "200px",
-              }}
-            >
-              <OptimizedImage
-                src={imageUrl}
-                alt={heroTitle}
-                className="premium-detail-media__img"
-                priority={true}
-                onLoad={() => setHeroImageLoaded(true)}
-                placeholder={true}
-              />
-            </motion.div>
-          ) : null}
-        </div>
-      </section>
-
-      <section className="premium-section premium-testimonial-section">
-        <div className="premium-container">
-          <div className="premium-section-head">
-            <span className="premium-eyebrow">
-              {t("clientsPage.testimonialsEyebrow", "Testimonials")}
-            </span>
-            <h2>
-              {t(
-                "clientsPage.testimonialsTitle",
-                "What clients say about working with InkFront",
-              )}
-            </h2>
-            <p>
-              {t(
-                "clientsPage.testimonialsDescription",
-                "Real feedback should help future clients understand the quality, clarity, and professionalism of your work.",
-              )}
-            </p>
-          </div>
-
-          {loading ? (
-            <div className="premium-loading">
-              {t("states.loadingTestimonials", "Loading client content...")}
-            </div>
-          ) : testimonials.length === 0 ? (
-            <div className="premium-empty-card">
-              <strong>
+        <section className="premium-section premium-testimonial-section">
+          <div className="premium-container">
+            <div className="premium-section-head">
+              <span className="premium-eyebrow">
+                {t("clientsPage.testimonialsEyebrow", "Testimonials")}
+              </span>
+              <h2>
                 {t(
-                  "clientsPage.noTestimonials",
-                  "No testimonials available yet.",
+                  "clientsPage.testimonialsTitle",
+                  "What clients say about working with InkFront",
                 )}
-              </strong>
+              </h2>
+              <p>
+                {t(
+                  "clientsPage.testimonialsDescription",
+                  "Real feedback should help future clients understand the quality, clarity, and professionalism of your work.",
+                )}
+              </p>
             </div>
-          ) : (
-            <div className="premium-testimonial-grid premium-testimonial-grid-large">
-              {processedTestimonials.map((item) => {
-                const {
-                  id,
-                  processedQuote: quote,
-                  processedName: name,
-                  processedRoleLine: roleLine,
-                  processedAvatarUrl: avatarUrl,
-                  processedDelay: delay,
-                } = item;
 
-                return (
-                  <motion.article
-                    key={id ?? quote.slice(0, 20)}
-                    initial={{ opacity: 0, y: 24 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.55, delay }}
-                    viewport={{ once: true }}
-                    className="premium-testimonial-card"
-                  >
-                    <div className="premium-quote-mark">"</div>
+            <TestimonialsSection
+              testimonials={testimonials}
+              loading={loadingTestimonials}
+              error={testimonialsError}
+              t={t}
+            />
+          </div>
+        </section>
 
-                    <p>"{quote}"</p>
+        <section className="premium-logo-strip premium-logo-strip-spacious">
+          <div className="premium-container">
+            <span>
+              {t(
+                "clientsPage.logosTitle",
+                "Trusted organizations and client brands",
+              )}
+            </span>
 
-                    <div className="premium-person">
-                      {avatarUrl ? (
-                        <div
-                          style={{
-                            position: "relative",
-                            width: "48px",
-                            height: "48px",
-                            flexShrink: 0,
-                          }}
-                        >
-                          <OptimizedImage
-                            src={avatarUrl}
-                            alt={name}
-                            className="premium-avatar"
-                            priority={false}
-                            placeholder={false}
-                          />
-                        </div>
-                      ) : (
-                        <div className="premium-avatar premium-avatar-fallback">
-                          {name.charAt(0).toUpperCase()}
-                        </div>
-                      )}
+            <ClientLogoSection
+              logos={clientLogos}
+              loading={loadingLogos}
+              error={logosError}
+              t={t}
+            />
+          </div>
+        </section>
 
-                      <div>
-                        <strong>{name}</strong>
-                        <span>
-                          {roleLine || t("clientsPage.client", "Client")}
-                        </span>
-                      </div>
-                    </div>
-                  </motion.article>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </section>
-
-      <section className="premium-logo-strip premium-logo-strip-spacious">
-        <div className="premium-container">
-          <span>
-            {t(
-              "clientsPage.logosTitle",
-              "Trusted organizations and client brands",
-            )}
-          </span>
-
-          {loading ? null : clientLogos.length === 0 ? (
-            <div className="premium-empty-card">
-              <strong>
-                {t("clientsPage.noLogos", "No client logos available yet.")}
-              </strong>
-            </div>
-          ) : (
-            <div className="premium-logo-grid">
-              {processedClientLogos.map((logo) => {
-                const {
-                  id,
-                  processedName: name,
-                  processedLogoUrl: logoUrl,
-                } = logo;
-
-                const content = logoUrl ? (
-                  <div
-                    style={{
-                      position: "relative",
-                      width: "100%",
-                      height: "60px",
-                    }}
-                  >
-                    <OptimizedImage
-                      src={logoUrl}
-                      alt={name}
-                      className="premium-logo-img"
-                      priority={false}
-                      placeholder={false}
-                    />
-                  </div>
-                ) : (
-                  <strong>{name}</strong>
-                );
-
-                return (
-                  <div key={id ?? name} className="premium-logo-card">
-                    {content}
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </section>
-
-      <section className="premium-cta">
-        <div className="premium-container premium-cta-inner">
-          <span className="premium-eyebrow premium-eyebrow--light">
-            {t("clientsPage.ctaEyebrow", "Join the next success story")}
-          </span>
-          <h2>
-            {t(
-              "clientsPage.ctaTitle",
-              "Let's build a professional platform for your brand.",
-            )}
-          </h2>
-          <p>
-            {t(
-              "clientsPage.ctaDescription",
-              "Your website should communicate trust, show proof, and turn visitors into real conversations.",
-            )}
-          </p>
-          <Link to="/contact" className="premium-btn premium-btn-light">
-            {t("common.contactUs", "Start a project")} →
-          </Link>
-        </div>
-      </section>
-    </main>
+        <CTASection />
+      </main>
+    </LazyMotion>
   );
 }
+
+// ==================== CSS CLASSES NEEDED ====================
+/* 
+  Add these CSS classes to your stylesheet:
+
+  .optimized-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .image-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: inherit;
+    z-index: 1;
+  }
+
+  .skeleton-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 2rem;
+  }
+
+  .skeleton-quote {
+    width: 60px;
+    height: 24px;
+    background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+
+  .skeleton-text {
+    height: 14px;
+    background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+
+  .skeleton-text-long {
+    width: 95%;
+  }
+
+  .skeleton-text-medium {
+    width: 75%;
+  }
+
+  .skeleton-title {
+    height: 18px;
+    width: 60%;
+  }
+
+  .skeleton-description {
+    width: 80%;
+    height: 12px;
+  }
+
+  .skeleton-person {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .skeleton-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-logo {
+    height: 60px;
+    background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 8px;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .premium-avatar-wrapper {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .premium-logo-wrapper {
+    position: relative;
+    width: 100%;
+    height: 60px;
+  }
+
+  .premium-logo-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+  }
+
+  .premium-testimonial-grid-large {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+  }
+*/
