@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
-import { motion } from "framer-motion";
+import { memo } from "react";
+import { LazyMotion, domAnimation, m } from "framer-motion";
 import useLanguage from "../../hooks/useLanguage";
 import useFetchOnMount from "../../hooks/useFetchOnMount";
 import { heroService } from "../../services/heroService";
@@ -8,6 +9,8 @@ import LoadingSpinner from "../../components/common/LoadingSpinner";
 import ErrorState from "../../components/common/ErrorState";
 import NewsletterSection from "../../components/sections/NewsletterSection";
 import "../../styles/publicPremium.css";
+
+// ==================== CONSTANTS ====================
 
 const SERVICE_OPTIONS = {
   EN: [
@@ -63,7 +66,7 @@ const LANGUAGE_LABELS = {
   YO: "Yoruba",
 };
 
-const initialForm = {
+const INITIAL_FORM = {
   fullName: "",
   email: "",
   phone: "",
@@ -73,6 +76,8 @@ const initialForm = {
   subject: "",
   message: "",
 };
+
+// ==================== UTILITY FUNCTIONS ====================
 
 function normalizeList(value) {
   if (Array.isArray(value)) return value;
@@ -101,6 +106,24 @@ function getImageUrl(item) {
   );
 }
 
+function optimizeImageUrl(url) {
+  if (!url) return url;
+
+  // Unsplash optimization
+  if (url.includes("images.unsplash.com")) {
+    const hasParams = url.includes("?");
+    return `${url}${hasParams ? "&" : "?"}auto=format&fit=crop&w=1600&q=80`;
+  }
+
+  // Cloudinary - preserve existing transformations
+  if (url.includes("cloudinary.com")) {
+    return url;
+  }
+
+  // Other CDNs - leave unchanged
+  return url;
+}
+
 function cleanPayload(form) {
   return {
     fullName: form.fullName.trim(),
@@ -114,15 +137,16 @@ function cleanPayload(form) {
   };
 }
 
-// Preload image function
-function preloadImage(url) {
-  if (!url) return;
-  const img = new Image();
-  img.src = url;
+function validateEmail(email) {
+  const trimmed = email.trim();
+  if (!trimmed) return false;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(trimmed);
 }
 
-// Optimized image component with priority support
-function OptimizedImage({
+// ==================== OPTIMIZED IMAGE COMPONENT ====================
+
+const OptimizedImage = memo(function OptimizedImage({
   src,
   alt,
   className,
@@ -132,59 +156,359 @@ function OptimizedImage({
 }) {
   const [imageError, setImageError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const optimizedSrc = useMemo(() => optimizeImageUrl(src), [src]);
 
   if (!src || imageError) return null;
 
   return (
-    <div style={{ position: "relative", width: "100%", height: "100%" }}>
-      {!isLoaded && (
-        <div
-          className="image-placeholder"
-          style={{
-            width: "100%",
-            height: "100%",
-            background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            zIndex: 1,
-            borderRadius: "inherit",
-          }}
-        />
-      )}
+    <div className="optimized-image-wrapper">
+      {!isLoaded && <div className="image-placeholder" />}
       <img
-        src={src}
-        alt={alt}
+        src={optimizedSrc}
+        alt={alt || ""}
         loading={priority ? "eager" : "lazy"}
         fetchPriority={priority ? "high" : "auto"}
+        decoding="async"
         className={className}
         style={{
           opacity: isLoaded ? 1 : 0,
           transition: "opacity 0.3s ease-in-out",
-          position: "relative",
-          zIndex: 2,
-          width: "100%",
-          height: "100%",
-          objectFit: objectFit,
         }}
         onLoad={() => {
           setIsLoaded(true);
           if (onLoad) onLoad();
         }}
-        onError={(event) => {
-          console.warn(`Failed to load image: ${src}`);
+        onError={() => {
           setImageError(true);
-          event.currentTarget.style.display = "none";
         }}
       />
     </div>
   );
-}
+});
+
+OptimizedImage.displayName = "OptimizedImage";
+
+// ==================== MEMOIZED CHILD COMPONENTS ====================
+
+const ContactHero = memo(function ContactHero({ title, subtitle, imageUrl }) {
+  return (
+    <section className="premium-detail-hero">
+      <div
+        className={
+          imageUrl
+            ? "premium-container premium-detail-grid"
+            : "premium-container premium-page-intro"
+        }
+      >
+        <m.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65 }}
+        >
+          <span className="premium-eyebrow">
+            <TranslationWrapper>nav.contact</TranslationWrapper>
+          </span>
+          <h1>{title}</h1>
+          <p>{subtitle}</p>
+        </m.div>
+
+        {imageUrl && (
+          <m.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.65 }}
+            className="premium-detail-media"
+          >
+            <OptimizedImage
+              src={imageUrl}
+              alt={title}
+              className="premium-detail-media__img"
+              priority={true}
+              objectFit="cover"
+            />
+          </m.div>
+        )}
+      </div>
+    </section>
+  );
+});
+
+ContactHero.displayName = "ContactHero";
+
+const ContactForm = memo(function ContactForm({
+  form,
+  onChange,
+  onSubmit,
+  submitting,
+  success,
+  error,
+  serviceOptions,
+  activeLanguage,
+  canSubmit,
+  t,
+}) {
+  const handleChange = useCallback(
+    (e) => {
+      const { name, value } = e.target;
+      onChange(name, value);
+    },
+    [onChange],
+  );
+
+  return (
+    <article className="premium-contact-panel">
+      <h2>{t("pages.contact.sendMessage", "Send us a message")}</h2>
+
+      <p>
+        {t(
+          "pages.contact.description",
+          "Tell us what you want to build. Include your project goal, preferred timeline, required features, and budget range if you already have one.",
+        )}
+      </p>
+
+      {success && (
+        <div className="premium-form-alert premium-form-alert-success">
+          {success}
+        </div>
+      )}
+      {error && (
+        <div className="premium-form-alert premium-form-alert-error">
+          {error}
+        </div>
+      )}
+
+      <form className="premium-contact-form" onSubmit={onSubmit} noValidate>
+        <div className="premium-form-grid">
+          <FormField
+            label={t("forms.contact.fullName", "Full name")}
+            required
+            name="fullName"
+            value={form.fullName}
+            onChange={handleChange}
+            placeholder={t(
+              "forms.contact.fullNamePlaceholder",
+              "Your full name",
+            )}
+          />
+
+          <FormField
+            label={t("forms.contact.email", "Email")}
+            required
+            type="email"
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder={t("forms.contact.emailPlaceholder", "you@example.com")}
+            autoComplete="email"
+          />
+
+          <FormField
+            label={t("forms.contact.phoneNumber", "Phone")}
+            name="phone"
+            value={form.phone}
+            onChange={handleChange}
+            placeholder={t("forms.contact.phonePlaceholder", "+234...")}
+            autoComplete="tel"
+          />
+
+          <FormField
+            label={t("forms.contact.companyName", "Company / Brand")}
+            name="company"
+            value={form.company}
+            onChange={handleChange}
+            placeholder={t(
+              "forms.contact.companyPlaceholder",
+              "Company or brand name",
+            )}
+            autoComplete="organization"
+          />
+        </div>
+
+        <div className="premium-form-grid">
+          <FormSelect
+            label={t("forms.contact.serviceInterest", "Service interest")}
+            name="serviceInterest"
+            value={form.serviceInterest}
+            onChange={handleChange}
+            options={serviceOptions}
+            placeholder={t("forms.contact.selectService", "Select service")}
+          />
+
+          <FormSelect
+            label={t("forms.contact.preferredLanguage", "Preferred language")}
+            name="preferredLanguage"
+            value={form.preferredLanguage}
+            onChange={handleChange}
+            options={Object.entries(LANGUAGE_LABELS).map(([code, label]) => ({
+              value: code,
+              label,
+            }))}
+          />
+        </div>
+
+        <FormField
+          label={t("forms.contact.subject", "Subject")}
+          required
+          name="subject"
+          value={form.subject}
+          onChange={handleChange}
+          placeholder={t(
+            "forms.contact.subjectPlaceholder",
+            "What do you need?",
+          )}
+        />
+
+        <FormField
+          label={t("forms.contact.message", "Message")}
+          required
+          as="textarea"
+          name="message"
+          value={form.message}
+          onChange={handleChange}
+          placeholder={t(
+            "forms.contact.messagePlaceholder",
+            "Describe your project, timeline, budget range, required pages/features, and what problem you want to solve...",
+          )}
+          rows={7}
+        />
+
+        <button
+          type="submit"
+          className="premium-btn premium-btn-primary"
+          disabled={submitting || !canSubmit}
+          aria-disabled={submitting || !canSubmit}
+        >
+          {submitting
+            ? t("forms.contact.sending", "Sending...")
+            : t("forms.contact.submit", "Send message →")}
+        </button>
+      </form>
+    </article>
+  );
+});
+
+ContactForm.displayName = "ContactForm";
+
+const FormField = memo(function FormField({
+  label,
+  required,
+  type = "text",
+  name,
+  value,
+  onChange,
+  placeholder,
+  as = "input",
+  rows,
+  autoComplete,
+}) {
+  const fieldId = `field-${name}`;
+  const Component = as;
+
+  return (
+    <label htmlFor={fieldId}>
+      {label} {required && "*"}
+      <Component
+        id={fieldId}
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        required={required}
+        rows={rows}
+        autoComplete={autoComplete}
+        aria-required={required}
+      />
+    </label>
+  );
+});
+
+FormField.displayName = "FormField";
+
+const FormSelect = memo(function FormSelect({
+  label,
+  name,
+  value,
+  onChange,
+  options,
+  placeholder,
+}) {
+  const fieldId = `field-${name}`;
+
+  return (
+    <label htmlFor={fieldId}>
+      {label}
+      <select id={fieldId} name={name} value={value} onChange={onChange}>
+        {placeholder && <option value="">{placeholder}</option>}
+        {options.map((option) => (
+          <option key={option.value || option} value={option.value || option}>
+            {option.label || option}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+});
+
+FormSelect.displayName = "FormSelect";
+
+const ContactSidebar = memo(function ContactSidebar({ t }) {
+  const sidebarItems = useMemo(
+    () => [
+      {
+        title: "pages.contact.inquiry",
+        description: "pages.contact.description",
+      },
+      {
+        title: "pages.contact.nextSteps.title",
+        description: "pages.contact.nextSteps.description",
+      },
+      {
+        title: "pages.contact.detailsToInclude.title",
+        description: "pages.contact.detailsToInclude.description",
+      },
+      {
+        title: "pages.contact.howWeRespond.title",
+        description: "pages.contact.howWeRespond.description",
+      },
+      {
+        title: "pages.contact.storedSafely.title",
+        description: "pages.contact.storedSafely.description",
+      },
+    ],
+    [],
+  );
+
+  return (
+    <aside className="premium-contact-sidebar">
+      {sidebarItems.map((item, index) => (
+        <div key={index} className="premium-info-panel">
+          <h2>{t(item.title)}</h2>
+          <p>{t(item.description)}</p>
+        </div>
+      ))}
+    </aside>
+  );
+});
+
+ContactSidebar.displayName = "ContactSidebar";
+
+// ==================== TRANSLATION WRAPPER ====================
+
+const TranslationWrapper = memo(function TranslationWrapper({ children }) {
+  const { t } = useLanguage();
+  return <>{t(children)}</>;
+});
+
+TranslationWrapper.displayName = "TranslationWrapper";
+
+// ==================== MAIN COMPONENT ====================
 
 export default function ContactPage() {
   const { language, t } = useLanguage();
 
-  // Memoize the fetch function to prevent recreating it on every render
+  // ==================== DATA FETCHING ====================
+
   const fetchHero = useCallback(
     () =>
       heroService.getHeroSections({
@@ -197,22 +521,24 @@ export default function ContactPage() {
 
   const hero = useFetchOnMount(fetchHero, [language]);
 
+  // ==================== STATE ====================
+
   const activeLanguage = useMemo(() => {
     const code = `${language || "EN"}`.toUpperCase();
     return SERVICE_OPTIONS[code] ? code : "EN";
   }, [language]);
 
   const [form, setForm] = useState({
-    ...initialForm,
+    ...INITIAL_FORM,
     preferredLanguage: activeLanguage,
   });
 
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-  const [heroImageLoaded, setHeroImageLoaded] = useState(false);
 
-  // Memoize hero data to avoid recalculations
+  // ==================== MEMOIZED DATA ====================
+
   const heroData = useMemo(() => {
     const heroItem = normalizeList(hero.data)[0] || null;
     return {
@@ -233,29 +559,24 @@ export default function ContactPage() {
     };
   }, [hero.data, t]);
 
-  // Memoize service options based on active language
-  const serviceOptions = useMemo(() => {
-    return SERVICE_OPTIONS[activeLanguage] || SERVICE_OPTIONS.EN;
-  }, [activeLanguage]);
+  const serviceOptions = useMemo(
+    () => SERVICE_OPTIONS[activeLanguage] || SERVICE_OPTIONS.EN,
+    [activeLanguage],
+  );
 
-  // Memoize form validation
   const canSubmit = useMemo(() => {
     return (
-      form.fullName.trim() &&
-      form.email.trim() &&
-      form.subject.trim() &&
-      form.message.trim()
+      form.fullName.trim() !== "" &&
+      validateEmail(form.email) &&
+      form.subject.trim() !== "" &&
+      form.message.trim() !== ""
     );
   }, [form.fullName, form.email, form.subject, form.message]);
 
-  // Preload hero image when URL is available
-  useEffect(() => {
-    if (heroData.imageUrl) {
-      preloadImage(heroData.imageUrl);
-    }
-  }, [heroData.imageUrl]);
+  const cleanedPayload = useMemo(() => cleanPayload(form), [form]);
 
-  // Update form when active language changes
+  // ==================== SIDE EFFECTS ====================
+
   useEffect(() => {
     setForm((current) => ({
       ...current,
@@ -263,21 +584,16 @@ export default function ContactPage() {
     }));
   }, [activeLanguage]);
 
-  // Memoize form handlers
-  const handleChange = useCallback(
-    (event) => {
-      const { name, value } = event.target;
+  // ==================== HANDLERS ====================
 
-      setForm((current) => ({
-        ...current,
-        [name]: value,
-      }));
-
-      if (success) setSuccess("");
-      if (error) setError("");
-    },
-    [success, error],
-  );
+  const handleChange = useCallback((name, value) => {
+    setForm((current) => ({
+      ...current,
+      [name]: value,
+    }));
+    setSuccess("");
+    setError("");
+  }, []);
 
   const handleSubmit = useCallback(
     async (event) => {
@@ -298,10 +614,10 @@ export default function ContactPage() {
         setSuccess("");
         setError("");
 
-        await publicApi.submitContactMessage(cleanPayload(form));
+        await publicApi.submitContactMessage(cleanedPayload);
 
         setForm({
-          ...initialForm,
+          ...INITIAL_FORM,
           preferredLanguage: activeLanguage,
         });
 
@@ -312,305 +628,65 @@ export default function ContactPage() {
           ),
         );
       } catch (err) {
-        setError(
+        const errorMessage =
           err?.response?.data?.message ||
-            err?.response?.data?.error ||
-            err?.message ||
-            t(
-              "forms.contact.error",
-              "Failed to send message. Please try again.",
-            ),
-        );
+          err?.response?.data?.error ||
+          err?.message ||
+          t("forms.contact.error", "Failed to send message. Please try again.");
+        setError(errorMessage);
       } finally {
         setSubmitting(false);
       }
     },
-    [canSubmit, form, activeLanguage, t],
+    [canSubmit, cleanedPayload, activeLanguage, t],
   );
 
-  // Show loading state while hero is being fetched
+  // ==================== LOADING & ERROR STATES ====================
+
   if (hero.loading) {
     return (
       <LoadingSpinner label={t("states.loadingPage", "Loading page...")} />
     );
   }
 
-  // Show error state if hero fetch fails
   if (hero.error) {
     return <ErrorState message={hero.error} />;
   }
 
-  const { title: heroTitle, subtitle: heroSubtitle, imageUrl } = heroData;
+  // ==================== RENDER ====================
 
   return (
-    <main className="premium-public-page">
-      {/* Hero section - optimized with priority loading */}
-      <section className="premium-detail-hero">
-        <div
-          className={
-            imageUrl
-              ? "premium-container premium-detail-grid"
-              : "premium-container premium-page-intro"
-          }
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65 }}
-          >
-            <span className="premium-eyebrow">
-              {t("nav.contact", "Contact")}
-            </span>
+    <LazyMotion features={domAnimation}>
+      <main className="premium-public-page">
+        <ContactHero
+          title={heroData.title}
+          subtitle={heroData.subtitle}
+          imageUrl={heroData.imageUrl}
+        />
 
-            <h1>{heroTitle}</h1>
-            <p>{heroSubtitle}</p>
-          </motion.div>
+        <section className="premium-section">
+          <div className="premium-container premium-contact-grid">
+            <ContactForm
+              form={form}
+              onChange={handleChange}
+              onSubmit={handleSubmit}
+              submitting={submitting}
+              success={success}
+              error={error}
+              serviceOptions={serviceOptions}
+              activeLanguage={activeLanguage}
+              canSubmit={canSubmit}
+              t={t}
+            />
 
-          {imageUrl ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.65 }}
-              className="premium-detail-media"
-              style={{
-                position: "relative",
-                overflow: "hidden",
-                minHeight: "200px",
-              }}
-            >
-              <OptimizedImage
-                src={imageUrl}
-                alt={heroTitle}
-                className="premium-detail-media__img"
-                priority={true}
-                onLoad={() => setHeroImageLoaded(true)}
-                objectFit="cover"
-              />
-            </motion.div>
-          ) : null}
+            <ContactSidebar t={t} />
+          </div>
+        </section>
+
+        <div className="premium-container">
+          <NewsletterSection />
         </div>
-      </section>
-
-      <section className="premium-section">
-        <div className="premium-container premium-contact-grid">
-          <article className="premium-contact-panel">
-            <h2>{t("pages.contact.sendMessage", "Send us a message")}</h2>
-
-            <p>
-              {t(
-                "pages.contact.description",
-                "Tell us what you want to build. Include your project goal, preferred timeline, required features, and budget range if you already have one.",
-              )}
-            </p>
-
-            {success && (
-              <div className="premium-form-alert premium-form-alert-success">
-                {success}
-              </div>
-            )}
-
-            {error && (
-              <div className="premium-form-alert premium-form-alert-error">
-                {error}
-              </div>
-            )}
-
-            <form className="premium-contact-form" onSubmit={handleSubmit}>
-              <div className="premium-form-grid">
-                <label>
-                  {t("forms.contact.fullName", "Full name")} *
-                  <input
-                    name="fullName"
-                    value={form.fullName}
-                    onChange={handleChange}
-                    placeholder={t(
-                      "forms.contact.fullNamePlaceholder",
-                      "Your full name",
-                    )}
-                    required
-                  />
-                </label>
-
-                <label>
-                  {t("forms.contact.email", "Email")} *
-                  <input
-                    type="email"
-                    name="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    placeholder={t(
-                      "forms.contact.emailPlaceholder",
-                      "you@example.com",
-                    )}
-                    required
-                  />
-                </label>
-
-                <label>
-                  {t("forms.contact.phoneNumber", "Phone")}
-                  <input
-                    name="phone"
-                    value={form.phone}
-                    onChange={handleChange}
-                    placeholder={t("forms.contact.phonePlaceholder", "+234...")}
-                  />
-                </label>
-
-                <label>
-                  {t("forms.contact.companyName", "Company / Brand")}
-                  <input
-                    name="company"
-                    value={form.company}
-                    onChange={handleChange}
-                    placeholder={t(
-                      "forms.contact.companyPlaceholder",
-                      "Company or brand name",
-                    )}
-                  />
-                </label>
-              </div>
-
-              <div className="premium-form-grid">
-                <label>
-                  {t("forms.contact.serviceInterest", "Service interest")}
-                  <select
-                    name="serviceInterest"
-                    value={form.serviceInterest}
-                    onChange={handleChange}
-                  >
-                    <option value="">
-                      {t("forms.contact.selectService", "Select service")}
-                    </option>
-
-                    {serviceOptions.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-
-                <label>
-                  {t("forms.contact.preferredLanguage", "Preferred language")}
-                  <select
-                    name="preferredLanguage"
-                    value={form.preferredLanguage}
-                    onChange={handleChange}
-                  >
-                    {Object.entries(LANGUAGE_LABELS).map(([code, label]) => (
-                      <option key={code} value={code}>
-                        {label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              </div>
-
-              <label>
-                {t("forms.contact.subject", "Subject")} *
-                <input
-                  name="subject"
-                  value={form.subject}
-                  onChange={handleChange}
-                  placeholder={t(
-                    "forms.contact.subjectPlaceholder",
-                    "What do you need?",
-                  )}
-                  required
-                />
-              </label>
-
-              <label>
-                {t("forms.contact.message", "Message")} *
-                <textarea
-                  name="message"
-                  value={form.message}
-                  onChange={handleChange}
-                  placeholder={t(
-                    "forms.contact.messagePlaceholder",
-                    "Describe your project, timeline, budget range, required pages/features, and what problem you want to solve...",
-                  )}
-                  required
-                  rows={7}
-                />
-              </label>
-
-              <button
-                type="submit"
-                className="premium-btn premium-btn-primary"
-                disabled={submitting || !canSubmit}
-              >
-                {submitting
-                  ? t("forms.contact.sending", "Sending...")
-                  : t("forms.contact.submit", "Send message →")}
-              </button>
-            </form>
-          </article>
-
-          <aside className="premium-contact-sidebar">
-            <div className="premium-info-panel">
-              <h2>{t("pages.contact.inquiry", "Project inquiry")}</h2>
-              <p>
-                {t(
-                  "pages.contact.description",
-                  "Tell us what you want to build. Include your project goal, preferred timeline, required features, and budget range if you already have one.",
-                )}
-              </p>
-            </div>
-
-            <div className="premium-info-panel">
-              <h3>
-                {t("pages.contact.nextSteps.title", "What happens next?")}
-              </h3>
-              <p>
-                {t(
-                  "pages.contact.nextSteps.description",
-                  "Your message is saved inside the admin Contact CRM, where the team can review it, assign it, update status, and follow up.",
-                )}
-              </p>
-            </div>
-
-            <div className="premium-info-panel">
-              <h3>
-                {t(
-                  "pages.contact.detailsToInclude.title",
-                  "Best details to include",
-                )}
-              </h3>
-              <p>
-                {t(
-                  "pages.contact.detailsToInclude.description",
-                  "Include your business type, project goal, required features, timeline, budget range, and any reference websites you like.",
-                )}
-              </p>
-            </div>
-
-            <div className="premium-info-panel">
-              <h3>{t("pages.contact.howWeRespond.title", "How we respond")}</h3>
-              <p>
-                {t(
-                  "pages.contact.howWeRespond.description",
-                  "We review the request and reply with a practical recommendation, possible scope, timeline, and next step.",
-                )}
-              </p>
-            </div>
-
-            <div className="premium-info-panel">
-              <h3>{t("pages.contact.storedSafely.title", "Stored safely")}</h3>
-              <p>
-                {t(
-                  "pages.contact.storedSafely.description",
-                  "Every inquiry is stored as a CRM message so no lead gets lost in email, chat, or manual notes.",
-                )}
-              </p>
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <div className="premium-container">
-        <NewsletterSection />
-      </div>
-    </main>
+      </main>
+    </LazyMotion>
   );
 }
