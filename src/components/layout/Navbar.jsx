@@ -8,13 +8,13 @@ import useLanguage from "../../hooks/useLanguage";
 import "./Navbar.css";
 
 // ============================================
-// INKFRONT LOGO WITH ONE-TIME EXPANSION
+// INKFRONT LOGO WITH STRETCHING EFFECT
 // ============================================
 
 const InkFrontLogo = memo(
   ({ showName = false, userName = "", isScrolled = false }) => {
     return (
-      <div className="inkfront-logo-wrapper">
+      <div className={`inkfront-logo-wrapper ${showName ? "is-expanded" : ""}`}>
         <span className="inkfront-brand-mark" aria-hidden="true">
           <svg
             viewBox="0 0 48 48"
@@ -29,61 +29,13 @@ const InkFrontLogo = memo(
           </svg>
         </span>
 
-        <AnimatePresence mode="wait">
-          {showName && userName ? (
-            <motion.span
-              key="user-name"
-              className="inkfront-logo-user"
-              initial={{ opacity: 0, width: 0, scale: 0.8 }}
-              animate={{
-                opacity: 1,
-                width: "auto",
-                scale: 1,
-                transition: {
-                  duration: 0.6,
-                  ease: [0.34, 1.56, 0.64, 1],
-                },
-              }}
-              exit={{
-                opacity: 0,
-                width: 0,
-                scale: 0.8,
-                transition: {
-                  duration: 0.4,
-                  ease: "easeInOut",
-                },
-              }}
-            >
-              {userName}
-            </motion.span>
-          ) : (
-            <motion.span
-              key="brand-name"
-              className={`premium-navbar__logo-text ${isScrolled ? "premium-navbar__logo-text--scrolled" : ""}`}
-              initial={{ opacity: 0, width: 0, scale: 0.8 }}
-              animate={{
-                opacity: 1,
-                width: "auto",
-                scale: 1,
-                transition: {
-                  duration: 0.4,
-                  ease: [0.34, 1.56, 0.64, 1],
-                },
-              }}
-              exit={{
-                opacity: 0,
-                width: 0,
-                scale: 0.8,
-                transition: {
-                  duration: 0.3,
-                  ease: "easeInOut",
-                },
-              }}
-            >
-              InkFront
-            </motion.span>
-          )}
-        </AnimatePresence>
+        <span
+          className={`premium-navbar__logo-text ${isScrolled ? "premium-navbar__logo-text--scrolled" : ""}`}
+        >
+          InkFront
+        </span>
+
+        <span className="inkfront-logo-user">{userName}</span>
       </div>
     );
   },
@@ -255,18 +207,17 @@ export default function Navbar() {
     }
   }, []);
 
-  // Handle user name display - ONE TIME EXPANSION
+  // Handle user name display - ONE TIME STRETCHING EXPANSION
   useEffect(() => {
     if (isAuthenticated && displayName && !hasShownNameRef.current) {
       setUserName(displayName);
 
-      // Show user name with delay after login
       clearUserNameTimeout();
       userNameTimeoutRef.current = setTimeout(() => {
         setShowUserName(true);
         hasShownNameRef.current = true;
 
-        // Hide user name after 2.5 seconds
+        // Shrink back after 2.5 seconds
         setTimeout(() => {
           setShowUserName(false);
         }, 2500);

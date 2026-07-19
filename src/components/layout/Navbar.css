@@ -54,8 +54,13 @@
   transform: scale(1.02);
 }
 
+.premium-navbar--seamless .premium-navbar__right {
+  display: flex;
+  align-items: center;
+}
+
 /* ============================================ */
-/* ANIMATED LOGO WITH USER NAME */
+/* ANIMATED LOGO WITH STRETCHING EFFECT */
 /* ============================================ */
 
 .inkfront-logo-wrapper {
@@ -63,9 +68,14 @@
   align-items: center;
   gap: 0px;
   overflow: hidden;
+  max-width: 34px; /* Start at logo width only */
+  transition: max-width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+              gap 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.inkfront-logo-wrapper:has(.inkfront-logo-user) {
+/* When user name is shown, stretch the container */
+.inkfront-logo-wrapper.is-expanded {
+  max-width: 250px; /* Expand to show name */
   gap: 12px;
 }
 
@@ -83,8 +93,10 @@
 .inkfront-brand-mark svg {
   width: 26px;
   height: 26px;
+  transition: all 0.3s ease;
 }
 
+/* Logo text */
 .premium-navbar--seamless .premium-navbar__logo-text {
   font-size: 1.25rem;
   font-weight: 700;
@@ -95,6 +107,16 @@
   transition: all 0.3s ease;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   white-space: nowrap;
+  opacity: 1;
+  overflow: hidden;
+}
+
+/* Logo text hides when user name appears */
+.inkfront-logo-wrapper.is-expanded .premium-navbar__logo-text {
+  opacity: 0;
+  max-width: 0;
+  margin: 0;
+  padding: 0;
 }
 
 /* Logo text color when scrolled */
@@ -113,13 +135,21 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* User name text - appears once then vanishes */
+/* User name text - stretches out */
 .inkfront-logo-user {
   font-size: 0.9rem;
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   color: var(--app-text, #1e293b);
+  max-width: 0;
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.inkfront-logo-wrapper.is-expanded .inkfront-logo-user {
+  max-width: 200px;
+  opacity: 1;
 }
 
 [data-theme="dark"] .inkfront-logo-user {
@@ -141,9 +171,12 @@
   font-size: 0.8rem;
 }
 
-.premium-navbar--seamless .premium-navbar__right {
-  display: flex;
-  align-items: center;
+.premium-navbar--scrolled .inkfront-logo-wrapper.is-expanded {
+  max-width: 200px;
+}
+
+.premium-navbar--scrolled .inkfront-logo-wrapper.is-expanded .inkfront-logo-user {
+  max-width: 160px;
 }
 
 /* ============================================ */
@@ -474,6 +507,14 @@
     font-size: 0.7rem;
     max-width: 100px;
   }
+
+  .inkfront-logo-wrapper.is-expanded {
+    max-width: 200px;
+  }
+
+  .inkfront-logo-wrapper.is-expanded .inkfront-logo-user {
+    max-width: 150px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -544,6 +585,14 @@
     font-size: 0.7rem;
     max-width: 80px;
   }
+
+  .inkfront-logo-wrapper.is-expanded {
+    max-width: 150px;
+  }
+
+  .inkfront-logo-wrapper.is-expanded .inkfront-logo-user {
+    max-width: 100px;
+  }
 }
 
 @media (max-width: 360px) {
@@ -553,6 +602,18 @@
 
   .premium-navbar--seamless .premium-navbar__inner {
     padding: 8px 10px;
+  }
+
+  .inkfront-logo-wrapper {
+    max-width: 28px;
+  }
+
+  .inkfront-logo-wrapper.is-expanded {
+    max-width: 120px;
+  }
+
+  .inkfront-logo-wrapper.is-expanded .inkfront-logo-user {
+    max-width: 80px;
   }
 }
 
