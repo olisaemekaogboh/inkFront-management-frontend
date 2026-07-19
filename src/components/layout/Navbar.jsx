@@ -8,7 +8,7 @@ import useLanguage from "../../hooks/useLanguage";
 import "./Navbar.css";
 
 // ============================================
-// INKFRONT LOGO WITH STRETCHING EFFECT
+// INKFRONT LOGO WITH PREMIUM ANIMATION
 // ============================================
 
 const InkFrontLogo = memo(
@@ -207,7 +207,7 @@ export default function Navbar() {
     }
   }, []);
 
-  // Handle user name display - ONE TIME STRETCHING EXPANSION
+  // Handle user name display - ONE TIME PREMIUM EXPANSION
   useEffect(() => {
     if (isAuthenticated && displayName && !hasShownNameRef.current) {
       setUserName(displayName);
@@ -217,7 +217,7 @@ export default function Navbar() {
         setShowUserName(true);
         hasShownNameRef.current = true;
 
-        // Shrink back after 2.5 seconds
+        // Smooth collapse back after 2.5 seconds
         setTimeout(() => {
           setShowUserName(false);
         }, 2500);
