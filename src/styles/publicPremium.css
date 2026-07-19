@@ -3506,4 +3506,274 @@ body {
   .suggestion-link {
     justify-content: center;
   }
+}/* ============================================ */
+/* OPTIMIZED IMAGE & SKELETON LOADING */
+/* ============================================ */
+
+.optimized-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.image-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: inherit;
+  z-index: 1;
+}
+
+/* ============================================ */
+/* SKELETON LOADING */
+/* ============================================ */
+
+.skeleton-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.skeleton-image {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeleton-text {
+  height: 14px;
+  background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.skeleton-text-long {
+  width: 95%;
+}
+
+.skeleton-text-medium {
+  width: 75%;
+}
+
+.skeleton-title {
+  height: 20px;
+  width: 70%;
+}
+
+.skeleton-description {
+  width: 90%;
+}
+
+.skeleton-eyebrow {
+  width: 120px;
+  height: 16px;
+}
+
+.skeleton-title-large {
+  height: 48px;
+  width: 80%;
+}
+
+.skeleton-hero-image {
+  height: 400px;
+  border-radius: 12px;
+}
+
+.skeleton-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.skeleton-actions > div {
+  width: 120px;
+  height: 44px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton-person {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.skeleton-person > div:first-child {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton-quote {
+  height: 60px;
+  width: 60%;
+}
+
+.skeleton-grid {
+  gap: 2rem;
+}
+
+.skeleton-blueprint {
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.skeleton-blueprint-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.skeleton-logo {
+  height: 60px;
+  background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ============================================ */
+/* TESTIMONIAL SKELETON */
+/* ============================================ */
+
+.testimonial-skeleton {
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ============================================ */
+/* PORTFOLIO IMAGE CONTAINER */
+/* ============================================ */
+
+.portfolio-image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.portfolio-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ============================================ */
+/* PORTFOLIO CARD WRAPPER */
+/* ============================================ */
+
+.portfolio-card-wrapper {
+  height: 100%;
+}
+
+/* ============================================ */
+/* PRODUCT CARD IMAGE WRAPPER */
+/* ============================================ */
+
+.premium-product-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.premium-product-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ============================================ */
+/* DARK THEME SKELETON ADJUSTMENTS */
+/* ============================================ */
+
+[data-theme="dark"] .skeleton-card,
+.dark .skeleton-card {
+  background: #1e293b;
+}
+
+[data-theme="dark"] .skeleton-image,
+[data-theme="dark"] .skeleton-text,
+[data-theme="dark"] .skeleton-title-large,
+[data-theme="dark"] .skeleton-hero-image,
+[data-theme="dark"] .skeleton-actions > div,
+[data-theme="dark"] .skeleton-person > div:first-child,
+[data-theme="dark"] .skeleton-logo,
+.dark .skeleton-image,
+.dark .skeleton-text,
+.dark .skeleton-title-large,
+.dark .skeleton-hero-image,
+.dark .skeleton-actions > div,
+.dark .skeleton-person > div:first-child,
+.dark .skeleton-logo {
+  background: linear-gradient(90deg, #334155 25%, #475569 50%, #334155 75%);
+  background-size: 200% 100%;
+}
+
+[data-theme="dark"] .image-placeholder,
+.dark .image-placeholder {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+}
+
+/* ============================================ */
+/* CAROUSEL SLIDE ACTIVE STATE */
+/* ============================================ */
+
+.premium-carousel-slide {
+  display: none;
+}
+
+.premium-carousel-slide.active {
+  display: block;
+}
+
+/* ============================================ */
+/* RESPONSIVE SKELETON ADJUSTMENTS */
+/* ============================================ */
+
+@media (max-width: 768px) {
+  .skeleton-hero-image {
+    height: 300px;
+  }
+  
+  .skeleton-title-large {
+    height: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .skeleton-hero-image {
+    height: 200px;
+  }
+  
+  .skeleton-title-large {
+    height: 28px;
+  }
 }
