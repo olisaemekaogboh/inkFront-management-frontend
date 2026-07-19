@@ -8,35 +8,137 @@ import useLanguage from "../../hooks/useLanguage";
 import "./Navbar.css";
 
 // ============================================
-// INKFRONT LOGO WITH PREMIUM ANIMATION
+// LOGO SHELL - Coordinates the animation
+// ============================================
+
+const LogoShell = memo(({ children, isExpanded }) => {
+  return (
+    <motion.div
+      className="logo-shell"
+      layout
+      transition={{
+        layout: {
+          duration: 0.7,
+          ease: [0.22, 1, 0.36, 1],
+        },
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+});
+
+LogoShell.displayName = "LogoShell";
+
+// ============================================
+// ANIMATED TEXT CONTAINER
+// ============================================
+
+const AnimatedTextContainer = memo(({ children, isExpanded }) => {
+  return (
+    <motion.div
+      className="animated-text-container"
+      layout
+      transition={{
+        layout: {
+          duration: 0.7,
+          ease: [0.22, 1, 0.36, 1],
+        },
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+});
+
+AnimatedTextContainer.displayName = "AnimatedTextContainer";
+
+// ============================================
+// BRAND TEXT
+// ============================================
+
+const BrandText = memo(({ isScrolled }) => {
+  return (
+    <span className={`brand-text ${isScrolled ? "brand-text--scrolled" : ""}`}>
+      InkFront
+    </span>
+  );
+});
+
+BrandText.displayName = "BrandText";
+
+// ============================================
+// USER NAME WITH INDEPENDENT ANIMATION
+// ============================================
+
+const UserName = memo(({ name, isVisible }) => {
+  return (
+    <motion.span
+      className="user-name"
+      initial={{
+        opacity: 0,
+        x: -12,
+        filter: "blur(4px)",
+        clipPath: "inset(0 100% 0 0)",
+      }}
+      animate={
+        isVisible
+          ? {
+              opacity: 1,
+              x: 0,
+              filter: "blur(0px)",
+              clipPath: "inset(0 0% 0 0)",
+            }
+          : {
+              opacity: 0,
+              x: -12,
+              filter: "blur(4px)",
+              clipPath: "inset(0 100% 0 0)",
+            }
+      }
+      transition={{
+        duration: 0.6,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+    >
+      <span className="user-name__text">{name}</span>
+    </motion.span>
+  );
+});
+
+UserName.displayName = "UserName";
+
+// ============================================
+// LOGO ICON
+// ============================================
+
+const LogoIcon = memo(() => {
+  return (
+    <span className="logo-icon" aria-hidden="true">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z" fill="blue" />
+        <path d="M25 23h13v17h-7V29h-6v-6Z" fill="blue" opacity="0.7" />
+      </svg>
+    </span>
+  );
+});
+
+LogoIcon.displayName = "LogoIcon";
+
+// ============================================
+// INKFRONT LOGO - COMPLETE REBUILD
 // ============================================
 
 const InkFrontLogo = memo(
   ({ showName = false, userName = "", isScrolled = false }) => {
     return (
-      <div className={`inkfront-logo-wrapper ${showName ? "is-expanded" : ""}`}>
-        <span className="inkfront-brand-mark" aria-hidden="true">
-          <svg
-            viewBox="0 0 48 48"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z"
-              fill="blue"
-            />
-            <path d="M25 23h13v17h-7V29h-6v-6Z" fill="blue" opacity="0.7" />
-          </svg>
-        </span>
-
-        <span
-          className={`premium-navbar__logo-text ${isScrolled ? "premium-navbar__logo-text--scrolled" : ""}`}
-        >
-          InkFront
-        </span>
-
-        <span className="inkfront-logo-user">{userName}</span>
-      </div>
+      <LogoShell isExpanded={showName}>
+        <LogoIcon />
+        <AnimatedTextContainer isExpanded={showName}>
+          <BrandText isScrolled={isScrolled} />
+          <UserName name={userName} isVisible={showName} />
+        </AnimatedTextContainer>
+      </LogoShell>
     );
   },
 );
