@@ -8,24 +8,13 @@ import useLanguage from "../../hooks/useLanguage";
 import "./Navbar.css";
 
 // ============================================
-// INKFRONT LOGO WITH ANIMATED EXPANSION
+// INKFRONT LOGO WITH ONE-TIME EXPANSION
 // ============================================
 
 const InkFrontLogo = memo(
   ({ showName = false, userName = "", isScrolled = false }) => {
     return (
-      <motion.div
-        className="inkfront-logo-wrapper"
-        initial={false}
-        animate={{
-          width: showName ? "auto" : "auto",
-          gap: showName ? "12px" : "0px",
-        }}
-        transition={{
-          duration: 0.5,
-          ease: [0.34, 1.56, 0.64, 1],
-        }}
-      >
+      <div className="inkfront-logo-wrapper">
         <span className="inkfront-brand-mark" aria-hidden="true">
           <svg
             viewBox="0 0 48 48"
@@ -45,12 +34,24 @@ const InkFrontLogo = memo(
             <motion.span
               key="user-name"
               className="inkfront-logo-user"
-              initial={{ opacity: 0, scale: 0.8, width: 0 }}
-              animate={{ opacity: 1, scale: 1, width: "auto" }}
-              exit={{ opacity: 0, scale: 0.8, width: 0 }}
-              transition={{
-                duration: 0.4,
-                ease: [0.34, 1.56, 0.64, 1],
+              initial={{ opacity: 0, width: 0, scale: 0.8 }}
+              animate={{
+                opacity: 1,
+                width: "auto",
+                scale: 1,
+                transition: {
+                  duration: 0.6,
+                  ease: [0.34, 1.56, 0.64, 1],
+                },
+              }}
+              exit={{
+                opacity: 0,
+                width: 0,
+                scale: 0.8,
+                transition: {
+                  duration: 0.4,
+                  ease: "easeInOut",
+                },
               }}
             >
               {userName}
@@ -59,19 +60,31 @@ const InkFrontLogo = memo(
             <motion.span
               key="brand-name"
               className={`premium-navbar__logo-text ${isScrolled ? "premium-navbar__logo-text--scrolled" : ""}`}
-              initial={{ opacity: 0, scale: 0.8, width: 0 }}
-              animate={{ opacity: 1, scale: 1, width: "auto" }}
-              exit={{ opacity: 0, scale: 0.8, width: 0 }}
-              transition={{
-                duration: 0.4,
-                ease: [0.34, 1.56, 0.64, 1],
+              initial={{ opacity: 0, width: 0, scale: 0.8 }}
+              animate={{
+                opacity: 1,
+                width: "auto",
+                scale: 1,
+                transition: {
+                  duration: 0.4,
+                  ease: [0.34, 1.56, 0.64, 1],
+                },
+              }}
+              exit={{
+                opacity: 0,
+                width: 0,
+                scale: 0.8,
+                transition: {
+                  duration: 0.3,
+                  ease: "easeInOut",
+                },
               }}
             >
               InkFront
             </motion.span>
           )}
         </AnimatePresence>
-      </motion.div>
+      </div>
     );
   },
 );
@@ -198,6 +211,7 @@ export default function Navbar() {
   const buttonRef = useRef(null);
   const containerRef = useRef(null);
   const userNameTimeoutRef = useRef(null);
+  const hasShownNameRef = useRef(false);
 
   const user = auth?.user || null;
   const isAuthenticated = Boolean(auth?.isAuthenticated);
@@ -241,19 +255,26 @@ export default function Navbar() {
     }
   }, []);
 
-  // Handle user name display animation
+  // Handle user name display - ONE TIME EXPANSION
   useEffect(() => {
-    if (isAuthenticated && displayName) {
+    if (isAuthenticated && displayName && !hasShownNameRef.current) {
       setUserName(displayName);
 
       // Show user name with delay after login
       clearUserNameTimeout();
       userNameTimeoutRef.current = setTimeout(() => {
         setShowUserName(true);
+        hasShownNameRef.current = true;
+
+        // Hide user name after 2.5 seconds
+        setTimeout(() => {
+          setShowUserName(false);
+        }, 2500);
       }, 500);
-    } else {
+    } else if (!isAuthenticated) {
       setShowUserName(false);
       setUserName("");
+      hasShownNameRef.current = false;
     }
 
     return () => {
@@ -336,8 +357,8 @@ export default function Navbar() {
   };
 
   async function handleLogout() {
-    // Hide user name before logout
     setShowUserName(false);
+    hasShownNameRef.current = false;
     if (typeof logout === "function") await logout();
     setMenuOpen(false);
     navigate("/", { replace: true });
@@ -362,21 +383,6 @@ export default function Navbar() {
         </Link>
 
         <div className="premium-navbar__right">
-          {/* User greeting - shown when logged in */}
-          <AnimatePresence>
-            {isAuthenticated && !showUserName && (
-              <motion.span
-                className="premium-navbar__greeting"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.3 }}
-              >
-                {displayName}
-              </motion.span>
-            )}
-          </AnimatePresence>
-
           <div
             ref={containerRef}
             className="premium-menu-container"

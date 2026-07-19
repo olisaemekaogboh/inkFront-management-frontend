@@ -54,6 +54,37 @@
   transform: scale(1.02);
 }
 
+/* ============================================ */
+/* ANIMATED LOGO WITH USER NAME */
+/* ============================================ */
+
+.inkfront-logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+  overflow: hidden;
+}
+
+.inkfront-logo-wrapper:has(.inkfront-logo-user) {
+  gap: 12px;
+}
+
+/* Brand mark - stays fixed */
+.inkfront-brand-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.inkfront-brand-mark svg {
+  width: 26px;
+  height: 26px;
+}
+
 .premium-navbar--seamless .premium-navbar__logo-text {
   font-size: 1.25rem;
   font-weight: 700;
@@ -82,28 +113,32 @@
   -webkit-text-fill-color: transparent;
 }
 
-.inkfront-brand-mark {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  transition: all 0.3s ease;
+/* User name text - appears once then vanishes */
+.inkfront-logo-user {
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  color: var(--app-text, #1e293b);
 }
 
-.inkfront-brand-mark svg {
-  width: 26px;
-  height: 26px;
+[data-theme="dark"] .inkfront-logo-user {
+  color: #e2e8f0;
 }
 
-.premium-navbar--seamless.premium-navbar--scrolled .inkfront-brand-mark {
+/* Scrolled state adjustments */
+.premium-navbar--scrolled .inkfront-brand-mark {
   width: 30px;
   height: 30px;
 }
 
-.premium-navbar--seamless.premium-navbar--scrolled .inkfront-brand-mark svg {
+.premium-navbar--scrolled .inkfront-brand-mark svg {
   width: 22px;
   height: 22px;
+}
+
+.premium-navbar--scrolled .inkfront-logo-user {
+  font-size: 0.8rem;
 }
 
 .premium-navbar--seamless .premium-navbar__right {
@@ -123,7 +158,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+  gap: 8px;
+  padding: 10px 14px;
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.3);
   color: #acaaaa;
@@ -131,13 +167,21 @@
   border-radius: 8px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(8px);
-  width: 44px;
-  height: 44px;
 }
 
 [data-theme="dark"] .premium-menu-btn {
   color: #ffffff;
   border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Menu button label */
+.premium-menu-btn__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  color: inherit;
 }
 
 /* When scrolled, button becomes solid */
@@ -170,9 +214,10 @@
 
 /* Hamburger Icon */
 .hamburger-icon {
+  display: block;
   width: 24px;
   height: 24px;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .hamburger-icon--open {
@@ -181,6 +226,27 @@
 
 .hamburger-icon line {
   transition: all 0.3s ease;
+}
+
+/* Individual line animations */
+.hamburger-line {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+  stroke: currentColor;
+}
+
+/* Closed state */
+.hamburger-line--top {
+  transform: translateY(0) rotate(0deg);
+}
+
+.hamburger-line--middle {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.hamburger-line--bottom {
+  transform: translateY(0) rotate(0deg);
 }
 
 /* ============================================ */
@@ -200,12 +266,24 @@
   border-radius: 16px;
   box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
   z-index: 1001;
+  animation: fadeInDown 0.3s ease;
 }
 
 [data-theme="dark"] .premium-dropdown {
   background: rgba(30, 41, 59, 0.98);
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Dropdown Controls (Theme Toggle & Language Switcher) */
@@ -319,6 +397,32 @@
 }
 
 /* ============================================ */
+/* SCROLLBAR STYLING */
+/* ============================================ */
+
+.premium-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.premium-dropdown::-webkit-scrollbar-track {
+  background: var(--color-border, #e2e8f0);
+  border-radius: 10px;
+}
+
+[data-theme="dark"] .premium-dropdown::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.premium-dropdown::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+  border-radius: 10px;
+}
+
+.premium-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+/* ============================================ */
 /* MOBILE RESPONSIVE */
 /* ============================================ */
 
@@ -335,6 +439,17 @@
     font-size: 1rem;
   }
 
+  .premium-menu-btn__label {
+    display: none;
+  }
+  
+  .premium-menu-btn {
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    justify-content: center;
+  }
+
   .premium-dropdown {
     position: fixed;
     top: 60px;
@@ -345,15 +460,19 @@
     border-radius: 14px;
   }
 
-  .premium-menu-btn {
-    width: 40px;
-    height: 40px;
-    padding: 8px;
-  }
-
   .hamburger-icon {
     width: 20px;
     height: 20px;
+  }
+
+  .inkfront-logo-user {
+    font-size: 0.8rem;
+    max-width: 120px;
+  }
+
+  .premium-navbar--scrolled .inkfront-logo-user {
+    font-size: 0.7rem;
+    max-width: 100px;
   }
 }
 
@@ -420,6 +539,11 @@
     gap: 8px;
     flex-wrap: wrap;
   }
+
+  .inkfront-logo-user {
+    font-size: 0.7rem;
+    max-width: 80px;
+  }
 }
 
 @media (max-width: 360px) {
@@ -433,138 +557,6 @@
 }
 
 /* ============================================ */
-/* ANIMATIONS */
-/* ============================================ */
-
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.premium-dropdown {
-  animation: fadeInDown 0.3s ease;
-}
-
-/* Scrollbar styling */
-.premium-dropdown::-webkit-scrollbar {
-  width: 6px;
-}
-
-.premium-dropdown::-webkit-scrollbar-track {
-  background: var(--color-border, #e2e8f0);
-  border-radius: 10px;
-}
-
-[data-theme="dark"] .premium-dropdown::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.premium-dropdown::-webkit-scrollbar-thumb {
-  background: #3b82f6;
-  border-radius: 10px;
-}
-
-.premium-dropdown::-webkit-scrollbar-thumb:hover {
-  background: #2563eb;
-}
-/* ============================================ */
-/* ENHANCED HAMBURGER ICON - Additional Styles */
-/* ============================================ */
-
-/* Menu button with label */
-.premium-menu-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #acaaaa;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(8px);
-}
-
-/* Menu button label */
-.premium-menu-btn__label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  transition: all 0.3s ease;
-  color: inherit;
-}
-
-/* Hide label on mobile */
-@media (max-width: 768px) {
-  .premium-menu-btn__label {
-    display: none;
-  }
-  
-  .premium-menu-btn {
-    width: 44px;
-    height: 44px;
-    padding: 10px;
-    justify-content: center;
-  }
-}
-
-/* ============================================ */
-/* HAMBURGER ICON ANIMATIONS */
-/* ============================================ */
-
-.hamburger-icon {
-  display: block;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.hamburger-icon--open {
-  transform: rotate(0deg);
-}
-
-/* Individual line animations */
-.hamburger-line {
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  transform-origin: center;
-  stroke: currentColor;
-}
-
-/* Closed state */
-.hamburger-line--top {
-  transform: translateY(0) rotate(0deg);
-}
-
-.hamburger-line--middle {
-  opacity: 1;
-  transform: scaleX(1);
-}
-
-.hamburger-line--bottom {
-  transform: translateY(0) rotate(0deg);
-}
-
-/* Open state - CSS fallback for reduced motion */
-.hamburger-icon--open .hamburger-line--top {
-  transform: translateY(6px) rotate(45deg);
-}
-
-.hamburger-icon--open .hamburger-line--middle {
-  opacity: 0;
-  transform: scaleX(0);
-}
-
-.hamburger-icon--open .hamburger-line--bottom {
-  transform: translateY(-6px) rotate(-45deg);
-}
-
-/* ============================================ */
 /* REDUCED MOTION PREFERENCE */
 /* ============================================ */
 
@@ -572,7 +564,10 @@
   .hamburger-icon,
   .hamburger-line,
   .premium-menu-btn,
-  .premium-dropdown {
+  .premium-dropdown,
+  .inkfront-logo-wrapper,
+  .inkfront-logo-user,
+  .premium-navbar__logo-text {
     transition: none !important;
     animation: none !important;
   }
@@ -588,147 +583,5 @@
   
   .hamburger-icon--open .hamburger-line--bottom {
     transform: translateY(-6px) rotate(-45deg);
-  }
-}
-/* ============================================ */
-/* ANIMATED LOGO WITH USER NAME */
-/* ============================================ */
-
-.inkfront-logo-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  overflow: hidden;
-  transition: gap 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* Brand mark - stays fixed */
-.inkfront-brand-mark {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  flex-shrink: 0;
-  transition: all 0.3s ease;
-}
-
-.inkfront-brand-mark svg {
-  width: 26px;
-  height: 26px;
-}
-
-/* User name text */
-.inkfront-logo-user {
-  font-size: 0.9rem;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  color: var(--app-text, #1e293b);
-  transition: all 0.3s ease;
-}
-
-[data-theme="dark"] .inkfront-logo-user {
-  color: #e2e8f0;
-}
-
-/* Scrolled state */
-.premium-navbar--scrolled .inkfront-brand-mark {
-  width: 30px;
-  height: 30px;
-}
-
-.premium-navbar--scrolled .inkfront-brand-mark svg {
-  width: 22px;
-  height: 22px;
-}
-
-.premium-navbar--scrolled .inkfront-logo-user {
-  font-size: 0.8rem;
-}
-
-/* ============================================ */
-/* USER GREETING - Show while name animates */
-/* ============================================ */
-
-.premium-navbar__greeting {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--app-muted, #64748b);
-  margin-right: 12px;
-  white-space: nowrap;
-  transition: all 0.3s ease;
-}
-
-[data-theme="dark"] .premium-navbar__greeting {
-  color: #94a3b8;
-}
-
-.premium-navbar--scrolled .premium-navbar__greeting {
-  font-size: 0.8rem;
-}
-
-/* ============================================ */
-/* RESPONSIVE DESIGN */
-/* ============================================ */
-
-@media (max-width: 768px) {
-  .inkfront-logo-user {
-    font-size: 0.8rem;
-    max-width: 120px;
-  }
-  
-  .premium-navbar__greeting {
-    font-size: 0.75rem;
-    margin-right: 8px;
-  }
-  
-  .premium-navbar--scrolled .inkfront-logo-user {
-    font-size: 0.7rem;
-    max-width: 100px;
-  }
-}
-
-@media (max-width: 480px) {
-  .inkfront-logo-user {
-    font-size: 0.7rem;
-    max-width: 80px;
-  }
-  
-  .premium-navbar__greeting {
-    display: none;
-  }
-  
-  .inkfront-brand-mark {
-    width: 28px;
-    height: 28px;
-  }
-  
-  .inkfront-brand-mark svg {
-    width: 20px;
-    height: 20px;
-  }
-  
-  .premium-navbar--scrolled .inkfront-brand-mark {
-    width: 24px;
-    height: 24px;
-  }
-  
-  .premium-navbar--scrolled .inkfront-brand-mark svg {
-    width: 18px;
-    height: 18px;
-  }
-}
-
-/* ============================================ */
-/* REDUCED MOTION */
-/* ============================================ */
-
-@media (prefers-reduced-motion: reduce) {
-  .inkfront-logo-wrapper,
-  .inkfront-logo-user,
-  .premium-navbar__logo-text {
-    transition: none !important;
-    animation: none !important;
   }
 }
