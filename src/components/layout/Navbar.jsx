@@ -66,7 +66,7 @@ const LogoWithUserInfo = memo(
     // Get the appropriate text to display
     const getDisplayText = () => {
       if (!showUserInfo || !userName) {
-        return "InkFront";
+        return "";
       }
       return displayText || userName;
     };
