@@ -196,6 +196,17 @@ const HamburgerIcon = memo(
 HamburgerIcon.displayName = "HamburgerIcon";
 
 // ============================================
+// HELPER: Get First Name
+// ============================================
+
+const getFirstName = (fullName) => {
+  if (!fullName) return "";
+  // Split by space and return the first part
+  const parts = fullName.trim().split(/\s+/);
+  return parts[0];
+};
+
+// ============================================
 // NAVBAR COMPONENT
 // ============================================
 
@@ -224,11 +235,16 @@ export default function Navbar() {
     roles.includes("ROLE_ADMIN") ||
     roles.includes("SUPER_ADMIN") ||
     roles.includes("ROLE_SUPER_ADMIN");
-  const displayName =
+
+  // Get full display name and extract first name
+  const fullDisplayName =
     user?.displayName ||
     user?.firstName ||
     user?.email ||
     t("nav.account", "Account");
+
+  // Extract only the first name for the logo animation
+  const firstName = getFirstName(fullDisplayName);
 
   const navLinks = [
     { to: "/", label: t("nav.home", "Home") },
@@ -258,8 +274,8 @@ export default function Navbar() {
 
   // Handle user name display - ONE TIME EXPANSION
   useEffect(() => {
-    if (isAuthenticated && displayName && !hasShownNameRef.current) {
-      setUserName(displayName);
+    if (isAuthenticated && firstName && !hasShownNameRef.current) {
+      setUserName(firstName);
 
       // Show user name with delay after login
       clearUserNameTimeout();
@@ -281,7 +297,7 @@ export default function Navbar() {
     return () => {
       clearUserNameTimeout();
     };
-  }, [isAuthenticated, displayName, clearUserNameTimeout]);
+  }, [isAuthenticated, firstName, clearUserNameTimeout]);
 
   // Open menu - immediate
   const openMenu = useCallback(() => {
@@ -467,7 +483,7 @@ export default function Navbar() {
                     <>
                       <div className="premium-dropdown__user">
                         <div className="premium-dropdown__user-name">
-                          {displayName}
+                          {fullDisplayName}
                         </div>
                         <div className="premium-dropdown__user-email">
                           {user?.email}
