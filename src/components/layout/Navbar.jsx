@@ -12,58 +12,49 @@ import "./Navbar.css";
 // ============================================
 
 const FloatingLogo = memo(({ userName = "", isAuthenticated = false }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [shouldShowUser, setShouldShowUser] = useState(false);
-  const [hasShownOnce, setHasShownOnce] = useState(false);
-  const timeoutRef = useRef(null);
+  const [phase, setPhase] = useState("idle");
+  // idle → expanding → visible → collapsing → idle
 
+  const timeoutRef = useRef([]);
+  const clearTimers = () => {
+    timeoutRef.current.forEach(clearTimeout);
+    timeoutRef.current = [];
+  };
   // Handle the expansion animation sequence
   useEffect(() => {
-    // Clear any existing timeout
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
+    clearTimers();
+
+    if (!isAuthenticated || !userName) {
+      setPhase("idle");
+      return;
     }
 
-    if (isAuthenticated && userName && !hasShownOnce) {
-      // Step 1: Start expansion
-      setIsExpanded(true);
-      setHasShownOnce(true);
+    setPhase("expanding");
 
-      // Step 2: After 40% of expansion time (300ms), show username
-      timeoutRef.current = setTimeout(() => {
-        setShouldShowUser(true);
-      }, 300);
+    timeoutRef.current.push(
+      setTimeout(() => {
+        setPhase("visible");
+      }, 500),
+    );
 
-      // Step 3: Hold for 2.5 seconds then collapse
-      timeoutRef.current = setTimeout(() => {
-        setShouldShowUser(false);
+    timeoutRef.current.push(
+      setTimeout(() => {
+        setPhase("collapsing");
+      }, 3000),
+    );
 
-        // Step 4: Wait for username fade out before collapsing
-        timeoutRef.current = setTimeout(() => {
-          setIsExpanded(false);
+    timeoutRef.current.push(
+      setTimeout(() => {
+        setPhase("idle");
+      }, 3600),
+    );
 
-          // Reset for next login
-          timeoutRef.current = setTimeout(() => {
-            setHasShownOnce(false);
-          }, 500);
-        }, 400);
-      }, 2800);
-    } else if (!isAuthenticated) {
-      // Reset when logged out
-      setIsExpanded(false);
-      setShouldShowUser(false);
-      setHasShownOnce(false);
-    }
+    return clearTimers;
+  }, [isAuthenticated, userName]);
+  const expanded =
+    phase === "expanding" || phase === "visible" || phase === "collapsing";
 
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = null;
-      }
-    };
-  }, [isAuthenticated, userName, hasShownOnce]);
-
+  const showUser = phase === "visible" || phase === "collapsing";
   return (
     <div className="floating-logo-wrapper">
       {/* Static Logo - Always visible, never moves */}
@@ -145,7 +136,7 @@ const FloatingLogo = memo(({ userName = "", isAuthenticated = false }) => {
 
             {/* Username - Animates independently */}
             <AnimatePresence mode="wait">
-              {shouldShowUser && (
+              {showUser && (
                 <motion.span
                   className="floating-username"
                   initial={{
