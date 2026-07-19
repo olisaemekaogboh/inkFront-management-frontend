@@ -590,3 +590,145 @@
     transform: translateY(-6px) rotate(-45deg);
   }
 }
+/* ============================================ */
+/* ANIMATED LOGO WITH USER NAME */
+/* ============================================ */
+
+.inkfront-logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+  transition: gap 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Brand mark - stays fixed */
+.inkfront-brand-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.inkfront-brand-mark svg {
+  width: 26px;
+  height: 26px;
+}
+
+/* User name text */
+.inkfront-logo-user {
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  color: var(--app-text, #1e293b);
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .inkfront-logo-user {
+  color: #e2e8f0;
+}
+
+/* Scrolled state */
+.premium-navbar--scrolled .inkfront-brand-mark {
+  width: 30px;
+  height: 30px;
+}
+
+.premium-navbar--scrolled .inkfront-brand-mark svg {
+  width: 22px;
+  height: 22px;
+}
+
+.premium-navbar--scrolled .inkfront-logo-user {
+  font-size: 0.8rem;
+}
+
+/* ============================================ */
+/* USER GREETING - Show while name animates */
+/* ============================================ */
+
+.premium-navbar__greeting {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--app-muted, #64748b);
+  margin-right: 12px;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .premium-navbar__greeting {
+  color: #94a3b8;
+}
+
+.premium-navbar--scrolled .premium-navbar__greeting {
+  font-size: 0.8rem;
+}
+
+/* ============================================ */
+/* RESPONSIVE DESIGN */
+/* ============================================ */
+
+@media (max-width: 768px) {
+  .inkfront-logo-user {
+    font-size: 0.8rem;
+    max-width: 120px;
+  }
+  
+  .premium-navbar__greeting {
+    font-size: 0.75rem;
+    margin-right: 8px;
+  }
+  
+  .premium-navbar--scrolled .inkfront-logo-user {
+    font-size: 0.7rem;
+    max-width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .inkfront-logo-user {
+    font-size: 0.7rem;
+    max-width: 80px;
+  }
+  
+  .premium-navbar__greeting {
+    display: none;
+  }
+  
+  .inkfront-brand-mark {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .inkfront-brand-mark svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .premium-navbar--scrolled .inkfront-brand-mark {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .premium-navbar--scrolled .inkfront-brand-mark svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ============================================ */
+/* REDUCED MOTION */
+/* ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .inkfront-logo-wrapper,
+  .inkfront-logo-user,
+  .premium-navbar__logo-text {
+    transition: none !important;
+    animation: none !important;
+  }
+}

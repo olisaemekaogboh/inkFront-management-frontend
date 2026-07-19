@@ -8,19 +8,75 @@ import useLanguage from "../../hooks/useLanguage";
 import "./Navbar.css";
 
 // ============================================
-// INKFRONT LOGO
+// INKFRONT LOGO WITH ANIMATED EXPANSION
 // ============================================
 
-function InkFrontLogo() {
-  return (
-    <span className="inkfront-brand-mark" aria-hidden="true">
-      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z" fill="blue" />
-        <path d="M25 23h13v17h-7V29h-6v-6Z" fill="blue" opacity="0.7" />
-      </svg>
-    </span>
-  );
-}
+const InkFrontLogo = memo(
+  ({ showName = false, userName = "", isScrolled = false }) => {
+    return (
+      <motion.div
+        className="inkfront-logo-wrapper"
+        initial={false}
+        animate={{
+          width: showName ? "auto" : "auto",
+          gap: showName ? "12px" : "0px",
+        }}
+        transition={{
+          duration: 0.5,
+          ease: [0.34, 1.56, 0.64, 1],
+        }}
+      >
+        <span className="inkfront-brand-mark" aria-hidden="true">
+          <svg
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z"
+              fill="blue"
+            />
+            <path d="M25 23h13v17h-7V29h-6v-6Z" fill="blue" opacity="0.7" />
+          </svg>
+        </span>
+
+        <AnimatePresence mode="wait">
+          {showName && userName ? (
+            <motion.span
+              key="user-name"
+              className="inkfront-logo-user"
+              initial={{ opacity: 0, scale: 0.8, width: 0 }}
+              animate={{ opacity: 1, scale: 1, width: "auto" }}
+              exit={{ opacity: 0, scale: 0.8, width: 0 }}
+              transition={{
+                duration: 0.4,
+                ease: [0.34, 1.56, 0.64, 1],
+              }}
+            >
+              {userName}
+            </motion.span>
+          ) : (
+            <motion.span
+              key="brand-name"
+              className={`premium-navbar__logo-text ${isScrolled ? "premium-navbar__logo-text--scrolled" : ""}`}
+              initial={{ opacity: 0, scale: 0.8, width: 0 }}
+              animate={{ opacity: 1, scale: 1, width: "auto" }}
+              exit={{ opacity: 0, scale: 0.8, width: 0 }}
+              transition={{
+                duration: 0.4,
+                ease: [0.34, 1.56, 0.64, 1],
+              }}
+            >
+              InkFront
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    );
+  },
+);
+
+InkFrontLogo.displayName = "InkFrontLogo";
 
 // ============================================
 // ENHANCED HAMBURGER ICON
@@ -34,7 +90,6 @@ const HamburgerIcon = memo(
     strokeWidth = 2,
     color = "currentColor",
   }) => {
-    // Size variants
     const sizeMap = {
       sm: { width: 18, height: 18 },
       md: { width: 24, height: 24 },
@@ -60,7 +115,6 @@ const HamburgerIcon = memo(
         role="img"
       >
         {isOpen ? (
-          // X icon when open - animated cross
           <>
             <motion.line
               x1="18"
@@ -84,7 +138,6 @@ const HamburgerIcon = memo(
             />
           </>
         ) : (
-          // Three stripes when closed - with staggered animation
           <>
             <motion.line
               x1="3"
@@ -138,10 +191,13 @@ export default function Navbar() {
   const { t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showUserName, setShowUserName] = useState(false);
+  const [userName, setUserName] = useState("");
   const hoverTimeoutRef = useRef(null);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
   const containerRef = useRef(null);
+  const userNameTimeoutRef = useRef(null);
 
   const user = auth?.user || null;
   const isAuthenticated = Boolean(auth?.isAuthenticated);
@@ -170,13 +226,40 @@ export default function Navbar() {
     { to: "/contact", label: t("nav.contact", "Contact") },
   ];
 
-  // Clean hover timeout
+  // Clean timeouts
   const clearHoverTimeout = useCallback(() => {
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
       hoverTimeoutRef.current = null;
     }
   }, []);
+
+  const clearUserNameTimeout = useCallback(() => {
+    if (userNameTimeoutRef.current) {
+      clearTimeout(userNameTimeoutRef.current);
+      userNameTimeoutRef.current = null;
+    }
+  }, []);
+
+  // Handle user name display animation
+  useEffect(() => {
+    if (isAuthenticated && displayName) {
+      setUserName(displayName);
+
+      // Show user name with delay after login
+      clearUserNameTimeout();
+      userNameTimeoutRef.current = setTimeout(() => {
+        setShowUserName(true);
+      }, 500);
+    } else {
+      setShowUserName(false);
+      setUserName("");
+    }
+
+    return () => {
+      clearUserNameTimeout();
+    };
+  }, [isAuthenticated, displayName, clearUserNameTimeout]);
 
   // Open menu - immediate
   const openMenu = useCallback(() => {
@@ -239,12 +322,13 @@ export default function Navbar() {
     return () => document.removeEventListener("keydown", handleEscape);
   }, [menuOpen]);
 
-  // Cleanup timeout on unmount
+  // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
       clearHoverTimeout();
+      clearUserNameTimeout();
     };
-  }, [clearHoverTimeout]);
+  }, [clearHoverTimeout, clearUserNameTimeout]);
 
   const handleNavigation = (to) => {
     setMenuOpen(false);
@@ -252,6 +336,8 @@ export default function Navbar() {
   };
 
   async function handleLogout() {
+    // Hide user name before logout
+    setShowUserName(false);
     if (typeof logout === "function") await logout();
     setMenuOpen(false);
     navigate("/", { replace: true });
@@ -268,11 +354,29 @@ export default function Navbar() {
           className="premium-navbar__logo"
           aria-label={t("nav.home", "Home")}
         >
-          <InkFrontLogo />
-          <span className="premium-navbar__logo-text">InkFront</span>
+          <InkFrontLogo
+            showName={showUserName}
+            userName={userName}
+            isScrolled={isScrolled}
+          />
         </Link>
 
         <div className="premium-navbar__right">
+          {/* User greeting - shown when logged in */}
+          <AnimatePresence>
+            {isAuthenticated && !showUserName && (
+              <motion.span
+                className="premium-navbar__greeting"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.3 }}
+              >
+                {displayName}
+              </motion.span>
+            )}
+          </AnimatePresence>
+
           <div
             ref={containerRef}
             className="premium-menu-container"
