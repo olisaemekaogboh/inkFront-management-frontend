@@ -8,177 +8,91 @@ import useLanguage from "../../hooks/useLanguage";
 import "./Navbar.css";
 
 // ============================================
-// FLOATING DYNAMIC ISLAND LOGO
+// INKFRONT LOGO WITH ONE-TIME EXPANSION
 // ============================================
 
-const FloatingLogo = memo(({ userName = "", isAuthenticated = false }) => {
-  const [phase, setPhase] = useState("idle");
-  // idle → expanding → visible → collapsing → idle
-
-  const timeoutRef = useRef([]);
-  const clearTimers = () => {
-    timeoutRef.current.forEach(clearTimeout);
-    timeoutRef.current = [];
-  };
-  // Handle the expansion animation sequence
-  useEffect(() => {
-    clearTimers();
-
-    if (!isAuthenticated || !userName) {
-      setPhase("idle");
-      return;
-    }
-
-    setPhase("expanding");
-
-    timeoutRef.current.push(
-      setTimeout(() => {
-        setPhase("visible");
-      }, 500),
-    );
-
-    timeoutRef.current.push(
-      setTimeout(() => {
-        setPhase("collapsing");
-      }, 3000),
-    );
-
-    timeoutRef.current.push(
-      setTimeout(() => {
-        setPhase("idle");
-      }, 3600),
-    );
-
-    return clearTimers;
-  }, [isAuthenticated, userName]);
-  const expanded =
-    phase === "expanding" || phase === "visible" || phase === "collapsing";
-
-  const showUser = phase === "visible" || phase === "collapsing";
-  return (
-    <div className="floating-logo-wrapper">
-      {/* Static Logo - Always visible, never moves */}
-      <span className="static-logo-icon" aria-hidden="true">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z"
-            fill="#2563eb"
-          />
-          <path d="M25 23h13v17h-7V29h-6v-6Z" fill="#2563eb" opacity="0.7" />
-        </svg>
-      </span>
-
-      {/* Floating Pill - Absolutely positioned, expands right */}
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            className="floating-pill"
-            initial={{
-              width: 38,
-              opacity: 0,
-              scaleX: 0.8,
-            }}
-            animate={{
-              width: "auto",
-              opacity: 1,
-              scaleX: 1,
-            }}
-            exit={{
-              width: 38,
-              opacity: 0,
-              scaleX: 0.8,
-            }}
-            transition={{
-              type: "spring",
-              stiffness: 260,
-              damping: 26,
-              mass: 0.8,
-              opacity: { duration: 0.3, ease: "easeInOut" },
-            }}
-            style={{
-              position: "absolute",
-              left: 0,
-              top: "50%",
-              transform: "translateY(-50%)",
-              pointerEvents: "none",
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-              padding: "4px 16px 4px 6px",
-              background: "rgba(37, 99, 235, 0.08)",
-              backdropFilter: "blur(12px)",
-              WebkitBackdropFilter: "blur(12px)",
-              borderRadius: "50px",
-              border: "1px solid rgba(37, 99, 235, 0.15)",
-              boxShadow: "0 4px 24px rgba(37, 99, 235, 0.12)",
-              overflow: "hidden",
-              whiteSpace: "nowrap",
-            }}
+const InkFrontLogo = memo(
+  ({ showName = false, userName = "", isScrolled = false }) => {
+    return (
+      <div className="inkfront-logo-wrapper">
+        <span className="inkfront-brand-mark" aria-hidden="true">
+          <svg
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            {/* Logo icon inside pill - matches static one */}
-            <span className="pill-logo-icon" aria-hidden="true">
-              <svg
-                viewBox="0 0 48 48"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z"
-                  fill="#2563eb"
-                />
-                <path
-                  d="M25 23h13v17h-7V29h-6v-6Z"
-                  fill="#2563eb"
-                  opacity="0.7"
-                />
-              </svg>
-            </span>
+            <path
+              d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z"
+              fill="blue"
+            />
+            <path d="M25 23h13v17h-7V29h-6v-6Z" fill="blue" opacity="0.7" />
+          </svg>
+        </span>
 
-            {/* Username - Animates independently */}
-            <AnimatePresence mode="wait">
-              {showUser && (
-                <motion.span
-                  className="floating-username"
-                  initial={{
-                    opacity: 0,
-                    x: -8,
-                    scale: 0.95,
-                    filter: "blur(4px)",
-                  }}
-                  animate={{
-                    opacity: 1,
-                    x: 0,
-                    scale: 1,
-                    filter: "blur(0px)",
-                  }}
-                  exit={{
-                    opacity: 0,
-                    x: 8,
-                    scale: 0.95,
-                    filter: "blur(4px)",
-                  }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 200,
-                    damping: 22,
-                    mass: 0.7,
-                  }}
-                >
-                  <span className="floating-username__text">{userName}</span>
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-});
+        <AnimatePresence mode="wait">
+          {showName && userName ? (
+            <motion.span
+              key="user-name"
+              className="inkfront-logo-user"
+              initial={{ opacity: 0, width: 0, scale: 0.8 }}
+              animate={{
+                opacity: 1,
+                width: "auto",
+                scale: 1,
+                transition: {
+                  duration: 0.6,
+                  ease: [0.34, 1.56, 0.64, 1],
+                },
+              }}
+              exit={{
+                opacity: 0,
+                width: 0,
+                scale: 0.8,
+                transition: {
+                  duration: 0.4,
+                  ease: "easeInOut",
+                },
+              }}
+            >
+              {userName}
+            </motion.span>
+          ) : (
+            <motion.span
+              key="brand-name"
+              className={`premium-navbar__logo-text ${isScrolled ? "premium-navbar__logo-text--scrolled" : ""}`}
+              initial={{ opacity: 0, width: 0, scale: 0.8 }}
+              animate={{
+                opacity: 1,
+                width: "auto",
+                scale: 1,
+                transition: {
+                  duration: 0.4,
+                  ease: [0.34, 1.56, 0.64, 1],
+                },
+              }}
+              exit={{
+                opacity: 0,
+                width: 0,
+                scale: 0.8,
+                transition: {
+                  duration: 0.3,
+                  ease: "easeInOut",
+                },
+              }}
+            >
+              InkFront
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </div>
+    );
+  },
+);
 
-FloatingLogo.displayName = "FloatingLogo";
+InkFrontLogo.displayName = "InkFrontLogo";
 
 // ============================================
-// HAMBURGER ICON
+// ENHANCED HAMBURGER ICON
 // ============================================
 
 const HamburgerIcon = memo(
@@ -290,10 +204,14 @@ export default function Navbar() {
   const { t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showUserName, setShowUserName] = useState(false);
+  const [userName, setUserName] = useState("");
   const hoverTimeoutRef = useRef(null);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
   const containerRef = useRef(null);
+  const userNameTimeoutRef = useRef(null);
+  const hasShownNameRef = useRef(false);
 
   const user = auth?.user || null;
   const isAuthenticated = Boolean(auth?.isAuthenticated);
@@ -329,6 +247,40 @@ export default function Navbar() {
       hoverTimeoutRef.current = null;
     }
   }, []);
+
+  const clearUserNameTimeout = useCallback(() => {
+    if (userNameTimeoutRef.current) {
+      clearTimeout(userNameTimeoutRef.current);
+      userNameTimeoutRef.current = null;
+    }
+  }, []);
+
+  // Handle user name display - ONE TIME EXPANSION
+  useEffect(() => {
+    if (isAuthenticated && displayName && !hasShownNameRef.current) {
+      setUserName(displayName);
+
+      // Show user name with delay after login
+      clearUserNameTimeout();
+      userNameTimeoutRef.current = setTimeout(() => {
+        setShowUserName(true);
+        hasShownNameRef.current = true;
+
+        // Hide user name after 2.5 seconds
+        setTimeout(() => {
+          setShowUserName(false);
+        }, 2500);
+      }, 500);
+    } else if (!isAuthenticated) {
+      setShowUserName(false);
+      setUserName("");
+      hasShownNameRef.current = false;
+    }
+
+    return () => {
+      clearUserNameTimeout();
+    };
+  }, [isAuthenticated, displayName, clearUserNameTimeout]);
 
   // Open menu - immediate
   const openMenu = useCallback(() => {
@@ -395,8 +347,9 @@ export default function Navbar() {
   useEffect(() => {
     return () => {
       clearHoverTimeout();
+      clearUserNameTimeout();
     };
-  }, [clearHoverTimeout]);
+  }, [clearHoverTimeout, clearUserNameTimeout]);
 
   const handleNavigation = (to) => {
     setMenuOpen(false);
@@ -404,6 +357,8 @@ export default function Navbar() {
   };
 
   async function handleLogout() {
+    setShowUserName(false);
+    hasShownNameRef.current = false;
     if (typeof logout === "function") await logout();
     setMenuOpen(false);
     navigate("/", { replace: true });
@@ -420,9 +375,10 @@ export default function Navbar() {
           className="premium-navbar__logo"
           aria-label={t("nav.home", "Home")}
         >
-          <FloatingLogo
-            userName={displayName}
-            isAuthenticated={isAuthenticated}
+          <InkFrontLogo
+            showName={showUserName}
+            userName={userName}
+            isScrolled={isScrolled}
           />
         </Link>
 
