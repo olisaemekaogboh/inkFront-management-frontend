@@ -379,6 +379,16 @@
   color: #94a3b8;
 }
 
+.premium-dropdown__user-location {
+  font-size: 0.72rem;
+  color: var(--color-text-muted, #64748b);
+  margin-top: 2px;
+}
+
+[data-theme="dark"] .premium-dropdown__user-location {
+  color: #94a3b8;
+}
+
 /* Login/Logout Buttons */
 .premium-dropdown__login,
 .premium-dropdown__logout {
@@ -427,6 +437,59 @@
 
 .premium-dropdown::-webkit-scrollbar-thumb:hover {
   background: #2563eb;
+}
+
+/* ============================================ */
+/* USER DISPLAY WITH ROTATION - UPDATED */
+/* ============================================ */
+
+.premium-navbar__logo-text--user {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+  min-width: 100px;
+  font-family: 'Courier New', monospace !important;
+  font-weight: 900 !important;
+  font-size: 1.1rem !important;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.user-display-label {
+  font-family: 'Courier New', monospace !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  -webkit-text-fill-color: initial;
+  color: inherit;
+  display: inline-block;
+}
+
+/* Scrolled state for user text */
+.premium-navbar--seamless.premium-navbar--scrolled .premium-navbar__logo-text--user {
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1rem !important;
+}
+
+[data-theme="dark"] .premium-navbar--seamless.premium-navbar--scrolled .premium-navbar__logo-text--user {
+  background: linear-gradient(135deg, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Animation for rotation - consolidated */
+.premium-navbar__logo-text {
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  overflow: visible;
+  font-family: 'Courier New', monospace;
 }
 
 /* ============================================ */
@@ -479,6 +542,15 @@
 
   .premium-navbar--scrolled .inkfront-logo-user {
     font-size: 0.7rem;
+  }
+
+  .premium-navbar__logo-text--user {
+    font-size: 0.95rem !important;
+    min-width: 80px;
+  }
+  
+  .user-display-label {
+    font-size: 0.85rem !important;
   }
 }
 
@@ -550,6 +622,15 @@
     font-size: 0.7rem;
     max-width: none;
   }
+
+  .premium-navbar__logo-text--user {
+    font-size: 0.85rem !important;
+    min-width: 60px;
+  }
+  
+  .user-display-label {
+    font-size: 0.75rem !important;
+  }
 }
 
 @media (max-width: 360px) {
@@ -589,86 +670,5 @@
   
   .hamburger-icon--open .hamburger-line--bottom {
     transform: translateY(-6px) rotate(-45deg);
-  }
-}
-/* ============================================ */
-/* USER DISPLAY WITH ROTATION */
-/* ============================================ */
-
-.premium-navbar__logo-text--user {
-  display: inline-flex !important;
-  align-items: center;
-  gap: 6px;
-  min-width: 100px;
-  background: linear-gradient(135deg, #2563eb, #7c3aed);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 700;
-}
-
-.user-display-label {
-  font-size: 1.1rem;
-  -webkit-text-fill-color: initial;
-  color: inherit;
-  display: inline-block;
-}
-
-/* Scrolled state for user text */
-.premium-navbar--seamless.premium-navbar--scrolled .premium-navbar__logo-text--user {
-  background: linear-gradient(135deg, #2563eb, #7c3aed);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-size: 1rem;
-}
-
-[data-theme="dark"] .premium-navbar--seamless.premium-navbar--scrolled .premium-navbar__logo-text--user {
-  background: linear-gradient(135deg, #60a5fa, #a78bfa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* User location in dropdown */
-.premium-dropdown__user-location {
-  font-size: 0.72rem;
-  color: var(--color-text-muted, #64748b);
-  margin-top: 2px;
-}
-
-[data-theme="dark"] .premium-dropdown__user-location {
-  color: #94a3b8;
-}
-
-/* Animation for rotation */
-.premium-navbar__logo-text {
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  overflow: visible;
-}
-
-/* Remove any max-width constraints on mobile */
-@media (max-width: 768px) {
-  .premium-navbar__logo-text--user {
-    font-size: 0.85rem !important;
-    min-width: 80px;
-  }
-  
-  .user-display-label {
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .premium-navbar__logo-text--user {
-    font-size: 0.75rem !important;
-    min-width: 60px;
-  }
-  
-  .user-display-label {
-    font-size: 0.8rem;
   }
 }

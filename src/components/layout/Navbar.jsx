@@ -38,7 +38,7 @@ const InkFrontLogo = memo(
         intervalRef.current = setInterval(() => {
           setCurrentDisplay((prev) => {
             if (prev === "name") {
-              setDisplayText(userLocation || "📍 Location");
+              setDisplayText(userLocation || "Unknown Location");
               return "location";
             } else {
               setDisplayText(userName);
@@ -116,7 +116,7 @@ const InkFrontLogo = memo(
             style={{ overflow: "visible" }}
           >
             {isUserMode && currentDisplay === "name" && (
-              <span className="user-display-label">👋 </span>
+              <span className="user-display-label">Welcome, </span>
             )}
             {isUserMode && currentDisplay === "location" && (
               <span className="user-display-label">📍 </span>
@@ -245,39 +245,62 @@ const getFirstName = (fullName) => {
 };
 
 // ============================================
-// HELPER: Get Location from IP Address
+// HELPER: Get Location from IP Address (State & Country only)
 // ============================================
 
 const getUserLocationFromIP = async () => {
   try {
     // Use multiple free IP geolocation APIs with fallback
     const apis = [
-      // ip-api.com - Returns city, region, country
-      {
-        url: "https://ipapi.co/json/",
-        parser: (data) => {
-          if (data.city || data.region || data.country_name) {
-            return `${data.city || ""}${data.city && data.region ? ", " : ""}${data.region || ""}${(data.city || data.region) && data.country_name ? ", " : ""}${data.country_name || ""}`.trim();
-          }
-          return data.country_name || "";
-        },
-      },
+      // ip-api.com - Returns region (state) and country
       {
         url: "https://ip-api.com/json/",
         parser: (data) => {
           if (data.status === "success") {
-            return `${data.city || ""}${data.city && data.regionName ? ", " : ""}${data.regionName || ""}${(data.city || data.regionName) && data.country ? ", " : ""}${data.country || ""}`.trim();
+            const state = data.regionName || "";
+            const country = data.country || "";
+            // Return only state and country
+            if (state && country) {
+              return `${state}, ${country}`;
+            } else if (country) {
+              return country;
+            } else if (state) {
+              return state;
+            }
           }
           return "";
         },
       },
+      // ipapi.co - Returns region and country_name
+      {
+        url: "https://ipapi.co/json/",
+        parser: (data) => {
+          const state = data.region || "";
+          const country = data.country_name || "";
+          if (state && country) {
+            return `${state}, ${country}`;
+          } else if (country) {
+            return country;
+          } else if (state) {
+            return state;
+          }
+          return "";
+        },
+      },
+      // geoplugin.net - Returns region and countryName
       {
         url: "https://geoplugin.net/json.gp",
         parser: (data) => {
-          const city = data.geoplugin_city || "";
-          const region = data.geoplugin_region || "";
+          const state = data.geoplugin_region || "";
           const country = data.geoplugin_countryName || "";
-          return `${city}${city && region ? ", " : ""}${region}${(city || region) && country ? ", " : ""}${country}`.trim();
+          if (state && country) {
+            return `${state}, ${country}`;
+          } else if (country) {
+            return country;
+          } else if (state) {
+            return state;
+          }
+          return "";
         },
       },
     ];
@@ -287,7 +310,6 @@ const getUserLocationFromIP = async () => {
       try {
         const response = await fetch(api.url, {
           headers: { Accept: "application/json" },
-          timeout: 5000, // 5 second timeout
         });
 
         if (!response.ok) continue;
@@ -296,7 +318,7 @@ const getUserLocationFromIP = async () => {
         const location = api.parser(data);
 
         if (location && location.length > 2) {
-          console.log("📍 Location found via IP:", location);
+          console.log("📍 Location found via IP (State, Country):", location);
           return location;
         }
       } catch (error) {
@@ -307,10 +329,13 @@ const getUserLocationFromIP = async () => {
 
     // If all APIs fail, try a simpler approach - just get country
     try {
-      const response = await fetch("https://ip-api.com/json/?fields=country");
+      const response = await fetch(
+        "https://ip-api.com/json/?fields=country,regionName",
+      );
       const data = await response.json();
-      if (data.country) {
-        console.log("📍 Country found via IP:", data.country);
+      if (data.regionName && data.country) {
+        return `${data.regionName}, ${data.country}`;
+      } else if (data.country) {
         return data.country;
       }
     } catch (error) {
@@ -381,11 +406,11 @@ export default function Navbar() {
             setUserLocation(location);
             locationFetchedRef.current = true;
           } else {
-            setUserLocation("🌍 Unknown Location");
+            setUserLocation("Unknown Location");
           }
         } catch (error) {
           console.error("Failed to fetch location:", error);
-          setUserLocation("🌍 Unknown Location");
+          setUserLocation("Unknown Location");
         } finally {
           setIsLoadingLocation(false);
         }
