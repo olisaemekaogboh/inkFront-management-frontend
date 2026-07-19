@@ -8,10 +8,10 @@ import useLanguage from "../../hooks/useLanguage";
 import "./Navbar.css";
 
 // ============================================
-// USER INFO DISPLAY WITH CONTINUOUS ROTATION
+// LOGO WITH USER INFO ROTATION
 // ============================================
 
-const UserInfoDisplay = memo(
+const LogoWithUserInfo = memo(
   ({
     showUserInfo = false,
     userName = "",
@@ -66,7 +66,7 @@ const UserInfoDisplay = memo(
     // Get the appropriate text to display
     const getDisplayText = () => {
       if (!showUserInfo || !userName) {
-        return "";
+        return "InkFront";
       }
       return displayText || userName;
     };
@@ -74,16 +74,27 @@ const UserInfoDisplay = memo(
     const textToShow = getDisplayText();
     const isUserMode = showUserInfo && userName;
 
-    if (!isUserMode) {
-      return null;
-    }
-
     return (
-      <div className="userinfo-wrapper">
+      <div className="inkfront-logo-wrapper">
+        {/* Logo Icon - Always Present */}
+        <span className="inkfront-brand-mark" aria-hidden="true">
+          <svg
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z"
+              fill="blue"
+            />
+            <path d="M25 23h13v17h-7V29h-6v-6Z" fill="blue" opacity="0.7" />
+          </svg>
+        </span>
+
         <AnimatePresence mode="wait">
           <motion.span
-            key={`${currentDisplay}-${displayText}`}
-            className={`premium-navbar__logo-text ${isScrolled ? "premium-navbar__logo-text--scrolled" : ""} premium-navbar__logo-text--user`}
+            key={isUserMode ? `${currentDisplay}-${displayText}` : "brand"}
+            className={`premium-navbar__logo-text ${isScrolled ? "premium-navbar__logo-text--scrolled" : ""} ${isUserMode ? "premium-navbar__logo-text--user" : ""}`}
             initial={{ opacity: 0, y: -10, scale: 0.8 }}
             animate={{
               opacity: 1,
@@ -105,7 +116,7 @@ const UserInfoDisplay = memo(
             }}
             style={{ overflow: "visible" }}
           >
-            {currentDisplay === "name" && (
+            {isUserMode && currentDisplay === "name" && (
               <span className="user-display-label">Welcome, </span>
             )}
             {textToShow}
@@ -116,7 +127,7 @@ const UserInfoDisplay = memo(
   },
 );
 
-UserInfoDisplay.displayName = "UserInfoDisplay";
+LogoWithUserInfo.displayName = "LogoWithUserInfo";
 
 // ============================================
 // ENHANCED HAMBURGER ICON
@@ -505,7 +516,7 @@ export default function Navbar() {
           className="premium-navbar__logo"
           aria-label={t("nav.home", "Home")}
         >
-          <UserInfoDisplay
+          <LogoWithUserInfo
             showUserInfo={showUserInfo}
             userName={userName}
             userLocation={userLocation}
