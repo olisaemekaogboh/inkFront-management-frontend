@@ -54,7 +54,8 @@ const InkFrontLogo = memo(
                 },
               }}
             >
-              {userName}
+              <span className="welcome-text">Welcome, </span>
+              <span className="username-text">{userName}</span>
             </motion.span>
           ) : (
             <motion.span
