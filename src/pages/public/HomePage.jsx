@@ -1143,7 +1143,7 @@ export default function HomePage() {
         />
 
         {/* TRUSTED BRANDS */}
-        {/* <m.section
+        <m.section
           className="premium-logo-strip"
           variants={SECTION_REVEAL_VARIANTS}
           initial="hidden"
@@ -1174,7 +1174,7 @@ export default function HomePage() {
                   ))}
             </div>
           </div>
-        </m.section> */}
+        </m.section>
 
         {/* SERVICES */}
         <m.section

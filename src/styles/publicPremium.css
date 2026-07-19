@@ -81,7 +81,10 @@ body {
   margin: 0 auto;
 }
 
-/* HERO */
+/* ============================================ */
+/* HERO - UPDATED WITH BETTER SPACING */
+/* ============================================ */
+
 .premium-hero {
   position: relative;
   padding: 20px 0 40px;
@@ -90,8 +93,8 @@ body {
 .premium-home-hero {
   position: relative;
   overflow: hidden;
-  min-height: 100vh;
-  
+  min-height: auto; /* Changed from 100vh to auto */
+  padding: 60px 0 20px; /* Added explicit padding */
 }
 
 .premium-compact-hero {
@@ -101,39 +104,10 @@ body {
 .premium-hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
-  gap: 48px;
+  gap: 40px; /* Reduced from 48px */
   align-items: center;
 }
 
-
-@media (max-width: 992px) {
-  .premium-hero-grid {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-  
-  .premium-hero-visual {
-    min-height: auto;
-  }
-  
-  .premium-hero-img {
-    height: 400px;
-  }
-}
-
-@media (max-width: 768px) {
-  .premium-hero-img {
-    height: 300px;
-  }
-  
-  .premium-dashboard-card {
-    position: relative;
-    right: auto;
-    bottom: auto;
-    margin-top: 20px;
-    width: 100%;
-  }
-}
 .premium-hero-copy h1 {
   margin: 18px 0 20px;
   max-width: 760px;
@@ -151,6 +125,153 @@ body {
   line-height: 1.8;
   text-wrap: pretty;
 }
+
+/* Hero Image */
+.premium-hero-visual {
+  position: relative;
+  min-height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.premium-hero-img {
+  display: block;
+  width: 100%;
+  height: 420px; /* Reduced from 520px */
+  object-fit: cover;
+  border-radius: 38px;
+  box-shadow: 0 40px 90px rgba(15, 23, 42, 0.2);
+  transform: translateZ(0);
+}
+
+/* Dashboard Card */
+.premium-dashboard-card {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  width: min(360px, calc(100% - 48px));
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 30px;
+  padding: 24px;
+  background: rgba(17, 24, 39, 0.86);
+  color: #ffffff;
+  backdrop-filter: blur(22px);
+  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.26);
+  transform: translateZ(0);
+}
+
+.premium-dashboard-card > span {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.premium-dashboard-card h2 {
+  margin: 10px 0 18px;
+  font-size: 1.8rem;
+  line-height: 1.08;
+}
+
+.premium-dashboard-list {
+  display: grid;
+  gap: 10px;
+}
+
+.premium-dashboard-list div {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  border-radius: 16px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.09);
+}
+
+/* ============================================ */
+/* RESPONSIVE BREAKPOINTS */
+/* ============================================ */
+
+@media (max-width: 1024px) {
+  .premium-home-hero {
+    padding: 50px 0 15px;
+  }
+  
+  .premium-hero-grid {
+    gap: 32px;
+  }
+  
+  .premium-hero-img {
+    height: 380px;
+  }
+}
+
+@media (max-width: 992px) {
+  .premium-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .premium-hero-visual {
+    min-height: auto;
+  }
+  
+  .premium-hero-img {
+    height: 380px;
+  }
+}
+
+@media (max-width: 768px) {
+  .premium-home-hero {
+    padding: 40px 0 12px;
+  }
+  
+  .premium-hero-grid {
+    gap: 24px;
+  }
+  
+  .premium-hero-img {
+    height: 300px;
+    border-radius: 24px;
+  }
+  
+  .premium-dashboard-card {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    margin-top: 20px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .premium-home-hero {
+    padding: 30px 0 10px;
+  }
+  
+  .premium-hero-grid {
+    gap: 20px;
+  }
+  
+  .premium-hero-img {
+    height: 220px;
+    border-radius: 18px;
+  }
+  
+  .premium-dashboard-card {
+    padding: 18px;
+    border-radius: 20px;
+  }
+  
+  .premium-dashboard-card h2 {
+    font-size: 1.4rem;
+  }
+}
+
+/* ============================================ */
+/* PAGE INTRO - For other pages */
+/* ============================================ */
 
 .premium-page-intro {
   max-width: 840px;
