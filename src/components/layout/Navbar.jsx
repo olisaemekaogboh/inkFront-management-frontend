@@ -54,8 +54,21 @@ const InkFrontLogo = memo(
                 },
               }}
             >
-              <span className="welcome-text">Welcome, </span>
-              <span className="username-text">{userName}</span>
+              <span className="welcome-text" style={{ fontWeight: 700 }}>
+                Welcome,{" "}
+              </span>
+              <span
+                className="username-text"
+                style={{
+                  fontWeight: 900,
+                  background: "linear-gradient(135deg, #2563eb, #3b82f6)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                {userName}
+              </span>
             </motion.span>
           ) : (
             <motion.span
