@@ -245,12 +245,83 @@ const getFirstName = (fullName) => {
 };
 
 // ============================================
-// HELPER: Get Location
+// HELPER: Get Location from IP Address
 // ============================================
 
-const getUserLocation = (user) => {
-  if (!user) return "";
-  return user.location || user.city || user.country || user.region || "";
+const getUserLocationFromIP = async () => {
+  try {
+    // Use multiple free IP geolocation APIs with fallback
+    const apis = [
+      // ip-api.com - Returns city, region, country
+      {
+        url: "https://ipapi.co/json/",
+        parser: (data) => {
+          if (data.city || data.region || data.country_name) {
+            return `${data.city || ""}${data.city && data.region ? ", " : ""}${data.region || ""}${(data.city || data.region) && data.country_name ? ", " : ""}${data.country_name || ""}`.trim();
+          }
+          return data.country_name || "";
+        },
+      },
+      {
+        url: "https://ip-api.com/json/",
+        parser: (data) => {
+          if (data.status === "success") {
+            return `${data.city || ""}${data.city && data.regionName ? ", " : ""}${data.regionName || ""}${(data.city || data.regionName) && data.country ? ", " : ""}${data.country || ""}`.trim();
+          }
+          return "";
+        },
+      },
+      {
+        url: "https://geoplugin.net/json.gp",
+        parser: (data) => {
+          const city = data.geoplugin_city || "";
+          const region = data.geoplugin_region || "";
+          const country = data.geoplugin_countryName || "";
+          return `${city}${city && region ? ", " : ""}${region}${(city || region) && country ? ", " : ""}${country}`.trim();
+        },
+      },
+    ];
+
+    // Try each API until one works
+    for (const api of apis) {
+      try {
+        const response = await fetch(api.url, {
+          headers: { Accept: "application/json" },
+          timeout: 5000, // 5 second timeout
+        });
+
+        if (!response.ok) continue;
+
+        const data = await response.json();
+        const location = api.parser(data);
+
+        if (location && location.length > 2) {
+          console.log("📍 Location found via IP:", location);
+          return location;
+        }
+      } catch (error) {
+        console.warn("IP Geolocation API failed:", api.url, error.message);
+        continue;
+      }
+    }
+
+    // If all APIs fail, try a simpler approach - just get country
+    try {
+      const response = await fetch("https://ip-api.com/json/?fields=country");
+      const data = await response.json();
+      if (data.country) {
+        console.log("📍 Country found via IP:", data.country);
+        return data.country;
+      }
+    } catch (error) {
+      console.warn("Fallback geolocation failed:", error.message);
+    }
+
+    return "";
+  } catch (error) {
+    console.error("Error fetching location from IP:", error);
+    return "";
+  }
 };
 
 // ============================================
@@ -266,10 +337,12 @@ export default function Navbar() {
   const [showUserInfo, setShowUserInfo] = useState(false);
   const [userName, setUserName] = useState("");
   const [userLocation, setUserLocation] = useState("");
+  const [isLoadingLocation, setIsLoadingLocation] = useState(false);
   const hoverTimeoutRef = useRef(null);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
   const containerRef = useRef(null);
+  const locationFetchedRef = useRef(false);
 
   const user = auth?.user || null;
   const isAuthenticated = Boolean(auth?.isAuthenticated);
@@ -285,13 +358,61 @@ export default function Navbar() {
   // Get full display name and extract first name
   const fullDisplayName =
     user?.displayName ||
+    user?.name ||
     user?.firstName ||
     user?.email ||
     t("nav.account", "Account");
 
   // Extract first name for the logo animation
   const firstName = getFirstName(fullDisplayName);
-  const location = getUserLocation(user);
+
+  // Fetch location from IP when user is authenticated
+  useEffect(() => {
+    const fetchLocation = async () => {
+      if (
+        isAuthenticated &&
+        !locationFetchedRef.current &&
+        !isLoadingLocation
+      ) {
+        setIsLoadingLocation(true);
+        try {
+          const location = await getUserLocationFromIP();
+          if (location) {
+            setUserLocation(location);
+            locationFetchedRef.current = true;
+          } else {
+            setUserLocation("🌍 Unknown Location");
+          }
+        } catch (error) {
+          console.error("Failed to fetch location:", error);
+          setUserLocation("🌍 Unknown Location");
+        } finally {
+          setIsLoadingLocation(false);
+        }
+      }
+    };
+
+    fetchLocation();
+  }, [isAuthenticated, isLoadingLocation]);
+
+  // Handle user info display - CONTINUOUS ROTATION
+  useEffect(() => {
+    if (isAuthenticated && firstName) {
+      setUserName(firstName);
+
+      // Show user info with a small delay
+      const timeoutId = setTimeout(() => {
+        setShowUserInfo(true);
+      }, 500);
+
+      return () => clearTimeout(timeoutId);
+    } else if (!isAuthenticated) {
+      setShowUserInfo(false);
+      setUserName("");
+      setUserLocation("");
+      locationFetchedRef.current = false;
+    }
+  }, [isAuthenticated, firstName]);
 
   const navLinks = [
     { to: "/", label: t("nav.home", "Home") },
@@ -311,25 +432,6 @@ export default function Navbar() {
       hoverTimeoutRef.current = null;
     }
   }, []);
-
-  // Handle user info display - CONTINUOUS ROTATION
-  useEffect(() => {
-    if (isAuthenticated && firstName) {
-      setUserName(firstName);
-      setUserLocation(location || "📍 Location");
-
-      // Show user info with a small delay
-      const timeoutId = setTimeout(() => {
-        setShowUserInfo(true);
-      }, 500);
-
-      return () => clearTimeout(timeoutId);
-    } else if (!isAuthenticated) {
-      setShowUserInfo(false);
-      setUserName("");
-      setUserLocation("");
-    }
-  }, [isAuthenticated, firstName, location]);
 
   // Open menu - immediate
   const openMenu = useCallback(() => {
@@ -408,6 +510,7 @@ export default function Navbar() {
     setShowUserInfo(false);
     setUserName("");
     setUserLocation("");
+    locationFetchedRef.current = false;
     if (typeof logout === "function") await logout();
     setMenuOpen(false);
     navigate("/", { replace: true });
@@ -521,9 +624,9 @@ export default function Navbar() {
                         <div className="premium-dropdown__user-email">
                           {user?.email}
                         </div>
-                        {location && (
+                        {userLocation && !userLocation.includes("Unknown") && (
                           <div className="premium-dropdown__user-location">
-                            📍 {location}
+                            📍 {userLocation}
                           </div>
                         )}
                       </div>
