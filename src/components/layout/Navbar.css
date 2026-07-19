@@ -60,21 +60,53 @@
 }
 
 /* ============================================ */
-/* LOGO SHELL - MAIN CONTAINER */
+/* DYNAMIC ISLAND INSPIRED LOGO */
 /* ============================================ */
 
-.logo-shell {
+.animated-logo {
   display: flex;
   align-items: center;
-  gap: 8px;
   width: fit-content;
-  will-change: transform, width;
 }
 
-/* ============================================ */
-/* LOGO ICON - ALWAYS VISIBLE */
-/* ============================================ */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+  padding: 6px 8px;
+  background: rgba(37, 99, 235, 0.1);
+  border-radius: 50px;
+  border: 1px solid rgba(37, 99, 235, 0.15);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+  transition: 
+    padding 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    border-radius 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, width, padding;
+}
 
+/* Expanded state */
+.logo-container[data-expanded="true"] {
+  padding: 6px 16px 6px 10px;
+  gap: 10px;
+  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.2);
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.12);
+}
+
+[data-theme="dark"] .logo-container {
+  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.15);
+}
+
+[data-theme="dark"] .logo-container[data-expanded="true"] {
+  background: rgba(59, 130, 246, 0.06);
+  border-color: rgba(59, 130, 246, 0.2);
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
+}
+
+/* Logo Icon */
 .logo-icon {
   display: flex;
   align-items: center;
@@ -82,11 +114,14 @@
   width: 34px;
   height: 34px;
   flex-shrink: 0;
+  border-radius: 12px;
+  transition: all 0.3s ease;
 }
 
 .logo-icon svg {
   width: 26px;
   height: 26px;
+  transition: all 0.3s ease;
 }
 
 /* Scrolled state */
@@ -100,55 +135,19 @@
   height: 22px;
 }
 
-/* ============================================ */
-/* ANIMATED TEXT CONTAINER */
-/* ============================================ */
+.premium-navbar--scrolled .logo-container {
+  padding: 4px 6px;
+}
 
-.animated-text-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: fit-content;
-  will-change: transform, width;
+.premium-navbar--scrolled .logo-container[data-expanded="true"] {
+  padding: 4px 14px 4px 8px;
 }
 
 /* ============================================ */
-/* BRAND TEXT - ALWAYS VISIBLE */
+/* ANIMATED USER NAME */
 /* ============================================ */
 
-.brand-text {
-  font-size: 1.25rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, #2563eb, #f0f2f7);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-/* Brand text when scrolled */
-.brand-text--scrolled {
-  background: linear-gradient(135deg, #2563eb, #3b82f6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: none;
-  font-size: 1.1rem;
-}
-
-[data-theme="dark"] .brand-text--scrolled {
-  background: linear-gradient(135deg, #ffffff, #94a3b8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* ============================================ */
-/* USER NAME - INDEPENDENT ANIMATION */
-/* ============================================ */
-
-.user-name {
+.animated-user {
   display: flex;
   align-items: center;
   flex-shrink: 1;
@@ -156,7 +155,7 @@
   overflow: hidden;
 }
 
-.user-name__text {
+.animated-user__text {
   display: inline-block;
   font-size: 0.9rem;
   font-weight: 600;
@@ -168,12 +167,12 @@
   padding: 0 2px;
 }
 
-[data-theme="dark"] .user-name__text {
+[data-theme="dark"] .animated-user__text {
   color: #e2e8f0;
 }
 
 /* Scrolled state */
-.premium-navbar--scrolled .user-name__text {
+.premium-navbar--scrolled .animated-user__text {
   font-size: 0.8rem;
   max-width: 250px;
 }
@@ -191,20 +190,31 @@
     padding: 10px 16px;
   }
 
-  .brand-text {
-    font-size: 1rem;
+  .logo-icon {
+    width: 30px;
+    height: 30px;
   }
 
-  .brand-text--scrolled {
-    font-size: 0.9rem;
+  .logo-icon svg {
+    width: 22px;
+    height: 22px;
   }
 
-  .user-name__text {
+  .logo-container {
+    padding: 4px 6px;
+  }
+
+  .logo-container[data-expanded="true"] {
+    padding: 4px 12px 4px 8px;
+    gap: 8px;
+  }
+
+  .animated-user__text {
     font-size: 0.8rem;
     max-width: 200px;
   }
 
-  .premium-navbar--scrolled .user-name__text {
+  .premium-navbar--scrolled .animated-user__text {
     font-size: 0.7rem;
     max-width: 160px;
   }
@@ -243,29 +253,31 @@
   }
 
   .logo-icon {
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
   }
 
   .logo-icon svg {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
   }
 
-  .brand-text {
-    font-size: 0.9rem;
+  .logo-container {
+    padding: 3px 4px;
+    border-radius: 40px;
   }
 
-  .brand-text--scrolled {
-    font-size: 0.8rem;
+  .logo-container[data-expanded="true"] {
+    padding: 3px 10px 3px 6px;
+    gap: 6px;
   }
 
-  .user-name__text {
+  .animated-user__text {
     font-size: 0.7rem;
     max-width: 140px;
   }
 
-  .premium-navbar--scrolled .user-name__text {
+  .premium-navbar--scrolled .animated-user__text {
     font-size: 0.65rem;
     max-width: 100px;
   }
@@ -321,31 +333,28 @@
     padding: 8px 10px;
   }
 
-  .brand-text {
-    display: none;
-  }
-
   .logo-icon {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
   }
 
   .logo-icon svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
   }
 
-  .user-name__text {
-    font-size: 0.65rem;
-    max-width: 100px;
+  .logo-container {
+    padding: 2px 3px;
   }
 
-  .logo-shell {
+  .logo-container[data-expanded="true"] {
+    padding: 2px 8px 2px 4px;
     gap: 4px;
   }
 
-  .animated-text-container {
-    gap: 4px;
+  .animated-user__text {
+    font-size: 0.6rem;
+    max-width: 80px;
   }
 }
 
@@ -617,9 +626,9 @@
 /* ============================================ */
 
 @media (prefers-reduced-motion: reduce) {
-  .logo-shell,
-  .animated-text-container,
-  .user-name,
+  .animated-logo,
+  .logo-container,
+  .animated-user,
   .hamburger-icon,
   .hamburger-line,
   .premium-menu-btn,
@@ -628,11 +637,11 @@
     animation: none !important;
   }
   
-  .user-name {
+  .animated-user {
     opacity: 0 !important;
   }
   
-  .logo-shell.is-expanded .user-name {
+  .logo-container[data-expanded="true"] .animated-user {
     opacity: 1 !important;
   }
   

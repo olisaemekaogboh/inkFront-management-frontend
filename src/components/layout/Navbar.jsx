@@ -8,145 +8,145 @@ import useLanguage from "../../hooks/useLanguage";
 import "./Navbar.css";
 
 // ============================================
-// LOGO SHELL - Coordinates the animation
+// ANIMATED LOGO - DYNAMIC ISLAND INSPIRED
 // ============================================
 
-const LogoShell = memo(({ children, isExpanded }) => {
-  return (
-    <motion.div
-      className="logo-shell"
-      layout
-      transition={{
-        layout: {
-          duration: 0.7,
-          ease: [0.22, 1, 0.36, 1],
-        },
-      }}
-    >
-      {children}
-    </motion.div>
-  );
-});
+const AnimatedLogo = memo(({ userName = "", isAuthenticated = false }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [shouldShowUser, setShouldShowUser] = useState(false);
+  const [hasShownOnce, setHasShownOnce] = useState(false);
+  const timeoutRef = useRef(null);
 
-LogoShell.displayName = "LogoShell";
+  // Handle the expansion animation sequence
+  useEffect(() => {
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
 
-// ============================================
-// ANIMATED TEXT CONTAINER
-// ============================================
+    if (isAuthenticated && userName && !hasShownOnce) {
+      // Step 1: Start expansion
+      setIsExpanded(true);
+      setHasShownOnce(true);
 
-const AnimatedTextContainer = memo(({ children, isExpanded }) => {
-  return (
-    <motion.div
-      className="animated-text-container"
-      layout
-      transition={{
-        layout: {
-          duration: 0.7,
-          ease: [0.22, 1, 0.36, 1],
-        },
-      }}
-    >
-      {children}
-    </motion.div>
-  );
-});
+      // Step 2: After 40% of expansion time (300ms), show username
+      timeoutRef.current = setTimeout(() => {
+        setShouldShowUser(true);
+      }, 300);
 
-AnimatedTextContainer.displayName = "AnimatedTextContainer";
+      // Step 3: Hold for 2.5 seconds then collapse
+      timeoutRef.current = setTimeout(() => {
+        setShouldShowUser(false);
 
-// ============================================
-// BRAND TEXT
-// ============================================
+        // Step 4: Wait for username fade out before collapsing
+        timeoutRef.current = setTimeout(() => {
+          setIsExpanded(false);
 
-const BrandText = memo(({ isScrolled }) => {
-  return (
-    <span className={`brand-text ${isScrolled ? "brand-text--scrolled" : ""}`}>
-      InkFront
-    </span>
-  );
-});
+          // Reset for next login
+          timeoutRef.current = setTimeout(() => {
+            setHasShownOnce(false);
+          }, 500);
+        }, 400);
+      }, 2800);
+    } else if (!isAuthenticated) {
+      // Reset when logged out
+      setIsExpanded(false);
+      setShouldShowUser(false);
+      setHasShownOnce(false);
+    }
 
-BrandText.displayName = "BrandText";
-
-// ============================================
-// USER NAME WITH INDEPENDENT ANIMATION
-// ============================================
-
-const UserName = memo(({ name, isVisible }) => {
-  return (
-    <motion.span
-      className="user-name"
-      initial={{
-        opacity: 0,
-        x: -12,
-        filter: "blur(4px)",
-        clipPath: "inset(0 100% 0 0)",
-      }}
-      animate={
-        isVisible
-          ? {
-              opacity: 1,
-              x: 0,
-              filter: "blur(0px)",
-              clipPath: "inset(0 0% 0 0)",
-            }
-          : {
-              opacity: 0,
-              x: -12,
-              filter: "blur(4px)",
-              clipPath: "inset(0 100% 0 0)",
-            }
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
       }
+    };
+  }, [isAuthenticated, userName, hasShownOnce]);
+
+  return (
+    <motion.div
+      className="animated-logo"
+      layout
       transition={{
-        duration: 0.6,
-        ease: [0.22, 1, 0.36, 1],
+        layout: {
+          type: "spring",
+          stiffness: 260,
+          damping: 26,
+          mass: 0.8,
+        },
       }}
     >
-      <span className="user-name__text">{name}</span>
-    </motion.span>
+      <motion.div
+        className="logo-container"
+        layout
+        transition={{
+          layout: {
+            type: "spring",
+            stiffness: 260,
+            damping: 26,
+            mass: 0.8,
+          },
+        }}
+      >
+        {/* Logo Icon - Always visible */}
+        <motion.span className="logo-icon" layout="position" aria-hidden="true">
+          <svg
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z"
+              fill="#2563eb"
+            />
+            <path d="M25 23h13v17h-7V29h-6v-6Z" fill="#2563eb" opacity="0.7" />
+          </svg>
+        </motion.span>
+
+        {/* Username - Animates independently */}
+        <AnimatePresence mode="wait">
+          {shouldShowUser && (
+            <motion.span
+              className="animated-user"
+              initial={{
+                opacity: 0,
+                x: 12,
+                scale: 0.95,
+                filter: "blur(4px)",
+              }}
+              animate={{
+                opacity: 1,
+                x: 0,
+                scale: 1,
+                filter: "blur(0px)",
+              }}
+              exit={{
+                opacity: 0,
+                x: -12,
+                scale: 0.95,
+                filter: "blur(4px)",
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 200,
+                damping: 22,
+                mass: 0.7,
+              }}
+            >
+              <span className="animated-user__text">{userName}</span>
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </motion.div>
   );
 });
 
-UserName.displayName = "UserName";
+AnimatedLogo.displayName = "AnimatedLogo";
 
 // ============================================
-// LOGO ICON
-// ============================================
-
-const LogoIcon = memo(() => {
-  return (
-    <span className="logo-icon" aria-hidden="true">
-      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z" fill="blue" />
-        <path d="M25 23h13v17h-7V29h-6v-6Z" fill="blue" opacity="0.7" />
-      </svg>
-    </span>
-  );
-});
-
-LogoIcon.displayName = "LogoIcon";
-
-// ============================================
-// INKFRONT LOGO - COMPLETE REBUILD
-// ============================================
-
-const InkFrontLogo = memo(
-  ({ showName = false, userName = "", isScrolled = false }) => {
-    return (
-      <LogoShell isExpanded={showName}>
-        <LogoIcon />
-        <AnimatedTextContainer isExpanded={showName}>
-          <BrandText isScrolled={isScrolled} />
-          <UserName name={userName} isVisible={showName} />
-        </AnimatedTextContainer>
-      </LogoShell>
-    );
-  },
-);
-
-InkFrontLogo.displayName = "InkFrontLogo";
-
-// ============================================
-// ENHANCED HAMBURGER ICON
+// HAMBURGER ICON
 // ============================================
 
 const HamburgerIcon = memo(
@@ -258,14 +258,10 @@ export default function Navbar() {
   const { t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [showUserName, setShowUserName] = useState(false);
-  const [userName, setUserName] = useState("");
   const hoverTimeoutRef = useRef(null);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
   const containerRef = useRef(null);
-  const userNameTimeoutRef = useRef(null);
-  const hasShownNameRef = useRef(false);
 
   const user = auth?.user || null;
   const isAuthenticated = Boolean(auth?.isAuthenticated);
@@ -301,39 +297,6 @@ export default function Navbar() {
       hoverTimeoutRef.current = null;
     }
   }, []);
-
-  const clearUserNameTimeout = useCallback(() => {
-    if (userNameTimeoutRef.current) {
-      clearTimeout(userNameTimeoutRef.current);
-      userNameTimeoutRef.current = null;
-    }
-  }, []);
-
-  // Handle user name display - ONE TIME PREMIUM EXPANSION
-  useEffect(() => {
-    if (isAuthenticated && displayName && !hasShownNameRef.current) {
-      setUserName(displayName);
-
-      clearUserNameTimeout();
-      userNameTimeoutRef.current = setTimeout(() => {
-        setShowUserName(true);
-        hasShownNameRef.current = true;
-
-        // Smooth collapse back after 2.5 seconds
-        setTimeout(() => {
-          setShowUserName(false);
-        }, 2500);
-      }, 500);
-    } else if (!isAuthenticated) {
-      setShowUserName(false);
-      setUserName("");
-      hasShownNameRef.current = false;
-    }
-
-    return () => {
-      clearUserNameTimeout();
-    };
-  }, [isAuthenticated, displayName, clearUserNameTimeout]);
 
   // Open menu - immediate
   const openMenu = useCallback(() => {
@@ -400,9 +363,8 @@ export default function Navbar() {
   useEffect(() => {
     return () => {
       clearHoverTimeout();
-      clearUserNameTimeout();
     };
-  }, [clearHoverTimeout, clearUserNameTimeout]);
+  }, [clearHoverTimeout]);
 
   const handleNavigation = (to) => {
     setMenuOpen(false);
@@ -410,8 +372,6 @@ export default function Navbar() {
   };
 
   async function handleLogout() {
-    setShowUserName(false);
-    hasShownNameRef.current = false;
     if (typeof logout === "function") await logout();
     setMenuOpen(false);
     navigate("/", { replace: true });
@@ -428,10 +388,9 @@ export default function Navbar() {
           className="premium-navbar__logo"
           aria-label={t("nav.home", "Home")}
         >
-          <InkFrontLogo
-            showName={showUserName}
-            userName={userName}
-            isScrolled={isScrolled}
+          <AnimatedLogo
+            userName={displayName}
+            isAuthenticated={isAuthenticated}
           />
         </Link>
 
