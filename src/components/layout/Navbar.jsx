@@ -34,10 +34,10 @@ const InkFrontLogo = memo(
             <motion.span
               key="user-name"
               className="inkfront-logo-user"
-              initial={{ opacity: 0, width: 0, scale: 0.8 }}
+              initial={{ opacity: 0, maxWidth: 0, scale: 0.8 }}
               animate={{
                 opacity: 1,
-                width: "auto",
+                maxWidth: 300,
                 scale: 1,
                 transition: {
                   duration: 0.6,
@@ -46,13 +46,14 @@ const InkFrontLogo = memo(
               }}
               exit={{
                 opacity: 0,
-                width: 0,
+                maxWidth: 0,
                 scale: 0.8,
                 transition: {
                   duration: 0.4,
                   ease: "easeInOut",
                 },
               }}
+              style={{ overflow: "visible" }}
             >
               <span className="welcome-text" style={{ fontWeight: 700 }}>
                 Welcome,{" "}
@@ -67,6 +68,8 @@ const InkFrontLogo = memo(
                   backgroundClip: "text",
                   fontSize: "15px",
                   fontFamily: "monospace",
+                  whiteSpace: "nowrap",
+                  display: "inline-block",
                 }}
               >
                 {userName}
@@ -76,10 +79,10 @@ const InkFrontLogo = memo(
             <motion.span
               key="brand-name"
               className={`premium-navbar__logo-text ${isScrolled ? "premium-navbar__logo-text--scrolled" : ""}`}
-              initial={{ opacity: 0, width: 0, scale: 0.8 }}
+              initial={{ opacity: 0, maxWidth: 0, scale: 0.8 }}
               animate={{
                 opacity: 1,
-                width: "auto",
+                maxWidth: 200,
                 scale: 1,
                 transition: {
                   duration: 0.4,
@@ -88,13 +91,14 @@ const InkFrontLogo = memo(
               }}
               exit={{
                 opacity: 0,
-                width: 0,
+                maxWidth: 0,
                 scale: 0.8,
                 transition: {
                   duration: 0.3,
                   ease: "easeInOut",
                 },
               }}
+              style={{ overflow: "visible" }}
             >
               InkFront
             </motion.span>
