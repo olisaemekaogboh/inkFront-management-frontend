@@ -8,17 +8,17 @@ import useLanguage from "../../hooks/useLanguage";
 import "./Navbar.css";
 
 // ============================================
-// INKFRONT LOGO WITH CONTINUOUS ROTATION
+// USER INFO DISPLAY WITH CONTINUOUS ROTATION
 // ============================================
 
-const InkFrontLogo = memo(
+const UserInfoDisplay = memo(
   ({
     showUserInfo = false,
     userName = "",
     userLocation = "",
     isScrolled = false,
   }) => {
-    const [currentDisplay, setCurrentDisplay] = useState("brand");
+    const [currentDisplay, setCurrentDisplay] = useState("name");
     const [displayText, setDisplayText] = useState("");
     const intervalRef = useRef(null);
 
@@ -53,8 +53,8 @@ const InkFrontLogo = memo(
           }
         };
       } else {
-        // Reset to brand when not authenticated
-        setCurrentDisplay("brand");
+        // Reset when not authenticated
+        setCurrentDisplay("name");
         setDisplayText("");
         if (intervalRef.current) {
           clearInterval(intervalRef.current);
@@ -66,7 +66,7 @@ const InkFrontLogo = memo(
     // Get the appropriate text to display
     const getDisplayText = () => {
       if (!showUserInfo || !userName) {
-        return "InkFront";
+        return "";
       }
       return displayText || userName;
     };
@@ -74,26 +74,16 @@ const InkFrontLogo = memo(
     const textToShow = getDisplayText();
     const isUserMode = showUserInfo && userName;
 
-    return (
-      <div className="inkfront-logo-wrapper">
-        <span className="inkfront-brand-mark" aria-hidden="true">
-          <svg
-            viewBox="0 0 48 48"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z"
-              fill="blue"
-            />
-            <path d="M25 23h13v17h-7V29h-6v-6Z" fill="blue" opacity="0.7" />
-          </svg>
-        </span>
+    if (!isUserMode) {
+      return null;
+    }
 
+    return (
+      <div className="userinfo-wrapper">
         <AnimatePresence mode="wait">
           <motion.span
-            key={isUserMode ? `${currentDisplay}-${displayText}` : "brand"}
-            className={`premium-navbar__logo-text ${isScrolled ? "premium-navbar__logo-text--scrolled" : ""} ${isUserMode ? "premium-navbar__logo-text--user" : ""}`}
+            key={`${currentDisplay}-${displayText}`}
+            className={`premium-navbar__logo-text ${isScrolled ? "premium-navbar__logo-text--scrolled" : ""} premium-navbar__logo-text--user`}
             initial={{ opacity: 0, y: -10, scale: 0.8 }}
             animate={{
               opacity: 1,
@@ -115,11 +105,8 @@ const InkFrontLogo = memo(
             }}
             style={{ overflow: "visible" }}
           >
-            {isUserMode && currentDisplay === "name" && (
+            {currentDisplay === "name" && (
               <span className="user-display-label">Welcome, </span>
-            )}
-            {isUserMode && currentDisplay === "location" && (
-              <span className="user-display-label">📍 </span>
             )}
             {textToShow}
           </motion.span>
@@ -129,7 +116,7 @@ const InkFrontLogo = memo(
   },
 );
 
-InkFrontLogo.displayName = "InkFrontLogo";
+UserInfoDisplay.displayName = "UserInfoDisplay";
 
 // ============================================
 // ENHANCED HAMBURGER ICON
@@ -245,107 +232,73 @@ const getFirstName = (fullName) => {
 };
 
 // ============================================
-// HELPER: Get Location from IP Address (State & Country only)
+// HELPER: Get Location from Browser Geolocation
 // ============================================
 
-const getUserLocationFromIP = async () => {
+const getCurrentPosition = () =>
+  new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject(new Error("Geolocation not supported"));
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(resolve, reject, {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 60000,
+    });
+  });
+
+const getUserLocationFromBrowser = async () => {
   try {
-    // Use multiple free IP geolocation APIs with fallback
-    const apis = [
-      // ip-api.com - Returns region (state) and country
-      {
-        url: "https://ip-api.com/json/",
-        parser: (data) => {
-          if (data.status === "success") {
-            const state = data.regionName || "";
-            const country = data.country || "";
-            // Return only state and country
-            if (state && country) {
-              return `${state}, ${country}`;
-            } else if (country) {
-              return country;
-            } else if (state) {
-              return state;
-            }
-          }
-          return "";
-        },
-      },
-      // ipapi.co - Returns region and country_name
-      {
-        url: "https://ipapi.co/json/",
-        parser: (data) => {
-          const state = data.region || "";
-          const country = data.country_name || "";
-          if (state && country) {
-            return `${state}, ${country}`;
-          } else if (country) {
-            return country;
-          } else if (state) {
-            return state;
-          }
-          return "";
-        },
-      },
-      // geoplugin.net - Returns region and countryName
-      {
-        url: "https://geoplugin.net/json.gp",
-        parser: (data) => {
-          const state = data.geoplugin_region || "";
-          const country = data.geoplugin_countryName || "";
-          if (state && country) {
-            return `${state}, ${country}`;
-          } else if (country) {
-            return country;
-          } else if (state) {
-            return state;
-          }
-          return "";
-        },
-      },
-    ];
+    const position = await getCurrentPosition();
+    const { latitude, longitude } = position.coords;
 
-    // Try each API until one works
-    for (const api of apis) {
-      try {
-        const response = await fetch(api.url, {
-          headers: { Accept: "application/json" },
-        });
+    // Use reverse geocoding to get state and country from coordinates
+    const response = await fetch(
+      `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
+    );
 
-        if (!response.ok) continue;
-
-        const data = await response.json();
-        const location = api.parser(data);
-
-        if (location && location.length > 2) {
-          console.log("📍 Location found via IP (State, Country):", location);
-          return location;
-        }
-      } catch (error) {
-        console.warn("IP Geolocation API failed:", api.url, error.message);
-        continue;
-      }
+    if (!response.ok) {
+      throw new Error("Reverse geocoding failed");
     }
 
-    // If all APIs fail, try a simpler approach - just get country
-    try {
-      const response = await fetch(
-        "https://ip-api.com/json/?fields=country,regionName",
-      );
-      const data = await response.json();
-      if (data.regionName && data.country) {
-        return `${data.regionName}, ${data.country}`;
-      } else if (data.country) {
-        return data.country;
-      }
-    } catch (error) {
-      console.warn("Fallback geolocation failed:", error.message);
+    const data = await response.json();
+
+    // Extract state (principalSubdivision) and country
+    const state = data.principalSubdivision || data.region || "";
+    const country = data.countryName || data.country || "";
+
+    if (state && country) {
+      return `${state}, ${country}`;
+    } else if (country) {
+      return country;
+    } else if (state) {
+      return state;
     }
 
-    return "";
+    return "Unknown Location";
   } catch (error) {
-    console.error("Error fetching location from IP:", error);
-    return "";
+    console.error("Error getting location from browser:", error);
+
+    // Fallback: Try IP-based geolocation if browser geolocation fails
+    try {
+      const response = await fetch("https://ip-api.com/json/");
+      const data = await response.json();
+      if (data.status === "success") {
+        const state = data.regionName || "";
+        const country = data.country || "";
+        if (state && country) {
+          return `${state}, ${country}`;
+        } else if (country) {
+          return country;
+        }
+      }
+    } catch (fallbackError) {
+      console.error("Fallback IP geolocation failed:", fallbackError);
+    }
+
+    return "Unknown Location";
   }
 };
 
@@ -391,7 +344,7 @@ export default function Navbar() {
   // Extract first name for the logo animation
   const firstName = getFirstName(fullDisplayName);
 
-  // Fetch location from IP when user is authenticated
+  // Fetch location from browser when user is authenticated
   useEffect(() => {
     const fetchLocation = async () => {
       if (
@@ -401,7 +354,7 @@ export default function Navbar() {
       ) {
         setIsLoadingLocation(true);
         try {
-          const location = await getUserLocationFromIP();
+          const location = await getUserLocationFromBrowser();
           if (location) {
             setUserLocation(location);
             locationFetchedRef.current = true;
@@ -552,7 +505,7 @@ export default function Navbar() {
           className="premium-navbar__logo"
           aria-label={t("nav.home", "Home")}
         >
-          <InkFrontLogo
+          <UserInfoDisplay
             showUserInfo={showUserInfo}
             userName={userName}
             userLocation={userLocation}
@@ -649,11 +602,6 @@ export default function Navbar() {
                         <div className="premium-dropdown__user-email">
                           {user?.email}
                         </div>
-                        {userLocation && !userLocation.includes("Unknown") && (
-                          <div className="premium-dropdown__user-location">
-                            📍 {userLocation}
-                          </div>
-                        )}
                       </div>
                       <button
                         className="premium-dropdown__logout"
