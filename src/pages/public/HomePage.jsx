@@ -1499,7 +1499,7 @@ export default function HomePage() {
               <Link to="/contact" className="premium-btn premium-btn-primary">
                 {t("common.contactUs", "Contact us")}
               </Link>
-              <Link to="/services" className="premium-btn premium-btn-light">
+              <Link to="/services" className="premium-btn premium-btn-ghost">
                 {t("nav.services", "Services")}
               </Link>
             </div>
