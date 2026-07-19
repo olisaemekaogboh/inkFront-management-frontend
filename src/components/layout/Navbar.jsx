@@ -8,11 +8,72 @@ import useLanguage from "../../hooks/useLanguage";
 import "./Navbar.css";
 
 // ============================================
-// INKFRONT LOGO WITH ONE-TIME EXPANSION
+// INKFRONT LOGO WITH CONTINUOUS ROTATION
 // ============================================
 
 const InkFrontLogo = memo(
-  ({ showName = false, userName = "", isScrolled = false }) => {
+  ({
+    showUserInfo = false,
+    userName = "",
+    userLocation = "",
+    isScrolled = false,
+  }) => {
+    const [currentDisplay, setCurrentDisplay] = useState("brand");
+    const [displayText, setDisplayText] = useState("");
+    const intervalRef = useRef(null);
+
+    // Set up the rotation interval when user info is available
+    useEffect(() => {
+      if (showUserInfo && userName) {
+        // Start with user name
+        setCurrentDisplay("name");
+        setDisplayText(userName);
+
+        // Clear any existing interval
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+        }
+
+        // Set up rotation every 3 seconds
+        intervalRef.current = setInterval(() => {
+          setCurrentDisplay((prev) => {
+            if (prev === "name") {
+              setDisplayText(userLocation || "📍 Location");
+              return "location";
+            } else {
+              setDisplayText(userName);
+              return "name";
+            }
+          });
+        }, 3000);
+
+        return () => {
+          if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+          }
+        };
+      } else {
+        // Reset to brand when not authenticated
+        setCurrentDisplay("brand");
+        setDisplayText("");
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+      }
+    }, [showUserInfo, userName, userLocation]);
+
+    // Get the appropriate text to display
+    const getDisplayText = () => {
+      if (!showUserInfo || !userName) {
+        return "InkFront";
+      }
+      return displayText || userName;
+    };
+
+    const textToShow = getDisplayText();
+    const isUserMode = showUserInfo && userName;
+
     return (
       <div className="inkfront-logo-wrapper">
         <span className="inkfront-brand-mark" aria-hidden="true">
@@ -30,79 +91,38 @@ const InkFrontLogo = memo(
         </span>
 
         <AnimatePresence mode="wait">
-          {showName && userName ? (
-            <motion.span
-              key="user-name"
-              className="inkfront-logo-user"
-              initial={{ opacity: 0, maxWidth: 0, scale: 0.8 }}
-              animate={{
-                opacity: 1,
-                maxWidth: 300,
-                scale: 1,
-                transition: {
-                  duration: 0.6,
-                  ease: [0.34, 1.56, 0.64, 1],
-                },
-              }}
-              exit={{
-                opacity: 0,
-                maxWidth: 0,
-                scale: 0.8,
-                transition: {
-                  duration: 0.4,
-                  ease: "easeInOut",
-                },
-              }}
-              style={{ overflow: "visible" }}
-            >
-              <span className="welcome-text" style={{ fontWeight: 700 }}>
-                Welcome,{" "}
-              </span>
-              <span
-                className="username-text"
-                style={{
-                  fontWeight: 900,
-                  background: "linear-gradient(135deg, #2563eb, #3b82f6)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                  fontSize: "15px",
-                  fontFamily: "monospace",
-                  whiteSpace: "nowrap",
-                  display: "inline-block",
-                }}
-              >
-                {userName}
-              </span>
-            </motion.span>
-          ) : (
-            <motion.span
-              key="brand-name"
-              className={`premium-navbar__logo-text ${isScrolled ? "premium-navbar__logo-text--scrolled" : ""}`}
-              initial={{ opacity: 0, maxWidth: 0, scale: 0.8 }}
-              animate={{
-                opacity: 1,
-                maxWidth: 200,
-                scale: 1,
-                transition: {
-                  duration: 0.4,
-                  ease: [0.34, 1.56, 0.64, 1],
-                },
-              }}
-              exit={{
-                opacity: 0,
-                maxWidth: 0,
-                scale: 0.8,
-                transition: {
-                  duration: 0.3,
-                  ease: "easeInOut",
-                },
-              }}
-              style={{ overflow: "visible" }}
-            >
-              InkFront
-            </motion.span>
-          )}
+          <motion.span
+            key={isUserMode ? `${currentDisplay}-${displayText}` : "brand"}
+            className={`premium-navbar__logo-text ${isScrolled ? "premium-navbar__logo-text--scrolled" : ""} ${isUserMode ? "premium-navbar__logo-text--user" : ""}`}
+            initial={{ opacity: 0, y: -10, scale: 0.8 }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              transition: {
+                duration: 0.5,
+                ease: [0.34, 1.56, 0.64, 1],
+              },
+            }}
+            exit={{
+              opacity: 0,
+              y: 10,
+              scale: 0.8,
+              transition: {
+                duration: 0.3,
+                ease: "easeInOut",
+              },
+            }}
+            style={{ overflow: "visible" }}
+          >
+            {isUserMode && currentDisplay === "name" && (
+              <span className="user-display-label">👋 </span>
+            )}
+            {isUserMode && currentDisplay === "location" && (
+              <span className="user-display-label">📍 </span>
+            )}
+            {textToShow}
+          </motion.span>
         </AnimatePresence>
       </div>
     );
@@ -220,9 +240,17 @@ HamburgerIcon.displayName = "HamburgerIcon";
 
 const getFirstName = (fullName) => {
   if (!fullName) return "";
-  // Split by space and return the first part
   const parts = fullName.trim().split(/\s+/);
   return parts[0];
+};
+
+// ============================================
+// HELPER: Get Location
+// ============================================
+
+const getUserLocation = (user) => {
+  if (!user) return "";
+  return user.location || user.city || user.country || user.region || "";
 };
 
 // ============================================
@@ -235,14 +263,13 @@ export default function Navbar() {
   const { t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [showUserName, setShowUserName] = useState(false);
+  const [showUserInfo, setShowUserInfo] = useState(false);
   const [userName, setUserName] = useState("");
+  const [userLocation, setUserLocation] = useState("");
   const hoverTimeoutRef = useRef(null);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
   const containerRef = useRef(null);
-  const userNameTimeoutRef = useRef(null);
-  const hasShownNameRef = useRef(false);
 
   const user = auth?.user || null;
   const isAuthenticated = Boolean(auth?.isAuthenticated);
@@ -262,8 +289,9 @@ export default function Navbar() {
     user?.email ||
     t("nav.account", "Account");
 
-  // Extract only the first name for the logo animation
+  // Extract first name for the logo animation
   const firstName = getFirstName(fullDisplayName);
+  const location = getUserLocation(user);
 
   const navLinks = [
     { to: "/", label: t("nav.home", "Home") },
@@ -284,39 +312,24 @@ export default function Navbar() {
     }
   }, []);
 
-  const clearUserNameTimeout = useCallback(() => {
-    if (userNameTimeoutRef.current) {
-      clearTimeout(userNameTimeoutRef.current);
-      userNameTimeoutRef.current = null;
-    }
-  }, []);
-
-  // Handle user name display - ONE TIME EXPANSION
+  // Handle user info display - CONTINUOUS ROTATION
   useEffect(() => {
-    if (isAuthenticated && firstName && !hasShownNameRef.current) {
+    if (isAuthenticated && firstName) {
       setUserName(firstName);
+      setUserLocation(location || "📍 Location");
 
-      // Show user name with delay after login
-      clearUserNameTimeout();
-      userNameTimeoutRef.current = setTimeout(() => {
-        setShowUserName(true);
-        hasShownNameRef.current = true;
-
-        // Hide user name after 2.5 seconds
-        setTimeout(() => {
-          setShowUserName(false);
-        }, 2500);
+      // Show user info with a small delay
+      const timeoutId = setTimeout(() => {
+        setShowUserInfo(true);
       }, 500);
-    } else if (!isAuthenticated) {
-      setShowUserName(false);
-      setUserName("");
-      hasShownNameRef.current = false;
-    }
 
-    return () => {
-      clearUserNameTimeout();
-    };
-  }, [isAuthenticated, firstName, clearUserNameTimeout]);
+      return () => clearTimeout(timeoutId);
+    } else if (!isAuthenticated) {
+      setShowUserInfo(false);
+      setUserName("");
+      setUserLocation("");
+    }
+  }, [isAuthenticated, firstName, location]);
 
   // Open menu - immediate
   const openMenu = useCallback(() => {
@@ -383,9 +396,8 @@ export default function Navbar() {
   useEffect(() => {
     return () => {
       clearHoverTimeout();
-      clearUserNameTimeout();
     };
-  }, [clearHoverTimeout, clearUserNameTimeout]);
+  }, [clearHoverTimeout]);
 
   const handleNavigation = (to) => {
     setMenuOpen(false);
@@ -393,8 +405,9 @@ export default function Navbar() {
   };
 
   async function handleLogout() {
-    setShowUserName(false);
-    hasShownNameRef.current = false;
+    setShowUserInfo(false);
+    setUserName("");
+    setUserLocation("");
     if (typeof logout === "function") await logout();
     setMenuOpen(false);
     navigate("/", { replace: true });
@@ -412,8 +425,9 @@ export default function Navbar() {
           aria-label={t("nav.home", "Home")}
         >
           <InkFrontLogo
-            showName={showUserName}
+            showUserInfo={showUserInfo}
             userName={userName}
+            userLocation={userLocation}
             isScrolled={isScrolled}
           />
         </Link>
@@ -507,6 +521,11 @@ export default function Navbar() {
                         <div className="premium-dropdown__user-email">
                           {user?.email}
                         </div>
+                        {location && (
+                          <div className="premium-dropdown__user-location">
+                            📍 {location}
+                          </div>
+                        )}
                       </div>
                       <button
                         className="premium-dropdown__logout"
