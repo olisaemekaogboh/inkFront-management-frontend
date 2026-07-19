@@ -66,6 +66,7 @@ const InkFrontLogo = memo(
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
                   fontSize: "15px",
+                  fontFamily: "monospace",
                 }}
               >
                 {userName}
