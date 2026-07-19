@@ -473,3 +473,120 @@
 .premium-dropdown::-webkit-scrollbar-thumb:hover {
   background: #2563eb;
 }
+/* ============================================ */
+/* ENHANCED HAMBURGER ICON - Additional Styles */
+/* ============================================ */
+
+/* Menu button with label */
+.premium-menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #acaaaa;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(8px);
+}
+
+/* Menu button label */
+.premium-menu-btn__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  color: inherit;
+}
+
+/* Hide label on mobile */
+@media (max-width: 768px) {
+  .premium-menu-btn__label {
+    display: none;
+  }
+  
+  .premium-menu-btn {
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    justify-content: center;
+  }
+}
+
+/* ============================================ */
+/* HAMBURGER ICON ANIMATIONS */
+/* ============================================ */
+
+.hamburger-icon {
+  display: block;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hamburger-icon--open {
+  transform: rotate(0deg);
+}
+
+/* Individual line animations */
+.hamburger-line {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+  stroke: currentColor;
+}
+
+/* Closed state */
+.hamburger-line--top {
+  transform: translateY(0) rotate(0deg);
+}
+
+.hamburger-line--middle {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.hamburger-line--bottom {
+  transform: translateY(0) rotate(0deg);
+}
+
+/* Open state - CSS fallback for reduced motion */
+.hamburger-icon--open .hamburger-line--top {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.hamburger-icon--open .hamburger-line--middle {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburger-icon--open .hamburger-line--bottom {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* ============================================ */
+/* REDUCED MOTION PREFERENCE */
+/* ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .hamburger-icon,
+  .hamburger-line,
+  .premium-menu-btn,
+  .premium-dropdown {
+    transition: none !important;
+    animation: none !important;
+  }
+  
+  .hamburger-icon--open .hamburger-line--top {
+    transform: translateY(6px) rotate(45deg);
+  }
+  
+  .hamburger-icon--open .hamburger-line--middle {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  
+  .hamburger-icon--open .hamburger-line--bottom {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+}

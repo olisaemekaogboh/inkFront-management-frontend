@@ -1,11 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SimpleThemeToggle from "../common/SimpleThemeToggle";
 import LanguageSwitcher from "../common/LanguageSwitcher";
 import useAuth from "../../hooks/useAuth";
 import useLanguage from "../../hooks/useLanguage";
 import "./Navbar.css";
+
+// ============================================
+// INKFRONT LOGO
+// ============================================
 
 function InkFrontLogo() {
   return (
@@ -18,35 +22,115 @@ function InkFrontLogo() {
   );
 }
 
-// Hamburger Icon Component
-function HamburgerIcon({ isOpen }) {
-  return (
-    <svg
-      className={`hamburger-icon ${isOpen ? "hamburger-icon--open" : ""}`}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {isOpen ? (
-        // X icon when open
-        <>
-          <line x1="18" y1="6" x2="6" y2="18" />
-          <line x1="6" y1="6" x2="18" y2="18" />
-        </>
-      ) : (
-        // Three stripes when closed
-        <>
-          <line x1="3" y1="6" x2="21" y2="6" />
-          <line x1="3" y1="12" x2="21" y2="12" />
-          <line x1="3" y1="18" x2="21" y2="18" />
-        </>
-      )}
-    </svg>
-  );
-}
+// ============================================
+// ENHANCED HAMBURGER ICON
+// ============================================
+
+const HamburgerIcon = memo(
+  ({
+    isOpen,
+    size = "md",
+    className = "",
+    strokeWidth = 2,
+    color = "currentColor",
+  }) => {
+    // Size variants
+    const sizeMap = {
+      sm: { width: 18, height: 18 },
+      md: { width: 24, height: 24 },
+      lg: { width: 28, height: 28 },
+      xl: { width: 32, height: 32 },
+    };
+
+    const { width, height } = sizeMap[size] || sizeMap.md;
+
+    return (
+      <svg
+        className={`hamburger-icon ${isOpen ? "hamburger-icon--open" : ""} ${className}`}
+        viewBox="0 0 24 24"
+        width={width}
+        height={height}
+        fill="none"
+        stroke={color}
+        strokeWidth={strokeWidth}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+        focusable="false"
+        role="img"
+      >
+        {isOpen ? (
+          // X icon when open - animated cross
+          <>
+            <motion.line
+              x1="18"
+              y1="6"
+              x2="6"
+              y2="18"
+              initial={{ rotate: 0, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            />
+            <motion.line
+              x1="6"
+              y1="6"
+              x2="18"
+              y2="18"
+              initial={{ rotate: 0, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: -90, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            />
+          </>
+        ) : (
+          // Three stripes when closed - with staggered animation
+          <>
+            <motion.line
+              x1="3"
+              y1="6"
+              x2="21"
+              y2="6"
+              className="hamburger-line hamburger-line--top"
+              initial={{ rotate: 0, translateY: 0 }}
+              animate={{ rotate: 0, translateY: 0 }}
+              exit={{ rotate: -45, translateY: 6 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            />
+            <motion.line
+              x1="3"
+              y1="12"
+              x2="21"
+              y2="12"
+              className="hamburger-line hamburger-line--middle"
+              initial={{ opacity: 1, scaleX: 1 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              exit={{ opacity: 0, scaleX: 0 }}
+              transition={{ duration: 0.25, ease: "easeInOut" }}
+            />
+            <motion.line
+              x1="3"
+              y1="18"
+              x2="21"
+              y2="18"
+              className="hamburger-line hamburger-line--bottom"
+              initial={{ rotate: 0, translateY: 0 }}
+              animate={{ rotate: 0, translateY: 0 }}
+              exit={{ rotate: 45, translateY: -6 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            />
+          </>
+        )}
+      </svg>
+    );
+  },
+);
+
+HamburgerIcon.displayName = "HamburgerIcon";
+
+// ============================================
+// NAVBAR COMPONENT
+// ============================================
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -108,6 +192,15 @@ export default function Navbar() {
     }, 200);
   }, [clearHoverTimeout]);
 
+  // Toggle menu
+  const toggleMenu = useCallback(() => {
+    if (menuOpen) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  }, [menuOpen, openMenu, closeMenu]);
+
   // Handle scroll effect for navbar background
   useEffect(() => {
     const handleScroll = () => {
@@ -135,6 +228,17 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Handle escape key
+  useEffect(() => {
+    function handleEscape(event) {
+      if (event.key === "Escape" && menuOpen) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [menuOpen]);
+
   // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
@@ -156,9 +260,14 @@ export default function Navbar() {
   return (
     <header
       className={`premium-navbar premium-navbar--seamless ${isScrolled ? "premium-navbar--scrolled" : ""}`}
+      role="banner"
     >
       <div className="premium-navbar__inner">
-        <Link to="/" className="premium-navbar__logo">
+        <Link
+          to="/"
+          className="premium-navbar__logo"
+          aria-label={t("nav.home", "Home")}
+        >
           <InkFrontLogo />
           <span className="premium-navbar__logo-text">InkFront</span>
         </Link>
@@ -173,17 +282,27 @@ export default function Navbar() {
             <button
               ref={buttonRef}
               className={`premium-menu-btn ${menuOpen ? "premium-menu-btn--active" : ""}`}
-              onClick={() => setMenuOpen(!menuOpen)}
+              onClick={toggleMenu}
               aria-expanded={menuOpen}
-              aria-label={t("nav.menu", "Menu")}
+              aria-label={
+                menuOpen
+                  ? t("nav.closeMenu", "Close menu")
+                  : t("nav.openMenu", "Open menu")
+              }
+              aria-controls="premium-dropdown-menu"
+              type="button"
             >
-              <HamburgerIcon isOpen={menuOpen} />
+              <HamburgerIcon isOpen={menuOpen} size="md" strokeWidth={2.5} />
+              <span className="premium-menu-btn__label">
+                {menuOpen ? t("nav.close", "Close") : t("nav.menu", "Menu")}
+              </span>
             </button>
 
             <AnimatePresence>
               {menuOpen && (
                 <motion.div
                   ref={menuRef}
+                  id="premium-dropdown-menu"
                   className="premium-dropdown"
                   initial={{ opacity: 0, y: -12, scale: 0.96 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -191,6 +310,8 @@ export default function Navbar() {
                   transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
                   onMouseEnter={openMenu}
                   onMouseLeave={closeMenu}
+                  role="menu"
+                  aria-label={t("nav.mainMenu", "Main menu")}
                 >
                   {/* Theme Toggle & Language Switcher inside dropdown */}
                   <div className="premium-dropdown__controls">
@@ -198,7 +319,7 @@ export default function Navbar() {
                     <LanguageSwitcher id="navbar-language-switcher-mobile" />
                   </div>
 
-                  <div className="premium-dropdown__divider" />
+                  <div className="premium-dropdown__divider" role="separator" />
 
                   <div className="premium-dropdown__links">
                     {navLinks.map((link) => (
@@ -206,6 +327,7 @@ export default function Navbar() {
                         key={link.to}
                         className="premium-dropdown__link"
                         onClick={() => handleNavigation(link.to)}
+                        role="menuitem"
                       >
                         {link.label}
                       </button>
@@ -214,17 +336,21 @@ export default function Navbar() {
 
                   {isAuthenticated && userIsAdmin && (
                     <>
-                      <div className="premium-dropdown__divider" />
+                      <div
+                        className="premium-dropdown__divider"
+                        role="separator"
+                      />
                       <button
                         className="premium-dropdown__link premium-dropdown__link--admin"
                         onClick={() => handleNavigation("/admin")}
+                        role="menuitem"
                       >
                         {t("nav.dashboard", "📊 Dashboard")}
                       </button>
                     </>
                   )}
 
-                  <div className="premium-dropdown__divider" />
+                  <div className="premium-dropdown__divider" role="separator" />
 
                   {isAuthenticated ? (
                     <>
@@ -239,6 +365,7 @@ export default function Navbar() {
                       <button
                         className="premium-dropdown__logout"
                         onClick={handleLogout}
+                        role="menuitem"
                       >
                         {t("nav.logout", "Logout")}
                       </button>
@@ -247,6 +374,7 @@ export default function Navbar() {
                     <button
                       className="premium-dropdown__login"
                       onClick={() => handleNavigation("/login")}
+                      role="menuitem"
                     >
                       {t("nav.login", "Login")}
                     </button>
