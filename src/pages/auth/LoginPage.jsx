@@ -233,7 +233,7 @@ export default function LoginPage() {
                 color: "var(--app-text)",
               }}
             >
-              Welcome To INFRONT
+              Welcome
             </h1>
             <p
               style={{
