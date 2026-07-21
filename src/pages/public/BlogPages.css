@@ -7,12 +7,12 @@
   min-height: 100vh;
   background: var(--color-bg);
   color: var(--color-text);
-  padding-top: 70px; /* Space for fixed navbar */
+  padding-top: 30px; /* Space for fixed navbar */
 }
 
 @media (max-width: 768px) {
   .blog-page {
-    padding-top: 70px;
+    padding-top: 100px;
   }
 }
 
