@@ -109,18 +109,15 @@ function getImageUrl(item) {
 function optimizeImageUrl(url) {
   if (!url) return url;
 
-  // Unsplash optimization
   if (url.includes("images.unsplash.com")) {
     const hasParams = url.includes("?");
     return `${url}${hasParams ? "&" : "?"}auto=format&fit=crop&w=1600&q=80`;
   }
 
-  // Cloudinary - preserve existing transformations
   if (url.includes("cloudinary.com")) {
     return url;
   }
 
-  // Other CDNs - leave unchanged
   return url;
 }
 
@@ -137,11 +134,33 @@ function cleanPayload(form) {
   };
 }
 
+// ==================== STRICT EMAIL VALIDATION ====================
+
 function validateEmail(email) {
   const trimmed = email.trim();
   if (!trimmed) return false;
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(trimmed);
+
+  // Strict email regex pattern
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
+  if (!emailRegex.test(trimmed)) return false;
+
+  // Additional checks
+  const parts = trimmed.split("@");
+  if (parts.length !== 2) return false;
+
+  const domain = parts[1];
+  if (!domain || domain.length < 3) return false;
+
+  // Check for valid TLD (at least 2 characters after last dot)
+  const domainParts = domain.split(".");
+  if (domainParts.length < 2) return false;
+
+  const tld = domainParts[domainParts.length - 1];
+  if (!tld || tld.length < 2) return false;
+
+  return true;
 }
 
 // ==================== OPTIMIZED IMAGE COMPONENT ====================
@@ -245,6 +264,7 @@ const ContactForm = memo(function ContactForm({
   serviceOptions,
   activeLanguage,
   canSubmit,
+  isSent,
   t,
 }) {
   const handleChange = useCallback(
@@ -254,6 +274,17 @@ const ContactForm = memo(function ContactForm({
     },
     [onChange],
   );
+
+  // Get button text based on state
+  const getButtonText = () => {
+    if (isSent) {
+      return t("forms.contact.sent", "✓ Sent");
+    }
+    if (submitting) {
+      return t("forms.contact.sending", "Sending...");
+    }
+    return t("forms.contact.submit", "Send message →");
+  };
 
   return (
     <article className="premium-contact-panel">
@@ -300,6 +331,11 @@ const ContactForm = memo(function ContactForm({
             onChange={handleChange}
             placeholder={t("forms.contact.emailPlaceholder", "you@example.com")}
             autoComplete="email"
+            error={form.email && !validateEmail(form.email)}
+            errorMessage={t(
+              "forms.contact.invalidEmail",
+              "Please enter a valid email address",
+            )}
           />
 
           <FormField
@@ -374,13 +410,11 @@ const ContactForm = memo(function ContactForm({
 
         <button
           type="submit"
-          className="premium-btn premium-btn-primary"
-          disabled={submitting || !canSubmit}
-          aria-disabled={submitting || !canSubmit}
+          className={`premium-btn premium-btn-primary ${isSent ? "premium-btn-success" : ""}`}
+          disabled={submitting || !canSubmit || isSent}
+          aria-disabled={submitting || !canSubmit || isSent}
         >
-          {submitting
-            ? t("forms.contact.sending", "Sending...")
-            : t("forms.contact.submit", "Send message →")}
+          {getButtonText()}
         </button>
       </form>
     </article>
@@ -400,12 +434,15 @@ const FormField = memo(function FormField({
   as = "input",
   rows,
   autoComplete,
+  error,
+  errorMessage,
 }) {
   const fieldId = `field-${name}`;
   const Component = as;
+  const hasError = error && value && value.trim() !== "";
 
   return (
-    <label htmlFor={fieldId}>
+    <label htmlFor={fieldId} className={hasError ? "has-error" : ""}>
       {label} {required && "*"}
       <Component
         id={fieldId}
@@ -418,7 +455,11 @@ const FormField = memo(function FormField({
         rows={rows}
         autoComplete={autoComplete}
         aria-required={required}
+        className={hasError ? "premium-contact-form__input--error" : ""}
       />
+      {hasError && errorMessage && (
+        <span className="premium-error-message">{errorMessage}</span>
+      )}
     </label>
   );
 });
@@ -536,6 +577,7 @@ export default function ContactPage() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [isSent, setIsSent] = useState(false);
 
   // ==================== MEMOIZED DATA ====================
 
@@ -586,18 +628,33 @@ export default function ContactPage() {
 
   // ==================== HANDLERS ====================
 
-  const handleChange = useCallback((name, value) => {
-    setForm((current) => ({
-      ...current,
-      [name]: value,
-    }));
-    setSuccess("");
-    setError("");
-  }, []);
+  const handleChange = useCallback(
+    (name, value) => {
+      setForm((current) => ({
+        ...current,
+        [name]: value,
+      }));
+      setSuccess("");
+      setError("");
+      if (isSent) setIsSent(false);
+    },
+    [isSent],
+  );
 
   const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault();
+
+      // Validate email first
+      if (!validateEmail(form.email)) {
+        setError(
+          t(
+            "forms.contact.invalidEmail",
+            "Please enter a valid email address.",
+          ),
+        );
+        return;
+      }
 
       if (!canSubmit) {
         setError(
@@ -627,6 +684,8 @@ export default function ContactPage() {
             "Message sent successfully. The InkFront admin team will review it and get back to you soon.",
           ),
         );
+
+        setIsSent(true);
       } catch (err) {
         const errorMessage =
           err?.response?.data?.message ||
@@ -634,11 +693,12 @@ export default function ContactPage() {
           err?.message ||
           t("forms.contact.error", "Failed to send message. Please try again.");
         setError(errorMessage);
+        setIsSent(false);
       } finally {
         setSubmitting(false);
       }
     },
-    [canSubmit, cleanedPayload, activeLanguage, t],
+    [canSubmit, cleanedPayload, activeLanguage, t, form.email],
   );
 
   // ==================== LOADING & ERROR STATES ====================
@@ -676,6 +736,7 @@ export default function ContactPage() {
               serviceOptions={serviceOptions}
               activeLanguage={activeLanguage}
               canSubmit={canSubmit}
+              isSent={isSent}
               t={t}
             />
 

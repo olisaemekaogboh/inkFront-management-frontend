@@ -1525,6 +1525,28 @@ body {
     font-size: 1.3rem;
   }
 }
+.premium-contact-form__input--error {
+  border-color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.05) !important;
+}
+
+.has-error .premium-error-message {
+  display: block;
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+
+.premium-btn-success {
+  background: #22c55e !important;
+  border-color: #22c55e !important;
+  color: white !important;
+}
+
+.premium-btn-success:hover {
+  background: #16a34a !important;
+  border-color: #16a34a !important;
+}
 /* ============================================ */
 /* ABOUT PAGE - Fixed */
 /* ============================================ */
