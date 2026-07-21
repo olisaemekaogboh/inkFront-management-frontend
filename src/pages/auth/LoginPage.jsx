@@ -233,7 +233,7 @@ export default function LoginPage() {
                 color: "var(--app-text)",
               }}
             >
-              Welcome
+              Inkfront
             </h1>
             <p
               style={{
