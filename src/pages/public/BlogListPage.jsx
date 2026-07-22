@@ -487,9 +487,9 @@ export default function BlogListPage() {
         </Container>
       </section>
 
-      <Container>
+      <div className="premium-container">
         <NewsletterSection />
-      </Container>
+      </div>
     </main>
   );
 }
