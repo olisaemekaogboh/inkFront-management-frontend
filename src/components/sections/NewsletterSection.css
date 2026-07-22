@@ -6,6 +6,8 @@
   padding: 48px 0;
   background: var(--app-bg);
   color: var(--app-text);
+  display: block;
+  width: 100%;
 }
 
 .newsletter-section__inner {
@@ -58,6 +60,7 @@
 .newsletter-section__form {
   display: grid;
   gap: 12px;
+  width: 100%;
 }
 
 .newsletter-section__fields {
@@ -76,6 +79,7 @@
   font: inherit;
   outline: none;
   transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
 .newsletter-section__form input::placeholder {
@@ -123,7 +127,7 @@
 }
 
 /* ============================================ */
-/* BUTTON STYLES */
+/* BUTTON STYLES - FIXED FOR LIGHT THEME */
 /* ============================================ */
 
 .newsletter-section__form button {
@@ -138,6 +142,24 @@
   font-weight: 700;
   transition: all 0.25s ease;
   box-shadow: 0 14px 34px color-mix(in srgb, var(--app-primary) 40%, transparent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  opacity: 1;
+  visibility: visible;
+  position: relative;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Ensure button is visible in light theme */
+[data-theme="light"] .newsletter-section__form button {
+  background: var(--app-primary);
+  color: #ffffff;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: inline-flex !important;
 }
 
 .newsletter-section__form button:hover:not(:disabled) {
@@ -231,6 +253,7 @@
   font-size: 0.9rem;
   outline: none;
   transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
 .newsletter-inline-form input:focus {
@@ -257,6 +280,9 @@
 /* Inline form button */
 .newsletter-inline-form .btn {
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .newsletter-inline-form .btn-success {
