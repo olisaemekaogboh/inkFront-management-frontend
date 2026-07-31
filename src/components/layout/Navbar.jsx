@@ -38,7 +38,7 @@ const LogoWithUserInfo = memo(
         intervalRef.current = setInterval(() => {
           setCurrentDisplay((prev) => {
             if (prev === "name") {
-              setDisplayText(userLocation || "Unknown Location");
+              setDisplayText(userLocation || "Infront Technology");
               return "location";
             } else {
               setDisplayText(userName);
@@ -288,7 +288,7 @@ const getUserLocationFromBrowser = async () => {
       return state;
     }
 
-    return "Unknown Location";
+    return "Inkfront Technology";
   } catch (error) {
     console.error("Error getting location from browser:", error);
 
@@ -370,11 +370,11 @@ export default function Navbar() {
             setUserLocation(location);
             locationFetchedRef.current = true;
           } else {
-            setUserLocation("Unknown Location");
+            setUserLocation("Inkfront Technology");
           }
         } catch (error) {
           console.error("Failed to fetch location:", error);
-          setUserLocation("Unknown Location");
+          setUserLocation("Inkfront Technoly");
         } finally {
           setIsLoadingLocation(false);
         }
