@@ -750,7 +750,7 @@ export default {
       clientConfidence: "Client confidence",
       testimonialSubtitle:
         "Clear communication, modern design, and systems that make your business easier to manage.",
-      trustedBy: "Trusted by growing brands",
+      trustedBy: "    Trusted by growing brands",
       ready: "Ready when you are",
       managed: "Managed",
       service: "Service",
