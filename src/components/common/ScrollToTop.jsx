@@ -1,41 +1,39 @@
-import { useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation, useNavigationType } from "react-router-dom";
 
 export default function ScrollToTop() {
-  const { pathname, search, hash } = useLocation();
-  const previousPathRef = useRef(pathname);
+  const { pathname, hash } = useLocation();
+  const navigationType = useNavigationType();
 
   useEffect(() => {
-    const pathChanged = previousPathRef.current !== pathname;
-    previousPathRef.current = pathname;
-
+    // Smooth scroll to anchor links
     if (hash) {
-      const id = hash.replace("#", "");
+      const element = document.querySelector(hash);
 
-      requestAnimationFrame(() => {
-        const element = document.getElementById(id);
-
-        if (element) {
+      if (element) {
+        requestAnimationFrame(() => {
           element.scrollIntoView({
             behavior: "smooth",
             block: "start",
           });
-        }
-      });
+        });
+      }
 
       return;
     }
 
-    if (pathChanged) {
-      requestAnimationFrame(() => {
-        window.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: "smooth",
-        });
-      });
+    // Preserve scroll position when navigating Back/Forward
+    if (navigationType === "POP") {
+      return;
     }
-  }, [pathname, search, hash]);
+
+    // Scroll instantly to top on normal navigation
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant",
+    });
+  }, [pathname, hash, navigationType]);
 
   return null;
 }
