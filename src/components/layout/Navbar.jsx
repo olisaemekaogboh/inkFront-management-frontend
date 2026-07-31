@@ -309,7 +309,7 @@ const getUserLocationFromBrowser = async () => {
       console.error("Fallback IP geolocation failed:", fallbackError);
     }
 
-    return "Unknown Location";
+    return "Inkfront Technology";
   }
 };
 
