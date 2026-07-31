@@ -80,28 +80,40 @@ export default function Footer() {
               </a>
 
               {/* Facebook - Non-clickable */}
-              <span aria-label="Facebook" style={{ cursor: "default" }}>
+              <span
+                aria-label="Facebook"
+                style={{ cursor: "default", pointerEvents: "none" }}
+              >
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                 </svg>
               </span>
 
-              {/* X - Non-clickable */}
-              <span aria-label="X" style={{ cursor: "default" }}>
+              {/* X (Twitter) - Non-clickable */}
+              <span
+                aria-label="X"
+                style={{ cursor: "default", pointerEvents: "none" }}
+              >
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                 </svg>
               </span>
 
               {/* Instagram - Non-clickable */}
-              <span aria-label="Instagram" style={{ cursor: "default" }}>
+              <span
+                aria-label="Instagram"
+                style={{ cursor: "default", pointerEvents: "none" }}
+              >
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M7.75 2C4.574 2 2 4.574 2 7.75v8.5C2 19.426 4.574 22 7.75 22h8.5C19.426 22 22 19.426 22 16.25v-8.5C22 4.574 19.426 2 16.25 2h-8.5zm0 1.8h8.5a3.95 3.95 0 0 1 3.95 3.95v8.5a3.95 3.95 0 0 1-3.95 3.95h-8.5a3.95 3.95 0 0 1-3.95-3.95v-8.5A3.95 3.95 0 0 1 7.75 3.8zm8.95 1.35a1.05 1.05 0 1 0 0 2.1 1.05 1.05 0 0 0 0-2.1zM12 6.5A5.5 5.5 0 1 0 17.5 12 5.506 5.506 0 0 0 12 6.5zm0 1.8A3.7 3.7 0 1 1 8.3 12 3.704 3.704 0 0 1 12 8.3z" />
                 </svg>
               </span>
 
               {/* YouTube - Non-clickable */}
-              <span aria-label="YouTube" style={{ cursor: "default" }}>
+              <span
+                aria-label="YouTube"
+                style={{ cursor: "default", pointerEvents: "none" }}
+              >
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                 </svg>
