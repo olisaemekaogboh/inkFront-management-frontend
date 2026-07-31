@@ -79,7 +79,7 @@ export default function Footer() {
               </a>
 
               <a
-                href="https://facebook.com/"
+                href="https://facebook.com/#"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Facebook"
@@ -90,7 +90,7 @@ export default function Footer() {
               </a>
 
               <a
-                href="https://x.com/"
+                href="https://x.com/#"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="X"
@@ -101,7 +101,7 @@ export default function Footer() {
               </a>
 
               <a
-                href="https://instagram.com/"
+                href="https://instagram.com/#"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Instagram"
@@ -112,7 +112,7 @@ export default function Footer() {
               </a>
 
               <a
-                href="https://youtube.com/"
+                href="https://youtube.com/#"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="YouTube"
