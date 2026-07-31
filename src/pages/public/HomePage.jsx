@@ -1152,7 +1152,7 @@ export default function HomePage() {
         >
           <div className="premium-container">
             <span>
-              {t("pages.home.trustedBy", "Trusted by growing brands")}
+              {t("pages.home.trustedBy", "    Trusted by growing brands")}
             </span>
 
             <div className="premium-logo-grid">
