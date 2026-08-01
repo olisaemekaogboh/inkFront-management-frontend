@@ -185,7 +185,7 @@ export default function Footer() {
 
             <div className="premium-footer__meta">
               <span>📞 {t("footer.phone", "+234 903 017 5230")}</span>
-              <span>✉️ {t("footer.email", "info@inkfront.com")}</span>
+              <span>✉️ {t("footer.email", "info@inkfront.org")}</span>
               <span>
                 {t(
                   "footer.address",
