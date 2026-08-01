@@ -76,7 +76,7 @@ export default {
       "Ready to upgrade your business online? Let InkFront build a clean, modern digital system for your brand.",
     contactButton: "Contact InkFront",
     phone: "+234 903 017 5230",
-    email: "info@inkfront.com",
+    email: "info@inkfront.org",
     address: "4 Basden Street, Fegge, Onitsha, Anambra, Nigeria",
     viewMap: "View on Google Maps",
     rights: "All rights reserved.",

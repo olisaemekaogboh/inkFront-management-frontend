@@ -77,7 +77,7 @@ export default {
       "Shin kuna shirye don haɓaka kasuwancin ku akan layi? Bari InkFront ta gina tsarin dijital mai tsabta, na zamani don alamar ku.",
     contactButton: "Tuntuɓi InkFront",
     phone: "+234 903 017 5230",
-    email: "info@inkfront.com",
+    email: "info@inkfront.org",
     address: "4 Basden Street, Fegge, Onitsha, Anambra, Nigeria",
     viewMap: "Duba akan Taswirorin Google",
     rights: "Duk haƙƙoƙin an kiyaye.",

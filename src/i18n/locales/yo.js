@@ -77,7 +77,7 @@ export default {
       "Ṣe o ṣetan lati ṣe igbega iṣowo rẹ lori ayelujara? Jẹ ki InkFront kọ eto oni-nọmba mimọ, ti igbalode fun ami iyasọtọ rẹ.",
     contactButton: "Kan si InkFront",
     phone: "+234 903 017 5230",
-    email: "info@inkfront.com",
+    email: "info@inkfront.org",
     address: "4 Basden Street, Fegge, Onitsha, Anambra, Nigeria",
     viewMap: "Wo lori Google Maps",
     rights: "Gbogbo ẹtọ wa ni ipamọ.",
