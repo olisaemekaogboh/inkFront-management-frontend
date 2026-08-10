@@ -227,7 +227,7 @@ const ServicesBanner = memo(function ServicesBanner() {
               "servicesPage.bannerText",
               "Every product blueprint on our platform can be built as a full service. We offer flexible pricing — from MVP launches starting at",
             )}{" "}
-            <strong>$150</strong>{" "}
+            <strong>$250</strong>{" "}
             {t(
               "servicesPage.bannerTextEnd",
               "to full enterprise platforms. You only pay for what your business truly needs.",
