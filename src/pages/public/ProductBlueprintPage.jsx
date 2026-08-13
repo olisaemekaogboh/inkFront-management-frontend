@@ -382,7 +382,7 @@ export default function ProductBlueprintPage() {
           <p>
             {t(
               "products.ctaDescription",
-              "Let InkFront help you convert your idea into a polished business platform.",
+              "Let Inkfront help you convert your idea into a polished business platform.",
             )}
           </p>
           <Link to="/contact" className="premium-btn premium-btn-light">

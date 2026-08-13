@@ -75,9 +75,9 @@ const LogoWithUserInfo = memo(
     const isUserMode = showUserInfo && userName;
 
     return (
-      <div className="inkfront-logo-wrapper">
+      <div className="Inkfront-logo-wrapper">
         {/* Logo Icon - Always Present */}
-        <span className="inkfront-brand-mark" aria-hidden="true">
+        <span className="Inkfront-brand-mark" aria-hidden="true">
           <svg
             viewBox="0 0 48 48"
             fill="none"

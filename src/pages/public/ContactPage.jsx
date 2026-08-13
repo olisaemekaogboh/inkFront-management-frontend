@@ -594,7 +594,7 @@ export default function ContactPage() {
         heroItem?.description,
         t(
           "pages.contact.subtitle",
-          "Send your project details directly to the InkFront admin team. Your inquiry will be saved, tracked, and followed up from the admin CRM.",
+          "Send your project details directly to the Inkfront admin team. Your inquiry will be saved, tracked, and followed up from the admin CRM.",
         ),
       ),
       imageUrl: getImageUrl(heroItem),
@@ -681,7 +681,7 @@ export default function ContactPage() {
         setSuccess(
           t(
             "forms.contact.success",
-            "Message sent successfully. The InkFront admin team will review it and get back to you soon.",
+            "Message sent successfully. The Inkfront admin team will review it and get back to you soon.",
           ),
         );
 

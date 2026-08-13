@@ -11,7 +11,7 @@ export default function NotFoundPage() {
   useEffect(() => {
     document.title = t(
       "pages.notFound.seoTitle",
-      "404 - Page Not Found | InkFront",
+      "404 - Page Not Found | Inkfront",
     );
   }, [t]);
 

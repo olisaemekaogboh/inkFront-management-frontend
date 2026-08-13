@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import "../../styles/publicPremium.css";
 
-function InkFrontLogo() {
+function InkfrontLogo() {
   return (
-    <span className="inkfront-brand-mark" aria-hidden="true">
+    <span className="Inkfront-brand-mark" aria-hidden="true">
       <svg viewBox="0 0 48 48">
         <path d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z" />
         <path d="M25 23h13v17h-7V29h-6v-6Z" />
@@ -279,7 +279,7 @@ export default function RegisterPage() {
               marginBottom: "32px",
             }}
           >
-            <InkFrontLogo />
+            <InkfrontLogo />
             <h1
               style={{
                 marginTop: "16px",

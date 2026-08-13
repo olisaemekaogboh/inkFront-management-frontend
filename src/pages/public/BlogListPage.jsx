@@ -231,7 +231,7 @@ export default function BlogListPage() {
           >
             <motion.div className="blog-hero__content" variants={fadeInUp}>
               <span className="blog-eyebrow">
-                {t("blog.eyebrow", "InkFront Blog")}
+                {t("blog.eyebrow", "Inkfront Blog")}
               </span>
 
               <h1>{t("blog.title", "Ideas, strategy, and digital growth")}</h1>

@@ -12,7 +12,7 @@ export default function PublicAuthRoute({ children }) {
           <div className="premium-container">
             <div className="premium-loading premium-loading-modern">
               <span className="premium-loading-dot" />
-              Loading InkFront...
+              Loading Inkfront...
             </div>
           </div>
         </section>

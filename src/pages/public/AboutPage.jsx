@@ -77,7 +77,7 @@ function buildFallbackTestimonials(t) {
       organization: "EduBridge Academy",
       quote: t(
         "pages.about.fallbackTestimonials.t1.quote",
-        "InkFront built our school management platform with clean design, strong backend logic, and a user experience our teachers and parents could understand quickly.",
+        "Inkfront built our school management platform with clean design, strong backend logic, and a user experience our teachers and parents could understand quickly.",
       ),
     },
     {
@@ -100,7 +100,7 @@ function buildFallbackTestimonials(t) {
       organization: "HalaMart",
       quote: t(
         "pages.about.fallbackTestimonials.t3.quote",
-        "InkFront helped us turn a marketplace idea into a working digital product with vendor tools, product management, and a polished customer experience.",
+        "Inkfront helped us turn a marketplace idea into a working digital product with vendor tools, product management, and a polished customer experience.",
       ),
     },
     {
@@ -122,11 +122,11 @@ function buildFallbackFaqs(t) {
       id: "f1",
       question: t(
         "pages.about.fallbackFaqs.f1.question",
-        "Who is behind InkFront?",
+        "Who is behind Inkfront?",
       ),
       answer: t(
         "pages.about.fallbackFaqs.f1.answer",
-        "InkFront is backed by a flexible team of 5 to 15 software engineers, product thinkers, and digital builders with strong experience in business logic, frontend experience, backend systems, and scalable platform delivery.",
+        "Inkfront is backed by a flexible team of 5 to 15 software engineers, product thinkers, and digital builders with strong experience in business logic, frontend experience, backend systems, and scalable platform delivery.",
       ),
     },
     {
@@ -382,7 +382,7 @@ export default function AboutPage() {
         getSetting("heroSubtitle"),
         t(
           "pages.about.subtitle",
-          "InkFront is backed by a team of 5 to 15 software engineers with 10+ years of experience building business websites, dashboards, portals, and custom platforms that combine strong business logic with excellent user experience across Nigeria and Africa.",
+          "Inkfront is backed by a team of 5 to 15 software engineers with 10+ years of experience building business websites, dashboards, portals, and custom platforms that combine strong business logic with excellent user experience across Nigeria and Africa.",
         ),
       ),
     [heroItem?.subtitle, heroItem?.description, getSetting, t],
@@ -407,7 +407,7 @@ export default function AboutPage() {
         "story",
         t(
           "pages.about.storyFallback",
-          "InkFront exists because many African businesses do not just need a website — they need digital systems that understand how their business actually works. Our team combines software engineering, business thinking, product structure, and user experience design to help companies move from scattered manual processes to polished platforms that customers can trust and teams can manage with confidence.",
+          "Inkfront exists because many African businesses do not just need a website — they need digital systems that understand how their business actually works. Our team combines software engineering, business thinking, product structure, and user experience design to help companies move from scattered manual processes to polished platforms that customers can trust and teams can manage with confidence.",
         ),
       ),
     [getSetting, t],
@@ -512,7 +512,7 @@ export default function AboutPage() {
             transition={{ duration: 0.65 }}
           >
             <span className="premium-eyebrow">
-              {t("pages.about.eyebrow", "About InkFront")}
+              {t("pages.about.eyebrow", "About Inkfront")}
             </span>
 
             <h1>{heroTitle}</h1>
@@ -711,7 +711,7 @@ export default function AboutPage() {
             <p>
               {t(
                 "sections.testimonials.description",
-                "Proof from people and businesses that trust InkFront.",
+                "Proof from people and businesses that trust Inkfront.",
               )}
             </p>
           </div>

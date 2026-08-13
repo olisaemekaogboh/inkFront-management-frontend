@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import "./AdminLayout.css";
 
-function InkFrontLogo() {
+function InkfrontLogo() {
   return (
     <svg
       className="admin-shell__brand-svg"
@@ -139,9 +139,9 @@ export default function AdminLayout() {
                 onClick={closeMobileSidebar}
               >
                 <span className="admin-shell__brand-mark">
-                  <InkFrontLogo />
+                  <InkfrontLogo />
                 </span>
-                <span className="admin-shell__brand-name">InkFront</span>
+                <span className="admin-shell__brand-name">Inkfront</span>
               </Link>
             </div>
 

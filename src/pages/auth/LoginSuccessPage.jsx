@@ -174,7 +174,7 @@ export default function LoginSuccessPage() {
               borderRadius: "999px",
               border: "4px solid rgba(37, 99, 235, 0.15)",
               borderTopColor: "var(--app-primary, #2563eb)",
-              animation: "inkfrontSpin 0.8s linear infinite",
+              animation: "InkfrontSpin 0.8s linear infinite",
             }}
           />
           <span className="premium-eyebrow">Signing you in</span>
@@ -186,7 +186,7 @@ export default function LoginSuccessPage() {
           </p>
         </div>
       </section>
-      <style>{`@keyframes inkfrontSpin { to { transform: rotate(360deg); } }`}</style>
+      <style>{`@keyframes InkfrontSpin { to { transform: rotate(360deg); } }`}</style>
     </main>
   );
 }

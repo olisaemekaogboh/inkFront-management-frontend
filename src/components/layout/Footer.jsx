@@ -3,11 +3,11 @@ import { motion } from "framer-motion";
 import useLanguage from "../../hooks/useLanguage";
 import { useTheme } from "../../contexts/ThemeContext";
 
-function InkFrontLogo() {
+function InkfrontLogo() {
   const { theme } = useTheme();
 
   return (
-    <span className="inkfront-brand-mark" aria-hidden="true">
+    <span className="Inkfront-brand-mark" aria-hidden="true">
       <svg viewBox="0 0 48 48">
         <path d="M10 8h28a2 2 0 0 1 2 2v6H17v7h18v6H17v11h-7V8Z" />
         <path d="M25 23h13v17h-7V29h-6v-6Z" />
@@ -31,7 +31,7 @@ export default function Footer() {
     ],
     company: [
       { to: "/", label: t("nav.home", "Home") },
-      { to: "/about", label: t("nav.about", "About InkFront") },
+      { to: "/about", label: t("nav.about", "About Inkfront") },
       { to: "/contact", label: t("nav.contact", "Contact") },
     ],
   };
@@ -55,14 +55,14 @@ export default function Footer() {
             viewport={{ once: true }}
           >
             <Link to="/" className="premium-footer__logo">
-              <InkFrontLogo />
-              <strong>InkFront</strong>
+              <InkfrontLogo />
+              <strong>Inkfront</strong>
             </Link>
 
             <p>
               {t(
                 "footer.description",
-                "InkFront builds premium websites, booking systems, dashboards, blogs, newsletters, portals, and custom software tools for modern businesses.",
+                "Inkfront builds premium websites, booking systems, dashboards, blogs, newsletters, portals, and custom software tools for modern businesses.",
               )}
             </p>
 
@@ -170,22 +170,22 @@ export default function Footer() {
                 margin: "0 auto",
               }}
             >
-              {t("footer.startTitle", "Start with InkFront")}
+              {t("footer.startTitle", "Start with Inkfront")}
             </h3>
             <p>
               {t(
                 "footer.startText",
-                "Ready to upgrade your business online? Let InkFront build a clean, modern digital system for your brand.",
+                "Ready to upgrade your business online? Let Inkfront build a clean, modern digital system for your brand.",
               )}
             </p>
 
             <Link to="/contact" className="premium-btn premium-btn-light">
-              {t("footer.contactButton", "Contact InkFront")} →
+              {t("footer.contactButton", "Contact Inkfront")} →
             </Link>
 
             <div className="premium-footer__meta">
               <span>📞 {t("footer.phone", "+234 903 017 5230")}</span>
-              <span>✉️ {t("footer.email", "info@inkfront.org")}</span>
+              <span>✉️ {t("footer.email", "info@Inkfront.org")}</span>
               <span>
                 {t(
                   "footer.address",
@@ -206,7 +206,7 @@ export default function Footer() {
 
         <div className="premium-footer__bottom">
           <p>
-            © {currentYear} InkFront.{" "}
+            © {currentYear} Inkfront.{" "}
             {t("footer.rights", "All rights reserved.")}
           </p>
 

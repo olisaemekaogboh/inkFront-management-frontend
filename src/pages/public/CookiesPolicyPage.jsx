@@ -27,12 +27,12 @@ export default function CookiesPolicyPage() {
     },
     {
       title: t(
-        "cookies.sections.howInkFrontUses.title",
-        "2. How InkFront Uses Cookies",
+        "cookies.sections.howInkfrontUses.title",
+        "2. How Inkfront Uses Cookies",
       ),
       body: t(
-        "cookies.sections.howInkFrontUses.body",
-        "InkFront uses cookies and similar technologies to keep our website functional, secure, personalized, and easier to use. We may use cookies for authentication, admin dashboard access, secure sessions, language preference, dark mode or light mode preference, cookie consent status, contact form protection, performance improvement, and basic website functionality.",
+        "cookies.sections.howInkfrontUses.body",
+        "Inkfront uses cookies and similar technologies to keep our website functional, secure, personalized, and easier to use. We may use cookies for authentication, admin dashboard access, secure sessions, language preference, dark mode or light mode preference, cookie consent status, contact form protection, performance improvement, and basic website functionality.",
       ),
     },
     {
@@ -49,7 +49,7 @@ export default function CookiesPolicyPage() {
       ),
       body: t(
         "cookies.sections.authSecurity.body",
-        "Where InkFront uses login or admin dashboard features, cookies may be used to confirm user identity, protect sessions, prevent unauthorized access, and keep users securely signed in. Some authentication cookies may be HTTP-only, meaning they are designed so browser scripts cannot directly access them. This helps improve account security.",
+        "Where Inkfront uses login or admin dashboard features, cookies may be used to confirm user identity, protect sessions, prevent unauthorized access, and keep users securely signed in. Some authentication cookies may be HTTP-only, meaning they are designed so browser scripts cannot directly access them. This helps improve account security.",
       ),
     },
     {
@@ -63,7 +63,7 @@ export default function CookiesPolicyPage() {
       title: t("cookies.sections.functional.title", "6. Functional Storage"),
       body: t(
         "cookies.sections.functional.body",
-        "InkFront may use browser storage to support interface features, saved preferences, temporary form states, dashboard behavior, and smoother navigation. For example, your selected theme or language preference may be stored locally so the website can load with your preferred settings on future visits.",
+        "Inkfront may use browser storage to support interface features, saved preferences, temporary form states, dashboard behavior, and smoother navigation. For example, your selected theme or language preference may be stored locally so the website can load with your preferred settings on future visits.",
       ),
     },
     {
@@ -73,14 +73,14 @@ export default function CookiesPolicyPage() {
       ),
       body: t(
         "cookies.sections.analytics.body",
-        "InkFront may use analytics tools now or in the future to understand how visitors interact with the website, which pages are visited, how users navigate the platform, and how performance can be improved. Analytics information is generally used to improve content, layout, speed, user experience, marketing effectiveness, and service quality.",
+        "Inkfront may use analytics tools now or in the future to understand how visitors interact with the website, which pages are visited, how users navigate the platform, and how performance can be improved. Analytics information is generally used to improve content, layout, speed, user experience, marketing effectiveness, and service quality.",
       ),
     },
     {
       title: t("cookies.sections.thirdParty.title", "8. Third-Party Cookies"),
       body: t(
         "cookies.sections.thirdParty.body",
-        "Some website features may rely on third-party services such as Google login, hosting providers, email platforms, analytics tools, embedded videos, maps, payment gateways, customer support tools, or marketing platforms. These third-party providers may set their own cookies or similar technologies. Their cookies are controlled by their own privacy and cookie policies, not by InkFront.",
+        "Some website features may rely on third-party services such as Google login, hosting providers, email platforms, analytics tools, embedded videos, maps, payment gateways, customer support tools, or marketing platforms. These third-party providers may set their own cookies or similar technologies. Their cookies are controlled by their own privacy and cookie policies, not by Inkfront.",
       ),
     },
     {
@@ -90,7 +90,7 @@ export default function CookiesPolicyPage() {
       ),
       body: t(
         "cookies.sections.clientProjects.body",
-        "If InkFront builds a website, dashboard, portal, or software platform for a client, that project may use cookies for login, customer sessions, cart behavior, payment flow, admin access, analytics, preferences, and security. The client is responsible for ensuring that their own cookie notices, privacy policies, and legal disclosures are appropriate for their business, users, and jurisdiction.",
+        "If Inkfront builds a website, dashboard, portal, or software platform for a client, that project may use cookies for login, customer sessions, cart behavior, payment flow, admin access, analytics, preferences, and security. The client is responsible for ensuring that their own cookie notices, privacy policies, and legal disclosures are appropriate for their business, users, and jurisdiction.",
       ),
     },
     {
@@ -104,14 +104,14 @@ export default function CookiesPolicyPage() {
       title: t("cookies.sections.consent.title", "11. Cookie Consent"),
       body: t(
         "cookies.sections.consent.body",
-        "Where required, InkFront may display a cookie banner or consent notice that allows users to accept or reject non-essential cookies. Essential cookies may still be used even if non-essential cookies are rejected because they are required for security, authentication, preferences, and core website functionality.",
+        "Where required, Inkfront may display a cookie banner or consent notice that allows users to accept or reject non-essential cookies. Essential cookies may still be used even if non-essential cookies are rejected because they are required for security, authentication, preferences, and core website functionality.",
       ),
     },
     {
       title: t("cookies.sections.retention.title", "12. Retention of Cookies"),
       body: t(
         "cookies.sections.retention.body",
-        "Some cookies last only for your current browser session and are deleted when you close your browser. Other cookies may remain for a longer period so the website can remember your choices. The duration depends on the purpose of the cookie, browser settings, and whether the cookie is set by InkFront or a third-party provider.",
+        "Some cookies last only for your current browser session and are deleted when you close your browser. Other cookies may remain for a longer period so the website can remember your choices. The duration depends on the purpose of the cookie, browser settings, and whether the cookie is set by Inkfront or a third-party provider.",
       ),
     },
     {
@@ -121,14 +121,14 @@ export default function CookiesPolicyPage() {
       ),
       body: t(
         "cookies.sections.updates.body",
-        "InkFront may update this Cookies Policy from time to time as our website, services, security practices, analytics tools, or legal requirements change. The latest version will remain available on this page, and continued use of the website means you accept the updated policy.",
+        "Inkfront may update this Cookies Policy from time to time as our website, services, security practices, analytics tools, or legal requirements change. The latest version will remain available on this page, and continued use of the website means you accept the updated policy.",
       ),
     },
     {
       title: t("cookies.sections.contact.title", "14. Contact"),
       body: t(
         "cookies.sections.contact.body",
-        "For questions about cookies, privacy, tracking technologies, or data handling, please contact InkFront through the official contact page or any verified communication channel provided by InkFront.",
+        "For questions about cookies, privacy, tracking technologies, or data handling, please contact Inkfront through the official contact page or any verified communication channel provided by Inkfront.",
       ),
     },
   ];
@@ -150,7 +150,7 @@ export default function CookiesPolicyPage() {
             <p>
               {t(
                 "cookies.description",
-                "This policy explains how InkFront uses cookies, local storage, session storage, and similar technologies to support security, authentication, preferences, performance, and a better user experience.",
+                "This policy explains how Inkfront uses cookies, local storage, session storage, and similar technologies to support security, authentication, preferences, performance, and a better user experience.",
               )}
             </p>
           </motion.div>
@@ -173,7 +173,7 @@ export default function CookiesPolicyPage() {
             <p>
               {t(
                 "cookies.lastUpdatedDescription",
-                "We use cookies carefully to support secure login, admin access, preferences, consent choices, analytics, and reliable InkFront platform behavior.",
+                "We use cookies carefully to support secure login, admin access, preferences, consent choices, analytics, and reliable Inkfront platform behavior.",
               )}
             </p>
           </motion.div>
@@ -207,7 +207,7 @@ export default function CookiesPolicyPage() {
           <p>
             {t(
               "cookies.ctaDescription",
-              "You can clear cookies from your browser, reject non-essential cookies where available, or contact InkFront if you have questions about privacy, cookies, or data handling.",
+              "You can clear cookies from your browser, reject non-essential cookies where available, or contact Inkfront if you have questions about privacy, cookies, or data handling.",
             )}
           </p>
 
@@ -217,7 +217,7 @@ export default function CookiesPolicyPage() {
             </Link>
 
             <Link to="/contact" className="premium-btn premium-btn-ghost">
-              {t("cookies.contactButton", "Contact InkFront")}
+              {t("cookies.contactButton", "Contact Inkfront")}
             </Link>
           </div>
         </div>

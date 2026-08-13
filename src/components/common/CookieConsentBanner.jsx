@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../../styles/cookieConsent.css";
 
-const COOKIE_KEY = "inkfront_cookie_consent";
+const COOKIE_KEY = "Inkfront_cookie_consent";
 
 export default function CookieConsentBanner() {
   const [visible, setVisible] = useState(false);
@@ -45,7 +45,7 @@ export default function CookieConsentBanner() {
   return (
     <section className="cookie-consent" aria-label="Cookie consent">
       <div className="cookie-consent__content">
-        <strong>InkFront uses cookies</strong>
+        <strong>Inkfront uses cookies</strong>
 
         <p>
           We use essential cookies for login, security, language preference,

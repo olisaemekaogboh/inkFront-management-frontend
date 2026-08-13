@@ -68,15 +68,15 @@ export default {
   },
   footer: {
     description:
-      "InkFront na-ewu weebụsaịtị kachasị mma, sistemụ ndozi, dashboards, blọọgụ, akwụkwọ akụkọ, ọnụ ụzọ, na ngwa sọftụwia pụrụ iche maka azụmahịa ọgbara ọhụrụ.",
+      "Inkfront na-ewu weebụsaịtị kachasị mma, sistemụ ndozi, dashboards, blọọgụ, akwụkwọ akụkọ, ọnụ ụzọ, na ngwa sọftụwia pụrụ iche maka azụmahịa ọgbara ọhụrụ.",
     explore: "Nyochaa",
     company: "Ụlọ ọrụ",
-    startTitle: "Bido na InkFront",
+    startTitle: "Bido na Inkfront",
     startText:
-      "Ị dị njikere imeziwanye azụmahịa gị n'ịntanetị? Ka InkFront wulite sistemụ dijitalụ dị ọcha, nke ọgbara ọhụrụ maka ika gị.",
-    contactButton: "Kpọtụrụ InkFront",
+      "Ị dị njikere imeziwanye azụmahịa gị n'ịntanetị? Ka Inkfront wulite sistemụ dijitalụ dị ọcha, nke ọgbara ọhụrụ maka ika gị.",
+    contactButton: "Kpọtụrụ Inkfront",
     phone: "+234 903 017 5230",
-    email: "info@inkfront.org",
+    email: "info@Inkfront.org",
     address: "4 Basden Street, Fegge, Onitsha, Anambra, Nigeria",
     viewMap: "Lee na Google Maps",
     rights: "Ikikere niile echekwara.",
@@ -111,24 +111,24 @@ export default {
     title: "Iwu Kuki",
     updatedDate: "Eprel 28, 2026",
     description:
-      "Iwu a na-akọwa otu InkFront si eji kuki, nchekwa mpaghara, nchekwa oge, na teknụzụ ndị yiri ya iji kwado nchekwa, nyocha, mmasị, arụmọrụ, na ahụmịhe onye ọrụ ka mma.",
+      "Iwu a na-akọwa otu Inkfront si eji kuki, nchekwa mpaghara, nchekwa oge, na teknụzụ ndị yiri ya iji kwado nchekwa, nyocha, mmasị, arụmọrụ, na ahụmịhe onye ọrụ ka mma.",
     lastUpdated: "Emelitere Ikpeazụ",
     lastUpdatedDescription:
-      "Anyị na-eji kuki nke ọma iji kwado nbanye echekwara, ohere onye nchịkwa, mmasị, nhọrọ nkwenye, nyocha, na omume InkFront a pụrụ ịtụkwasị obi.",
+      "Anyị na-eji kuki nke ọma iji kwado nbanye echekwara, ohere onye nchịkwa, mmasị, nhọrọ nkwenye, nyocha, na omume Inkfront a pụrụ ịtụkwasị obi.",
     ctaEyebrow: "Nhọrọ Gị",
     ctaTitle: "Ị na-achịkwa ntọala kuki gị",
     ctaDescription:
-      "Ị nwere ike ihichapụ kuki site na ihe nchọgharị gị, jụ kuki ndị na-abụghị nke dị mkpa ebe ọ dị, ma ọ bụ kpọtụrụ InkFront ma ọ bụrụ na ị nwere ajụjụ gbasara nzuzo, kuki, ma ọ bụ njikwa data.",
+      "Ị nwere ike ihichapụ kuki site na ihe nchọgharị gị, jụ kuki ndị na-abụghị nke dị mkpa ebe ọ dị, ma ọ bụ kpọtụrụ Inkfront ma ọ bụrụ na ị nwere ajụjụ gbasara nzuzo, kuki, ma ọ bụ njikwa data.",
     privacyButton: "Iwu Nzuzo",
-    contactButton: "Kpọtụrụ InkFront",
+    contactButton: "Kpọtụrụ Inkfront",
     sections: {
       whatAreCookies: {
         title: "1. Gịnị Bụ Kuki?",
         body: "Kuki bụ obere faịlụ ederede echekwara na ngwaọrụ gị mgbe ị na-eleta weebụsaịtị. Ha na-enyere weebụsaịtị aka icheta ozi gbasara nleta gị, dị ka oge nbanye, asụsụ ahọpụtara, mmasị ụdị ngosi, nyocha nchekwa, na omume ojiji bụ isi. Teknụzụ ndị yiri ya nwere ike ịgụnye nchekwa mpaghara, nchekwa oge, pikselụ, mkpado, ihe nchọpụta ngwaọrụ, na nchekwa mmasị dabere na ihe nchọgharị.",
       },
-      howInkFrontUses: {
-        title: "2. Otu InkFront Si Eji Kuki",
-        body: "InkFront na-eji kuki na teknụzụ ndị yiri ya iji mee ka weebụsaịtị anyị na-arụ ọrụ, chekwaa, hazie onwe ya, na ịdị mfe iji. Anyị nwere ike iji kuki maka nyocha, ohere dashboard onye nchịkwa, oge echekwara, mmasị asụsụ, mmasị ọnọdụ gbara ọchịchịrị ma ọ bụ ọnọdụ ìhè, ọnọdụ nkwenye kuki, nchebe ụdị kọntaktị, nkwalite arụmọrụ, na ọrụ weebụsaịtị bụ isi.",
+      howInkfrontUses: {
+        title: "2. Otu Inkfront Si Eji Kuki",
+        body: "Inkfront na-eji kuki na teknụzụ ndị yiri ya iji mee ka weebụsaịtị anyị na-arụ ọrụ, chekwaa, hazie onwe ya, na ịdị mfe iji. Anyị nwere ike iji kuki maka nyocha, ohere dashboard onye nchịkwa, oge echekwara, mmasị asụsụ, mmasị ọnọdụ gbara ọchịchịrị ma ọ bụ ọnọdụ ìhè, ọnọdụ nkwenye kuki, nchebe ụdị kọntaktị, nkwalite arụmọrụ, na ọrụ weebụsaịtị bụ isi.",
       },
       essential: {
         title: "3. Kuki Ndị Dị Mkpa",
@@ -136,7 +136,7 @@ export default {
       },
       authSecurity: {
         title: "4. Kuki Nyocha na Nchekwa",
-        body: "Ebe InkFront na-eji nbanye ma ọ bụ atụmatụ dashboard onye nchịkwa, enwere ike iji kuki iji gosi njirimara onye ọrụ, chebe oge, gbochie ohere na-enwetaghị ikike, na idebe ndị ọrụ abanyela n'enweghị nsogbu. Ụfọdụ kuki nyocha nwere ike ịbụ naanị HTTP, nke pụtara na e mere ha ka script ihe nchọgharị ghara ịnweta ha ozugbo. Nke a na-enyere aka melite nchekwa akaụntụ.",
+        body: "Ebe Inkfront na-eji nbanye ma ọ bụ atụmatụ dashboard onye nchịkwa, enwere ike iji kuki iji gosi njirimara onye ọrụ, chebe oge, gbochie ohere na-enwetaghị ikike, na idebe ndị ọrụ abanyela n'enweghị nsogbu. Ụfọdụ kuki nyocha nwere ike ịbụ naanị HTTP, nke pụtara na e mere ha ka script ihe nchọgharị ghara ịnweta ha ozugbo. Nke a na-enyere aka melite nchekwa akaụntụ.",
       },
       preference: {
         title: "5. Kuki Mmasị",
@@ -144,19 +144,19 @@ export default {
       },
       functional: {
         title: "6. Nchekwa Ọrụ",
-        body: "InkFront nwere ike iji nchekwa ihe nchọgharị iji kwado atụmatụ interface, mmasị echekwara, ọnọdụ ụdị nwa oge, omume dashboard, na njem dị nro. Dịka ọmụmaatụ, ụdị ngosi gị ahọpụtara ma ọ bụ mmasị asụsụ nwere ike ịbụ nke echekwara na mpaghara ka weebụsaịtị wee nwee ike ibu na ntọala gị masịrị na nleta ndị ọzọ.",
+        body: "Inkfront nwere ike iji nchekwa ihe nchọgharị iji kwado atụmatụ interface, mmasị echekwara, ọnọdụ ụdị nwa oge, omume dashboard, na njem dị nro. Dịka ọmụmaatụ, ụdị ngosi gị ahọpụtara ma ọ bụ mmasị asụsụ nwere ike ịbụ nke echekwara na mpaghara ka weebụsaịtị wee nwee ike ibu na ntọala gị masịrị na nleta ndị ọzọ.",
       },
       analytics: {
         title: "7. Nyocha na Nkwalite Ọrụ",
-        body: "InkFront nwere ike iji ngwa nyocha ugbu a ma ọ bụ n'ọdịnihu iji ghọta otu ndị ọbịa si emekọrịta na weebụsaịtị, peeji ndị a na-eleta, otu ndị ọrụ si enyocha ikpo okwu, na otu enwere ike isi melite arụmọrụ. A na-ejikarị ozi nyocha eme ihe iji melite ọdịnaya, nhazi, ọsọ, ahụmịhe onye ọrụ, ịdị irè ahịa, na ịdị mma ọrụ.",
+        body: "Inkfront nwere ike iji ngwa nyocha ugbu a ma ọ bụ n'ọdịnihu iji ghọta otu ndị ọbịa si emekọrịta na weebụsaịtị, peeji ndị a na-eleta, otu ndị ọrụ si enyocha ikpo okwu, na otu enwere ike isi melite arụmọrụ. A na-ejikarị ozi nyocha eme ihe iji melite ọdịnaya, nhazi, ọsọ, ahụmịhe onye ọrụ, ịdị irè ahịa, na ịdị mma ọrụ.",
       },
       thirdParty: {
         title: "8. Kuki Ndị Ọzọ",
-        body: "Ụfọdụ atụmatụ weebụsaịtị nwere ike ịdabere na ọrụ ndị ọzọ dị ka nbanye Google, ndị na-enye nnabata, ikpo okwu email, ngwa nyocha, vidiyo agbakwunyere, maapụ, ọnụ ụzọ ịkwụ ụgwọ, ngwa nkwado ndị ahịa, ma ọ bụ ikpo okwu ahịa. Ndị na-enye ọrụ ndị ọzọ a nwere ike ịtọ kuki nke ha ma ọ bụ teknụzụ ndị yiri ya. A na-achịkwa kuki ha site na iwu nzuzo na kuki nke ha, ọ bụghị InkFront.",
+        body: "Ụfọdụ atụmatụ weebụsaịtị nwere ike ịdabere na ọrụ ndị ọzọ dị ka nbanye Google, ndị na-enye nnabata, ikpo okwu email, ngwa nyocha, vidiyo agbakwunyere, maapụ, ọnụ ụzọ ịkwụ ụgwọ, ngwa nkwado ndị ahịa, ma ọ bụ ikpo okwu ahịa. Ndị na-enye ọrụ ndị ọzọ a nwere ike ịtọ kuki nke ha ma ọ bụ teknụzụ ndị yiri ya. A na-achịkwa kuki ha site na iwu nzuzo na kuki nke ha, ọ bụghị Inkfront.",
       },
       clientProjects: {
         title: "9. Kuki E Ji N'ọrụ Ndị Ahịa",
-        body: "Ọ bụrụ na InkFront rụọ weebụsaịtị, dashboard, ọnụ ụzọ, ma ọ bụ ikpo okwu ngwanrọ maka onye ahịa, ọrụ ahụ nwere ike iji kuki maka nbanye, oge ndị ahịa, omume ụgbọ, usoro ịkwụ ụgwọ, ohere onye nchịkwa, nyocha, mmasị, na nchekwa. Ọ bụ onye ahịa na-ahụ maka ịhụ na ọkwa kuki nke ha, iwu nzuzo, na nkwupụta iwu kwesịrị ekwesị maka azụmahịa ha, ndị ọrụ, na ikike iwu.",
+        body: "Ọ bụrụ na Inkfront rụọ weebụsaịtị, dashboard, ọnụ ụzọ, ma ọ bụ ikpo okwu ngwanrọ maka onye ahịa, ọrụ ahụ nwere ike iji kuki maka nbanye, oge ndị ahịa, omume ụgbọ, usoro ịkwụ ụgwọ, ohere onye nchịkwa, nyocha, mmasị, na nchekwa. Ọ bụ onye ahịa na-ahụ maka ịhụ na ọkwa kuki nke ha, iwu nzuzo, na nkwupụta iwu kwesịrị ekwesị maka azụmahịa ha, ndị ọrụ, na ikike iwu.",
       },
       managing: {
         title: "10. Ijikwa Kuki",
@@ -164,19 +164,19 @@ export default {
       },
       consent: {
         title: "11. Nkwenye Kuki",
-        body: "Ebe achọrọ ya, InkFront nwere ike igosipụta ọkọlọtọ kuki ma ọ bụ ọkwa nkwenye nke na-enye ndị ọrụ ohere ịnakwere ma ọ bụ jụ kuki ndị na-abụghị nke dị mkpa. A ka nwere ike iji kuki ndị dị mkpa ọbụlagodi ma ọ bụrụ na ajụrụ kuki ndị na-abụghị nke dị mkpa n'ihi na a chọrọ ha maka nchekwa, nyocha, mmasị, na ọrụ weebụsaịtị bụ isi.",
+        body: "Ebe achọrọ ya, Inkfront nwere ike igosipụta ọkọlọtọ kuki ma ọ bụ ọkwa nkwenye nke na-enye ndị ọrụ ohere ịnakwere ma ọ bụ jụ kuki ndị na-abụghị nke dị mkpa. A ka nwere ike iji kuki ndị dị mkpa ọbụlagodi ma ọ bụrụ na ajụrụ kuki ndị na-abụghị nke dị mkpa n'ihi na a chọrọ ha maka nchekwa, nyocha, mmasị, na ọrụ weebụsaịtị bụ isi.",
       },
       retention: {
         title: "12. Ndogide Kuki",
-        body: "Ụfọdụ kuki na-adị naanị maka oge ihe nchọgharị gị ugbu a ma na-ehichapụ mgbe ị mechiri ihe nchọgharị gị. Kuki ndị ọzọ nwere ike ịdịgide ogologo oge ka weebụsaịtị wee nwee ike icheta nhọrọ gị. Ogologo oge na-adabere na nzube kuki, ntọala ihe nchọgharị, na ma InkFront ka ọ bụ onye na-enye ọrụ ọzọ setịpụrụ kuki.",
+        body: "Ụfọdụ kuki na-adị naanị maka oge ihe nchọgharị gị ugbu a ma na-ehichapụ mgbe ị mechiri ihe nchọgharị gị. Kuki ndị ọzọ nwere ike ịdịgide ogologo oge ka weebụsaịtị wee nwee ike icheta nhọrọ gị. Ogologo oge na-adabere na nzube kuki, ntọala ihe nchọgharị, na ma Inkfront ka ọ bụ onye na-enye ọrụ ọzọ setịpụrụ kuki.",
       },
       updates: {
         title: "13. Mmelite na Iwu Kuki A",
-        body: "InkFront nwere ike imelite Iwu Kuki a site n'oge ruo n'oge ka weebụsaịtị anyị, ọrụ, omume nchekwa, ngwa nyocha, ma ọ bụ ihe iwu chọrọ na-agbanwe. Ụdị kachasị ọhụrụ ga-adị na peeji a, na ịga n'ihu iji weebụsaịtị pụtara na ị nabatara iwu emelitere.",
+        body: "Inkfront nwere ike imelite Iwu Kuki a site n'oge ruo n'oge ka weebụsaịtị anyị, ọrụ, omume nchekwa, ngwa nyocha, ma ọ bụ ihe iwu chọrọ na-agbanwe. Ụdị kachasị ọhụrụ ga-adị na peeji a, na ịga n'ihu iji weebụsaịtị pụtara na ị nabatara iwu emelitere.",
       },
       contact: {
         title: "14. Kpọtụrụ",
-        body: "Maka ajụjụ gbasara kuki, nzuzo, teknụzụ nsuso, ma ọ bụ njikwa data, biko kpọtụrụ InkFront site na peeji kọntaktị gọọmentị ma ọ bụ ụzọ nkwukọrịta ọ bụla enyochara nke InkFront nyere.",
+        body: "Maka ajụjụ gbasara kuki, nzuzo, teknụzụ nsuso, ma ọ bụ njikwa data, biko kpọtụrụ Inkfront site na peeji kọntaktị gọọmentị ma ọ bụ ụzọ nkwukọrịta ọ bụla enyochara nke Inkfront nyere.",
       },
     },
   },
@@ -185,24 +185,24 @@ export default {
     title: "Usoro & Ọnọdụ",
     updatedDate: "Eprel 28, 2026",
     description:
-      "Usoro ndị a na-achịkwa ojiji gị nke ọrụ InkFront, weebụsaịtị, ndụmọdụ, ngwaahịa dijitalụ, sistemụ ngwanrọ, na atụmatụ nkwado. Biko gụọ ha nke ọma tupu ịmalite ọrụ.",
+      "Usoro ndị a na-achịkwa ojiji gị nke ọrụ Inkfront, weebụsaịtị, ndụmọdụ, ngwaahịa dijitalụ, sistemụ ngwanrọ, na atụmatụ nkwado. Biko gụọ ha nke ọma tupu ịmalite ọrụ.",
     lastUpdatedLabel: "Emelitere Ikpeazụ",
     lastUpdatedDescription:
-      "Ezubere Usoro ndị a iji chebe ma InkFront ma ndị ahịa anyị site n'isetịpụ iwu doro anya maka oke ọrụ, ịkwụ ụgwọ, nwe, nkwado, ojiji a na-anabata, na ọrụ ọrụ.",
+      "Ezubere Usoro ndị a iji chebe ma Inkfront ma ndị ahịa anyị site n'isetịpụ iwu doro anya maka oke ọrụ, ịkwụ ụgwọ, nwe, nkwado, ojiji a na-anabata, na ọrụ ọrụ.",
     ctaEyebrow: "Chọrọ Nkọwa?",
     ctaTitle: "Ajụjụ gbasara usoro anyị?",
     ctaDescription:
-      "Kpọtụrụ InkFront tupu ịmalite ọrụ gị ma ọ bụrụ na ịchọrọ nkọwa gbasara oke, ịkwụ ụgwọ, nwe, nkwado, ma ọ bụ ihe a ga-enye.",
-    contactButton: "Kpọtụrụ InkFront",
+      "Kpọtụrụ Inkfront tupu ịmalite ọrụ gị ma ọ bụrụ na ịchọrọ nkọwa gbasara oke, ịkwụ ụgwọ, nwe, nkwado, ma ọ bụ ihe a ga-enye.",
+    contactButton: "Kpọtụrụ Inkfront",
     homeButton: "Laghachi n'Ụlọ",
     sections: {
       acceptance: {
         title: "1. Nnabata nke Usoro",
-        body: "Site na ịnweta, ịgagharị, ịrịọ, ịzụta, ịdenye aha, ma ọ bụ iji weebụsaịtị InkFront ọ bụla, ndụmọdụ, ọrụ imewe, ọrụ ngwanrọ, ngwaahịa dijitalụ, sistemụ nchịkwa, dashboard, nkwado nnabata, atụmatụ mmezi, ma ọ bụ ọrụ azụmahịa metụtara, ị kwenyere iji Usoro na Ọnọdụ ndị a kee gị n'ụzọ iwu.",
+        body: "Site na ịnweta, ịgagharị, ịrịọ, ịzụta, ịdenye aha, ma ọ bụ iji weebụsaịtị Inkfront ọ bụla, ndụmọdụ, ọrụ imewe, ọrụ ngwanrọ, ngwaahịa dijitalụ, sistemụ nchịkwa, dashboard, nkwado nnabata, atụmatụ mmezi, ma ọ bụ ọrụ azụmahịa metụtara, ị kwenyere iji Usoro na Ọnọdụ ndị a kee gị n'ụzọ iwu.",
       },
       about: {
-        title: "2. Banyere InkFront",
-        body: "InkFront na-enye weebụsaịtị azụmahịa, peeji ọdịda ngwaahịa, sistemụ ntinye akwụkwọ, ọnụ ụzọ ndị ahịa, dashboard nchịkwa, ngwaọrụ CRM, blọọgụ, akwụkwọ akụkọ, nyiwe e-commerce, sistemụ njikwa ụlọ akwụkwọ, nkwado ika, akpaaka usoro ọrụ, na ngwọta ngwanrọ ahaziri iche.",
+        title: "2. Banyere Inkfront",
+        body: "Inkfront na-enye weebụsaịtị azụmahịa, peeji ọdịda ngwaahịa, sistemụ ntinye akwụkwọ, ọnụ ụzọ ndị ahịa, dashboard nchịkwa, ngwaọrụ CRM, blọọgụ, akwụkwọ akụkọ, nyiwe e-commerce, sistemụ njikwa ụlọ akwụkwọ, nkwado ika, akpaaka usoro ọrụ, na ngwọta ngwanrọ ahaziri iche.",
       },
       clientResponsibilities: {
         title: "3. Ọrụ Ndị Ahịa",
@@ -218,7 +218,7 @@ export default {
       },
       latePayments: {
         title: "6. Ịkwụ Ụgwọ n'Oge & Nkwụsịtụ",
-        body: "Ọ bụrụ na ịkwụ ụgwọ agafeela, InkFront nwere ike kwụsịtụ mmepe, nkwado nnabata, mmezi, ohere nchịkwa, mbugharị, mmelite, ma ọ bụ nnyefe ruo mgbe a kwụrụ ụgwọ ndị fọdụrụ.",
+        body: "Ọ bụrụ na ịkwụ ụgwọ agafeela, Inkfront nwere ike kwụsịtụ mmepe, nkwado nnabata, mmezi, ohere nchịkwa, mbugharị, mmelite, ma ọ bụ nnyefe ruo mgbe a kwụrụ ụgwọ ndị fọdụrụ.",
       },
       revisions: {
         title: "7. Ntụgharị & Arịrịọ Mgbanwe",
@@ -226,7 +226,7 @@ export default {
       },
       approvals: {
         title: "8. Nkwado Ndị Ahịa",
-        body: "Mgbe onye ahịa kwadoro imewe, atụmatụ, peeji, ngalaba ọdịnaya, usoro ọrụ, ma ọ bụ ihe dị iche iche, InkFront nwere ike ịga n'ihu dabere na nkwado ahụ.",
+        body: "Mgbe onye ahịa kwadoro imewe, atụmatụ, peeji, ngalaba ọdịnaya, usoro ọrụ, ma ọ bụ ihe dị iche iche, Inkfront nwere ike ịga n'ihu dabere na nkwado ahụ.",
       },
       ip: {
         title: "9. Ngwongwo Ọgụgụ Isi",
@@ -234,7 +234,7 @@ export default {
       },
       portfolio: {
         title: "10. Ikike Pọtụfoliyo",
-        body: "Ọ gwụla ma onye ahịa rịọrọ nzuzo n'akwụkwọ tupu mmalite ọrụ, InkFront nwere ike igosipụta ọrụ emechara, nseta ihuenyo ọrụ, aha onye ahịa, akara ika, nkọwa ọrụ, na nsonaazụ izugbe na pọtụfoliyo ya.",
+        body: "Ọ gwụla ma onye ahịa rịọrọ nzuzo n'akwụkwọ tupu mmalite ọrụ, Inkfront nwere ike igosipụta ọrụ emechara, nseta ihuenyo ọrụ, aha onye ahịa, akara ika, nkọwa ọrụ, na nsonaazụ izugbe na pọtụfoliyo ya.",
       },
       confidentiality: {
         title: "11. Nzuzo",
@@ -246,7 +246,7 @@ export default {
       },
       security: {
         title: "13. Nchekwa & Ịnweta",
-        body: "InkFront ga-eji usoro teknụzụ ezi uche dị na ya wuo sistemụ echedoro, mana ọ nweghị weebụsaịtị, ngwanrọ, gburugburu nnabata, ma ọ bụ nyiwe ejikọtara na ịntanetị enwere ike ikwe nkwa na ọ nweghị nsogbu, ọgụ, mfu data, ma ọ bụ ịnweta na-akwadoghị.",
+        body: "Inkfront ga-eji usoro teknụzụ ezi uche dị na ya wuo sistemụ echedoro, mana ọ nweghị weebụsaịtị, ngwanrọ, gburugburu nnabata, ma ọ bụ nyiwe ejikọtara na ịntanetị enwere ike ikwe nkwa na ọ nweghị nsogbu, ọgụ, mfu data, ma ọ bụ ịnweta na-akwadoghị.",
       },
       compliance: {
         title: "14. Ọdịnaya & Nnabata Iwu",
@@ -254,11 +254,11 @@ export default {
       },
       use: {
         title: "15. Ojiji A Na-anabata",
-        body: "Ndị ahịa agaghị eji ọrụ InkFront maka wayo, aghụghọ, ịme ka, ịzụ ahịa iwu na-akwadoghị, mmebi ikike nwebiisinka, spam, malware, phishing, ọdịnaya ịkpọasị, iyi egwu, nrigbu ndị okenye, ọrụ ego iwu na-akwadoghị, ma ọ bụ ọrụ ọ bụla na-emerụ ndị ọrụ ahụ.",
+        body: "Ndị ahịa agaghị eji ọrụ Inkfront maka wayo, aghụghọ, ịme ka, ịzụ ahịa iwu na-akwadoghị, mmebi ikike nwebiisinka, spam, malware, phishing, ọdịnaya ịkpọasị, iyi egwu, nrigbu ndị okenye, ọrụ ego iwu na-akwadoghị, ma ọ bụ ọrụ ọ bụla na-emerụ ndị ọrụ ahụ.",
       },
       availability: {
         title: "16. Ịdị adị Ọrụ",
-        body: "InkFront na-achọ inye ọrụ a pụrụ ịdabere na ya, mana ọ naghị ekwe nkwa ịnweta na-akwụsịghị akwụsị, ọrụ na-enweghị njehie, oge ọrụ na-adịgide adịgide, ma ọ bụ ịdị adị na-aga n'ihu.",
+        body: "Inkfront na-achọ inye ọrụ a pụrụ ịdabere na ya, mana ọ naghị ekwe nkwa ịnweta na-akwụsịghị akwụsị, ọrụ na-enweghị njehie, oge ọrụ na-adịgide adịgide, ma ọ bụ ịdị adị na-aga n'ihu.",
       },
       support: {
         title: "17. Nkwado & Mmezi",
@@ -266,11 +266,11 @@ export default {
       },
       liability: {
         title: "18. Mkpebi Ọrụ",
-        body: "Ruo n'ókè kachasị nke iwu kwere, InkFront agaghị akwụ ụgwọ maka mfu na-apụtachaghị ìhè, nke mberede, pụrụ iche, ntaramahụhụ, ma ọ bụ nke na-esite na ya, gụnyere mfu uru, mfu ego, mfu data, mfu ndị ahịa, mmebi aha, nkwụsị azụmahịa, ma ọ bụ ohere efu.",
+        body: "Ruo n'ókè kachasị nke iwu kwere, Inkfront agaghị akwụ ụgwọ maka mfu na-apụtachaghị ìhè, nke mberede, pụrụ iche, ntaramahụhụ, ma ọ bụ nke na-esite na ya, gụnyere mfu uru, mfu ego, mfu data, mfu ndị ahịa, mmebi aha, nkwụsị azụmahịa, ma ọ bụ ohere efu.",
       },
       indemnity: {
         title: "19. Nkwụghachi Ụgwọ",
-        body: "Onye ahịa kwenyere ịkwụghachi ma debe InkFront n'enweghị nsogbu site na nkwupụta, mmebi, ntaramahụhụ, mfu, ụgwọ, ọnụahịa, na mmefu sitere na ihe ndị ahịa wetara, ọrụ azụmahịa iwu na-akwadoghị, iji nyiwe ewepụtara eme ihe n'ụzọ na-ezighị ezi, mmebi nke Usoro ndị a, mmebi nke ikike ndị ọzọ, ma ọ bụ enweghị ike ịgbaso iwu dị.",
+        body: "Onye ahịa kwenyere ịkwụghachi ma debe Inkfront n'enweghị nsogbu site na nkwupụta, mmebi, ntaramahụhụ, mfu, ụgwọ, ọnụahịa, na mmefu sitere na ihe ndị ahịa wetara, ọrụ azụmahịa iwu na-akwadoghị, iji nyiwe ewepụtara eme ihe n'ụzọ na-ezighị ezi, mmebi nke Usoro ndị a, mmebi nke ikike ndị ọzọ, ma ọ bụ enweghị ike ịgbaso iwu dị.",
       },
       cancellation: {
         title: "20. Ịkagbu & Ịkwụsị",
@@ -278,7 +278,7 @@ export default {
       },
       forceMajeure: {
         title: "21. Ike Karịrị Aka",
-        body: "InkFront agaghị akwụ ụgwọ maka igbu oge ma ọ bụ ọdịda nke ihe omume karịrị njikwa ezi uche dị na ya kpatara, gụnyere ọdịda ọkụ, nkwụsị ịntanetị, ọdachi okike, ọrụ gọọmentị, iku ọrụ, agha, ọgbaghara obodo, ọrịa, nkwụsị nyiwe, mwakpo cyber, ọdịda onye na-enye ịkwụ ụgwọ, ma ọ bụ nkwụsị ọrụ ndị ọzọ.",
+        body: "Inkfront agaghị akwụ ụgwọ maka igbu oge ma ọ bụ ọdịda nke ihe omume karịrị njikwa ezi uche dị na ya kpatara, gụnyere ọdịda ọkụ, nkwụsị ịntanetị, ọdachi okike, ọrụ gọọmentị, iku ọrụ, agha, ọgbaghara obodo, ọrịa, nkwụsị nyiwe, mwakpo cyber, ọdịda onye na-enye ịkwụ ụgwọ, ma ọ bụ nkwụsị ọrụ ndị ọzọ.",
       },
       law: {
         title: "22. Iwu Na-achịkwa",
@@ -286,11 +286,11 @@ export default {
       },
       updates: {
         title: "23. Mmelite na Usoro",
-        body: "InkFront nwere ike imelite Usoro ndị a site n'oge ruo n'oge iji gosipụta mgbanwe na ọrụ, iwu, ọrụ azụmahịa, ọnụahịa, teknụzụ, ma ọ bụ ihe nchekwa chọrọ.",
+        body: "Inkfront nwere ike imelite Usoro ndị a site n'oge ruo n'oge iji gosipụta mgbanwe na ọrụ, iwu, ọrụ azụmahịa, ọnụahịa, teknụzụ, ma ọ bụ ihe nchekwa chọrọ.",
       },
       contact: {
         title: "24. Kpọtụrụ",
-        body: "Maka ajụjụ, mkpesa, nkọwa ọrụ, ihe gbasara ịgba ụgwọ, ma ọ bụ ọkwa iwu metụtara Usoro ndị a, biko kpọtụrụ InkFront site na peeji kọntaktị gọọmentị ma ọ bụ ụzọ nkwukọrịta ọ bụla enyochara nke InkFront nyere.",
+        body: "Maka ajụjụ, mkpesa, nkọwa ọrụ, ihe gbasara ịgba ụgwọ, ma ọ bụ ọkwa iwu metụtara Usoro ndị a, biko kpọtụrụ Inkfront site na peeji kọntaktị gọọmentị ma ọ bụ ụzọ nkwukọrịta ọ bụla enyochara nke Inkfront nyere.",
       },
     },
   },
@@ -299,24 +299,24 @@ export default {
     title: "Iwu Nzuzo",
     updatedDate: "Eprel 28, 2026",
     description:
-      "Iwu a na-akọwa otu InkFront si anakọta, eji, echekwa, na-ejikwa ozi nkeonwe n'ofe weebụsaịtị anyị, ụdị kọntaktị, ngwaọrụ CRM, akwụkwọ akụkọ, sistemụ ngwanrọ, na ọrụ ndị ahịa.",
+      "Iwu a na-akọwa otu Inkfront si anakọta, eji, echekwa, na-ejikwa ozi nkeonwe n'ofe weebụsaịtị anyị, ụdị kọntaktị, ngwaọrụ CRM, akwụkwọ akụkọ, sistemụ ngwanrọ, na ọrụ ndị ahịa.",
     lastUpdatedLabel: "Emelitere Ikpeazụ",
     lastUpdatedDescription:
-      "Nzuzo gị dị InkFront mkpa. Anyị na-anakọta ozi naanị ebe ọ na-enyere anyị aka ịzaghachi gị, nyefee ọrụ, chekwaa nyiwe anyị, jikwaa ọrụ, ma melite ahụmịhe onye ahịa.",
+      "Nzuzo gị dị Inkfront mkpa. Anyị na-anakọta ozi naanị ebe ọ na-enyere anyị aka ịzaghachi gị, nyefee ọrụ, chekwaa nyiwe anyị, jikwaa ọrụ, ma melite ahụmịhe onye ahịa.",
     ctaEyebrow: "Arịrịọ Nzuzo",
     ctaTitle: "Chọrọ enyemaka na ozi nkeonwe gị?",
     ctaDescription:
-      "Kpọtụrụ InkFront ma ọ bụrụ na ịchọrọ ịnweta, mezie, melite, gbochie, ma ọ bụ rịọ ka ehichapụ ozi nkeonwe ejikọtara na ajụjụ gị, ndenye akwụkwọ akụkọ, ma ọ bụ ọrụ.",
-    contactButton: "Kpọtụrụ InkFront",
+      "Kpọtụrụ Inkfront ma ọ bụrụ na ịchọrọ ịnweta, mezie, melite, gbochie, ma ọ bụ rịọ ka ehichapụ ozi nkeonwe ejikọtara na ajụjụ gị, ndenye akwụkwọ akụkọ, ma ọ bụ ọrụ.",
+    contactButton: "Kpọtụrụ Inkfront",
     termsButton: "Lee Usoro",
     sections: {
       introduction: {
         title: "1. Okwu Mmalite",
-        body: "Iwu Nzuzo a na-akọwa otu InkFront si anakọta, eji, echekwa, na-echebe ma na-ejikwa ozi nkeonwe.",
+        body: "Iwu Nzuzo a na-akọwa otu Inkfront si anakọta, eji, echekwa, na-echebe ma na-ejikwa ozi nkeonwe.",
       },
       information: {
         title: "2. Ozi Anyị Na-anakọta",
-        body: "InkFront nwere ike ịnakọta ozi ị na-enye ozugbo, gụnyere aha gị, email, ekwentị, ụlọ ọrụ, nkọwa ọrụ, na data teknụzụ dịka adreesị IP na ụdị ihe nchọgharị.",
+        body: "Inkfront nwere ike ịnakọta ozi ị na-enye ozugbo, gụnyere aha gị, email, ekwentị, ụlọ ọrụ, nkọwa ọrụ, na data teknụzụ dịka adreesị IP na ụdị ihe nchọgharị.",
       },
       usage: {
         title: "3. Otu Anyị Si Eji Ozi Gị",
@@ -392,7 +392,7 @@ export default {
       },
       contact: {
         title: "21. Kpọtụrụ",
-        body: "Maka ajụjụ nzuzo ma ọ bụ arịrịọ data, kpọtụrụ InkFront site na peeji kọntaktị gọọmentị anyị.",
+        body: "Maka ajụjụ nzuzo ma ọ bụ arịrịọ data, kpọtụrụ Inkfront site na peeji kọntaktị gọọmentị anyị.",
       },
     },
   },
@@ -682,7 +682,7 @@ export default {
     ctaEyebrow: "Jiri ido anya wuo",
     ctaTitle: "Njikere ịtụgharị atụmatụ a ka ọ bụrụ ezigbo ngwa ahịa?",
     ctaDescription:
-      "Ka InkFront nyere gị aka ịtụgharị echiche gị ka ọ bụrụ ikpo okwu azụmahịa a na-egbu maramara.",
+      "Ka Inkfront nyere gị aka ịtụgharị echiche gị ka ọ bụrụ ikpo okwu azụmahịa a na-egbu maramara.",
     placeholderIcon: "🧩",
   },
   clientsPage: {
@@ -690,7 +690,7 @@ export default {
     description:
       "Nzaghachi sitere na mmekọ ndị ahịa na ụlọ ọrụ ndị akwadoro site na weebụsaịtị, ngwa ahịa dijitalụ, na sistemụ azụmahịa.",
     testimonialsEyebrow: "Ịgba Akaebe",
-    testimonialsTitle: "Ihe ndị ahịa na-ekwu maka ịrụ ọrụ na InkFront",
+    testimonialsTitle: "Ihe ndị ahịa na-ekwu maka ịrụ ọrụ na Inkfront",
     testimonialsDescription:
       "Ezigbo nzaghachi kwesịrị inyere ndị ahịa n'ọdịnihu aka ịghọta ịdị mma, ido anya, na ọkachamara nke ọrụ gị.",
     noTestimonials: "Ọ nweghị ịgba akaebe dị ugbu a.",
@@ -705,7 +705,7 @@ export default {
       "Weebụsaịtị gị kwesịrị ịkparịta ụka ntụkwasị obi, gosi ihe akaebe, ma tụgharịa ndị ọbịa ka ọ bụrụ ezigbo mkparịta ụka.",
   },
   blog: {
-    eyebrow: "InkFront Blọọgụ",
+    eyebrow: "Inkfront Blọọgụ",
     title: "Echiche, atụmatụ, na uto dijitalụ",
     subtitle:
       "Gụọ akụkọ bara uru gbasara weebụsaịtị, sistemụ ndozi, akpaaka, ọhụhụ azụmahịa, na ọrụ dijitalụ ka mma.",
@@ -726,7 +726,7 @@ export default {
     gallery: "Nchịkọta foto",
     articleSummary: "Nchịkọta edemede",
     summaryFallback:
-      "Nghọta bara uru sitere na InkFront maka ndị nwe azụmahịa na ndị otu dijitalụ.",
+      "Nghọta bara uru sitere na Inkfront maka ndị nwe azụmahịa na ndị otu dijitalụ.",
     discussProject: "Kwurịta ọrụ gị",
     moreFeatured: "Ọzọ pụtara ìhè",
     relatedLabel: "Ọgụgụ metụtara",
@@ -741,10 +741,10 @@ export default {
   },
   pages: {
     home: {
-      eyebrow: "InkFront Digital Systems",
+      eyebrow: "Inkfront Digital Systems",
       heroTitle: "Wulite ọnụnọ dijitalụ kachasị mma maka azụmahịa gị",
       heroSubtitle:
-        "InkFront na-echepụta ma na-ewu weebụsaịtị, peeji ngwaahịa, ọnụ ụzọ, na ikpo okwu azụmahịa nke na-enyere akara gị aka ịdị ka nke a tụkwasịrị obi, gbanwee ndu, na itolite na ntanetị.",
+        "Inkfront na-echepụta ma na-ewu weebụsaịtị, peeji ngwaahịa, ọnụ ụzọ, na ikpo okwu azụmahịa nke na-enyere akara gị aka ịdị ka nke a tụkwasịrị obi, gbanwee ndu, na itolite na ntanetị.",
       heroPanelEyebrow: "Ewuru maka uto",
       heroPanelTitle:
         "Weebụsaịtị, dashboards, ọnụ ụzọ, na sistemụ dị njikere ịmalite.",
@@ -767,7 +767,7 @@ export default {
       productTitle:
         "Tụgharịa echiche gị ka ọ bụrụ sistemụ azụmahịa doro anya enwere ike iwu.",
       productSubtitle:
-        "Jiri atụmatụ ngwaahịa InkFront kọwaa peeji, atụmatụ, ọdịnaya, usoro nchịkwa, na ntụziaka mmalite tupu mmepe amalite.",
+        "Jiri atụmatụ ngwaahịa Inkfront kọwaa peeji, atụmatụ, ọdịnaya, usoro nchịkwa, na ntụziaka mmalite tupu mmepe amalite.",
       selectedWork: "Ọrụ ahọpụtara",
       clientConfidence: "Ntụkwasị obi onye ahịa",
       testimonialSubtitle:
@@ -789,7 +789,7 @@ export default {
       bannerTitle:
         "Ị chọrọ weebụsaịtị, ọnụ ụzọ, sistemụ ndozi, ma ọ bụ ikpo okwu azụmahịa zuru oke?",
       bannerText:
-        "InkFront nwere ike inyere gị aka isi n'echiche gbasasịrị agbasasị gaa na sistemụ a na-egbu maramara nwere peeji, ọdịnaya, data azụ, nyocha, ngwa nchịkwa, na ahụmịhe ọha na-anabata ngwaọrụ.",
+        "Inkfront nwere ike inyere gị aka isi n'echiche gbasasịrị agbasasị gaa na sistemụ a na-egbu maramara nwere peeji, ọdịnaya, data azụ, nyocha, ngwa nchịkwa, na ahụmịhe ọha na-anabata ngwaọrụ.",
       processSteps: {
         discover: {
           title: "Chọpụta",
@@ -875,7 +875,7 @@ export default {
       },
       fallbackTestimonials: {
         client1: {
-          name: "Onye Ahịa InkFront",
+          name: "Onye Ahịa Inkfront",
           role: "Onye Nwe Azụmahịa",
           quote:
             "Ikpo okwu ahụ nyere akara anyị ọnụnọ ntanetị ọkachamara ma mee ka njikwa ajụjụ dị mfe.",
@@ -891,12 +891,12 @@ export default {
     about: {
       title: "Anyị na-ewu sistemụ dijitalụ maka azụmahịa ọgbara ọhụrụ",
       subtitle:
-        "InkFront na-enyere azụmahịa aka ịmalite weebụsaịtị kachasị mma, peeji ngwaahịa, dashboard, ọnụ ụzọ, na ikpo okwu dijitalụ jikọtara azụ.",
-      eyebrow: "Banyere InkFront",
+        "Inkfront na-enyere azụmahịa aka ịmalite weebụsaịtị kachasị mma, peeji ngwaahịa, dashboard, ọnụ ụzọ, na ikpo okwu dijitalụ jikọtara azụ.",
+      eyebrow: "Banyere Inkfront",
       storyEyebrow: "Akụkọ anyị",
-      storyTitle: "Ihe kpatara InkFront ji dị",
+      storyTitle: "Ihe kpatara Inkfront ji dị",
       storyFallback:
-        "InkFront dị iji nyere azụmahịa aka isi n'echiche gbasasịrị agbasasị na ọnụnọ ntanetị na-adịghị ike gaa na ikpo okwu dijitalụ a na-egbu maramara, nke a tụkwasịrị obi, na nke nwere ike itolite.",
+        "Inkfront dị iji nyere azụmahịa aka isi n'echiche gbasasịrị agbasasị na ọnụnọ ntanetị na-adịghị ike gaa na ikpo okwu dijitalụ a na-egbu maramara, nke a tụkwasịrị obi, na nke nwere ike itolite.",
       missionTitle: "Ozi anyị",
       missionFallback:
         "I chepụta ma wuo sistemụ dijitalụ bara uru nke na-enyere azụmahịa aka ikwurịta okwu n'ụzọ doro anya, rụọ ọrụ ka mma, na itolite na ntụkwasị obi.",
@@ -929,7 +929,7 @@ export default {
         t1: {
           role: "Onye Guzobere",
           quote:
-            "InkFront wuru ikpo okwu njikwa ụlọ akwụkwọ anyị kpọmkwem otu anyị si kọwaa ya. Imewe dị ọcha, azụ siri ike. Ndị nkuzi anyị na ndị nne na nna hụrụ ya n'anya iji ya.",
+            "Inkfront wuru ikpo okwu njikwa ụlọ akwụkwọ anyị kpọmkwem otu anyị si kọwaa ya. Imewe dị ọcha, azụ siri ike. Ndị nkuzi anyị na ndị nne na nna hụrụ ya n'anya iji ya.",
         },
         t2: {
           role: "Onye isi oche",
@@ -939,7 +939,7 @@ export default {
         t3: {
           role: "Onye Isi Nchịkwa",
           quote:
-            "Azụmaahịa anyị bụ naanị echiche. InkFront tụgharịrị ya ka ọ bụrụ ikpo okwu ọtụtụ ndị na-ere ahịa dị ndụ nwere escrow, njikwa katalọgụ, na ngwa onye nchịkwa dị ọcha.",
+            "Azụmaahịa anyị bụ naanị echiche. Inkfront tụgharịrị ya ka ọ bụrụ ikpo okwu ọtụtụ ndị na-ere ahịa dị ndụ nwere escrow, njikwa katalọgụ, na ngwa onye nchịkwa dị ọcha.",
         },
         t4: {
           role: "CTO",
@@ -1039,7 +1039,7 @@ export default {
       deliverablesFallback:
         "Atụmatụ dị ọcha, ntụziaka imewe kachasị mma, ọdịnaya jikọtara azụ, UI na-anabata ngwaọrụ, na usoro nnyefe lekwasịrị anya na azụmahịa.",
       moreServices: "Ọrụ ndị ọzọ",
-      otherServices: "Ụzọ ndị ọzọ InkFront nwere ike isi nyere aka",
+      otherServices: "Ụzọ ndị ọzọ Inkfront nwere ike isi nyere aka",
       service: "Ọrụ",
       viewService: "Lee ọrụ",
       ctaEyebrow: "Njikere iwu?",
@@ -1072,7 +1072,7 @@ export default {
     contact: {
       title: "Ka anyị wuo sistemụ dijitalụ gị na-esote",
       subtitle:
-        "Zipu nkọwa ọrụ aka gị ozugbo na ndị otu onye nchịkwa InkFront. A ga-echekwa ajụjụ gị, soro ya, ma soro ya site na CRM onye nchịkwa.",
+        "Zipu nkọwa ọrụ aka gị ozugbo na ndị otu onye nchịkwa Inkfront. A ga-echekwa ajụjụ gị, soro ya, ma soro ya site na CRM onye nchịkwa.",
       inquiry: "Ajụjụ ọrụ aka",
       sendMessage: "Zitere anyị ozi",
       description:
@@ -1131,7 +1131,7 @@ export default {
       eyebrow: "Ịgba Akaebe",
       title: "Ihe ndị ahịa na-ekwu",
       description:
-        "Ihe akaebe sitere n'aka ndị mmadụ na azụmahịa tụkwasịrị InkFront obi.",
+        "Ihe akaebe sitere n'aka ndị mmadụ na azụmahịa tụkwasịrị Inkfront obi.",
       emptyQuote: "Ọ nweghị ederede ịgba akaebe dị.",
       anonymous: "Onye Ahịa Na-amaghị Aha",
       client: "Onye Ahịa",
@@ -1227,7 +1227,7 @@ export default {
       submit: "Zipu ozi →",
       sending: "Na-ezipu...",
       success:
-        "E zipula ozi nke ọma. Ndị otu onye nchịkwa InkFront ga-enyocha ya ma laghachikwute gị n'oge na-adịghị anya.",
+        "E zipula ozi nke ọma. Ndị otu onye nchịkwa Inkfront ga-enyocha ya ma laghachikwute gị n'oge na-adịghị anya.",
       error: "Enweghị ike izipu ozi. Biko nwaa ọzọ.",
       validationError: "Biko dejupụta aha gị, email, isiokwu, na ozi.",
     },

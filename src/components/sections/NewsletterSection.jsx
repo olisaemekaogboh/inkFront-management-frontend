@@ -92,7 +92,7 @@ export default function NewsletterSection() {
       setNotice(
         t(
           "newsletter.success",
-          "You have successfully subscribed to InkFront updates.",
+          "You have successfully subscribed to Inkfront updates.",
         ),
       );
 

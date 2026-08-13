@@ -22,7 +22,7 @@ export default function PrivacyPolicyPage() {
       title: t("privacy.sections.introduction.title", "1. Introduction"),
       body: t(
         "privacy.sections.introduction.body",
-        "This Privacy Policy explains how InkFront collects, uses, stores, protects, and manages personal information when you visit our website, submit a contact form, request a project, subscribe to a newsletter, use our services, or communicate with our team. By using InkFront websites, software products, forms, dashboards, or services, you agree to the practices described in this Privacy Policy.",
+        "This Privacy Policy explains how Inkfront collects, uses, stores, protects, and manages personal information when you visit our website, submit a contact form, request a project, subscribe to a newsletter, use our services, or communicate with our team. By using Inkfront websites, software products, forms, dashboards, or services, you agree to the practices described in this Privacy Policy.",
       ),
     },
     {
@@ -32,7 +32,7 @@ export default function PrivacyPolicyPage() {
       ),
       body: t(
         "privacy.sections.information.body",
-        "InkFront may collect information you provide directly, including your name, email address, phone number, company or business name, project details, service interest, preferred language, budget range, message content, newsletter subscription details, and any files or materials you choose to share with us. We may also collect technical information such as IP address, device type, browser type, pages visited, time spent on pages, referral source, cookies, login activity, and general usage data where applicable.",
+        "Inkfront may collect information you provide directly, including your name, email address, phone number, company or business name, project details, service interest, preferred language, budget range, message content, newsletter subscription details, and any files or materials you choose to share with us. We may also collect technical information such as IP address, device type, browser type, pages visited, time spent on pages, referral source, cookies, login activity, and general usage data where applicable.",
       ),
     },
     {
@@ -42,7 +42,7 @@ export default function PrivacyPolicyPage() {
       ),
       body: t(
         "privacy.sections.usage.body",
-        "We use your information to respond to inquiries, evaluate project requests, prepare proposals, manage client relationships, deliver services, provide customer support, send updates, improve our website, maintain security, process newsletter subscriptions, and communicate about InkFront services. We may also use information for internal records, analytics, fraud prevention, service improvement, legal compliance, billing, dispute resolution, and business administration.",
+        "We use your information to respond to inquiries, evaluate project requests, prepare proposals, manage client relationships, deliver services, provide customer support, send updates, improve our website, maintain security, process newsletter subscriptions, and communicate about Inkfront services. We may also use information for internal records, analytics, fraud prevention, service improvement, legal compliance, billing, dispute resolution, and business administration.",
       ),
     },
     {
@@ -52,7 +52,7 @@ export default function PrivacyPolicyPage() {
       ),
       body: t(
         "privacy.sections.contactForms.body",
-        "When you submit a contact form, your message may be saved in our internal CRM system so the InkFront team can review, assign, track, respond to, and manage your inquiry. Contact form data may include your name, email, phone number, company, service interest, preferred language, subject, message, status, internal admin notes, and communication history.",
+        "When you submit a contact form, your message may be saved in our internal CRM system so the Inkfront team can review, assign, track, respond to, and manage your inquiry. Contact form data may include your name, email, phone number, company, service interest, preferred language, subject, message, status, internal admin notes, and communication history.",
       ),
     },
     {
@@ -69,7 +69,7 @@ export default function PrivacyPolicyPage() {
       ),
       body: t(
         "privacy.sections.newsletter.body",
-        "When you subscribe to our newsletter, we may store your email address, name, language preference, subscription status, unsubscribe token, subscription date, and engagement details. You may unsubscribe at any time using the unsubscribe link provided in our emails or by contacting InkFront directly.",
+        "When you subscribe to our newsletter, we may store your email address, name, language preference, subscription status, unsubscribe token, subscription date, and engagement details. You may unsubscribe at any time using the unsubscribe link provided in our emails or by contacting Inkfront directly.",
       ),
     },
     {
@@ -79,7 +79,7 @@ export default function PrivacyPolicyPage() {
       ),
       body: t(
         "privacy.sections.cookies.body",
-        "InkFront may use cookies and similar technologies for authentication, secure login sessions, admin dashboard access, language preferences, dark mode preferences, security, analytics, and basic website functionality. Where cookie-based authentication is used, authentication cookies may be HTTP-only and designed to reduce the risk of unauthorized access from client-side scripts.",
+        "Inkfront may use cookies and similar technologies for authentication, secure login sessions, admin dashboard access, language preferences, dark mode preferences, security, analytics, and basic website functionality. Where cookie-based authentication is used, authentication cookies may be HTTP-only and designed to reduce the risk of unauthorized access from client-side scripts.",
       ),
     },
     {
@@ -89,7 +89,7 @@ export default function PrivacyPolicyPage() {
       ),
       body: t(
         "privacy.sections.admin.body",
-        "If you access an InkFront admin dashboard or client portal, we may process login details, user roles, activity logs, security events, account permissions, and session data. This information helps us protect restricted areas, manage access control, prevent abuse, and maintain reliable service operations.",
+        "If you access an Inkfront admin dashboard or client portal, we may process login details, user roles, activity logs, security events, account permissions, and session data. This information helps us protect restricted areas, manage access control, prevent abuse, and maintain reliable service operations.",
       ),
     },
     {
@@ -113,7 +113,7 @@ export default function PrivacyPolicyPage() {
       title: t("privacy.sections.thirdParty.title", "11. Third-Party Services"),
       body: t(
         "privacy.sections.thirdParty.body",
-        "InkFront may use third-party services such as hosting providers, email platforms, analytics tools, payment gateways, OAuth login providers, domain registrars, cloud services, SMS providers, communication tools, and API providers. These third-party services may process information according to their own privacy policies, terms, security practices, and data retention rules. InkFront is not responsible for the independent privacy practices of third-party providers.",
+        "Inkfront may use third-party services such as hosting providers, email platforms, analytics tools, payment gateways, OAuth login providers, domain registrars, cloud services, SMS providers, communication tools, and API providers. These third-party services may process information according to their own privacy policies, terms, security practices, and data retention rules. Inkfront is not responsible for the independent privacy practices of third-party providers.",
       ),
     },
     {
@@ -147,7 +147,7 @@ export default function PrivacyPolicyPage() {
       title: t("privacy.sections.sharing.title", "15. Data Sharing"),
       body: t(
         "privacy.sections.sharing.body",
-        "InkFront does not sell your personal information. We may share information only where necessary with team members, contractors, technical partners, service providers, legal advisers, payment processors, hosting providers, or authorities where required by law or necessary to protect rights, safety, security, or business operations.",
+        "Inkfront does not sell your personal information. We may share information only where necessary with team members, contractors, technical partners, service providers, legal advisers, payment processors, hosting providers, or authorities where required by law or necessary to protect rights, safety, security, or business operations.",
       ),
     },
     {
@@ -171,7 +171,7 @@ export default function PrivacyPolicyPage() {
       title: t("privacy.sections.children.title", "18. Children's Privacy"),
       body: t(
         "privacy.sections.children.body",
-        "InkFront services are intended for businesses, professionals, organizations, and adult users. We do not knowingly collect personal information from children. If we become aware that a child has submitted personal information without proper authorization, we may delete it where appropriate.",
+        "Inkfront services are intended for businesses, professionals, organizations, and adult users. We do not knowingly collect personal information from children. If we become aware that a child has submitted personal information without proper authorization, we may delete it where appropriate.",
       ),
     },
     {
@@ -188,14 +188,14 @@ export default function PrivacyPolicyPage() {
       ),
       body: t(
         "privacy.sections.changes.body",
-        "InkFront may update this Privacy Policy from time to time to reflect changes in our services, technology, legal requirements, security practices, or business operations. The latest version will be available on this page, and continued use of our services means you accept the updated policy.",
+        "Inkfront may update this Privacy Policy from time to time to reflect changes in our services, technology, legal requirements, security practices, or business operations. The latest version will be available on this page, and continued use of our services means you accept the updated policy.",
       ),
     },
     {
       title: t("privacy.sections.contact.title", "21. Contact"),
       body: t(
         "privacy.sections.contact.body",
-        "For privacy questions, data requests, correction requests, deletion requests, or concerns about how your information is handled, please contact InkFront through the official contact page or any verified communication channel provided by InkFront.",
+        "For privacy questions, data requests, correction requests, deletion requests, or concerns about how your information is handled, please contact Inkfront through the official contact page or any verified communication channel provided by Inkfront.",
       ),
     },
   ];
@@ -217,7 +217,7 @@ export default function PrivacyPolicyPage() {
             <p>
               {t(
                 "privacy.description",
-                "This policy explains how InkFront collects, uses, protects, stores, and manages personal information across our websites, contact forms, CRM tools, newsletters, software systems, and client services.",
+                "This policy explains how Inkfront collects, uses, protects, stores, and manages personal information across our websites, contact forms, CRM tools, newsletters, software systems, and client services.",
               )}
             </p>
           </motion.div>
@@ -240,7 +240,7 @@ export default function PrivacyPolicyPage() {
             <p>
               {t(
                 "privacy.lastUpdatedDescription",
-                "Your privacy matters to InkFront. We collect information only where it helps us respond to you, deliver services, secure our platforms, manage projects, and improve the client experience.",
+                "Your privacy matters to Inkfront. We collect information only where it helps us respond to you, deliver services, secure our platforms, manage projects, and improve the client experience.",
               )}
             </p>
           </motion.div>
@@ -279,13 +279,13 @@ export default function PrivacyPolicyPage() {
           <p>
             {t(
               "privacy.ctaDescription",
-              "Contact InkFront if you want to access, correct, update, restrict, or request deletion of personal information connected to your inquiry, newsletter subscription, or project.",
+              "Contact Inkfront if you want to access, correct, update, restrict, or request deletion of personal information connected to your inquiry, newsletter subscription, or project.",
             )}
           </p>
 
           <div className="premium-actions premium-actions-center">
             <Link to="/contact" className="premium-btn premium-btn-light">
-              {t("privacy.contactButton", "Contact InkFront")}
+              {t("privacy.contactButton", "Contact Inkfront")}
             </Link>
             <Link to="/terms" className="premium-btn premium-btn-ghost">
               {t("privacy.termsButton", "View Terms")}

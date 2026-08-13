@@ -22,14 +22,14 @@ export default function TermsPage() {
       title: t("terms.sections.acceptance.title", "1. Acceptance of Terms"),
       body: t(
         "terms.sections.acceptance.body",
-        "By accessing, browsing, requesting, purchasing, subscribing to, or using any InkFront website, consultation, design service, software service, digital product, admin system, dashboard, hosting support, maintenance plan, or related business service, you agree to be legally bound by these Terms and Conditions. If you are using InkFront services on behalf of a company, organization, school, agency, or business, you confirm that you have the authority to bind that entity to these Terms. If you do not agree with any part of these Terms, you must not use our services.",
+        "By accessing, browsing, requesting, purchasing, subscribing to, or using any Inkfront website, consultation, design service, software service, digital product, admin system, dashboard, hosting support, maintenance plan, or related business service, you agree to be legally bound by these Terms and Conditions. If you are using Inkfront services on behalf of a company, organization, school, agency, or business, you confirm that you have the authority to bind that entity to these Terms. If you do not agree with any part of these Terms, you must not use our services.",
       ),
     },
     {
-      title: t("terms.sections.about.title", "2. About InkFront"),
+      title: t("terms.sections.about.title", "2. About Inkfront"),
       body: t(
         "terms.sections.about.body",
-        "InkFront provides business websites, product landing pages, booking systems, client portals, admin dashboards, CRM tools, blogs, newsletters, e-commerce platforms, school management systems, branding support, workflow automation, and custom software solutions. InkFront may deliver services through its internal team, technical partners, contractors, designers, developers, consultants, or third-party providers where necessary for project completion.",
+        "Inkfront provides business websites, product landing pages, booking systems, client portals, admin dashboards, CRM tools, blogs, newsletters, e-commerce platforms, school management systems, branding support, workflow automation, and custom software solutions. Inkfront may deliver services through its internal team, technical partners, contractors, designers, developers, consultants, or third-party providers where necessary for project completion.",
       ),
     },
     {
@@ -49,7 +49,7 @@ export default function TermsPage() {
       ),
       body: t(
         "terms.sections.scope.body",
-        "All services are delivered according to the agreed proposal, invoice, quotation, contract, written message, or approved project scope. Any feature, page, integration, dashboard, workflow, content, automation, or design request not clearly included in the approved scope will be treated as additional work and may require a separate quotation, new timeline, or written approval. InkFront is not obligated to provide unlimited work, unlimited revisions, extra integrations, new features, or support outside the agreed scope unless separately agreed in writing.",
+        "All services are delivered according to the agreed proposal, invoice, quotation, contract, written message, or approved project scope. Any feature, page, integration, dashboard, workflow, content, automation, or design request not clearly included in the approved scope will be treated as additional work and may require a separate quotation, new timeline, or written approval. Inkfront is not obligated to provide unlimited work, unlimited revisions, extra integrations, new features, or support outside the agreed scope unless separately agreed in writing.",
       ),
     },
     {
@@ -59,7 +59,7 @@ export default function TermsPage() {
       ),
       body: t(
         "terms.sections.payments.body",
-        "Project fees, deposits, retainers, subscriptions, maintenance fees, milestone payments, and renewal charges must be paid according to the agreed schedule. Unless otherwise agreed in writing, work may not begin until the required deposit or first payment is received. InkFront may pause work, restrict access, withhold deliverables, suspend support, or delay launch where payment is overdue. All paid deposits, strategy fees, design fees, setup fees, consultation fees, and milestone payments are non-refundable once work has started, resources have been allocated, or deliverables have been prepared.",
+        "Project fees, deposits, retainers, subscriptions, maintenance fees, milestone payments, and renewal charges must be paid according to the agreed schedule. Unless otherwise agreed in writing, work may not begin until the required deposit or first payment is received. Inkfront may pause work, restrict access, withhold deliverables, suspend support, or delay launch where payment is overdue. All paid deposits, strategy fees, design fees, setup fees, consultation fees, and milestone payments are non-refundable once work has started, resources have been allocated, or deliverables have been prepared.",
       ),
     },
     {
@@ -69,7 +69,7 @@ export default function TermsPage() {
       ),
       body: t(
         "terms.sections.latePayments.body",
-        "If payment is overdue, InkFront may suspend development, hosting support, maintenance, admin access, deployment, updates, or handover until outstanding amounts are paid. The client remains responsible for all agreed fees even if work is paused due to non-payment. InkFront is not liable for losses, delays, downtime, missed opportunities, or business interruption caused by suspension due to unpaid invoices.",
+        "If payment is overdue, Inkfront may suspend development, hosting support, maintenance, admin access, deployment, updates, or handover until outstanding amounts are paid. The client remains responsible for all agreed fees even if work is paused due to non-payment. Inkfront is not liable for losses, delays, downtime, missed opportunities, or business interruption caused by suspension due to unpaid invoices.",
       ),
     },
     {
@@ -86,28 +86,28 @@ export default function TermsPage() {
       title: t("terms.sections.approvals.title", "8. Client Approvals"),
       body: t(
         "terms.sections.approvals.body",
-        "When a client approves a design, feature, page, content section, workflow, or milestone, InkFront may proceed based on that approval. Changes requested after approval may be treated as additional work. Written approval may include email, dashboard approval, WhatsApp message, signed document, payment confirmation, or any clear written confirmation from the client or authorized representative.",
+        "When a client approves a design, feature, page, content section, workflow, or milestone, Inkfront may proceed based on that approval. Changes requested after approval may be treated as additional work. Written approval may include email, dashboard approval, WhatsApp message, signed document, payment confirmation, or any clear written confirmation from the client or authorized representative.",
       ),
     },
     {
       title: t("terms.sections.ip.title", "9. Intellectual Property"),
       body: t(
         "terms.sections.ip.body",
-        "After full payment, the client receives ownership of final paid deliverables specifically created for the client, excluding InkFront's pre-existing tools, reusable code, templates, libraries, frameworks, components, internal systems, processes, know-how, concepts, automation patterns, and general technical methods. InkFront retains the right to reuse general knowledge, technical methods, non-client-specific components, development patterns, and internal tools in future projects. No ownership transfer occurs until all outstanding payments connected to the project have been fully settled.",
+        "After full payment, the client receives ownership of final paid deliverables specifically created for the client, excluding Inkfront's pre-existing tools, reusable code, templates, libraries, frameworks, components, internal systems, processes, know-how, concepts, automation patterns, and general technical methods. Inkfront retains the right to reuse general knowledge, technical methods, non-client-specific components, development patterns, and internal tools in future projects. No ownership transfer occurs until all outstanding payments connected to the project have been fully settled.",
       ),
     },
     {
       title: t("terms.sections.portfolio.title", "10. Portfolio Rights"),
       body: t(
         "terms.sections.portfolio.body",
-        "Unless the client requests confidentiality in writing before project launch, InkFront may display completed work, project screenshots, client name, brand logo, project description, and general results in its portfolio, proposals, social media, case studies, and marketing materials. InkFront will not intentionally disclose private credentials, confidential business data, sensitive customer data, or protected internal information.",
+        "Unless the client requests confidentiality in writing before project launch, Inkfront may display completed work, project screenshots, client name, brand logo, project description, and general results in its portfolio, proposals, social media, case studies, and marketing materials. Inkfront will not intentionally disclose private credentials, confidential business data, sensitive customer data, or protected internal information.",
       ),
     },
     {
       title: t("terms.sections.confidentiality.title", "11. Confidentiality"),
       body: t(
         "terms.sections.confidentiality.body",
-        "Both parties agree to treat confidential business, technical, financial, customer, operational, login, and project information responsibly. InkFront will take reasonable steps to protect client information. However, clients must avoid sending unnecessary sensitive information and must promptly change credentials after handover where appropriate.",
+        "Both parties agree to treat confidential business, technical, financial, customer, operational, login, and project information responsibly. Inkfront will take reasonable steps to protect client information. However, clients must avoid sending unnecessary sensitive information and must promptly change credentials after handover where appropriate.",
       ),
     },
     {
@@ -117,14 +117,14 @@ export default function TermsPage() {
       ),
       body: t(
         "terms.sections.hosting.body",
-        "Projects may depend on third-party services such as hosting providers, domain registrars, payment gateways, email providers, analytics tools, APIs, SMS providers, cloud storage, databases, plugins, libraries, and external platforms. The client is responsible for third-party charges unless otherwise agreed. InkFront is not responsible for downtime, pricing changes, account bans, API changes, policy changes, service failures, or restrictions caused by third-party providers.",
+        "Projects may depend on third-party services such as hosting providers, domain registrars, payment gateways, email providers, analytics tools, APIs, SMS providers, cloud storage, databases, plugins, libraries, and external platforms. The client is responsible for third-party charges unless otherwise agreed. Inkfront is not responsible for downtime, pricing changes, account bans, API changes, policy changes, service failures, or restrictions caused by third-party providers.",
       ),
     },
     {
       title: t("terms.sections.security.title", "13. Security & Access"),
       body: t(
         "terms.sections.security.body",
-        "InkFront will use reasonable technical measures to build secure systems, but no website, software, hosting environment, or internet-connected platform can be guaranteed to be completely free from vulnerabilities, attacks, data loss, or unauthorized access. The client is responsible for protecting admin passwords, staff accounts, hosting credentials, email accounts, payment accounts, and device security after handover.",
+        "Inkfront will use reasonable technical measures to build secure systems, but no website, software, hosting environment, or internet-connected platform can be guaranteed to be completely free from vulnerabilities, attacks, data loss, or unauthorized access. The client is responsible for protecting admin passwords, staff accounts, hosting credentials, email accounts, payment accounts, and device security after handover.",
       ),
     },
     {
@@ -134,21 +134,21 @@ export default function TermsPage() {
       ),
       body: t(
         "terms.sections.compliance.body",
-        "The client is solely responsible for ensuring that its website content, products, services, claims, pricing, media, privacy notices, business operations, and customer communications comply with applicable laws and regulations. InkFront does not provide legal, tax, financial, medical, or regulatory advice. Any sample policies, website text, terms, or content provided by InkFront should be reviewed by the client's professional adviser before use.",
+        "The client is solely responsible for ensuring that its website content, products, services, claims, pricing, media, privacy notices, business operations, and customer communications comply with applicable laws and regulations. Inkfront does not provide legal, tax, financial, medical, or regulatory advice. Any sample policies, website text, terms, or content provided by Inkfront should be reviewed by the client's professional adviser before use.",
       ),
     },
     {
       title: t("terms.sections.use.title", "15. Acceptable Use"),
       body: t(
         "terms.sections.use.body",
-        "Clients must not use InkFront services for fraud, scams, impersonation, illegal trading, copyright infringement, spam, malware, phishing, hate content, harassment, adult exploitation, unlawful financial activity, or any activity that harms users, third parties, or InkFront's reputation. InkFront may refuse, suspend, or terminate services where unlawful, abusive, harmful, or suspicious activity is detected.",
+        "Clients must not use Inkfront services for fraud, scams, impersonation, illegal trading, copyright infringement, spam, malware, phishing, hate content, harassment, adult exploitation, unlawful financial activity, or any activity that harms users, third parties, or Inkfront's reputation. Inkfront may refuse, suspend, or terminate services where unlawful, abusive, harmful, or suspicious activity is detected.",
       ),
     },
     {
       title: t("terms.sections.availability.title", "16. Service Availability"),
       body: t(
         "terms.sections.availability.body",
-        "InkFront aims to provide reliable services, but does not guarantee uninterrupted access, error-free operation, permanent uptime, or continuous availability. Temporary interruptions may occur because of maintenance, hosting issues, internet failures, cyberattacks, third-party outages, payment issues, technical upgrades, or circumstances beyond InkFront's reasonable control.",
+        "Inkfront aims to provide reliable services, but does not guarantee uninterrupted access, error-free operation, permanent uptime, or continuous availability. Temporary interruptions may occur because of maintenance, hosting issues, internet failures, cyberattacks, third-party outages, payment issues, technical upgrades, or circumstances beyond Inkfront's reasonable control.",
       ),
     },
     {
@@ -162,14 +162,14 @@ export default function TermsPage() {
       title: t("terms.sections.liability.title", "18. Limitation of Liability"),
       body: t(
         "terms.sections.liability.body",
-        "To the maximum extent permitted by law, InkFront will not be liable for indirect, incidental, special, punitive, or consequential losses, including loss of profit, loss of revenue, loss of data, loss of customers, reputational damage, business interruption, or missed opportunities. InkFront's total liability for any claim shall not exceed the amount actually paid by the client to InkFront for the specific service giving rise to the claim.",
+        "To the maximum extent permitted by law, Inkfront will not be liable for indirect, incidental, special, punitive, or consequential losses, including loss of profit, loss of revenue, loss of data, loss of customers, reputational damage, business interruption, or missed opportunities. Inkfront's total liability for any claim shall not exceed the amount actually paid by the client to Inkfront for the specific service giving rise to the claim.",
       ),
     },
     {
       title: t("terms.sections.indemnity.title", "19. Indemnity"),
       body: t(
         "terms.sections.indemnity.body",
-        "The client agrees to indemnify and hold InkFront harmless from claims, damages, penalties, losses, liabilities, costs, and expenses arising from client-provided materials, unlawful business activity, misuse of the delivered platform, breach of these Terms, infringement of third-party rights, or failure to comply with applicable laws.",
+        "The client agrees to indemnify and hold Inkfront harmless from claims, damages, penalties, losses, liabilities, costs, and expenses arising from client-provided materials, unlawful business activity, misuse of the delivered platform, breach of these Terms, infringement of third-party rights, or failure to comply with applicable laws.",
       ),
     },
     {
@@ -179,14 +179,14 @@ export default function TermsPage() {
       ),
       body: t(
         "terms.sections.cancellation.body",
-        "Either party may terminate a project according to the agreed contract or written arrangement. If a client cancels a project after work has started, the client remains responsible for work already completed, resources allocated, third-party costs incurred, and any non-refundable fees. InkFront may terminate or suspend services if the client violates these Terms, fails to pay, acts abusively, provides unlawful materials, or uses the service in a harmful or illegal manner.",
+        "Either party may terminate a project according to the agreed contract or written arrangement. If a client cancels a project after work has started, the client remains responsible for work already completed, resources allocated, third-party costs incurred, and any non-refundable fees. Inkfront may terminate or suspend services if the client violates these Terms, fails to pay, acts abusively, provides unlawful materials, or uses the service in a harmful or illegal manner.",
       ),
     },
     {
       title: t("terms.sections.forceMajeure.title", "21. Force Majeure"),
       body: t(
         "terms.sections.forceMajeure.body",
-        "InkFront will not be liable for delay or failure caused by events beyond reasonable control, including power failure, internet disruption, natural disaster, government action, strike, war, civil unrest, illness, platform outage, cyberattack, payment provider failure, or third-party service disruption.",
+        "Inkfront will not be liable for delay or failure caused by events beyond reasonable control, including power failure, internet disruption, natural disaster, government action, strike, war, civil unrest, illness, platform outage, cyberattack, payment provider failure, or third-party service disruption.",
       ),
     },
     {
@@ -200,14 +200,14 @@ export default function TermsPage() {
       title: t("terms.sections.updates.title", "23. Updates to Terms"),
       body: t(
         "terms.sections.updates.body",
-        "InkFront may update these Terms from time to time to reflect changes in services, laws, business operations, pricing, technology, or security requirements. Continued use of InkFront services after updates means you accept the revised Terms.",
+        "Inkfront may update these Terms from time to time to reflect changes in services, laws, business operations, pricing, technology, or security requirements. Continued use of Inkfront services after updates means you accept the revised Terms.",
       ),
     },
     {
       title: t("terms.sections.contact.title", "24. Contact"),
       body: t(
         "terms.sections.contact.body",
-        "For questions, complaints, project clarification, billing matters, or legal notices relating to these Terms, please contact InkFront through the official contact page or any verified communication channel provided by InkFront.",
+        "For questions, complaints, project clarification, billing matters, or legal notices relating to these Terms, please contact Inkfront through the official contact page or any verified communication channel provided by Inkfront.",
       ),
     },
   ];
@@ -229,7 +229,7 @@ export default function TermsPage() {
             <p>
               {t(
                 "terms.description",
-                "These Terms govern your use of InkFront services, websites, consultations, digital products, software systems, and support plans. Please read them carefully before starting a project.",
+                "These Terms govern your use of Inkfront services, websites, consultations, digital products, software systems, and support plans. Please read them carefully before starting a project.",
               )}
             </p>
           </motion.div>
@@ -252,7 +252,7 @@ export default function TermsPage() {
             <p>
               {t(
                 "terms.lastUpdatedDescription",
-                "These Terms are intended to protect both InkFront and our clients by setting clear rules for project scope, payment, ownership, support, acceptable use, and service responsibilities.",
+                "These Terms are intended to protect both Inkfront and our clients by setting clear rules for project scope, payment, ownership, support, acceptable use, and service responsibilities.",
               )}
             </p>
           </motion.div>
@@ -286,13 +286,13 @@ export default function TermsPage() {
           <p>
             {t(
               "terms.ctaDescription",
-              "Contact InkFront before starting your project if you need clarification about scope, payment, ownership, support, or deliverables.",
+              "Contact Inkfront before starting your project if you need clarification about scope, payment, ownership, support, or deliverables.",
             )}
           </p>
 
           <div className="premium-actions premium-actions-center">
             <Link to="/contact" className="premium-btn premium-btn-light">
-              {t("terms.contactButton", "Contact InkFront")}
+              {t("terms.contactButton", "Contact Inkfront")}
             </Link>
             <Link to="/" className="premium-btn premium-btn-ghost">
               {t("terms.homeButton", "Back Home")}

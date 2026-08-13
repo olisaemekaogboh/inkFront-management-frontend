@@ -612,7 +612,7 @@ export default function TestimonialsClientsPage() {
               <h2>
                 {t(
                   "clientsPage.testimonialsTitle",
-                  "What clients say about working with InkFront",
+                  "What clients say about working with Inkfront",
                 )}
               </h2>
               <p>

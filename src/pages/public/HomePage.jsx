@@ -1320,7 +1320,7 @@ export default function HomePage() {
               <p>
                 {t(
                   "pages.home.productSubtitle",
-                  "Use InkFront product blueprints to define the pages, features, content, admin flow, and launch direction before development begins.",
+                  "Use Inkfront product blueprints to define the pages, features, content, admin flow, and launch direction before development begins.",
                 )}
               </p>
             </div>
@@ -1455,7 +1455,7 @@ export default function HomePage() {
               <p className="premium-services-banner__text">
                 {t(
                   "pages.home.bannerText",
-                  "InkFront can help you move from scattered ideas to a polished system with pages, content, backend data, authentication, admin tools, and responsive public experience.",
+                  "Inkfront can help you move from scattered ideas to a polished system with pages, content, backend data, authentication, admin tools, and responsive public experience.",
                 )}
               </p>
 

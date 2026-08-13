@@ -68,15 +68,15 @@ export default {
   },
   footer: {
     description:
-      "InkFront builds premium websites, booking systems, dashboards, blogs, newsletters, portals, and custom software tools for modern businesses.",
+      "Inkfront builds premium websites, booking systems, dashboards, blogs, newsletters, portals, and custom software tools for modern businesses.",
     explore: "Explore",
     company: "Company",
-    startTitle: "Start with InkFront",
+    startTitle: "Start with Inkfront",
     startText:
-      "Ready to upgrade your business online? Let InkFront build a clean, modern digital system for your brand.",
-    contactButton: "Contact InkFront",
+      "Ready to upgrade your business online? Let Inkfront build a clean, modern digital system for your brand.",
+    contactButton: "Contact Inkfront",
     phone: "+234 903 017 5230",
-    email: "info@inkfront.org",
+    email: "info@Inkfront.org",
     address: "4 Basden Street, Fegge, Onitsha, Anambra, Nigeria",
     viewMap: "View on Google Maps",
     rights: "All rights reserved.",
@@ -110,24 +110,24 @@ export default {
     title: "Privacy Policy",
     updatedDate: "April 28, 2026",
     description:
-      "This policy explains how InkFront collects, uses, protects, stores, and manages personal information across our websites, contact forms, CRM tools, newsletters, software systems, and client services.",
+      "This policy explains how Inkfront collects, uses, protects, stores, and manages personal information across our websites, contact forms, CRM tools, newsletters, software systems, and client services.",
     lastUpdatedLabel: "Last Updated",
     lastUpdatedDescription:
-      "Your privacy matters to InkFront. We collect information only where it helps us respond to you, deliver services, secure our platforms, manage projects, and improve the client experience.",
+      "Your privacy matters to Inkfront. We collect information only where it helps us respond to you, deliver services, secure our platforms, manage projects, and improve the client experience.",
     ctaEyebrow: "Privacy Request",
     ctaTitle: "Need help with your personal information?",
     ctaDescription:
-      "Contact InkFront if you want to access, correct, update, restrict, or request deletion of personal information connected to your inquiry, newsletter subscription, or project.",
-    contactButton: "Contact InkFront",
+      "Contact Inkfront if you want to access, correct, update, restrict, or request deletion of personal information connected to your inquiry, newsletter subscription, or project.",
+    contactButton: "Contact Inkfront",
     termsButton: "View Terms",
     sections: {
       introduction: {
         title: "1. Introduction",
-        body: "This Privacy Policy explains how InkFront collects, uses, stores, protects, and manages personal information.",
+        body: "This Privacy Policy explains how Inkfront collects, uses, stores, protects, and manages personal information.",
       },
       information: {
         title: "2. Information We Collect",
-        body: "InkFront may collect information you provide directly, including your name, email, phone, company, project details, and technical data like IP address and browser type.",
+        body: "Inkfront may collect information you provide directly, including your name, email, phone, company, project details, and technical data like IP address and browser type.",
       },
       usage: {
         title: "3. How We Use Your Information",
@@ -203,7 +203,7 @@ export default {
       },
       contact: {
         title: "21. Contact",
-        body: "For privacy questions or data requests, contact InkFront through our official contact page.",
+        body: "For privacy questions or data requests, contact Inkfront through our official contact page.",
       },
     },
   },
@@ -212,24 +212,24 @@ export default {
     title: "Cookies Policy",
     updatedDate: "April 28, 2026",
     description:
-      "This policy explains how InkFront uses cookies, local storage, session storage, and similar technologies to support security, authentication, preferences, performance, and a better user experience.",
+      "This policy explains how Inkfront uses cookies, local storage, session storage, and similar technologies to support security, authentication, preferences, performance, and a better user experience.",
     lastUpdated: "Last Updated",
     lastUpdatedDescription:
-      "We use cookies carefully to support secure login, admin access, preferences, consent choices, analytics, and reliable InkFront platform behavior.",
+      "We use cookies carefully to support secure login, admin access, preferences, consent choices, analytics, and reliable Inkfront platform behavior.",
     ctaEyebrow: "Your Choice",
     ctaTitle: "You control your cookie settings",
     ctaDescription:
-      "You can clear cookies from your browser, reject non-essential cookies where available, or contact InkFront if you have questions about privacy, cookies, or data handling.",
+      "You can clear cookies from your browser, reject non-essential cookies where available, or contact Inkfront if you have questions about privacy, cookies, or data handling.",
     privacyButton: "Privacy Policy",
-    contactButton: "Contact InkFront",
+    contactButton: "Contact Inkfront",
     sections: {
       whatAreCookies: {
         title: "1. What Are Cookies?",
         body: "Cookies are small text files stored on your device when you visit a website. They help websites remember information about your visit, such as login sessions, selected language, theme preference, security checks, and basic usage behavior. Similar technologies may include local storage, session storage, pixels, tags, device identifiers, and browser-based preference storage.",
       },
-      howInkFrontUses: {
-        title: "2. How InkFront Uses Cookies",
-        body: "InkFront uses cookies and similar technologies to keep our website functional, secure, personalized, and easier to use. We may use cookies for authentication, admin dashboard access, secure sessions, language preference, dark mode or light mode preference, cookie consent status, contact form protection, performance improvement, and basic website functionality.",
+      howInkfrontUses: {
+        title: "2. How Inkfront Uses Cookies",
+        body: "Inkfront uses cookies and similar technologies to keep our website functional, secure, personalized, and easier to use. We may use cookies for authentication, admin dashboard access, secure sessions, language preference, dark mode or light mode preference, cookie consent status, contact form protection, performance improvement, and basic website functionality.",
       },
       essential: {
         title: "3. Essential Cookies",
@@ -237,7 +237,7 @@ export default {
       },
       authSecurity: {
         title: "4. Authentication and Security Cookies",
-        body: "Where InkFront uses login or admin dashboard features, cookies may be used to confirm user identity, protect sessions, prevent unauthorized access, and keep users securely signed in. Some authentication cookies may be HTTP-only, meaning they are designed so browser scripts cannot directly access them. This helps improve account security.",
+        body: "Where Inkfront uses login or admin dashboard features, cookies may be used to confirm user identity, protect sessions, prevent unauthorized access, and keep users securely signed in. Some authentication cookies may be HTTP-only, meaning they are designed so browser scripts cannot directly access them. This helps improve account security.",
       },
       preference: {
         title: "5. Preference Cookies",
@@ -245,19 +245,19 @@ export default {
       },
       functional: {
         title: "6. Functional Storage",
-        body: "InkFront may use browser storage to support interface features, saved preferences, temporary form states, dashboard behavior, and smoother navigation. For example, your selected theme or language preference may be stored locally so the website can load with your preferred settings on future visits.",
+        body: "Inkfront may use browser storage to support interface features, saved preferences, temporary form states, dashboard behavior, and smoother navigation. For example, your selected theme or language preference may be stored locally so the website can load with your preferred settings on future visits.",
       },
       analytics: {
         title: "7. Analytics and Service Improvement",
-        body: "InkFront may use analytics tools now or in the future to understand how visitors interact with the website, which pages are visited, how users navigate the platform, and how performance can be improved. Analytics information is generally used to improve content, layout, speed, user experience, marketing effectiveness, and service quality.",
+        body: "Inkfront may use analytics tools now or in the future to understand how visitors interact with the website, which pages are visited, how users navigate the platform, and how performance can be improved. Analytics information is generally used to improve content, layout, speed, user experience, marketing effectiveness, and service quality.",
       },
       thirdParty: {
         title: "8. Third-Party Cookies",
-        body: "Some website features may rely on third-party services such as Google login, hosting providers, email platforms, analytics tools, embedded videos, maps, payment gateways, customer support tools, or marketing platforms. These third-party providers may set their own cookies or similar technologies. Their cookies are controlled by their own privacy and cookie policies, not by InkFront.",
+        body: "Some website features may rely on third-party services such as Google login, hosting providers, email platforms, analytics tools, embedded videos, maps, payment gateways, customer support tools, or marketing platforms. These third-party providers may set their own cookies or similar technologies. Their cookies are controlled by their own privacy and cookie policies, not by Inkfront.",
       },
       clientProjects: {
         title: "9. Cookies Used in Client Projects",
-        body: "If InkFront builds a website, dashboard, portal, or software platform for a client, that project may use cookies for login, customer sessions, cart behavior, payment flow, admin access, analytics, preferences, and security. The client is responsible for ensuring that their own cookie notices, privacy policies, and legal disclosures are appropriate for their business, users, and jurisdiction.",
+        body: "If Inkfront builds a website, dashboard, portal, or software platform for a client, that project may use cookies for login, customer sessions, cart behavior, payment flow, admin access, analytics, preferences, and security. The client is responsible for ensuring that their own cookie notices, privacy policies, and legal disclosures are appropriate for their business, users, and jurisdiction.",
       },
       managing: {
         title: "10. Managing Cookies",
@@ -265,19 +265,19 @@ export default {
       },
       consent: {
         title: "11. Cookie Consent",
-        body: "Where required, InkFront may display a cookie banner or consent notice that allows users to accept or reject non-essential cookies. Essential cookies may still be used even if non-essential cookies are rejected because they are required for security, authentication, preferences, and core website functionality.",
+        body: "Where required, Inkfront may display a cookie banner or consent notice that allows users to accept or reject non-essential cookies. Essential cookies may still be used even if non-essential cookies are rejected because they are required for security, authentication, preferences, and core website functionality.",
       },
       retention: {
         title: "12. Retention of Cookies",
-        body: "Some cookies last only for your current browser session and are deleted when you close your browser. Other cookies may remain for a longer period so the website can remember your choices. The duration depends on the purpose of the cookie, browser settings, and whether the cookie is set by InkFront or a third-party provider.",
+        body: "Some cookies last only for your current browser session and are deleted when you close your browser. Other cookies may remain for a longer period so the website can remember your choices. The duration depends on the purpose of the cookie, browser settings, and whether the cookie is set by Inkfront or a third-party provider.",
       },
       updates: {
         title: "13. Updates to This Cookies Policy",
-        body: "InkFront may update this Cookies Policy from time to time as our website, services, security practices, analytics tools, or legal requirements change. The latest version will remain available on this page, and continued use of the website means you accept the updated policy.",
+        body: "Inkfront may update this Cookies Policy from time to time as our website, services, security practices, analytics tools, or legal requirements change. The latest version will remain available on this page, and continued use of the website means you accept the updated policy.",
       },
       contact: {
         title: "14. Contact",
-        body: "For questions about cookies, privacy, tracking technologies, or data handling, please contact InkFront through the official contact page or any verified communication channel provided by InkFront.",
+        body: "For questions about cookies, privacy, tracking technologies, or data handling, please contact Inkfront through the official contact page or any verified communication channel provided by Inkfront.",
       },
     },
   },
@@ -286,24 +286,24 @@ export default {
     title: "Terms & Conditions",
     updatedDate: "April 28, 2026",
     description:
-      "These Terms govern your use of InkFront services, websites, consultations, digital products, software systems, and support plans. Please read them carefully before starting a project.",
+      "These Terms govern your use of Inkfront services, websites, consultations, digital products, software systems, and support plans. Please read them carefully before starting a project.",
     lastUpdatedLabel: "Last Updated",
     lastUpdatedDescription:
-      "These Terms are intended to protect both InkFront and our clients by setting clear rules for project scope, payment, ownership, support, acceptable use, and service responsibilities.",
+      "These Terms are intended to protect both Inkfront and our clients by setting clear rules for project scope, payment, ownership, support, acceptable use, and service responsibilities.",
     ctaEyebrow: "Need Clarification?",
     ctaTitle: "Questions about our terms?",
     ctaDescription:
-      "Contact InkFront before starting your project if you need clarification about scope, payment, ownership, support, or deliverables.",
-    contactButton: "Contact InkFront",
+      "Contact Inkfront before starting your project if you need clarification about scope, payment, ownership, support, or deliverables.",
+    contactButton: "Contact Inkfront",
     homeButton: "Back Home",
     sections: {
       acceptance: {
         title: "1. Acceptance of Terms",
-        body: "By accessing, browsing, requesting, purchasing, subscribing to, or using any InkFront website, consultation, design service, software service, digital product, admin system, dashboard, hosting support, maintenance plan, or related business service, you agree to be legally bound by these Terms and Conditions.",
+        body: "By accessing, browsing, requesting, purchasing, subscribing to, or using any Inkfront website, consultation, design service, software service, digital product, admin system, dashboard, hosting support, maintenance plan, or related business service, you agree to be legally bound by these Terms and Conditions.",
       },
       about: {
-        title: "2. About InkFront",
-        body: "InkFront provides business websites, product landing pages, booking systems, client portals, admin dashboards, CRM tools, blogs, newsletters, e-commerce platforms, school management systems, branding support, workflow automation, and custom software solutions.",
+        title: "2. About Inkfront",
+        body: "Inkfront provides business websites, product landing pages, booking systems, client portals, admin dashboards, CRM tools, blogs, newsletters, e-commerce platforms, school management systems, branding support, workflow automation, and custom software solutions.",
       },
       clientResponsibilities: {
         title: "3. Client Responsibilities",
@@ -319,7 +319,7 @@ export default {
       },
       latePayments: {
         title: "6. Late Payments & Suspension",
-        body: "If payment is overdue, InkFront may suspend development, hosting support, maintenance, admin access, deployment, updates, or handover until outstanding amounts are paid.",
+        body: "If payment is overdue, Inkfront may suspend development, hosting support, maintenance, admin access, deployment, updates, or handover until outstanding amounts are paid.",
       },
       revisions: {
         title: "7. Revisions & Change Requests",
@@ -327,15 +327,15 @@ export default {
       },
       approvals: {
         title: "8. Client Approvals",
-        body: "When a client approves a design, feature, page, content section, workflow, or milestone, InkFront may proceed based on that approval. Changes requested after approval may be treated as additional work.",
+        body: "When a client approves a design, feature, page, content section, workflow, or milestone, Inkfront may proceed based on that approval. Changes requested after approval may be treated as additional work.",
       },
       ip: {
         title: "9. Intellectual Property",
-        body: "After full payment, the client receives ownership of final paid deliverables specifically created for the client, excluding InkFront's pre-existing tools, reusable code, templates, libraries, frameworks, components, internal systems, processes, know-how, concepts, automation patterns, and general technical methods.",
+        body: "After full payment, the client receives ownership of final paid deliverables specifically created for the client, excluding Inkfront's pre-existing tools, reusable code, templates, libraries, frameworks, components, internal systems, processes, know-how, concepts, automation patterns, and general technical methods.",
       },
       portfolio: {
         title: "10. Portfolio Rights",
-        body: "Unless the client requests confidentiality in writing before project launch, InkFront may display completed work, project screenshots, client name, brand logo, project description, and general results in its portfolio.",
+        body: "Unless the client requests confidentiality in writing before project launch, Inkfront may display completed work, project screenshots, client name, brand logo, project description, and general results in its portfolio.",
       },
       confidentiality: {
         title: "11. Confidentiality",
@@ -347,7 +347,7 @@ export default {
       },
       security: {
         title: "13. Security & Access",
-        body: "InkFront will use reasonable technical measures to build secure systems, but no website, software, hosting environment, or internet-connected platform can be guaranteed to be completely free from vulnerabilities.",
+        body: "Inkfront will use reasonable technical measures to build secure systems, but no website, software, hosting environment, or internet-connected platform can be guaranteed to be completely free from vulnerabilities.",
       },
       compliance: {
         title: "14. Content & Legal Compliance",
@@ -355,11 +355,11 @@ export default {
       },
       use: {
         title: "15. Acceptable Use",
-        body: "Clients must not use InkFront services for fraud, scams, impersonation, illegal trading, copyright infringement, spam, malware, phishing, hate content, harassment, adult exploitation, unlawful financial activity, or any activity that harms users.",
+        body: "Clients must not use Inkfront services for fraud, scams, impersonation, illegal trading, copyright infringement, spam, malware, phishing, hate content, harassment, adult exploitation, unlawful financial activity, or any activity that harms users.",
       },
       availability: {
         title: "16. Service Availability",
-        body: "InkFront aims to provide reliable services, but does not guarantee uninterrupted access, error-free operation, permanent uptime, or continuous availability.",
+        body: "Inkfront aims to provide reliable services, but does not guarantee uninterrupted access, error-free operation, permanent uptime, or continuous availability.",
       },
       support: {
         title: "17. Support & Maintenance",
@@ -367,11 +367,11 @@ export default {
       },
       liability: {
         title: "18. Limitation of Liability",
-        body: "To the maximum extent permitted by law, InkFront will not be liable for indirect, incidental, special, punitive, or consequential losses, including loss of profit, loss of revenue, loss of data, loss of customers, reputational damage, business interruption, or missed opportunities.",
+        body: "To the maximum extent permitted by law, Inkfront will not be liable for indirect, incidental, special, punitive, or consequential losses, including loss of profit, loss of revenue, loss of data, loss of customers, reputational damage, business interruption, or missed opportunities.",
       },
       indemnity: {
         title: "19. Indemnity",
-        body: "The client agrees to indemnify and hold InkFront harmless from claims, damages, penalties, losses, liabilities, costs, and expenses arising from client-provided materials, unlawful business activity, misuse of the delivered platform, or breach of these Terms.",
+        body: "The client agrees to indemnify and hold Inkfront harmless from claims, damages, penalties, losses, liabilities, costs, and expenses arising from client-provided materials, unlawful business activity, misuse of the delivered platform, or breach of these Terms.",
       },
       cancellation: {
         title: "20. Cancellation & Termination",
@@ -379,7 +379,7 @@ export default {
       },
       forceMajeure: {
         title: "21. Force Majeure",
-        body: "InkFront will not be liable for delay or failure caused by events beyond reasonable control, including power failure, internet disruption, natural disaster, government action, strike, war, civil unrest, illness, platform outage, cyberattack, payment provider failure, or third-party service disruption.",
+        body: "Inkfront will not be liable for delay or failure caused by events beyond reasonable control, including power failure, internet disruption, natural disaster, government action, strike, war, civil unrest, illness, platform outage, cyberattack, payment provider failure, or third-party service disruption.",
       },
       law: {
         title: "22. Governing Law",
@@ -387,11 +387,11 @@ export default {
       },
       updates: {
         title: "23. Updates to Terms",
-        body: "InkFront may update these Terms from time to time to reflect changes in services, laws, business operations, pricing, technology, or security requirements.",
+        body: "Inkfront may update these Terms from time to time to reflect changes in services, laws, business operations, pricing, technology, or security requirements.",
       },
       contact: {
         title: "24. Contact",
-        body: "For questions, complaints, project clarification, billing matters, or legal notices relating to these Terms, please contact InkFront through the official contact page or any verified communication channel provided by InkFront.",
+        body: "For questions, complaints, project clarification, billing matters, or legal notices relating to these Terms, please contact Inkfront through the official contact page or any verified communication channel provided by Inkfront.",
       },
     },
   },
@@ -660,7 +660,7 @@ export default {
     ctaEyebrow: "Build with clarity",
     ctaTitle: "Ready to turn this blueprint into a real product?",
     ctaDescription:
-      "Let InkFront help you convert your idea into a polished business platform.",
+      "Let Inkfront help you convert your idea into a polished business platform.",
     placeholderIcon: "🧩",
   },
   clientsPage: {
@@ -668,7 +668,7 @@ export default {
     description:
       "Feedback from client engagements and organizations supported with websites, digital products, and business systems.",
     testimonialsEyebrow: "Testimonials",
-    testimonialsTitle: "What clients say about working with InkFront",
+    testimonialsTitle: "What clients say about working with Inkfront",
     testimonialsDescription:
       "Real feedback should help future clients understand the quality, clarity, and professionalism of your work.",
     noTestimonials: "No testimonials available yet.",
@@ -683,7 +683,7 @@ export default {
       "Your website should communicate trust, show proof, and turn visitors into real conversations.",
   },
   blog: {
-    eyebrow: "InkFront Blog",
+    eyebrow: "Inkfront Blog",
     title: "Ideas, strategy, and digital growth",
     subtitle:
       "Read practical articles on websites, booking systems, automation, business visibility, and better digital operations.",
@@ -705,7 +705,7 @@ export default {
     gallery: "Gallery",
     articleSummary: "Article summary",
     summaryFallback:
-      "A practical insight from InkFront for business owners and digital teams.",
+      "A practical insight from Inkfront for business owners and digital teams.",
     discussProject: "Discuss your project",
     moreFeatured: "More featured",
     relatedLabel: "Related reading",
@@ -721,10 +721,10 @@ export default {
 
   pages: {
     home: {
-      eyebrow: "InkFront Digital Systems",
+      eyebrow: "Inkfront Digital Systems",
       heroTitle: "Build a premium digital presence for your business",
       heroSubtitle:
-        "InkFront designs and builds websites, product pages, portals, and business platforms that help your brand look trusted, convert leads, and scale online.",
+        "Inkfront designs and builds websites, product pages, portals, and business platforms that help your brand look trusted, convert leads, and scale online.",
       heroPanelEyebrow: "Built for growth",
       heroPanelTitle:
         "Websites, dashboards, portals, and launch-ready systems.",
@@ -745,7 +745,7 @@ export default {
       productDirection: "Product direction",
       productTitle: "Turn your idea into a clear buildable business system.",
       productSubtitle:
-        "Use InkFront product blueprints to define the pages, features, content, admin flow, and launch direction before development begins.",
+        "Use Inkfront product blueprints to define the pages, features, content, admin flow, and launch direction before development begins.",
       selectedWork: "Selected work",
       clientConfidence: "Client confidence",
       testimonialSubtitle:
@@ -768,7 +768,7 @@ export default {
       bannerTitle:
         "Need a website, portal, booking system, or full business platform?",
       bannerText:
-        "InkFront can help you move from scattered ideas to a polished system with pages, content, backend data, authentication, admin tools, and responsive public experience.",
+        "Inkfront can help you move from scattered ideas to a polished system with pages, content, backend data, authentication, admin tools, and responsive public experience.",
       processSteps: {
         discover: {
           title: "Discover",
@@ -854,7 +854,7 @@ export default {
       },
       fallbackTestimonials: {
         client1: {
-          name: "InkFront Client",
+          name: "Inkfront Client",
           role: "Business Owner",
           quote:
             "The platform gave our brand a professional online presence and made inquiries easier to manage.",
@@ -870,12 +870,12 @@ export default {
     about: {
       title: "We build digital systems for modern businesses",
       subtitle:
-        "InkFront helps businesses launch premium websites, product pages, dashboards, portals, and backend-connected digital platforms.",
-      eyebrow: "About InkFront",
+        "Inkfront helps businesses launch premium websites, product pages, dashboards, portals, and backend-connected digital platforms.",
+      eyebrow: "About Inkfront",
       storyEyebrow: "Our story",
-      storyTitle: "Why InkFront exists",
+      storyTitle: "Why Inkfront exists",
       storyFallback:
-        "InkFront exists to help businesses move from scattered ideas and weak online presence to polished, trusted, and scalable digital platforms.",
+        "Inkfront exists to help businesses move from scattered ideas and weak online presence to polished, trusted, and scalable digital platforms.",
       missionTitle: "Our mission",
       missionFallback:
         "To design and build practical digital systems that help businesses communicate clearly, operate better, and grow with confidence.",
@@ -907,7 +907,7 @@ export default {
         t1: {
           role: "Founder",
           quote:
-            "InkFront built our school management platform exactly how we described it. Clean design, solid backend. Our teachers and parents love using it.",
+            "Inkfront built our school management platform exactly how we described it. Clean design, solid backend. Our teachers and parents love using it.",
         },
         t2: {
           role: "CEO",
@@ -917,7 +917,7 @@ export default {
         t3: {
           role: "Managing Director",
           quote:
-            "Our marketplace was just an idea. InkFront turned it into a live multi-vendor platform with escrow, catalog management, and clean admin tools.",
+            "Our marketplace was just an idea. Inkfront turned it into a live multi-vendor platform with escrow, catalog management, and clean admin tools.",
         },
         t4: {
           role: "CTO",
@@ -1016,7 +1016,7 @@ export default {
       deliverablesFallback:
         "A clean strategy, premium design direction, backend-connected content, responsive UI, and a business-focused delivery process.",
       moreServices: "More services",
-      otherServices: "Other ways InkFront can help",
+      otherServices: "Other ways Inkfront can help",
       service: "Service",
       viewService: "View service",
       ctaEyebrow: "Ready to build?",
@@ -1067,7 +1067,7 @@ export default {
     contact: {
       title: "Let's build your next digital system",
       subtitle:
-        "Send your project details directly to the InkFront admin team. Your inquiry will be saved, tracked, and followed up from the admin CRM.",
+        "Send your project details directly to the Inkfront admin team. Your inquiry will be saved, tracked, and followed up from the admin CRM.",
       inquiry: "Project inquiry",
       sendMessage: "Send us a message",
       description:
@@ -1125,7 +1125,7 @@ export default {
     testimonials: {
       eyebrow: "Testimonials",
       title: "What clients say",
-      description: "Proof from people and businesses that trust InkFront.",
+      description: "Proof from people and businesses that trust Inkfront.",
       emptyQuote: "No testimonial text available.",
       anonymous: "Anonymous Client",
       client: "Client",
@@ -1218,7 +1218,7 @@ export default {
       submit: "Send message →",
       sending: "Sending...",
       success:
-        "Message sent successfully. The InkFront admin team will review it and get back to you soon.",
+        "Message sent successfully. The Inkfront admin team will review it and get back to you soon.",
       error: "Failed to send message. Please try again.",
       validationError: "Please fill in your name, email, subject, and message.",
     },

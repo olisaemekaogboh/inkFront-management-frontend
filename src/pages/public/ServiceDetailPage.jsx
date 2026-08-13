@@ -336,7 +336,7 @@ export default function ServiceDetailPage() {
                 {t("services.moreServices", "More services")}
               </span>
               <h2>
-                {t("services.otherServices", "Other ways InkFront can help")}
+                {t("services.otherServices", "Other ways Inkfront can help")}
               </h2>
             </div>
 

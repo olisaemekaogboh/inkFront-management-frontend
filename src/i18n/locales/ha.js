@@ -69,15 +69,15 @@ export default {
 
   footer: {
     description:
-      "InkFront yana gina manyan gidajen yanar gizo, tsarin ajiya, dashboards, bulogi, wasiƙun labarai, hanyoyin shiga, da kayan aikin software na musamman don kasuwancin zamani.",
+      "Inkfront yana gina manyan gidajen yanar gizo, tsarin ajiya, dashboards, bulogi, wasiƙun labarai, hanyoyin shiga, da kayan aikin software na musamman don kasuwancin zamani.",
     explore: "Bincika",
     company: "Kamfani",
-    startTitle: "Fara da InkFront",
+    startTitle: "Fara da Inkfront",
     startText:
-      "Shin kuna shirye don haɓaka kasuwancin ku akan layi? Bari InkFront ta gina tsarin dijital mai tsabta, na zamani don alamar ku.",
-    contactButton: "Tuntuɓi InkFront",
+      "Shin kuna shirye don haɓaka kasuwancin ku akan layi? Bari Inkfront ta gina tsarin dijital mai tsabta, na zamani don alamar ku.",
+    contactButton: "Tuntuɓi Inkfront",
     phone: "+234 903 017 5230",
-    email: "info@inkfront.org",
+    email: "info@Inkfront.org",
     address: "4 Basden Street, Fegge, Onitsha, Anambra, Nigeria",
     viewMap: "Duba akan Taswirorin Google",
     rights: "Duk haƙƙoƙin an kiyaye.",
@@ -112,24 +112,24 @@ export default {
     title: "Manufar Kukis",
     updatedDate: "Afrilu 28, 2026",
     description:
-      "Wannan manufar ta bayyana yadda InkFront ke amfani da kukis, ma'ajiyar gida, ma'ajiyar zaman, da makamantan fasahohi don tallafawa tsaro, tabbatarwa, zaɓaɓɓuka, aiki, da ingantaccen ƙwarewar mai amfani.",
+      "Wannan manufar ta bayyana yadda Inkfront ke amfani da kukis, ma'ajiyar gida, ma'ajiyar zaman, da makamantan fasahohi don tallafawa tsaro, tabbatarwa, zaɓaɓɓuka, aiki, da ingantaccen ƙwarewar mai amfani.",
     lastUpdated: "Ƙarshen Sabuntawa",
     lastUpdatedDescription:
-      "Muna amfani da kukis a hankali don tallafawa shiga mai aminci, samun damar mai gudanarwa, zaɓaɓɓuka, zaɓin yarda, nazari, da ingantaccen hali na dandalin InkFront.",
+      "Muna amfani da kukis a hankali don tallafawa shiga mai aminci, samun damar mai gudanarwa, zaɓaɓɓuka, zaɓin yarda, nazari, da ingantaccen hali na dandalin Inkfront.",
     ctaEyebrow: "Zaɓinku",
     ctaTitle: "Kuna sarrafa saitunan kukis ɗinku",
     ctaDescription:
-      "Kuna iya share kukis daga burauzarku, ƙin kukis marasa mahimmanci inda akwai, ko tuntuɓar InkFront idan kuna da tambayoyi game da keɓantawa, kukis, ko sarrafa bayanai.",
+      "Kuna iya share kukis daga burauzarku, ƙin kukis marasa mahimmanci inda akwai, ko tuntuɓar Inkfront idan kuna da tambayoyi game da keɓantawa, kukis, ko sarrafa bayanai.",
     privacyButton: "Manufar Keɓantawa",
-    contactButton: "Tuntuɓi InkFront",
+    contactButton: "Tuntuɓi Inkfront",
     sections: {
       whatAreCookies: {
         title: "1. Menene Kukis?",
         body: "Kukis ƙananan fayilolin rubutu ne da ake ajiyewa akan na'urarku lokacin da kuka ziyarci gidan yanar gizo. Suna taimaka wa gidajen yanar gizo su tuna bayanai game da ziyararku, kamar zaman shiga, harshe da aka zaɓa, zaɓin tsarin gani, duban tsaro, da halayen amfani na asali. Fasahohi makamantan su na iya haɗawa da ma'ajiyar gida, ma'ajiyar zaman, pixels, tags, abubuwan gano na'ura, da ma'ajiyar zaɓaɓɓuka na tushen burauza.",
       },
-      howInkFrontUses: {
-        title: "2. Yadda InkFront Ke Amfani da Kukis",
-        body: "InkFront na amfani da kukis da makamantan fasahohi don sanya gidan yanar gizonmu ya kasance mai aiki, amintacce, na musamman, da sauƙin amfani. Muna iya amfani da kukis don tabbatarwa, samun damar dashboard na mai gudanarwa, zaman amintattu, zaɓin harshe, zaɓin yanayin duhu ko haske, matsayin yarda da kuki, kariyar fam ɗin tuntuɓa, inganta aiki, da aikin gidan yanar gizo na asali.",
+      howInkfrontUses: {
+        title: "2. Yadda Inkfront Ke Amfani da Kukis",
+        body: "Inkfront na amfani da kukis da makamantan fasahohi don sanya gidan yanar gizonmu ya kasance mai aiki, amintacce, na musamman, da sauƙin amfani. Muna iya amfani da kukis don tabbatarwa, samun damar dashboard na mai gudanarwa, zaman amintattu, zaɓin harshe, zaɓin yanayin duhu ko haske, matsayin yarda da kuki, kariyar fam ɗin tuntuɓa, inganta aiki, da aikin gidan yanar gizo na asali.",
       },
       essential: {
         title: "3. Kukis Masu Muhimmanci",
@@ -137,7 +137,7 @@ export default {
       },
       authSecurity: {
         title: "4. Kukis na Tabbatarwa da Tsaro",
-        body: "Inda InkFront ke amfani da fasali na shiga ko dashboard na mai gudanarwa, ana iya amfani da kukis don tabbatar da ainihin mai amfani, kare zaman, hana samun dama mara izini, da kiyaye masu amfani a amince sun shiga. Wasu kukis na tabbatarwa na iya zama HTTP-kawai, ma'ana an tsara su don rubutun burauza ba za su iya samun damarsu kai tsaye ba. Wannan yana taimakawa inganta tsaron asusu.",
+        body: "Inda Inkfront ke amfani da fasali na shiga ko dashboard na mai gudanarwa, ana iya amfani da kukis don tabbatar da ainihin mai amfani, kare zaman, hana samun dama mara izini, da kiyaye masu amfani a amince sun shiga. Wasu kukis na tabbatarwa na iya zama HTTP-kawai, ma'ana an tsara su don rubutun burauza ba za su iya samun damarsu kai tsaye ba. Wannan yana taimakawa inganta tsaron asusu.",
       },
       preference: {
         title: "5. Kukis na Zaɓaɓɓuka",
@@ -145,19 +145,19 @@ export default {
       },
       functional: {
         title: "6. Ma'ajiyar Aiki",
-        body: "InkFront na iya amfani da ma'ajiyar burauza don tallafawa fasali na dubawa, zaɓaɓɓukan da aka adana, yanayin fam na ɗan lokaci, halayen dashboard, da kewayawa mai sauƙi. Misali, zaɓin tsarin gani ko zaɓin harshe na iya zama an adana a gida don gidan yanar gizo ya iya ɗorawa tare da saitunan da kuka fi so a ziyarori na gaba.",
+        body: "Inkfront na iya amfani da ma'ajiyar burauza don tallafawa fasali na dubawa, zaɓaɓɓukan da aka adana, yanayin fam na ɗan lokaci, halayen dashboard, da kewayawa mai sauƙi. Misali, zaɓin tsarin gani ko zaɓin harshe na iya zama an adana a gida don gidan yanar gizo ya iya ɗorawa tare da saitunan da kuka fi so a ziyarori na gaba.",
       },
       analytics: {
         title: "7. Nazari da Inganta Ayyuka",
-        body: "InkFront na iya amfani da kayan aikin nazari a yanzu ko a nan gaba don fahimtar yadda baƙi ke mu'amala da gidan yanar gizo, waɗanne shafuka ake ziyarta, yadda masu amfani ke kewayawa dandamali, da yadda za a iya inganta aiki. Ana amfani da bayanan nazari gabaɗaya don inganta abun ciki, shimfiɗa, gudu, ƙwarewar mai amfani, tasirin talla, da ingancin ayyuka.",
+        body: "Inkfront na iya amfani da kayan aikin nazari a yanzu ko a nan gaba don fahimtar yadda baƙi ke mu'amala da gidan yanar gizo, waɗanne shafuka ake ziyarta, yadda masu amfani ke kewayawa dandamali, da yadda za a iya inganta aiki. Ana amfani da bayanan nazari gabaɗaya don inganta abun ciki, shimfiɗa, gudu, ƙwarewar mai amfani, tasirin talla, da ingancin ayyuka.",
       },
       thirdParty: {
         title: "8. Kukis na Ƙungiyoyi na Uku",
-        body: "Wasu fasali na gidan yanar gizo na iya dogara ga ayyuka na ƙungiyoyi na uku kamar shiga ta Google, masu samar da masauki, dandamali na imel, kayan aikin nazari, bidiyon da aka saka, taswirori, hanyoyin biyan kuɗi, kayan aikin tallafawa abokan ciniki, ko dandamali na talla. Waɗannan masu samarwa na ƙungiyoyi na uku na iya saita nasu kukis ko fasahohi makamantan su. Kukis ɗinsu ana sarrafa su ta hanyar nasu manufofin keɓantawa da kukis, ba ta InkFront ba.",
+        body: "Wasu fasali na gidan yanar gizo na iya dogara ga ayyuka na ƙungiyoyi na uku kamar shiga ta Google, masu samar da masauki, dandamali na imel, kayan aikin nazari, bidiyon da aka saka, taswirori, hanyoyin biyan kuɗi, kayan aikin tallafawa abokan ciniki, ko dandamali na talla. Waɗannan masu samarwa na ƙungiyoyi na uku na iya saita nasu kukis ko fasahohi makamantan su. Kukis ɗinsu ana sarrafa su ta hanyar nasu manufofin keɓantawa da kukis, ba ta Inkfront ba.",
       },
       clientProjects: {
         title: "9. Kukis da Ake Amfani da Su a Ayyukan Abokan Ciniki",
-        body: "Idan InkFront ya gina gidan yanar gizo, dashboard, portal, ko dandamali na software don abokin ciniki, wannan aikin na iya amfani da kukis don shiga, zaman abokan ciniki, halayen cart, tsarin biyan kuɗi, samun damar mai gudanarwa, nazari, zaɓaɓɓuka, da tsaro. Abokin ciniki ne ke da alhakin tabbatar da cewa nasu sanarwar kuki, manufofin keɓantawa, da bayanan shari'a sun dace da kasuwancinsu, masu amfani, da ikon shari'a.",
+        body: "Idan Inkfront ya gina gidan yanar gizo, dashboard, portal, ko dandamali na software don abokin ciniki, wannan aikin na iya amfani da kukis don shiga, zaman abokan ciniki, halayen cart, tsarin biyan kuɗi, samun damar mai gudanarwa, nazari, zaɓaɓɓuka, da tsaro. Abokin ciniki ne ke da alhakin tabbatar da cewa nasu sanarwar kuki, manufofin keɓantawa, da bayanan shari'a sun dace da kasuwancinsu, masu amfani, da ikon shari'a.",
       },
       managing: {
         title: "10. Sarrafa Kukis",
@@ -165,19 +165,19 @@ export default {
       },
       consent: {
         title: "11. Yarda da Kuki",
-        body: "Inda ake buƙata, InkFront na iya nuna banner ɗin kuki ko sanarwar yarda wanda ke ba masu amfani damar karɓa ko ƙin kukis marasa mahimmanci. Ana iya amfani da kukis masu mahimmanci koda kuwa an ƙi kukis marasa mahimmanci saboda ana buƙatar su don tsaro, tabbatarwa, zaɓaɓɓuka, da aikin gidan yanar gizo na asali.",
+        body: "Inda ake buƙata, Inkfront na iya nuna banner ɗin kuki ko sanarwar yarda wanda ke ba masu amfani damar karɓa ko ƙin kukis marasa mahimmanci. Ana iya amfani da kukis masu mahimmanci koda kuwa an ƙi kukis marasa mahimmanci saboda ana buƙatar su don tsaro, tabbatarwa, zaɓaɓɓuka, da aikin gidan yanar gizo na asali.",
       },
       retention: {
         title: "12. Riƙewar Kukis",
-        body: "Wasu kukis suna ɗorewa kawai don zaman burauzarku na yanzu kuma ana share su lokacin da kuka rufe burauzarku. Wasu kukis na iya kasancewa na tsawon lokaci don gidan yanar gizo ya iya tuna zaɓukanku. Tsawon lokaci ya dogara da manufar kuki, saitunan burauza, da ko InkFront ne ko mai samarwa na ƙungiya ta uku ya saita kuki.",
+        body: "Wasu kukis suna ɗorewa kawai don zaman burauzarku na yanzu kuma ana share su lokacin da kuka rufe burauzarku. Wasu kukis na iya kasancewa na tsawon lokaci don gidan yanar gizo ya iya tuna zaɓukanku. Tsawon lokaci ya dogara da manufar kuki, saitunan burauza, da ko Inkfront ne ko mai samarwa na ƙungiya ta uku ya saita kuki.",
       },
       updates: {
         title: "13. Sabuntawa ga Wannan Manufar Kukis",
-        body: "InkFront na iya sabunta wannan Manufar Kukis daga lokaci zuwa lokaci yayin da gidan yanar gizonmu, ayyuka, ayyukan tsaro, kayan aikin nazari, ko buƙatun shari'a suke canzawa. Za a kasance da sabon sigar akan wannan shafi, kuma ci gaba da amfani da gidan yanar gizo yana nufin kun yarda da manufar da aka sabunta.",
+        body: "Inkfront na iya sabunta wannan Manufar Kukis daga lokaci zuwa lokaci yayin da gidan yanar gizonmu, ayyuka, ayyukan tsaro, kayan aikin nazari, ko buƙatun shari'a suke canzawa. Za a kasance da sabon sigar akan wannan shafi, kuma ci gaba da amfani da gidan yanar gizo yana nufin kun yarda da manufar da aka sabunta.",
       },
       contact: {
         title: "14. Tuntuɓi",
-        body: "Don tambayoyi game da kukis, keɓantawa, fasahohin bin diddigi, ko sarrafa bayanai, don Allah tuntuɓi InkFront ta hanyar shafin tuntuɓa na hukuma ko duk wata hanyar sadarwa da aka tabbatar da InkFront ta samar.",
+        body: "Don tambayoyi game da kukis, keɓantawa, fasahohin bin diddigi, ko sarrafa bayanai, don Allah tuntuɓi Inkfront ta hanyar shafin tuntuɓa na hukuma ko duk wata hanyar sadarwa da aka tabbatar da Inkfront ta samar.",
       },
     },
   },
@@ -186,24 +186,24 @@ export default {
     title: "Sharuɗɗa & Yanayi",
     updatedDate: "Afrilu 28, 2026",
     description:
-      "Waɗannan Sharuɗɗan suna tsara amfani da ku na ayyukan InkFront, gidajen yanar gizo, shawarwari, samfuran dijital, tsarin software, da tsare-tsaren tallafi. Da fatan za a karanta su a hankali kafin fara aiki.",
+      "Waɗannan Sharuɗɗan suna tsara amfani da ku na ayyukan Inkfront, gidajen yanar gizo, shawarwari, samfuran dijital, tsarin software, da tsare-tsaren tallafi. Da fatan za a karanta su a hankali kafin fara aiki.",
     lastUpdatedLabel: "Ƙarshen Sabuntawa",
     lastUpdatedDescription:
-      "An tsara waɗannan Sharuɗɗan don kare duka InkFront da abokan cinikinmu ta hanyar kafa ƙa'idodi bayyanannu don iyakar aikin, biyan kuɗi, mallaka, tallafi, amfani mai karɓuwa, da nauyin ayyuka.",
+      "An tsara waɗannan Sharuɗɗan don kare duka Inkfront da abokan cinikinmu ta hanyar kafa ƙa'idodi bayyanannu don iyakar aikin, biyan kuɗi, mallaka, tallafi, amfani mai karɓuwa, da nauyin ayyuka.",
     ctaEyebrow: "Kuna Bukatar Ƙarin Bayani?",
     ctaTitle: "Tambayoyi game da sharuɗɗanmu?",
     ctaDescription:
-      "Tuntuɓi InkFront kafin fara aikin ku idan kuna buƙatar ƙarin bayani game da iyaka, biyan kuɗi, mallaka, tallafi, ko abubuwan da za a bayar.",
-    contactButton: "Tuntuɓi InkFront",
+      "Tuntuɓi Inkfront kafin fara aikin ku idan kuna buƙatar ƙarin bayani game da iyaka, biyan kuɗi, mallaka, tallafi, ko abubuwan da za a bayar.",
+    contactButton: "Tuntuɓi Inkfront",
     homeButton: "Koma Gida",
     sections: {
       acceptance: {
         title: "1. Karɓar Sharuɗɗa",
-        body: "Ta hanyar shiga, bincike, nema, siye, biyan kuɗi, ko amfani da kowane gidan yanar gizo na InkFront, shawara, sabis ɗin ƙira, sabis ɗin software, samfurin dijital, tsarin gudanarwa, dashboard, tallafin masauki, tsarin kulawa, ko sabis ɗin kasuwanci mai alaƙa, kun yarda a ɗaure ku bisa doka da waɗannan Sharuɗɗa da Yanayi.",
+        body: "Ta hanyar shiga, bincike, nema, siye, biyan kuɗi, ko amfani da kowane gidan yanar gizo na Inkfront, shawara, sabis ɗin ƙira, sabis ɗin software, samfurin dijital, tsarin gudanarwa, dashboard, tallafin masauki, tsarin kulawa, ko sabis ɗin kasuwanci mai alaƙa, kun yarda a ɗaure ku bisa doka da waɗannan Sharuɗɗa da Yanayi.",
       },
       about: {
-        title: "2. Game da InkFront",
-        body: "InkFront yana samar da gidajen yanar gizo na kasuwanci, shafukan saukar samfur, tsarin ajiya, hanyoyin shiga abokan ciniki, dashboards na gudanarwa, kayan aikin CRM, shafukan labarai, wasiƙun labarai, dandamali na e-commerce, tsarin sarrafa makarantu, tallafin alama, sarrafa kansa na ayyuka, da mafita na software na musamman.",
+        title: "2. Game da Inkfront",
+        body: "Inkfront yana samar da gidajen yanar gizo na kasuwanci, shafukan saukar samfur, tsarin ajiya, hanyoyin shiga abokan ciniki, dashboards na gudanarwa, kayan aikin CRM, shafukan labarai, wasiƙun labarai, dandamali na e-commerce, tsarin sarrafa makarantu, tallafin alama, sarrafa kansa na ayyuka, da mafita na software na musamman.",
       },
       clientResponsibilities: {
         title: "3. Nauyin Abokin Ciniki",
@@ -219,7 +219,7 @@ export default {
       },
       latePayments: {
         title: "6. Jinkirin Biyan Kuɗi & Dakatarwa",
-        body: "Idan biyan kuɗi ya wuce lokaci, InkFront na iya dakatar da haɓakawa, tallafin masauki, kulawa, damar gudanarwa, turawa, sabuntawa, ko miƙawa har sai an biya kuɗin da suka rage.",
+        body: "Idan biyan kuɗi ya wuce lokaci, Inkfront na iya dakatar da haɓakawa, tallafin masauki, kulawa, damar gudanarwa, turawa, sabuntawa, ko miƙawa har sai an biya kuɗin da suka rage.",
       },
       revisions: {
         title: "7. Bitoci & Buƙatun Canji",
@@ -227,15 +227,15 @@ export default {
       },
       approvals: {
         title: "8. Amincewar Abokin Ciniki",
-        body: "Lokacin da abokin ciniki ya amince da ƙira, fasali, shafi, sashin abun ciki, tafiyar aiki, ko mataki, InkFront na iya ci gaba bisa wannan amincewar.",
+        body: "Lokacin da abokin ciniki ya amince da ƙira, fasali, shafi, sashin abun ciki, tafiyar aiki, ko mataki, Inkfront na iya ci gaba bisa wannan amincewar.",
       },
       ip: {
         title: "9. Mallakar Hankali",
-        body: "Bayan cikakken biyan kuɗi, abokin ciniki yana karɓar mallakar abubuwan da aka biya na ƙarshe waɗanda aka ƙirƙira musamman don abokin ciniki, ban da kayan aikin da suka gabata na InkFront, lambar da za a iya sake amfani da ita, samfura, ɗakunan karatu, tsarukan gini, tsarin ciki, matakai, ilmi, dabaru, tsarin sarrafa kansa, da hanyoyin fasaha na gaba ɗaya.",
+        body: "Bayan cikakken biyan kuɗi, abokin ciniki yana karɓar mallakar abubuwan da aka biya na ƙarshe waɗanda aka ƙirƙira musamman don abokin ciniki, ban da kayan aikin da suka gabata na Inkfront, lambar da za a iya sake amfani da ita, samfura, ɗakunan karatu, tsarukan gini, tsarin ciki, matakai, ilmi, dabaru, tsarin sarrafa kansa, da hanyoyin fasaha na gaba ɗaya.",
       },
       portfolio: {
         title: "10. Haƙƙoƙin Fayil",
-        body: "Sai dai idan abokin ciniki ya nemi sirri a rubuce kafin ƙaddamar da aikin, InkFront na iya nuna ayyukan da aka kammala, hotunan aikin, sunan abokin ciniki, tambarin alama, bayanin aikin, da sakamako na gaba ɗaya a cikin fayil ɗinsa.",
+        body: "Sai dai idan abokin ciniki ya nemi sirri a rubuce kafin ƙaddamar da aikin, Inkfront na iya nuna ayyukan da aka kammala, hotunan aikin, sunan abokin ciniki, tambarin alama, bayanin aikin, da sakamako na gaba ɗaya a cikin fayil ɗinsa.",
       },
       confidentiality: {
         title: "11. Sirri",
@@ -247,7 +247,7 @@ export default {
       },
       security: {
         title: "13. Tsaro & Dama",
-        body: "InkFront zai yi amfani da matakan fasaha masu ma'ana don gina tsarukan amintattu, amma babu wani gidan yanar gizo, software, muhallin masauki, ko dandamali mai haɗin intanet da za a iya ba da tabbacin zama cikakke daga raunuka, hare-hare, asarar bayanai, ko shiga mara izini.",
+        body: "Inkfront zai yi amfani da matakan fasaha masu ma'ana don gina tsarukan amintattu, amma babu wani gidan yanar gizo, software, muhallin masauki, ko dandamali mai haɗin intanet da za a iya ba da tabbacin zama cikakke daga raunuka, hare-hare, asarar bayanai, ko shiga mara izini.",
       },
       compliance: {
         title: "14. Abun Ciki & Biyan Dokoki",
@@ -255,11 +255,11 @@ export default {
       },
       use: {
         title: "15. Amfani Mai Karɓuwa",
-        body: "Kada abokan ciniki su yi amfani da ayyukan InkFront don zamba, yaudara, kwaikwaya, ciniki ba bisa ƙa'ida ba, keta haƙƙin mallaka, spam, malware, phishing, abun ciki na ƙiyayya, tsangwama, cin zarafin manya, ayyukan kuɗi ba bisa ƙa'ida ba, ko duk wani aiki da ke cutar da masu amfani.",
+        body: "Kada abokan ciniki su yi amfani da ayyukan Inkfront don zamba, yaudara, kwaikwaya, ciniki ba bisa ƙa'ida ba, keta haƙƙin mallaka, spam, malware, phishing, abun ciki na ƙiyayya, tsangwama, cin zarafin manya, ayyukan kuɗi ba bisa ƙa'ida ba, ko duk wani aiki da ke cutar da masu amfani.",
       },
       availability: {
         title: "16. Samuwar Sabis",
-        body: "InkFront yana nufin samar da ayyuka masu dogaro, amma baya ba da garantin samun dama ba tare da katsewa ba, aiki mara kuskure, lokacin aiki na dindindin, ko ci gaba da samuwa.",
+        body: "Inkfront yana nufin samar da ayyuka masu dogaro, amma baya ba da garantin samun dama ba tare da katsewa ba, aiki mara kuskure, lokacin aiki na dindindin, ko ci gaba da samuwa.",
       },
       support: {
         title: "17. Tallafi & Kulawa",
@@ -267,11 +267,11 @@ export default {
       },
       liability: {
         title: "18. Iyakancin Alhaki",
-        body: "Zuwa iyakar da doka ta yarda, InkFront ba zai zama abin dogaro ba don asarar kai tsaye, na bazata, na musamman, na hukunci, ko na sakamako, gami da asarar riba, asarar kudaden shiga, asarar bayanai, asarar abokan ciniki, lalacewar suna, katsewar kasuwanci, ko damar da aka rasa.",
+        body: "Zuwa iyakar da doka ta yarda, Inkfront ba zai zama abin dogaro ba don asarar kai tsaye, na bazata, na musamman, na hukunci, ko na sakamako, gami da asarar riba, asarar kudaden shiga, asarar bayanai, asarar abokan ciniki, lalacewar suna, katsewar kasuwanci, ko damar da aka rasa.",
       },
       indemnity: {
         title: "19. Rammako",
-        body: "Abokin ciniki ya yarda ya rama kuma ya riƙe InkFront ba tare da wani lahani ba daga da'awar, lalacewa, hukunci, asara, alhaki, farashi, da kashe kuɗi da suka taso daga kayan da abokin ciniki ya samar, ayyukan kasuwanci ba bisa ƙa'ida ba, rashin amfani da dandamalin da aka isar, keta waɗannan Sharuɗɗan, keta haƙƙin ɓangare na uku, ko gazawar bin dokoki masu aiki.",
+        body: "Abokin ciniki ya yarda ya rama kuma ya riƙe Inkfront ba tare da wani lahani ba daga da'awar, lalacewa, hukunci, asara, alhaki, farashi, da kashe kuɗi da suka taso daga kayan da abokin ciniki ya samar, ayyukan kasuwanci ba bisa ƙa'ida ba, rashin amfani da dandamalin da aka isar, keta waɗannan Sharuɗɗan, keta haƙƙin ɓangare na uku, ko gazawar bin dokoki masu aiki.",
       },
       cancellation: {
         title: "20. Sokewa & Ƙarewa",
@@ -279,7 +279,7 @@ export default {
       },
       forceMajeure: {
         title: "21. Ƙarfin Fiye da Iko",
-        body: "InkFront ba zai zama abin dogoro ba don jinkiri ko gazawa da abubuwan da suka wuce iko mai ma'ana suka haifar, gami da gazawar wutar lantarki, katsewar intanet, bala'in halitta, aikin gwamnati, yajin aiki, yaƙi, tashin hankalin jama'a, rashin lafiya, katsewar dandamali, harin intanet, gazawar mai samar da biyan kuɗi, ko katsewar sabis na ɓangare na uku.",
+        body: "Inkfront ba zai zama abin dogoro ba don jinkiri ko gazawa da abubuwan da suka wuce iko mai ma'ana suka haifar, gami da gazawar wutar lantarki, katsewar intanet, bala'in halitta, aikin gwamnati, yajin aiki, yaƙi, tashin hankalin jama'a, rashin lafiya, katsewar dandamali, harin intanet, gazawar mai samar da biyan kuɗi, ko katsewar sabis na ɓangare na uku.",
       },
       law: {
         title: "22. Dokar da ke Mulki",
@@ -287,11 +287,11 @@ export default {
       },
       updates: {
         title: "23. Sabuntawa ga Sharuɗɗa",
-        body: "InkFront na iya sabunta waɗannan Sharuɗɗan daga lokaci zuwa lokaci don nuna canje-canje a ayyuka, dokoki, ayyukan kasuwanci, farashi, fasaha, ko buƙatun tsaro.",
+        body: "Inkfront na iya sabunta waɗannan Sharuɗɗan daga lokaci zuwa lokaci don nuna canje-canje a ayyuka, dokoki, ayyukan kasuwanci, farashi, fasaha, ko buƙatun tsaro.",
       },
       contact: {
         title: "24. Tuntuɓi",
-        body: "Don tambayoyi, korafe-korafe, ƙarin bayani kan aikin, al'amuran lissafin kuɗi, ko sanarwar doka da suka shafi waɗannan Sharuɗɗan, da fatan za a tuntuɓi InkFront ta hanyar shafin tuntuɓa na hukuma ko duk wata hanyar sadarwa da aka tabbatar da InkFront ta samar.",
+        body: "Don tambayoyi, korafe-korafe, ƙarin bayani kan aikin, al'amuran lissafin kuɗi, ko sanarwar doka da suka shafi waɗannan Sharuɗɗan, da fatan za a tuntuɓi Inkfront ta hanyar shafin tuntuɓa na hukuma ko duk wata hanyar sadarwa da aka tabbatar da Inkfront ta samar.",
       },
     },
   },
@@ -300,24 +300,24 @@ export default {
     title: "Manufar Sirri",
     updatedDate: "Afrilu 28, 2026",
     description:
-      "Wannan manufar ta bayyana yadda InkFront ke tattara, amfani, adanawa, kiyayewa, da sarrafa bayanan sirri a duk faɗin gidajen yanar gizonmu, fam ɗin tuntuɓa, kayan aikin CRM, wasiƙun labarai, tsarin software, da ayyukan abokin ciniki.",
+      "Wannan manufar ta bayyana yadda Inkfront ke tattara, amfani, adanawa, kiyayewa, da sarrafa bayanan sirri a duk faɗin gidajen yanar gizonmu, fam ɗin tuntuɓa, kayan aikin CRM, wasiƙun labarai, tsarin software, da ayyukan abokin ciniki.",
     lastUpdatedLabel: "Ƙarshen Sabuntawa",
     lastUpdatedDescription:
-      "Sirrinka yana da mahimmanci ga InkFront. Muna tattara bayanai ne kawai inda zai taimaka mana mu amsa maka, isar da ayyuka, kiyaye dandamalinmu, sarrafa ayyuka, da inganta ƙwarewar abokin ciniki.",
+      "Sirrinka yana da mahimmanci ga Inkfront. Muna tattara bayanai ne kawai inda zai taimaka mana mu amsa maka, isar da ayyuka, kiyaye dandamalinmu, sarrafa ayyuka, da inganta ƙwarewar abokin ciniki.",
     ctaEyebrow: "Buƙatar Sirri",
     ctaTitle: "Kuna buƙatar taimako da bayanan sirrinku?",
     ctaDescription:
-      "Tuntuɓi InkFront idan kuna son samun dama, gyara, sabuntawa, ƙuntatawa, ko buƙatar share bayanan sirri da ke da alaƙa da tambayarku, biyan kuɗin wasiƙar labarai, ko aiki.",
-    contactButton: "Tuntuɓi InkFront",
+      "Tuntuɓi Inkfront idan kuna son samun dama, gyara, sabuntawa, ƙuntatawa, ko buƙatar share bayanan sirri da ke da alaƙa da tambayarku, biyan kuɗin wasiƙar labarai, ko aiki.",
+    contactButton: "Tuntuɓi Inkfront",
     termsButton: "Duba Sharuɗɗa",
     sections: {
       introduction: {
         title: "1. Gabatarwa",
-        body: "Wannan Manufar Sirri ta bayyana yadda InkFront ke tattara, amfani, adanawa, kiyayewa, da sarrafa bayanan sirri.",
+        body: "Wannan Manufar Sirri ta bayyana yadda Inkfront ke tattara, amfani, adanawa, kiyayewa, da sarrafa bayanan sirri.",
       },
       information: {
         title: "2. Bayanan da Muke Tattarawa",
-        body: "InkFront na iya tattara bayanan da kuke bayarwa kai tsaye, gami da sunanka, imel, waya, kamfani, cikakkun aikin, da bayanan fasaha kamar adireshin IP da nau'in burauza.",
+        body: "Inkfront na iya tattara bayanan da kuke bayarwa kai tsaye, gami da sunanka, imel, waya, kamfani, cikakkun aikin, da bayanan fasaha kamar adireshin IP da nau'in burauza.",
       },
       usage: {
         title: "3. Yadda Muke Amfani da Bayananku",
@@ -393,7 +393,7 @@ export default {
       },
       contact: {
         title: "21. Tuntuɓi",
-        body: "Don tambayoyin sirri ko buƙatun bayanai, tuntuɓi InkFront ta hanyar shafin tuntuɓa na hukuma.",
+        body: "Don tambayoyin sirri ko buƙatun bayanai, tuntuɓi Inkfront ta hanyar shafin tuntuɓa na hukuma.",
       },
     },
   },
@@ -683,7 +683,7 @@ export default {
     ctaEyebrow: "Gina da haske",
     ctaTitle: "Shirya don juya wannan tsarin zuwa samfur na gaske?",
     ctaDescription:
-      "Bari InkFront ya taimake ku canza ra'ayinku zuwa ingantaccen dandamalin kasuwanci.",
+      "Bari Inkfront ya taimake ku canza ra'ayinku zuwa ingantaccen dandamalin kasuwanci.",
     placeholderIcon: "🧩",
   },
   clientsPage: {
@@ -692,7 +692,7 @@ export default {
       "Ra'ayoyi daga hulɗar abokan ciniki da ƙungiyoyin da aka tallafa da gidajen yanar gizo, kayayyakin dijital, da tsarin kasuwanci.",
     testimonialsEyebrow: "Shaidar",
     testimonialsTitle:
-      "Abin da abokan ciniki ke cewa game da aiki tare da InkFront",
+      "Abin da abokan ciniki ke cewa game da aiki tare da Inkfront",
     testimonialsDescription:
       "Ra'ayi na gaske ya kamata ya taimaka wa abokan ciniki na gaba su fahimci inganci, haske, da ƙwarewar aikin ku.",
     noTestimonials: "Babu shaidar da ake da su tukuna.",
@@ -707,7 +707,7 @@ export default {
       "Gidan yanar gizonku ya kamata ya sadar da amana, nuna shaida, kuma ya juya baƙi zuwa tattaunawa ta gaske.",
   },
   blog: {
-    eyebrow: "InkFront Blog",
+    eyebrow: "Inkfront Blog",
     title: "Ra'ayoyi, dabaru, da ci gaban dijital",
     subtitle:
       "Karanta labarai masu amfani akan gidajen yanar gizo, tsarin ajiya, sarrafa kansa, ganin kasuwanci, da ingantattun ayyukan dijital.",
@@ -729,7 +729,7 @@ export default {
     gallery: "Hotuna",
     articleSummary: "Takaitaccen labari",
     summaryFallback:
-      "Hankali mai amfani daga InkFront ga masu kasuwanci da ƙungiyoyin dijital.",
+      "Hankali mai amfani daga Inkfront ga masu kasuwanci da ƙungiyoyin dijital.",
     discussProject: "Tattauna aikin ku",
     moreFeatured: "Ƙarin fitattun",
     relatedLabel: "Karatu mai alaƙa",
@@ -744,10 +744,10 @@ export default {
   },
   pages: {
     home: {
-      eyebrow: "InkFront Digital Systems",
+      eyebrow: "Inkfront Digital Systems",
       heroTitle: "Gina ingantaccen kasancewar dijital don kasuwancinku",
       heroSubtitle:
-        "InkFront yana tsarawa da gina gidajen yanar gizo, shafukan kayayyaki, hanyoyin shiga, da dandamali na kasuwanci waɗanda ke taimaka wa alamar ku ta zama amintacciya, canza masu nema, da haɓaka akan layi.",
+        "Inkfront yana tsarawa da gina gidajen yanar gizo, shafukan kayayyaki, hanyoyin shiga, da dandamali na kasuwanci waɗanda ke taimaka wa alamar ku ta zama amintacciya, canza masu nema, da haɓaka akan layi.",
       heroPanelEyebrow: "An gina don haɓaka",
       heroPanelTitle:
         "Gidajen yanar gizo, dashboards, hanyoyin shiga, da tsare-tsaren shirye don ƙaddamarwa.",
@@ -770,7 +770,7 @@ export default {
       productTitle:
         "Juya ra'ayinku zuwa tsarin kasuwanci bayyananne wanda za a iya ginawa.",
       productSubtitle:
-        "Yi amfani da tsare-tsaren kayayyaki na InkFront don ayyana shafuka, fasali, abun ciki, tsarin gudanarwa, da jagorancin ƙaddamarwa kafin ci gaba ya fara.",
+        "Yi amfani da tsare-tsaren kayayyaki na Inkfront don ayyana shafuka, fasali, abun ciki, tsarin gudanarwa, da jagorancin ƙaddamarwa kafin ci gaba ya fara.",
       selectedWork: "Ayyukan da aka zaɓa",
       clientConfidence: "Amincin abokin ciniki",
       testimonialSubtitle:
@@ -794,7 +794,7 @@ export default {
       bannerTitle:
         "Kuna buƙatar gidan yanar gizo, hanyar shiga, tsarin ajiya, ko cikakken dandamalin kasuwanci?",
       bannerText:
-        "InkFront na iya taimaka muku motsawa daga ra'ayoyin da suka watsu zuwa tsari mai walƙiya mai shafuka, abun ciki, bayanan baya, tantancewa, kayan aikin gudanarwa, da ƙwarewar jama'a mai amsawa.",
+        "Inkfront na iya taimaka muku motsawa daga ra'ayoyin da suka watsu zuwa tsari mai walƙiya mai shafuka, abun ciki, bayanan baya, tantancewa, kayan aikin gudanarwa, da ƙwarewar jama'a mai amsawa.",
       processSteps: {
         discover: {
           title: "Ganowa",
@@ -880,7 +880,7 @@ export default {
       },
       fallbackTestimonials: {
         client1: {
-          name: "Abokin Ciniki na InkFront",
+          name: "Abokin Ciniki na Inkfront",
           role: "Mai Kasuwanci",
           quote:
             "Dandamalin ya ba alamar mu kasancewar ƙwararru akan layi kuma ya sauƙaƙa sarrafa tambayoyi.",
@@ -896,12 +896,12 @@ export default {
     about: {
       title: "Muna gina tsare-tsaren dijital don kasuwancin zamani",
       subtitle:
-        "InkFront na taimaka wa kasuwanci su ƙaddamar da manyan gidajen yanar gizo, shafukan samfur, dashboards, hanyoyin shiga, da dandamalin dijital masu haɗin baya.",
-      eyebrow: "Game da InkFront",
+        "Inkfront na taimaka wa kasuwanci su ƙaddamar da manyan gidajen yanar gizo, shafukan samfur, dashboards, hanyoyin shiga, da dandamalin dijital masu haɗin baya.",
+      eyebrow: "Game da Inkfront",
       storyEyebrow: "Labarin mu",
-      storyTitle: "Dalilin da yasa InkFront yake wanzuwa",
+      storyTitle: "Dalilin da yasa Inkfront yake wanzuwa",
       storyFallback:
-        "InkFront ya wanzu don taimaka wa kasuwanci su matsa daga warwatse ra'ayoyi da rashin ƙarfi akan layi zuwa ingantattun dandamali na dijital, amintattu, kuma masu iya haɓakawa.",
+        "Inkfront ya wanzu don taimaka wa kasuwanci su matsa daga warwatse ra'ayoyi da rashin ƙarfi akan layi zuwa ingantattun dandamali na dijital, amintattu, kuma masu iya haɓakawa.",
       missionTitle: "Manufar mu",
       missionFallback:
         "Don tsarawa da gina tsare-tsaren dijital masu amfani waɗanda ke taimaka wa kasuwanci sadarwa a fili, aiki da kyau, da haɓaka da tabbaci.",
@@ -934,7 +934,7 @@ export default {
         t1: {
           role: "Wanda Ya Kafa",
           quote:
-            "InkFront ya gina dandamalin sarrafa makarantarmu daidai yadda muka bayyana shi. Zane mai tsafta, baya mai ƙarfi. Malamanmu da iyayenmu suna son amfani da shi.",
+            "Inkfront ya gina dandamalin sarrafa makarantarmu daidai yadda muka bayyana shi. Zane mai tsafta, baya mai ƙarfi. Malamanmu da iyayenmu suna son amfani da shi.",
         },
         t2: {
           role: "Shugaba",
@@ -944,7 +944,7 @@ export default {
         t3: {
           role: "Manajan Darakta",
           quote:
-            "Kasuwarmu ra'ayi ne kawai. InkFront ya mayar da shi dandamalin masu siyarwa da yawa mai rai tare da escrow, sarrafa kataloji, da kayan aikin mai gudanarwa masu tsafta.",
+            "Kasuwarmu ra'ayi ne kawai. Inkfront ya mayar da shi dandamalin masu siyarwa da yawa mai rai tare da escrow, sarrafa kataloji, da kayan aikin mai gudanarwa masu tsafta.",
         },
         t4: {
           role: "CTO",
@@ -1044,7 +1044,7 @@ export default {
       deliverablesFallback:
         "Dabarar da ta dace, jagorar ƙira mai inganci, abun ciki mai haɗin baya, UI mai amsawa, da tsarin isarwa mai da hankali kan kasuwanci.",
       moreServices: "Ƙarin ayyuka",
-      otherServices: "Sauran hanyoyin da InkFront zai iya taimakawa",
+      otherServices: "Sauran hanyoyin da Inkfront zai iya taimakawa",
       service: "Sabis",
       viewService: "Duba sabis",
       ctaEyebrow: "Shirye don ginawa?",
@@ -1077,7 +1077,7 @@ export default {
     contact: {
       title: "Bari mu gina tsarin dijital ɗinku na gaba",
       subtitle:
-        "Aika cikakkun bayanan aikin ku kai tsaye zuwa ga ƙungiyar mai gudanarwa ta InkFront. Za a adana tambayarku, a bi diddigi, kuma a bi ta daga CRM na mai gudanarwa.",
+        "Aika cikakkun bayanan aikin ku kai tsaye zuwa ga ƙungiyar mai gudanarwa ta Inkfront. Za a adana tambayarku, a bi diddigi, kuma a bi ta daga CRM na mai gudanarwa.",
       inquiry: "Tambayar aiki",
       sendMessage: "Aiko mana da saƙo",
       description:
@@ -1135,7 +1135,7 @@ export default {
       eyebrow: "Shaidar",
       title: "Abin da abokan ciniki ke cewa",
       description:
-        "Shaida daga mutane da kasuwanci waɗanda suka amince da InkFront.",
+        "Shaida daga mutane da kasuwanci waɗanda suka amince da Inkfront.",
       emptyQuote: "Babu rubutun shaida.",
       anonymous: "Abokin Ciniki da Ba a San Sunansa ba",
       client: "Abokin ciniki",
@@ -1232,7 +1232,7 @@ export default {
       submit: "Aika saƙo →",
       sending: "Ana aikawa...",
       success:
-        "An aika saƙo cikin nasara. Ƙungiyar mai gudanarwa ta InkFront za ta bita kuma ta dawo gare ku nan ba da jimawa ba.",
+        "An aika saƙo cikin nasara. Ƙungiyar mai gudanarwa ta Inkfront za ta bita kuma ta dawo gare ku nan ba da jimawa ba.",
       error: "An kasa aika saƙo. Da fatan za a sake gwadawa.",
       validationError: "Da fatan za a cika sunanku, imel, maudu'i, da saƙo.",
     },

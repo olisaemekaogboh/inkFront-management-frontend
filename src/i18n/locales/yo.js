@@ -69,15 +69,15 @@ export default {
 
   footer: {
     description:
-      "InkFront n kọ awọn oju opo wẹẹbu to dara julọ, awọn eto ifiṣura, awọn dashboards, awọn bulọọgi, awọn iwe iroyin, awọn ẹnu-ọna, ati awọn irinṣẹ sọfitiwia aṣa fun awọn iṣowo igbalode.",
+      "Inkfront n kọ awọn oju opo wẹẹbu to dara julọ, awọn eto ifiṣura, awọn dashboards, awọn bulọọgi, awọn iwe iroyin, awọn ẹnu-ọna, ati awọn irinṣẹ sọfitiwia aṣa fun awọn iṣowo igbalode.",
     explore: "Ṣawari",
     company: "Ile-iṣẹ",
-    startTitle: "Bẹrẹ pẹlu InkFront",
+    startTitle: "Bẹrẹ pẹlu Inkfront",
     startText:
-      "Ṣe o ṣetan lati ṣe igbega iṣowo rẹ lori ayelujara? Jẹ ki InkFront kọ eto oni-nọmba mimọ, ti igbalode fun ami iyasọtọ rẹ.",
-    contactButton: "Kan si InkFront",
+      "Ṣe o ṣetan lati ṣe igbega iṣowo rẹ lori ayelujara? Jẹ ki Inkfront kọ eto oni-nọmba mimọ, ti igbalode fun ami iyasọtọ rẹ.",
+    contactButton: "Kan si Inkfront",
     phone: "+234 903 017 5230",
-    email: "info@inkfront.org",
+    email: "info@Inkfront.org",
     address: "4 Basden Street, Fegge, Onitsha, Anambra, Nigeria",
     viewMap: "Wo lori Google Maps",
     rights: "Gbogbo ẹtọ wa ni ipamọ.",
@@ -112,24 +112,24 @@ export default {
     title: "Ilana Awọn Kuki",
     updatedDate: "Oṣu Kẹrin 28, 2026",
     description:
-      "Ilana yii n ṣalaye bi InkFront ṣe n lo awọn kuki, ibi ipamọ agbegbe, ibi ipamọ igba, ati awọn imọ-ẹrọ ti o jọra lati ṣe atilẹyin aabo, ijẹrisi, awọn ayanfẹ, iṣẹ ṣiṣe, ati iriri olumulo ti o dara julọ.",
+      "Ilana yii n ṣalaye bi Inkfront ṣe n lo awọn kuki, ibi ipamọ agbegbe, ibi ipamọ igba, ati awọn imọ-ẹrọ ti o jọra lati ṣe atilẹyin aabo, ijẹrisi, awọn ayanfẹ, iṣẹ ṣiṣe, ati iriri olumulo ti o dara julọ.",
     lastUpdated: "Imudojuiwọn Ikẹhin",
     lastUpdatedDescription:
-      "A n lo awọn kuki ni iṣọra lati ṣe atilẹyin iwọle to ni aabo, iraye si alabojuto, awọn ayanfẹ, awọn yiyan ifọwọsi, atupale, ati ihuwasi pẹpẹ InkFront ti o gbẹkẹle.",
+      "A n lo awọn kuki ni iṣọra lati ṣe atilẹyin iwọle to ni aabo, iraye si alabojuto, awọn ayanfẹ, awọn yiyan ifọwọsi, atupale, ati ihuwasi pẹpẹ Inkfront ti o gbẹkẹle.",
     ctaEyebrow: "Yiyan Rẹ",
     ctaTitle: "O n ṣakoso eto awọn kuki rẹ",
     ctaDescription:
-      "O le nu awọn kuki kuro lati ẹrọ aṣawakiri rẹ, kọ awọn kuki ti ko ṣe pataki nibiti o ba wa, tabi kan si InkFront ti o ba ni awọn ibeere nipa aṣiri, awọn kuki, tabi mimu data.",
+      "O le nu awọn kuki kuro lati ẹrọ aṣawakiri rẹ, kọ awọn kuki ti ko ṣe pataki nibiti o ba wa, tabi kan si Inkfront ti o ba ni awọn ibeere nipa aṣiri, awọn kuki, tabi mimu data.",
     privacyButton: "Ilana Aṣiri",
-    contactButton: "Kan si InkFront",
+    contactButton: "Kan si Inkfront",
     sections: {
       whatAreCookies: {
         title: "1. Kini Awọn Kuki?",
         body: "Awọn kuki jẹ awọn faili ọrọ kekere ti a fipamọ sori ẹrọ rẹ nigbati o ba ṣabẹwo si oju opo wẹẹbu kan. Wọn ṣe iranlọwọ fun awọn oju opo wẹẹbu lati ranti alaye nipa ibẹwo rẹ, gẹgẹbi awọn akoko iwọle, ede ti a yan, ayanfẹ ọna iwo, awọn sọwedowo aabo, ati ihuwasi lilo ipilẹ. Awọn imọ-ẹrọ ti o jọra le pẹlu ibi ipamọ agbegbe, ibi ipamọ igba, awọn piksẹli, awọn taagi, awọn idanimọ ẹrọ, ati ibi ipamọ ayanfẹ ti o da lori ẹrọ aṣawakiri.",
       },
-      howInkFrontUses: {
-        title: "2. Bi InkFront Ṣe N Lo Awọn Kuki",
-        body: "InkFront n lo awọn kuki ati awọn imọ-ẹrọ ti o jọra lati jẹ ki oju opo wẹẹbu wa ṣiṣẹ, ni aabo, ti ara ẹni, ati rọrun lati lo. A le lo awọn kuki fun ijẹrisi, iraye si dashboard alabojuto, awọn akoko to ni aabo, ayanfẹ ede, ayanfẹ ipo dudu tabi ipo imọlẹ, ipo ifọwọsi kuki, aabo fọọmu olubasọrọ, ilọsiwaju iṣẹ, ati iṣẹ oju opo wẹẹbu ipilẹ.",
+      howInkfrontUses: {
+        title: "2. Bi Inkfront Ṣe N Lo Awọn Kuki",
+        body: "Inkfront n lo awọn kuki ati awọn imọ-ẹrọ ti o jọra lati jẹ ki oju opo wẹẹbu wa ṣiṣẹ, ni aabo, ti ara ẹni, ati rọrun lati lo. A le lo awọn kuki fun ijẹrisi, iraye si dashboard alabojuto, awọn akoko to ni aabo, ayanfẹ ede, ayanfẹ ipo dudu tabi ipo imọlẹ, ipo ifọwọsi kuki, aabo fọọmu olubasọrọ, ilọsiwaju iṣẹ, ati iṣẹ oju opo wẹẹbu ipilẹ.",
       },
       essential: {
         title: "3. Awọn Kuki Pataki",
@@ -137,7 +137,7 @@ export default {
       },
       authSecurity: {
         title: "4. Awọn Kuki Ijẹrisi ati Aabo",
-        body: "Nibiti InkFront ti n lo awọn ẹya iwọle tabi dashboard alabojuto, a le lo awọn kuki lati jẹrisi idanimọ olumulo, daabobo awọn akoko, dena iraye si laigba aṣẹ, ati ki o jẹ ki awọn olumulo wọle ni aabo. Diẹ ninu awọn kuki ijẹrisi le jẹ HTTP-nikan, afipamo pe a ṣe apẹrẹ wọn ki awọn iwe afọwọkọ ẹrọ aṣawakiri ko le wọle si wọn taara. Eyi ṣe iranlọwọ lati mu aabo akọọlẹ dara sii.",
+        body: "Nibiti Inkfront ti n lo awọn ẹya iwọle tabi dashboard alabojuto, a le lo awọn kuki lati jẹrisi idanimọ olumulo, daabobo awọn akoko, dena iraye si laigba aṣẹ, ati ki o jẹ ki awọn olumulo wọle ni aabo. Diẹ ninu awọn kuki ijẹrisi le jẹ HTTP-nikan, afipamo pe a ṣe apẹrẹ wọn ki awọn iwe afọwọkọ ẹrọ aṣawakiri ko le wọle si wọn taara. Eyi ṣe iranlọwọ lati mu aabo akọọlẹ dara sii.",
       },
       preference: {
         title: "5. Awọn Kuki Ayanfẹ",
@@ -145,19 +145,19 @@ export default {
       },
       functional: {
         title: "6. Ibi Ipamọ Iṣẹ",
-        body: "InkFront le lo ibi ipamọ ẹrọ aṣawakiri lati ṣe atilẹyin awọn ẹya wiwo, awọn ayanfẹ ti a fipamọ, awọn ipo fọọmu igba diẹ, ihuwasi dashboard, ati lilọ kiri didan. Fun apẹẹrẹ, ọna iwo ti o yan tabi ayanfẹ ede le wa ni ipamọ ni agbegbe ki oju opo wẹẹbu le kojọpọ pẹlu awọn eto ti o fẹran ni awọn ibẹwo iwaju.",
+        body: "Inkfront le lo ibi ipamọ ẹrọ aṣawakiri lati ṣe atilẹyin awọn ẹya wiwo, awọn ayanfẹ ti a fipamọ, awọn ipo fọọmu igba diẹ, ihuwasi dashboard, ati lilọ kiri didan. Fun apẹẹrẹ, ọna iwo ti o yan tabi ayanfẹ ede le wa ni ipamọ ni agbegbe ki oju opo wẹẹbu le kojọpọ pẹlu awọn eto ti o fẹran ni awọn ibẹwo iwaju.",
       },
       analytics: {
         title: "7. Atupale ati Ilọsiwaju Iṣẹ",
-        body: "InkFront le lo awọn irinṣẹ atupale ni bayi tabi ni ọjọ iwaju lati loye bi awọn alejo ṣe n ba oju opo wẹẹbu sọrọ, awọn oju-iwe ti a ṣabẹwo si, bi awọn olumulo ṣe n lilọ kiri pẹpẹ, ati bi a ṣe le mu iṣẹ dara si. A n lo alaye atupale ni gbogbogbo lati mu akoonu, ifilelẹ, iyara, iriri olumulo, imunadoko tita, ati didara iṣẹ dara si.",
+        body: "Inkfront le lo awọn irinṣẹ atupale ni bayi tabi ni ọjọ iwaju lati loye bi awọn alejo ṣe n ba oju opo wẹẹbu sọrọ, awọn oju-iwe ti a ṣabẹwo si, bi awọn olumulo ṣe n lilọ kiri pẹpẹ, ati bi a ṣe le mu iṣẹ dara si. A n lo alaye atupale ni gbogbogbo lati mu akoonu, ifilelẹ, iyara, iriri olumulo, imunadoko tita, ati didara iṣẹ dara si.",
       },
       thirdParty: {
         title: "8. Awọn Kuki Ẹni Kẹta",
-        body: "Diẹ ninu awọn ẹya oju opo wẹẹbu le gbarale awọn iṣẹ ẹni kẹta gẹgẹbi iwọle Google, awọn olupese alejo, awọn pẹpẹ imeeli, awọn irinṣẹ atupale, awọn fidio ti a fi sii, awọn maapu, awọn ẹnu-ọna isanwo, awọn irinṣẹ atilẹyin alabara, tabi awọn pẹpẹ tita. Awọn olupese ẹni kẹta wọnyi le ṣeto awọn kuki tiwọn tabi awọn imọ-ẹrọ ti o jọra. A n ṣakoso awọn kuki wọn nipasẹ awọn ilana aṣiri ati kuki tiwọn, kii ṣe nipasẹ InkFront.",
+        body: "Diẹ ninu awọn ẹya oju opo wẹẹbu le gbarale awọn iṣẹ ẹni kẹta gẹgẹbi iwọle Google, awọn olupese alejo, awọn pẹpẹ imeeli, awọn irinṣẹ atupale, awọn fidio ti a fi sii, awọn maapu, awọn ẹnu-ọna isanwo, awọn irinṣẹ atilẹyin alabara, tabi awọn pẹpẹ tita. Awọn olupese ẹni kẹta wọnyi le ṣeto awọn kuki tiwọn tabi awọn imọ-ẹrọ ti o jọra. A n ṣakoso awọn kuki wọn nipasẹ awọn ilana aṣiri ati kuki tiwọn, kii ṣe nipasẹ Inkfront.",
       },
       clientProjects: {
         title: "9. Awọn Kuki Ti A Lo Ninu Awọn Iṣẹ Akanṣe Alabara",
-        body: "Ti InkFront ba kọ oju opo wẹẹbu, dashboard, ẹnu-ọna, tabi pẹpẹ sọfitiwia fun alabara kan, iṣẹ akanṣe yẹn le lo awọn kuki fun iwọle, awọn akoko alabara, ihuwasi ọkọ, sisanwo, iraye si alabojuto, atupale, awọn ayanfẹ, ati aabo. Alabara ni o ni iduro fun aridaju pe awọn akiyesi kuki tiwọn, awọn ilana aṣiri, ati awọn ifihan ofin jẹ deede fun iṣowo wọn, awọn olumulo, ati aṣẹ ofin.",
+        body: "Ti Inkfront ba kọ oju opo wẹẹbu, dashboard, ẹnu-ọna, tabi pẹpẹ sọfitiwia fun alabara kan, iṣẹ akanṣe yẹn le lo awọn kuki fun iwọle, awọn akoko alabara, ihuwasi ọkọ, sisanwo, iraye si alabojuto, atupale, awọn ayanfẹ, ati aabo. Alabara ni o ni iduro fun aridaju pe awọn akiyesi kuki tiwọn, awọn ilana aṣiri, ati awọn ifihan ofin jẹ deede fun iṣowo wọn, awọn olumulo, ati aṣẹ ofin.",
       },
       managing: {
         title: "10. Ṣiṣakoso Awọn Kuki",
@@ -165,19 +165,19 @@ export default {
       },
       consent: {
         title: "11. Ifọwọsi Kuki",
-        body: "Nibiti o ba nilo, InkFront le ṣe afihan asia kuki tabi akiyesi ifọwọsi ti o n gba awọn olumulo laaye lati gba tabi kọ awọn kuki ti ko ṣe pataki. A tun le lo awọn kuki pataki paapaa ti a ba kọ awọn kuki ti ko ṣe pataki nitori a nilo wọn fun aabo, ijẹrisi, awọn ayanfẹ, ati iṣẹ oju opo wẹẹbu pataki.",
+        body: "Nibiti o ba nilo, Inkfront le ṣe afihan asia kuki tabi akiyesi ifọwọsi ti o n gba awọn olumulo laaye lati gba tabi kọ awọn kuki ti ko ṣe pataki. A tun le lo awọn kuki pataki paapaa ti a ba kọ awọn kuki ti ko ṣe pataki nitori a nilo wọn fun aabo, ijẹrisi, awọn ayanfẹ, ati iṣẹ oju opo wẹẹbu pataki.",
       },
       retention: {
         title: "12. Idaduro Awọn Kuki",
-        body: "Diẹ ninu awọn kuki n duro fun igba ẹrọ aṣawakiri lọwọlọwọ nikan ati pe a parẹ nigbati o ba tii ẹrọ aṣawakiri rẹ. Awọn kuki miiran le wa fun igba pipẹ ki oju opo wẹẹbu le ranti awọn yiyan rẹ. Iye akoko da lori idi kuki, awọn eto ẹrọ aṣawakiri, ati boya InkFront tabi olupese ẹni kẹta ni o ṣeto kuki naa.",
+        body: "Diẹ ninu awọn kuki n duro fun igba ẹrọ aṣawakiri lọwọlọwọ nikan ati pe a parẹ nigbati o ba tii ẹrọ aṣawakiri rẹ. Awọn kuki miiran le wa fun igba pipẹ ki oju opo wẹẹbu le ranti awọn yiyan rẹ. Iye akoko da lori idi kuki, awọn eto ẹrọ aṣawakiri, ati boya Inkfront tabi olupese ẹni kẹta ni o ṣeto kuki naa.",
       },
       updates: {
         title: "13. Awọn Imudojuiwọn si Ilana Awọn Kuki Yii",
-        body: "InkFront le ṣe imudojuiwọn Ilana Awọn Kuki yii lati igba de igba bi oju opo wẹẹbu wa, awọn iṣẹ, awọn iṣe aabo, awọn irinṣẹ atupale, tabi awọn ibeere ofin ṣe n yipada. Ẹya tuntun yoo wa lori oju-iwe yii, ati lilo oju opo wẹẹbu tẹsiwaju tumọ si pe o gba ilana imudojuiwọn.",
+        body: "Inkfront le ṣe imudojuiwọn Ilana Awọn Kuki yii lati igba de igba bi oju opo wẹẹbu wa, awọn iṣẹ, awọn iṣe aabo, awọn irinṣẹ atupale, tabi awọn ibeere ofin ṣe n yipada. Ẹya tuntun yoo wa lori oju-iwe yii, ati lilo oju opo wẹẹbu tẹsiwaju tumọ si pe o gba ilana imudojuiwọn.",
       },
       contact: {
         title: "14. Kan si",
-        body: "Fun awọn ibeere nipa awọn kuki, aṣiri, awọn imọ-ẹrọ itọpa, tabi mimu data, jọwọ kan si InkFront nipasẹ oju-iwe olubasọrọ osise tabi eyikeyi ikanni ibaraẹnisọrọ ti a jẹrisi ti InkFront pese.",
+        body: "Fun awọn ibeere nipa awọn kuki, aṣiri, awọn imọ-ẹrọ itọpa, tabi mimu data, jọwọ kan si Inkfront nipasẹ oju-iwe olubasọrọ osise tabi eyikeyi ikanni ibaraẹnisọrọ ti a jẹrisi ti Inkfront pese.",
       },
     },
   },
@@ -186,24 +186,24 @@ export default {
     title: "Awọn Ofin & Ipo",
     updatedDate: "Oṣu Kẹrin 28, 2026",
     description:
-      "Awọn Ofin wọnyi n ṣe akoso lilo rẹ ti awọn iṣẹ InkFront, awọn oju opo wẹẹbu, awọn ijumọsọrọ, awọn ọja oni-nọmba, awọn eto sọfitiwia, ati awọn eto atilẹyin. Jọwọ ka wọn daradara ṣaaju ki o to bẹrẹ iṣẹ akanṣe.",
+      "Awọn Ofin wọnyi n ṣe akoso lilo rẹ ti awọn iṣẹ Inkfront, awọn oju opo wẹẹbu, awọn ijumọsọrọ, awọn ọja oni-nọmba, awọn eto sọfitiwia, ati awọn eto atilẹyin. Jọwọ ka wọn daradara ṣaaju ki o to bẹrẹ iṣẹ akanṣe.",
     lastUpdatedLabel: "Imudojuiwọn Ikẹhin",
     lastUpdatedDescription:
-      "A ṣe apẹrẹ Awọn Ofin wọnyi lati daabobo mejeeji InkFront ati awọn alabara wa nipa ṣiṣeto awọn ofin ti o ṣe kedere fun iwọn iṣẹ akanṣe, isanwo, nini, atilẹyin, lilo itẹwọgba, ati awọn ojuse iṣẹ.",
+      "A ṣe apẹrẹ Awọn Ofin wọnyi lati daabobo mejeeji Inkfront ati awọn alabara wa nipa ṣiṣeto awọn ofin ti o ṣe kedere fun iwọn iṣẹ akanṣe, isanwo, nini, atilẹyin, lilo itẹwọgba, ati awọn ojuse iṣẹ.",
     ctaEyebrow: "Nilo Alaye?",
     ctaTitle: "Awọn ibeere nipa awọn ofin wa?",
     ctaDescription:
-      "Kan si InkFront ṣaaju ki o to bẹrẹ iṣẹ akanṣe rẹ ti o ba nilo alaye nipa iwọn, isanwo, nini, atilẹyin, tabi awọn ohun ti a o fi jiṣẹ.",
-    contactButton: "Kan si InkFront",
+      "Kan si Inkfront ṣaaju ki o to bẹrẹ iṣẹ akanṣe rẹ ti o ba nilo alaye nipa iwọn, isanwo, nini, atilẹyin, tabi awọn ohun ti a o fi jiṣẹ.",
+    contactButton: "Kan si Inkfront",
     homeButton: "Pada si Ile",
     sections: {
       acceptance: {
         title: "1. Gbigba Awọn Ofin",
-        body: "Nipa wiwọle si, lilọ kiri, bibeere, rira, ṣiṣe alabapin si, tabi lilo eyikeyi oju opo wẹẹbu InkFront, ijumọsọrọ, iṣẹ apẹrẹ, iṣẹ sọfitiwia, ọja oni-nọmba, eto alabojuto, dashboard, atilẹyin alejo, eto itọju, tabi iṣẹ iṣowo ti o jọmọ, o gba lati jẹ adehun labẹ ofin nipasẹ Awọn Ofin ati Ipo wọnyi.",
+        body: "Nipa wiwọle si, lilọ kiri, bibeere, rira, ṣiṣe alabapin si, tabi lilo eyikeyi oju opo wẹẹbu Inkfront, ijumọsọrọ, iṣẹ apẹrẹ, iṣẹ sọfitiwia, ọja oni-nọmba, eto alabojuto, dashboard, atilẹyin alejo, eto itọju, tabi iṣẹ iṣowo ti o jọmọ, o gba lati jẹ adehun labẹ ofin nipasẹ Awọn Ofin ati Ipo wọnyi.",
       },
       about: {
-        title: "2. Nipa InkFront",
-        body: "InkFront n pese awọn oju opo wẹẹbu iṣowo, awọn oju-iwe ibalẹ ọja, awọn eto ifiṣura, awọn ẹnu-ọna alabara, awọn dashboards alabojuto, awọn irinṣẹ CRM, awọn bulọọgi, awọn iwe iroyin, awọn pẹpẹ e-commerce, awọn eto iṣakoso ile-iwe, atilẹyin iyasọtọ, adaṣiṣẹ ṣiṣan iṣẹ, ati awọn ojutu sọfitiwia aṣa.",
+        title: "2. Nipa Inkfront",
+        body: "Inkfront n pese awọn oju opo wẹẹbu iṣowo, awọn oju-iwe ibalẹ ọja, awọn eto ifiṣura, awọn ẹnu-ọna alabara, awọn dashboards alabojuto, awọn irinṣẹ CRM, awọn bulọọgi, awọn iwe iroyin, awọn pẹpẹ e-commerce, awọn eto iṣakoso ile-iwe, atilẹyin iyasọtọ, adaṣiṣẹ ṣiṣan iṣẹ, ati awọn ojutu sọfitiwia aṣa.",
       },
       clientResponsibilities: {
         title: "3. Awọn Ojuse Alabara",
@@ -219,7 +219,7 @@ export default {
       },
       latePayments: {
         title: "6. Awọn Isanwo Pẹ & Idaduro",
-        body: "Ti isanwo ba ti pẹ ju, InkFront le da idagbasoke duro, atilẹyin alejo, itọju, iwọle alabojuto, imuṣiṣẹ, awọn imudojuiwọn, tabi ifisilẹ titi ti awọn owo ti o ku yoo fi san.",
+        body: "Ti isanwo ba ti pẹ ju, Inkfront le da idagbasoke duro, atilẹyin alejo, itọju, iwọle alabojuto, imuṣiṣẹ, awọn imudojuiwọn, tabi ifisilẹ titi ti awọn owo ti o ku yoo fi san.",
       },
       revisions: {
         title: "7. Awọn Atunṣe & Awọn Ibeere Iyipada",
@@ -227,15 +227,15 @@ export default {
       },
       approvals: {
         title: "8. Awọn Ifọwọsi Alabara",
-        body: "Nigbati alabara ba fọwọsi apẹrẹ, ẹya, oju-iwe, apakan akoonu, ṣiṣan iṣẹ, tabi ipin-ipin, InkFront le tẹsiwaju da lori ifọwọsi yẹn.",
+        body: "Nigbati alabara ba fọwọsi apẹrẹ, ẹya, oju-iwe, apakan akoonu, ṣiṣan iṣẹ, tabi ipin-ipin, Inkfront le tẹsiwaju da lori ifọwọsi yẹn.",
       },
       ip: {
         title: "9. Ohun-ini Ọpọlọ",
-        body: "Lẹhin isanwo ni kikun, alabara n gba nini ti awọn ohun ti a ti sanwo fun ikẹhin ti a ṣẹda ni pataki fun alabara, laisi awọn irinṣẹ ti o ti wa tẹlẹ ti InkFront, koodu atunlo, awọn awoṣe, awọn ile-ikawe, awọn ilana igbekalẹ, awọn eto inu, awọn ilana, imọ, awọn imọran, awọn ilana adaṣiṣẹ, ati awọn ọna imọ-ẹrọ gbogbogbo.",
+        body: "Lẹhin isanwo ni kikun, alabara n gba nini ti awọn ohun ti a ti sanwo fun ikẹhin ti a ṣẹda ni pataki fun alabara, laisi awọn irinṣẹ ti o ti wa tẹlẹ ti Inkfront, koodu atunlo, awọn awoṣe, awọn ile-ikawe, awọn ilana igbekalẹ, awọn eto inu, awọn ilana, imọ, awọn imọran, awọn ilana adaṣiṣẹ, ati awọn ọna imọ-ẹrọ gbogbogbo.",
       },
       portfolio: {
         title: "10. Awọn Ẹtọ Portfolio",
-        body: "Ayafi ti alabara ba beere aṣiri ni kikọ ṣaaju ifilọlẹ iṣẹ akanṣe, InkFront le ṣafihan iṣẹ ti o pari, awọn aworan iṣẹ akanṣe, orukọ alabara, aami iyasọtọ, apejuwe iṣẹ akanṣe, ati awọn abajade gbogbogbo ninu portfolio rẹ.",
+        body: "Ayafi ti alabara ba beere aṣiri ni kikọ ṣaaju ifilọlẹ iṣẹ akanṣe, Inkfront le ṣafihan iṣẹ ti o pari, awọn aworan iṣẹ akanṣe, orukọ alabara, aami iyasọtọ, apejuwe iṣẹ akanṣe, ati awọn abajade gbogbogbo ninu portfolio rẹ.",
       },
       confidentiality: {
         title: "11. Aṣiri",
@@ -247,7 +247,7 @@ export default {
       },
       security: {
         title: "13. Aabo & Iwọle",
-        body: "InkFront yoo lo awọn ọna imọ-ẹrọ ti o bọgbọnwa lati kọ awọn eto to ni aabo, ṣugbọn ko si oju opo wẹẹbu, sọfitiwia, ayika alejo, tabi pẹpẹ ti o ni asopọ intanẹẹti ti a le ṣe iṣeduro lati wa ni ominira patapata lati awọn ailagbara, awọn ikọlu, ipadanu data, tabi iwọle laigba aṣẹ.",
+        body: "Inkfront yoo lo awọn ọna imọ-ẹrọ ti o bọgbọnwa lati kọ awọn eto to ni aabo, ṣugbọn ko si oju opo wẹẹbu, sọfitiwia, ayika alejo, tabi pẹpẹ ti o ni asopọ intanẹẹti ti a le ṣe iṣeduro lati wa ni ominira patapata lati awọn ailagbara, awọn ikọlu, ipadanu data, tabi iwọle laigba aṣẹ.",
       },
       compliance: {
         title: "14. Akoonu & Ibamu Ofin",
@@ -255,11 +255,11 @@ export default {
       },
       use: {
         title: "15. Lilo Itẹwọgba",
-        body: "Awọn alabara ko gbọdọ lo awọn iṣẹ InkFront fun jibiti, ẹtan, afarawe, iṣowo arufin, irufin aṣẹ-lori, àwúrúju, malware, phishing, akoonu ikorira, tipatipa, ilokulo awọn agbalagba, iṣẹ owo arufin, tabi eyikeyi iṣẹ ti o ṣe ipalara fun awọn olumulo.",
+        body: "Awọn alabara ko gbọdọ lo awọn iṣẹ Inkfront fun jibiti, ẹtan, afarawe, iṣowo arufin, irufin aṣẹ-lori, àwúrúju, malware, phishing, akoonu ikorira, tipatipa, ilokulo awọn agbalagba, iṣẹ owo arufin, tabi eyikeyi iṣẹ ti o ṣe ipalara fun awọn olumulo.",
       },
       availability: {
         title: "16. Wiwa Iṣẹ",
-        body: "InkFront n ṣe ifọkansi lati pese awọn iṣẹ ti o gbẹkẹle, ṣugbọn ko ṣe iṣeduro iwọle laisi idilọwọ, iṣẹ laisi aṣiṣe, akoko iṣẹ ayeraye, tabi wiwa lilọsiwaju.",
+        body: "Inkfront n ṣe ifọkansi lati pese awọn iṣẹ ti o gbẹkẹle, ṣugbọn ko ṣe iṣeduro iwọle laisi idilọwọ, iṣẹ laisi aṣiṣe, akoko iṣẹ ayeraye, tabi wiwa lilọsiwaju.",
       },
       support: {
         title: "17. Atilẹyin & Itọju",
@@ -267,11 +267,11 @@ export default {
       },
       liability: {
         title: "18. Idiwọn Gbese",
-        body: "Si iwọn ti o pọju ti ofin gba laaye, InkFront kii yoo ṣe oniduro fun awọn adanu aiṣe-taara, ti o ṣẹlẹ, pataki, ijiya, tabi awọn adanu ti o jẹyọ, pẹlu ipadanu èrè, ipadanu owo-wiwọle, ipadanu data, ipadanu awọn alabara, ibajẹ orukọ, idalọwọduro iṣowo, tabi awọn aye ti o padanu.",
+        body: "Si iwọn ti o pọju ti ofin gba laaye, Inkfront kii yoo ṣe oniduro fun awọn adanu aiṣe-taara, ti o ṣẹlẹ, pataki, ijiya, tabi awọn adanu ti o jẹyọ, pẹlu ipadanu èrè, ipadanu owo-wiwọle, ipadanu data, ipadanu awọn alabara, ibajẹ orukọ, idalọwọduro iṣowo, tabi awọn aye ti o padanu.",
       },
       indemnity: {
         title: "19. Ẹsan",
-        body: "Alabara gba lati san ẹsan ki o si mu InkFront lọwọ laiseniyan lati awọn ẹsun, awọn ibajẹ, awọn ijiya, awọn adanu, awọn gbese, awọn idiyele, ati awọn inawo ti o dide lati awọn ohun elo ti alabara pese, iṣẹ iṣowo arufin, ilokulo pẹpẹ ti a fi jiṣẹ, irufin Awọn Ofin wọnyi, irufin awọn ẹtọ ẹni kẹta, tabi ikuna lati ni ibamu pẹlu awọn ofin to wulo.",
+        body: "Alabara gba lati san ẹsan ki o si mu Inkfront lọwọ laiseniyan lati awọn ẹsun, awọn ibajẹ, awọn ijiya, awọn adanu, awọn gbese, awọn idiyele, ati awọn inawo ti o dide lati awọn ohun elo ti alabara pese, iṣẹ iṣowo arufin, ilokulo pẹpẹ ti a fi jiṣẹ, irufin Awọn Ofin wọnyi, irufin awọn ẹtọ ẹni kẹta, tabi ikuna lati ni ibamu pẹlu awọn ofin to wulo.",
       },
       cancellation: {
         title: "20. Ifagile & Ifopinṣẹ",
@@ -279,7 +279,7 @@ export default {
       },
       forceMajeure: {
         title: "21. Agbara Ti O Ju Iṣakoso Lọ",
-        body: "InkFront kii yoo ṣe oniduro fun idaduro tabi ikuna ti o ṣẹlẹ nipasẹ awọn iṣẹlẹ ti o kọja iṣakoso ti o bọgbọnwa, pẹlu ikuna agbara, idalọwọduro intanẹẹti, ajalu adayeba, iṣẹ ijọba, idasesile, ogun, rogbodiyan ilu, aisan, idaduro pẹpẹ, ikọlu ayelujara, ikuna olupese isanwo, tabi idalọwọduro iṣẹ ẹni kẹta.",
+        body: "Inkfront kii yoo ṣe oniduro fun idaduro tabi ikuna ti o ṣẹlẹ nipasẹ awọn iṣẹlẹ ti o kọja iṣakoso ti o bọgbọnwa, pẹlu ikuna agbara, idalọwọduro intanẹẹti, ajalu adayeba, iṣẹ ijọba, idasesile, ogun, rogbodiyan ilu, aisan, idaduro pẹpẹ, ikọlu ayelujara, ikuna olupese isanwo, tabi idalọwọduro iṣẹ ẹni kẹta.",
       },
       law: {
         title: "22. Ofin Ti N Ṣakoso",
@@ -287,11 +287,11 @@ export default {
       },
       updates: {
         title: "23. Awọn Imudojuiwọn si Awọn Ofin",
-        body: "InkFront le ṣe imudojuiwọn Awọn Ofin wọnyi lati igba de igba lati ṣe afihan awọn iyipada ninu awọn iṣẹ, awọn ofin, awọn iṣẹ iṣowo, idiyele, imọ-ẹrọ, tabi awọn ibeere aabo.",
+        body: "Inkfront le ṣe imudojuiwọn Awọn Ofin wọnyi lati igba de igba lati ṣe afihan awọn iyipada ninu awọn iṣẹ, awọn ofin, awọn iṣẹ iṣowo, idiyele, imọ-ẹrọ, tabi awọn ibeere aabo.",
       },
       contact: {
         title: "24. Kan si",
-        body: "Fun awọn ibeere, awọn ẹdun ọkan, alaye iṣẹ akanṣe, awọn ọrọ ìdánilẹkọọ, tabi awọn akiyesi ofin ti o jọmọ Awọn Ofin wọnyi, jọwọ kan si InkFront nipasẹ oju-iwe olubasọrọ osise tabi eyikeyi ikanni ibaraẹnisọrọ ti a jẹrisi ti InkFront pese.",
+        body: "Fun awọn ibeere, awọn ẹdun ọkan, alaye iṣẹ akanṣe, awọn ọrọ ìdánilẹkọọ, tabi awọn akiyesi ofin ti o jọmọ Awọn Ofin wọnyi, jọwọ kan si Inkfront nipasẹ oju-iwe olubasọrọ osise tabi eyikeyi ikanni ibaraẹnisọrọ ti a jẹrisi ti Inkfront pese.",
       },
     },
   },
@@ -300,24 +300,24 @@ export default {
     title: "Ilana Aṣiri",
     updatedDate: "Oṣu Kẹrin 28, 2026",
     description:
-      "Ilana yii n ṣalaye bi InkFront ṣe n gba, lo, tọju, daabobo, ati ṣakoso alaye ti ara ẹni kọja awọn oju opo wẹẹbu wa, awọn fọọmu olubasọrọ, awọn irinṣẹ CRM, awọn iwe iroyin, awọn eto sọfitiwia, ati awọn iṣẹ alabara.",
+      "Ilana yii n ṣalaye bi Inkfront ṣe n gba, lo, tọju, daabobo, ati ṣakoso alaye ti ara ẹni kọja awọn oju opo wẹẹbu wa, awọn fọọmu olubasọrọ, awọn irinṣẹ CRM, awọn iwe iroyin, awọn eto sọfitiwia, ati awọn iṣẹ alabara.",
     lastUpdatedLabel: "Imudojuiwọn Ikẹhin",
     lastUpdatedDescription:
-      "Aṣiri rẹ ṣe pataki si InkFront. A n gba alaye nikan nibiti o ṣe iranlọwọ fun wa lati dahun si ọ, fi awọn iṣẹ jiṣẹ, daabobo awọn pẹpẹ wa, ṣakoso awọn iṣẹ akanṣe, ati mu iriri alabara dara si.",
+      "Aṣiri rẹ ṣe pataki si Inkfront. A n gba alaye nikan nibiti o ṣe iranlọwọ fun wa lati dahun si ọ, fi awọn iṣẹ jiṣẹ, daabobo awọn pẹpẹ wa, ṣakoso awọn iṣẹ akanṣe, ati mu iriri alabara dara si.",
     ctaEyebrow: "Ibeere Aṣiri",
     ctaTitle: "Nilo iranlọwọ pẹlu alaye ti ara ẹni rẹ?",
     ctaDescription:
-      "Kan si InkFront ti o ba fẹ wọle si, ṣe atunṣe, ṣe imudojuiwọn, ni ihamọ, tabi beere piparẹ alaye ti ara ẹni ti o sopọ mọ ibeere rẹ, ṣiṣe alabapin iwe iroyin, tabi iṣẹ akanṣe.",
-    contactButton: "Kan si InkFront",
+      "Kan si Inkfront ti o ba fẹ wọle si, ṣe atunṣe, ṣe imudojuiwọn, ni ihamọ, tabi beere piparẹ alaye ti ara ẹni ti o sopọ mọ ibeere rẹ, ṣiṣe alabapin iwe iroyin, tabi iṣẹ akanṣe.",
+    contactButton: "Kan si Inkfront",
     termsButton: "Wo Awọn Ofin",
     sections: {
       introduction: {
         title: "1. Ifihan",
-        body: "Ilana Aṣiri yii n ṣalaye bi InkFront ṣe n gba, lo, tọju, daabobo, ati ṣakoso alaye ti ara ẹni.",
+        body: "Ilana Aṣiri yii n ṣalaye bi Inkfront ṣe n gba, lo, tọju, daabobo, ati ṣakoso alaye ti ara ẹni.",
       },
       information: {
         title: "2. Alaye Ti A N Gba",
-        body: "InkFront le gba alaye ti o pese taara, pẹlu orukọ rẹ, imeeli, foonu, ile-iṣẹ, awọn alaye iṣẹ akanṣe, ati data imọ-ẹrọ bii adiresi IP ati iru ẹrọ aṣawakiri.",
+        body: "Inkfront le gba alaye ti o pese taara, pẹlu orukọ rẹ, imeeli, foonu, ile-iṣẹ, awọn alaye iṣẹ akanṣe, ati data imọ-ẹrọ bii adiresi IP ati iru ẹrọ aṣawakiri.",
       },
       usage: {
         title: "3. Bawo Ni A Ṣe N Lo Alaye Rẹ",
@@ -393,7 +393,7 @@ export default {
       },
       contact: {
         title: "21. Kan si",
-        body: "Fun awọn ibeere aṣiri tabi awọn ibeere data, kan si InkFront nipasẹ oju-iwe olubasọrọ osise wa.",
+        body: "Fun awọn ibeere aṣiri tabi awọn ibeere data, kan si Inkfront nipasẹ oju-iwe olubasọrọ osise wa.",
       },
     },
   },
@@ -679,7 +679,7 @@ export default {
     ctaEyebrow: "Kọ pẹlu mimọ",
     ctaTitle: "Ṣetan lati yi apẹrẹ yii pada si ọja gidi?",
     ctaDescription:
-      "Jẹ ki InkFront ṣe iranlọwọ fun ọ lati yi ero rẹ pada si pẹpẹ iṣowo didan.",
+      "Jẹ ki Inkfront ṣe iranlọwọ fun ọ lati yi ero rẹ pada si pẹpẹ iṣowo didan.",
     placeholderIcon: "🧩",
   },
   clientsPage: {
@@ -687,7 +687,7 @@ export default {
     description:
       "Awọn esi lati awọn ifaramọ alabara ati awọn ajo ti a ṣe atilẹyin pẹlu awọn oju opo wẹẹbu, awọn ọja oni-nọmba, ati awọn eto iṣowo.",
     testimonialsEyebrow: "Awọn Ẹri",
-    testimonialsTitle: "Ohun ti awọn alabara n sọ nipa ṣiṣẹ pẹlu InkFront",
+    testimonialsTitle: "Ohun ti awọn alabara n sọ nipa ṣiṣẹ pẹlu Inkfront",
     testimonialsDescription:
       "Ẹri gidi yẹ ki o ṣe iranlọwọ fun awọn alabara iwaju lati loye didara, mimọ, ati alamọdaju iṣẹ rẹ.",
     noTestimonials: "Ko si awọn ẹri ti o wa sibẹsibẹ.",
@@ -702,7 +702,7 @@ export default {
       "Oju opo wẹẹbu rẹ yẹ ki o sọ igbẹkẹle, fi ẹri han, ati yi awọn alejo pada si awọn ibaraẹnisọrọ gidi.",
   },
   blog: {
-    eyebrow: "InkFront Buloogu",
+    eyebrow: "Inkfront Buloogu",
     title: "Awọn imọran, ilana, ati idagbasoke oni-nọmba",
     subtitle:
       "Ka awọn nkan ti o wulo lori awọn oju opo wẹẹbu, awọn eto ifiṣura, adaṣiṣẹ, hihan iṣowo, ati awọn iṣẹ oni-nọmba to dara julọ.",
@@ -723,7 +723,7 @@ export default {
     gallery: "Aworan",
     articleSummary: "Akopọ nkan",
     summaryFallback:
-      "Oye to wulo lati InkFront fun awọn onile iṣowo ati awọn ẹgbẹ oni-nọmba.",
+      "Oye to wulo lati Inkfront fun awọn onile iṣowo ati awọn ẹgbẹ oni-nọmba.",
     discussProject: "Jiroro lori iṣẹ akanṣe rẹ",
     moreFeatured: "Diẹ sii ti a ṣe afihan",
     relatedLabel: "Kika ti o jọmọ",
@@ -738,10 +738,10 @@ export default {
   },
   pages: {
     home: {
-      eyebrow: "InkFront Digital Systems",
+      eyebrow: "Inkfront Digital Systems",
       heroTitle: "Kọ wiwa oni-nọmba ti o dara julọ fun iṣowo rẹ",
       heroSubtitle:
-        "InkFront n ṣe apẹrẹ ati kọ awọn oju opo wẹẹbu, awọn oju-iwe ọja, awọn ẹnu-ọna, ati awọn pẹpẹ iṣowo ti o ṣe iranlọwọ fun ami iyasọtọ rẹ lati dabi ẹni ti a gbẹkẹle, yi awọn oludari pada, ati dagba lori ayelujara.",
+        "Inkfront n ṣe apẹrẹ ati kọ awọn oju opo wẹẹbu, awọn oju-iwe ọja, awọn ẹnu-ọna, ati awọn pẹpẹ iṣowo ti o ṣe iranlọwọ fun ami iyasọtọ rẹ lati dabi ẹni ti a gbẹkẹle, yi awọn oludari pada, ati dagba lori ayelujara.",
       heroPanelEyebrow: "Ti a kọ fun idagba",
       heroPanelTitle:
         "Awọn oju opo wẹẹbu, awọn dashboards, awọn ẹnu-ọna, ati awọn eto ti o ṣetan fun ifilọlẹ.",
@@ -763,7 +763,7 @@ export default {
       productDirection: "Itọsọna ọja",
       productTitle: "Yi ero rẹ pada si eto iṣowo ti o ṣe kedere ti a le kọ.",
       productSubtitle:
-        "Lo awọn apẹrẹ ọja InkFront lati ṣalaye awọn oju-iwe, awọn ẹya, akoonu, ṣiṣan alabojuto, ati itọsọna ifilọlẹ ṣaaju ki idagbasoke to bẹrẹ.",
+        "Lo awọn apẹrẹ ọja Inkfront lati ṣalaye awọn oju-iwe, awọn ẹya, akoonu, ṣiṣan alabojuto, ati itọsọna ifilọlẹ ṣaaju ki idagbasoke to bẹrẹ.",
       selectedWork: "Iṣẹ ti a yan",
       clientConfidence: "Igbẹkẹle alabara",
       testimonialSubtitle:
@@ -786,7 +786,7 @@ export default {
       bannerTitle:
         "Ṣe o nilo oju opo wẹẹbu, ẹnu-ọna, eto ifiṣura, tabi pẹpẹ iṣowo kikun?",
       bannerText:
-        "InkFront le ṣe iranlọwọ fun ọ lati gbe lati awọn ero ti o tuka si eto didan ti o ni awọn oju-iwe, akoonu, data ẹhin, ifamọra, awọn irinṣẹ alabojuto, ati iriri gbogbo eniyan ti o dahun.",
+        "Inkfront le ṣe iranlọwọ fun ọ lati gbe lati awọn ero ti o tuka si eto didan ti o ni awọn oju-iwe, akoonu, data ẹhin, ifamọra, awọn irinṣẹ alabojuto, ati iriri gbogbo eniyan ti o dahun.",
       processSteps: {
         discover: {
           title: "Ṣawari",
@@ -873,7 +873,7 @@ export default {
       },
       fallbackTestimonials: {
         client1: {
-          name: "Alabara InkFront",
+          name: "Alabara Inkfront",
           role: "Oniwun Iṣowo",
           quote:
             "Pẹpẹ naa fun ami iyasọtọ wa ni wiwa alamọdaju lori ayelujara ati jẹ ki awọn ibeere rọrun lati ṣakoso.",
@@ -889,12 +889,12 @@ export default {
     about: {
       title: "A n kọ awọn eto oni-nọmba fun awọn iṣowo igbalode",
       subtitle:
-        "InkFront n ṣe iranlọwọ fun awọn iṣowo lati ṣe ifilọlẹ awọn oju opo wẹẹbu ti o dara julọ, awọn oju-iwe ọja, awọn dashboards, awọn ẹnu-ọna, ati awọn pẹpẹ oni-nọmba ti o ni asopọ ẹhin.",
-      eyebrow: "Nipa InkFront",
+        "Inkfront n ṣe iranlọwọ fun awọn iṣowo lati ṣe ifilọlẹ awọn oju opo wẹẹbu ti o dara julọ, awọn oju-iwe ọja, awọn dashboards, awọn ẹnu-ọna, ati awọn pẹpẹ oni-nọmba ti o ni asopọ ẹhin.",
+      eyebrow: "Nipa Inkfront",
       storyEyebrow: "Itan wa",
-      storyTitle: "Idi ti InkFront fi wa",
+      storyTitle: "Idi ti Inkfront fi wa",
       storyFallback:
-        "InkFront wa lati ṣe iranlọwọ fun awọn iṣowo lati gbe lati awọn ero ti o tuka ati wiwa ori ayelujara ti ko lagbara si awọn pẹpẹ oni-nọmba didan, ti a gbẹkẹle, ati ti o ṣe iwọn.",
+        "Inkfront wa lati ṣe iranlọwọ fun awọn iṣowo lati gbe lati awọn ero ti o tuka ati wiwa ori ayelujara ti ko lagbara si awọn pẹpẹ oni-nọmba didan, ti a gbẹkẹle, ati ti o ṣe iwọn.",
       missionTitle: "Iṣẹ apinfunni wa",
       missionFallback:
         "Lati ṣe apẹrẹ ati kọ awọn eto oni-nọmba ti o wulo ti o ṣe iranlọwọ fun awọn iṣowo lati baraẹnisọrọ ni kedere, ṣiṣẹ daradara, ati dagba pẹlu igbẹkẹle.",
@@ -927,7 +927,7 @@ export default {
         t1: {
           role: "Oludasile",
           quote:
-            "InkFront kọ pẹpẹ iṣakoso ile-iwe wa gẹgẹ bi a ṣe ṣe apejuwe rẹ. Apẹrẹ ti o mọ, ẹhin ti o duro. Awọn olukọ wa ati awọn obi nifẹ lati lo o.",
+            "Inkfront kọ pẹpẹ iṣakoso ile-iwe wa gẹgẹ bi a ṣe ṣe apejuwe rẹ. Apẹrẹ ti o mọ, ẹhin ti o duro. Awọn olukọ wa ati awọn obi nifẹ lati lo o.",
         },
         t2: {
           role: "Alakoso",
@@ -937,7 +937,7 @@ export default {
         t3: {
           role: "Oludari Alakoso",
           quote:
-            "Ibi ọja wa jẹ ero lasan. InkFront sọ ọ di pẹpẹ olutaja pupọ laaye pẹlu escrow, iṣakoso katalogi, ati awọn irinṣẹ alabojuto ti o mọ.",
+            "Ibi ọja wa jẹ ero lasan. Inkfront sọ ọ di pẹpẹ olutaja pupọ laaye pẹlu escrow, iṣakoso katalogi, ati awọn irinṣẹ alabojuto ti o mọ.",
         },
         t4: {
           role: "CTO",
@@ -1035,7 +1035,7 @@ export default {
       deliverablesFallback:
         "Ilana ti o mọ, itọsọna apẹrẹ ti o dara julọ, akoonu ti o ni asopọ ẹhin, UI ti o dahun, ati ilana ifijiṣẹ ti o da lori iṣowo.",
       moreServices: "Awọn iṣẹ diẹ sii",
-      otherServices: "Awọn ọna miiran ti InkFront le ṣe iranlọwọ",
+      otherServices: "Awọn ọna miiran ti Inkfront le ṣe iranlọwọ",
       service: "Iṣẹ",
       viewService: "Wo iṣẹ",
       ctaEyebrow: "Ṣetan lati kọ?",
@@ -1068,7 +1068,7 @@ export default {
     contact: {
       title: "Jẹ ki a kọ eto oni-nọmba rẹ ti n bọ",
       subtitle:
-        "Fi awọn alaye iṣẹ akanṣe rẹ ranṣẹ taara si ẹgbẹ alabojuto InkFront. A yoo fi ibeere rẹ pamọ, tọpa, ati tẹle lati CRM alabojuto.",
+        "Fi awọn alaye iṣẹ akanṣe rẹ ranṣẹ taara si ẹgbẹ alabojuto Inkfront. A yoo fi ibeere rẹ pamọ, tọpa, ati tẹle lati CRM alabojuto.",
       inquiry: "Ibeere iṣẹ akanṣe",
       sendMessage: "Fi ifiranṣẹ ranṣẹ si wa",
       description:
@@ -1125,7 +1125,7 @@ export default {
       eyebrow: "Awọn Ẹri",
       title: "Ohun ti awọn alabara n sọ",
       description:
-        "Ẹri lati ọdọ awọn eniyan ati awọn iṣowo ti o gbẹkẹle InkFront.",
+        "Ẹri lati ọdọ awọn eniyan ati awọn iṣowo ti o gbẹkẹle Inkfront.",
       emptyQuote: "Ko si ọrọ ẹri ti o wa.",
       anonymous: "Alabara Ailorukọ",
       client: "Alabara",
@@ -1222,7 +1222,7 @@ export default {
       submit: "Fi ifiranṣẹ ranṣẹ →",
       sending: "N fi ranṣẹ...",
       success:
-        "A ti fi ifiranṣẹ ranṣẹ ni aṣeyọri. Ẹgbẹ alabojuto InkFront yoo ṣe atunyẹwo rẹ ki wọn si pada si ọ laipẹ.",
+        "A ti fi ifiranṣẹ ranṣẹ ni aṣeyọri. Ẹgbẹ alabojuto Inkfront yoo ṣe atunyẹwo rẹ ki wọn si pada si ọ laipẹ.",
       error: "Ti kuna lati fi ifiranṣẹ ranṣẹ. Jọwọ tun gbiyanju.",
       validationError: "Jọwọ fọwọsi orukọ rẹ, imeeli, koko-ọrọ, ati ifiranṣẹ.",
     },

@@ -381,7 +381,7 @@ export default function BlogDetailPage() {
                   {post.excerpt ||
                     t(
                       "blog.summaryFallback",
-                      "A practical insight from InkFront for business owners and digital teams.",
+                      "A practical insight from Inkfront for business owners and digital teams.",
                     )}
                 </p>
 
