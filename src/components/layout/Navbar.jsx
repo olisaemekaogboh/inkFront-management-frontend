@@ -38,7 +38,7 @@ const LogoWithUserInfo = memo(
         intervalRef.current = setInterval(() => {
           setCurrentDisplay((prev) => {
             if (prev === "name") {
-              setDisplayText(userLocation || "Infront Technology");
+              setDisplayText(userLocation || "Inkfront Technology");
               return "location";
             } else {
               setDisplayText(userName);
