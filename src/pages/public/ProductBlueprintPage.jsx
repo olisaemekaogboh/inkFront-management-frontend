@@ -170,13 +170,28 @@ function OptimizedImage({
   placeholder = true,
   objectFit = "cover",
 }) {
-  const [imageError, setImageError] = useState(false);
+  const FALLBACK_IMAGE = "/images/products/default.png";
+
+  const [imageSrc, setImageSrc] = useState(src);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  if (!src || imageError) return null;
+  useEffect(() => {
+    setImageSrc(src);
+    setIsLoaded(false);
+  }, [src]);
+
+  if (!imageSrc) {
+    return null;
+  }
 
   return (
-    <div style={{ position: "relative", width: "100%", height: "100%" }}>
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "100%",
+      }}
+    >
       {placeholder && !isLoaded && (
         <div
           className="image-placeholder"
@@ -185,16 +200,16 @@ function OptimizedImage({
             height: "100%",
             background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
             position: "absolute",
-            top: 0,
-            left: 0,
+            inset: 0,
             zIndex: 1,
             borderRadius: "inherit",
           }}
         />
       )}
+
       <img
-        src={src}
-        alt={alt}
+        src={imageSrc}
+        alt={alt || "Product image"}
         loading={priority ? "eager" : "lazy"}
         fetchPriority={priority ? "high" : "auto"}
         className={className}
@@ -205,21 +220,21 @@ function OptimizedImage({
           zIndex: 2,
           width: "100%",
           height: "100%",
-          objectFit: objectFit,
+          objectFit,
         }}
         onLoad={() => {
           setIsLoaded(true);
-          if (onLoad) onLoad();
-        }}
-        onError={(event) => {
-          console.warn(`Failed to load image: ${src}`);
-          setImageError(true);
-          event.currentTarget.style.display = "none";
 
-          // Try to load fallback image
-          const fallbackSrc = "/images/products/default.png";
-          if (src !== fallbackSrc) {
-            event.currentTarget.src = fallbackSrc;
+          if (onLoad) {
+            onLoad();
+          }
+        }}
+        onError={() => {
+          console.warn(`Failed to load image: ${imageSrc}`);
+
+          if (imageSrc !== FALLBACK_IMAGE) {
+            setIsLoaded(false);
+            setImageSrc(FALLBACK_IMAGE);
           }
         }}
       />
