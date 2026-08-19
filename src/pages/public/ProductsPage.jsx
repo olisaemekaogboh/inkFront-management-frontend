@@ -22,19 +22,24 @@ const STAGGER_VARIANTS = {
 };
 
 // ==================== PRODUCT IMAGE MAP ====================
-
 const PRODUCT_IMAGE_MAP = {
-  // Map product slugs to local images
-  "school-management-system": "/images/products/school.png",
-  "church-management-platform": "/images/products/church.png",
-  "e-commerce-store": "/images/products/ecommerce.png",
-  "real-estate-platform": "/images/products/realestate.png",
-  "logistics-dashboard": "/images/products/logistics.png",
-  "healthcare-management": "/images/products/healthcare.png",
-  "learning-management-system": "/images/products/lms.png",
-  "event-ticketing-platform": "/images/products/ticketing.png",
-  "fintech-payment-system": "/images/products/fintech.png",
-  "agritech-marketplace": "/images/products/agritech.png",
+  "business-website-blueprint":
+    "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=80",
+
+  "service-business-blueprint":
+    "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1400&q=80",
+
+  "booking-platform-blueprint":
+    "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1400&q=80",
+
+  "school-management-blueprint":
+    "https://www.templeschoolng.com/wp-content/uploads/2021/02/Secondary-Classroom.jpg",
+
+  "e-commerce-blueprint":
+    "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1400&q=80",
+
+  "client-portal-blueprint":
+    "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1400&q=80",
 };
 
 const DEFAULT_PRODUCT_IMAGES = [
