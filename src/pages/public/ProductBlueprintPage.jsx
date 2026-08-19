@@ -18,7 +18,7 @@ const PRODUCT_IMAGE_MAP = {
     "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1400&q=80",
 
   "school-management-blueprint":
-    "https://www.templeschoolng.com/wp-content/uploads/2021/02/Secondary-Classroom.jpg",
+    "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1400&q=85",
 
   "e-commerce-blueprint":
     "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1400&q=80",
@@ -170,78 +170,43 @@ function OptimizedImage({
   className,
   priority = false,
   onLoad,
-  placeholder = true,
   objectFit = "cover",
 }) {
   const FALLBACK_IMAGE = "/images/products/default.png";
 
   const [imageSrc, setImageSrc] = useState(src);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     setImageSrc(src);
-    setIsLoaded(false);
   }, [src]);
 
-  if (!imageSrc) {
-    return null;
-  }
-
   return (
-    <div
+    <img
+      src={imageSrc || FALLBACK_IMAGE}
+      alt={alt || "Product image"}
+      loading={priority ? "eager" : "lazy"}
+      fetchPriority={priority ? "high" : "auto"}
+      decoding="async"
+      className={className}
       style={{
-        position: "relative",
         width: "100%",
         height: "100%",
+        objectFit,
+        display: "block",
       }}
-    >
-      {placeholder && !isLoaded && (
-        <div
-          className="image-placeholder"
-          style={{
-            width: "100%",
-            height: "100%",
-            background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
-            position: "absolute",
-            inset: 0,
-            zIndex: 1,
-            borderRadius: "inherit",
-          }}
-        />
-      )}
+      onLoad={() => {
+        if (onLoad) {
+          onLoad();
+        }
+      }}
+      onError={() => {
+        if (imageSrc !== FALLBACK_IMAGE) {
+          console.warn("Product image failed:", imageSrc);
 
-      <img
-        src={imageSrc}
-        alt={alt || "Product image"}
-        loading={priority ? "eager" : "lazy"}
-        fetchPriority={priority ? "high" : "auto"}
-        className={className}
-        style={{
-          opacity: isLoaded ? 1 : 0,
-          transition: "opacity 0.3s ease-in-out",
-          position: "relative",
-          zIndex: 2,
-          width: "100%",
-          height: "100%",
-          objectFit,
-        }}
-        onLoad={() => {
-          setIsLoaded(true);
-
-          if (onLoad) {
-            onLoad();
-          }
-        }}
-        onError={() => {
-          console.warn(`Failed to load image: ${imageSrc}`);
-
-          if (imageSrc !== FALLBACK_IMAGE) {
-            setIsLoaded(false);
-            setImageSrc(FALLBACK_IMAGE);
-          }
-        }}
-      />
-    </div>
+          setImageSrc(FALLBACK_IMAGE);
+        }
+      }}
+    />
   );
 }
 

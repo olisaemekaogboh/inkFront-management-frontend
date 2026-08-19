@@ -35,7 +35,7 @@ const PRODUCT_IMAGE_MAP = {
     "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1400&q=80",
 
   "school-management-blueprint":
-    "https://www.templeschoolng.com/wp-content/uploads/2021/02/Secondary-Classroom.jpg",
+    "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1400&q=85",
 
   // CARD 05
   "e-commerce-blueprint":
@@ -76,7 +76,7 @@ function text(...values) {
 }
 
 function getImageUrl(item) {
-  return text(
+  const url = text(
     item?.imageUrl,
     item?.coverImageUrl,
     item?.featuredImageUrl,
@@ -85,6 +85,12 @@ function getImageUrl(item) {
     item?.bannerImageUrl,
     item?.mediaUrl,
   );
+
+  if (!url) {
+    return "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=85";
+  }
+
+  return url.trim();
 }
 
 function optimizeImageUrl(url) {
@@ -276,103 +282,43 @@ const OptimizedImage = memo(function OptimizedImage({
   className,
   priority = false,
   onLoad,
-  placeholder = true,
   objectFit = "cover",
 }) {
   const FALLBACK_IMAGE = "/images/products/default.png";
 
   const [imageSrc, setImageSrc] = useState(src);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [usingFallback, setUsingFallback] = useState(false);
 
   useEffect(() => {
     setImageSrc(src);
-    setIsLoaded(false);
-    setUsingFallback(false);
   }, [src]);
 
-  if (!imageSrc) {
-    return (
-      <div
-        className={className}
-        style={{
-          width: "100%",
-          height: "100%",
-          minHeight: "200px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "#f3f4f6",
-        }}
-      />
-    );
-  }
-
   return (
-    <div
-      className="optimized-image-wrapper"
+    <img
+      src={imageSrc || FALLBACK_IMAGE}
+      alt={alt || "Product image"}
+      loading={priority ? "eager" : "lazy"}
+      fetchPriority={priority ? "high" : "auto"}
+      decoding="async"
+      className={className}
       style={{
-        position: "relative",
         width: "100%",
         height: "100%",
-        overflow: "hidden",
+        objectFit,
+        display: "block",
       }}
-    >
-      {placeholder && !isLoaded && (
-        <div
-          className="image-placeholder"
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
-            zIndex: 1,
-          }}
-        />
-      )}
+      onLoad={() => {
+        if (onLoad) {
+          onLoad();
+        }
+      }}
+      onError={() => {
+        if (imageSrc !== FALLBACK_IMAGE) {
+          console.warn("Product image failed:", imageSrc);
 
-      <img
-        src={imageSrc}
-        alt={alt || "Product image"}
-        loading={priority ? "eager" : "lazy"}
-        fetchPriority={priority ? "high" : "auto"}
-        decoding="async"
-        className={className}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit,
-          opacity: isLoaded ? 1 : 0,
-          transition: "opacity 0.3s ease",
-          position: "relative",
-          zIndex: 2,
-          display: "block",
-        }}
-        onLoad={() => {
-          setIsLoaded(true);
-
-          if (onLoad) {
-            onLoad();
-          }
-        }}
-        onError={() => {
-          console.error("Product image failed:", imageSrc);
-
-          // Only fallback once
-          if (!usingFallback && imageSrc !== FALLBACK_IMAGE) {
-            setUsingFallback(true);
-            setImageSrc(FALLBACK_IMAGE);
-            setIsLoaded(false);
-            return;
-          }
-
-          // If even the fallback fails,
-          // show a visible placeholder instead of disappearing.
-          setIsLoaded(true);
-        }}
-      />
-    </div>
+          setImageSrc(FALLBACK_IMAGE);
+        }
+      }}
+    />
   );
 });
 
