@@ -5,6 +5,26 @@ import useLanguage from "../../hooks/useLanguage";
 import { publicApi } from "../../services/publicApi";
 import "../../styles/publicPremium.css";
 
+// ==================== PRODUCT IMAGE MAP ====================
+
+const PRODUCT_IMAGE_MAP = {
+  // Map product slugs to local images
+  "school-management-system": "/images/products/school.png",
+  "church-management-platform": "/images/products/church.png",
+  "e-commerce-store": "/images/products/ecommerce.png",
+  "real-estate-platform": "/images/products/realestate.png",
+  "logistics-dashboard": "/images/products/logistics.png",
+  "healthcare-management": "/images/products/healthcare.png",
+  "learning-management-system": "/images/products/lms.png",
+  "event-ticketing-platform": "/images/products/ticketing.png",
+  "fintech-payment-system": "/images/products/fintech.png",
+  "agritech-marketplace": "/images/products/agritech.png",
+  "edubridge-school-platform": "/images/products/school.png",
+  "edubridge-school": "/images/products/school.png",
+};
+
+// ==================== UTILITY FUNCTIONS ====================
+
 function text(...values) {
   return (
     values.find((value) => typeof value === "string" && value.trim()) || ""
@@ -12,7 +32,119 @@ function text(...values) {
 }
 
 function getImage(product) {
-  return text(product?.heroImageUrl, product?.imageUrl, product?.coverImageUrl);
+  // 1. Check if we have a mapped local image for this slug
+  if (product?.slug && PRODUCT_IMAGE_MAP[product.slug]) {
+    return PRODUCT_IMAGE_MAP[product.slug];
+  }
+
+  // 2. Check for database image that is VALID and NOT from AI
+  const dbImage = text(
+    product?.heroImageUrl,
+    product?.imageUrl,
+    product?.coverImageUrl,
+    product?.thumbnailUrl,
+    product?.featuredImageUrl,
+  );
+
+  // Only use database image if it's valid and not from AI
+  if (
+    dbImage &&
+    !dbImage.includes("pollinations") &&
+    !dbImage.includes("ai-generated") &&
+    !dbImage.includes("placeholder") &&
+    (dbImage.startsWith("http") || dbImage.startsWith("/"))
+  ) {
+    return dbImage;
+  }
+
+  // 3. Try to match by title/category keywords
+  const title = (product?.title || "").toLowerCase();
+  const category = (
+    product?.category ||
+    product?.clientIndustry ||
+    ""
+  ).toLowerCase();
+
+  if (
+    title.includes("school") ||
+    title.includes("education") ||
+    title.includes("learn") ||
+    category.includes("education")
+  ) {
+    return "/images/products/school.png";
+  }
+  if (
+    title.includes("church") ||
+    title.includes("ministry") ||
+    title.includes("faith")
+  ) {
+    return "/images/products/church.png";
+  }
+  if (
+    title.includes("ecommerce") ||
+    title.includes("store") ||
+    title.includes("shop") ||
+    title.includes("market")
+  ) {
+    return "/images/products/ecommerce.png";
+  }
+  if (
+    title.includes("estate") ||
+    title.includes("property") ||
+    title.includes("real")
+  ) {
+    return "/images/products/realestate.png";
+  }
+  if (
+    title.includes("logistic") ||
+    title.includes("ship") ||
+    title.includes("delivery") ||
+    title.includes("fleet")
+  ) {
+    return "/images/products/logistics.png";
+  }
+  if (
+    title.includes("health") ||
+    title.includes("medical") ||
+    title.includes("hospital") ||
+    title.includes("clinic")
+  ) {
+    return "/images/products/healthcare.png";
+  }
+  if (
+    title.includes("learning") ||
+    title.includes("course") ||
+    title.includes("train") ||
+    title.includes("lms")
+  ) {
+    return "/images/products/lms.png";
+  }
+  if (
+    title.includes("ticket") ||
+    title.includes("event") ||
+    title.includes("booking")
+  ) {
+    return "/images/products/ticketing.png";
+  }
+  if (
+    title.includes("fintech") ||
+    title.includes("payment") ||
+    title.includes("bank") ||
+    title.includes("finance")
+  ) {
+    return "/images/products/fintech.png";
+  }
+  if (
+    title.includes("agric") ||
+    title.includes("farm") ||
+    title.includes("crop") ||
+    title.includes("agri")
+  ) {
+    return "/images/products/agritech.png";
+  }
+
+  // 4. Default fallback
+  return "/images/products/default.png";
 }
 
 function formatBulletList(textString) {
@@ -27,7 +159,8 @@ function preloadImage(url) {
   img.src = url;
 }
 
-// Optimized image component with priority support and placeholder
+// ==================== OPTIMIZED IMAGE COMPONENT ====================
+
 function OptimizedImage({
   src,
   alt,
@@ -82,11 +215,19 @@ function OptimizedImage({
           console.warn(`Failed to load image: ${src}`);
           setImageError(true);
           event.currentTarget.style.display = "none";
+
+          // Try to load fallback image
+          const fallbackSrc = "/images/products/default.png";
+          if (src !== fallbackSrc) {
+            event.currentTarget.src = fallbackSrc;
+          }
         }}
       />
     </div>
   );
 }
+
+// ==================== MAIN COMPONENT ====================
 
 export default function ProductBlueprintPage() {
   const { slug } = useParams();
@@ -170,6 +311,9 @@ export default function ProductBlueprintPage() {
           <div className="premium-container">
             <div className="premium-empty-card">
               <strong>{t("products.notFound", "Product not found.")}</strong>
+              <Link to="/products" style={{ display: "block", marginTop: 16 }}>
+                ← {t("common.backToList", "Back to products")}
+              </Link>
             </div>
           </div>
         </section>

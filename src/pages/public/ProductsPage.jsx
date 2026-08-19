@@ -21,6 +21,35 @@ const STAGGER_VARIANTS = {
   visible: { transition: { staggerChildren: 0.04 } },
 };
 
+// ==================== PRODUCT IMAGE MAP ====================
+
+const PRODUCT_IMAGE_MAP = {
+  // Map product slugs to local images
+  "school-management-system": "/images/products/school.png",
+  "church-management-platform": "/images/products/church.png",
+  "e-commerce-store": "/images/products/ecommerce.png",
+  "real-estate-platform": "/images/products/realestate.png",
+  "logistics-dashboard": "/images/products/logistics.png",
+  "healthcare-management": "/images/products/healthcare.png",
+  "learning-management-system": "/images/products/lms.png",
+  "event-ticketing-platform": "/images/products/ticketing.png",
+  "fintech-payment-system": "/images/products/fintech.png",
+  "agritech-marketplace": "/images/products/agritech.png",
+};
+
+const DEFAULT_PRODUCT_IMAGES = [
+  "/images/products/school.png",
+  "/images/products/church.png",
+  "/images/products/ecommerce.png",
+  "/images/products/realestate.png",
+  "/images/products/logistics.png",
+  "/images/products/healthcare.png",
+  "/images/products/lms.png",
+  "/images/products/ticketing.png",
+  "/images/products/fintech.png",
+  "/images/products/agritech.png",
+];
+
 // ==================== UTILITY FUNCTIONS ====================
 
 function normalizeList(response) {
@@ -83,13 +112,125 @@ function getProcessedSummary(product, t) {
   );
 }
 
-function getProcessedImageUrl(product) {
-  return text(
+// ==================== FIXED: getProcessedImageUrl ====================
+
+function getProcessedImageUrl(product, index) {
+  // 1. Check for database image that is VALID and NOT from AI
+  const dbImage = text(
     product.heroImageUrl,
     product.imageUrl,
     product.coverImageUrl,
     product.thumbnailUrl,
+    product.featuredImageUrl,
   );
+
+  // Only use database image if:
+  // - It exists
+  // - Not from pollinations/AI
+  // - Is a valid URL (http or relative path)
+  if (
+    dbImage &&
+    !dbImage.includes("pollinations") &&
+    !dbImage.includes("ai-generated") &&
+    !dbImage.includes("placeholder") &&
+    (dbImage.startsWith("http") || dbImage.startsWith("/"))
+  ) {
+    return dbImage;
+  }
+
+  // 2. Check if we have a mapped local image for this slug
+  if (product.slug && PRODUCT_IMAGE_MAP[product.slug]) {
+    return PRODUCT_IMAGE_MAP[product.slug];
+  }
+
+  // 3. Try to match by title/category keywords
+  const title = (product.title || "").toLowerCase();
+  const category = (
+    product.category ||
+    product.clientIndustry ||
+    ""
+  ).toLowerCase();
+
+  if (
+    title.includes("school") ||
+    title.includes("education") ||
+    title.includes("learn") ||
+    category.includes("education")
+  ) {
+    return "/images/products/school.png";
+  }
+  if (
+    title.includes("church") ||
+    title.includes("ministry") ||
+    title.includes("faith")
+  ) {
+    return "/images/products/church.png";
+  }
+  if (
+    title.includes("ecommerce") ||
+    title.includes("store") ||
+    title.includes("shop") ||
+    title.includes("market")
+  ) {
+    return "/images/products/ecommerce.png";
+  }
+  if (
+    title.includes("estate") ||
+    title.includes("property") ||
+    title.includes("real")
+  ) {
+    return "/images/products/realestate.png";
+  }
+  if (
+    title.includes("logistic") ||
+    title.includes("ship") ||
+    title.includes("delivery") ||
+    title.includes("fleet")
+  ) {
+    return "/images/products/logistics.png";
+  }
+  if (
+    title.includes("health") ||
+    title.includes("medical") ||
+    title.includes("hospital") ||
+    title.includes("clinic")
+  ) {
+    return "/images/products/healthcare.png";
+  }
+  if (
+    title.includes("learning") ||
+    title.includes("course") ||
+    title.includes("train") ||
+    title.includes("lms")
+  ) {
+    return "/images/products/lms.png";
+  }
+  if (
+    title.includes("ticket") ||
+    title.includes("event") ||
+    title.includes("booking")
+  ) {
+    return "/images/products/ticketing.png";
+  }
+  if (
+    title.includes("fintech") ||
+    title.includes("payment") ||
+    title.includes("bank") ||
+    title.includes("finance")
+  ) {
+    return "/images/products/fintech.png";
+  }
+  if (
+    title.includes("agric") ||
+    title.includes("farm") ||
+    title.includes("crop") ||
+    title.includes("agri")
+  ) {
+    return "/images/products/agritech.png";
+  }
+
+  // 4. Default fallback using index
+  return DEFAULT_PRODUCT_IMAGES[index % DEFAULT_PRODUCT_IMAGES.length];
 }
 
 function getBlueprintNumber(index) {
@@ -132,6 +273,7 @@ const OptimizedImage = memo(function OptimizedImage({
           if (onLoad) onLoad();
         }}
         onError={() => {
+          console.warn(`Failed to load image: ${optimizedSrc}`);
           setImageError(true);
         }}
       />
@@ -266,7 +408,7 @@ const ProductsGrid = memo(function ProductsGrid({
       ...product,
       processedTitle: getProcessedTitle(product, t),
       processedSummary: getProcessedSummary(product, t),
-      processedImageUrl: getProcessedImageUrl(product),
+      processedImageUrl: getProcessedImageUrl(product, index),
       processedLink: product.slug ? `/products/${product.slug}` : "#",
       blueprintNumber: getBlueprintNumber(index),
     }));
