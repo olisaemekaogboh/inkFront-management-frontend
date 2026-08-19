@@ -10,13 +10,42 @@ const apiClient = axios.create({
   },
 });
 
-// GET LANGUAGE FROM STORAGE
 function getLanguage() {
   const lang = localStorage.getItem("language");
   return (lang || "EN").toUpperCase();
 }
 
+// ---------------------------------------------------------
+// Refresh coordination
+// ---------------------------------------------------------
+// Only ONE refresh request can run at a time.
+//
+// If five API requests receive 401 simultaneously:
+//
+// Request A ─┐
+// Request B ─┤
+// Request C ─┼──> ONE /auth/refresh request
+// Request D ─┤
+// Request E ─┘
+//
+// All five wait for the same promise.
+// ---------------------------------------------------------
+let refreshPromise = null;
+
+function refreshSession() {
+  if (!refreshPromise) {
+    refreshPromise = apiClient.post("/auth/refresh").finally(() => {
+      refreshPromise = null;
+    });
+  }
+
+  return refreshPromise;
+}
+
+// ---------------------------------------------------------
 // REQUEST INTERCEPTOR
+// ---------------------------------------------------------
+
 apiClient.interceptors.request.use(
   (config) => {
     const language = getLanguage();
@@ -26,6 +55,7 @@ apiClient.interceptors.request.use(
       language,
     };
 
+    config.headers = config.headers || {};
     config.headers["Accept-Language"] = language;
 
     return config;
@@ -33,51 +63,65 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-// RESPONSE INTERCEPTOR - FIXED to preserve error response
+// ---------------------------------------------------------
+// RESPONSE INTERCEPTOR
+// ---------------------------------------------------------
+
 apiClient.interceptors.response.use(
   (response) => response,
+
   async (error) => {
     const originalRequest = error.config || {};
     const status = error?.response?.status;
     const requestUrl = originalRequest.url || "";
 
     const isRefreshRequest = requestUrl.includes("/auth/refresh");
+
     const isLoginRequest =
       requestUrl.includes("/auth/login") ||
       requestUrl.includes("/auth/register");
-    const isCurrentUserRequest = requestUrl.includes("/auth/me");
+
+    const isLogoutRequest = requestUrl.includes("/auth/logout");
+
     const isPublicRequest = requestUrl.includes("/public/");
 
-    // For 401 on login/register, DON'T create a new error - just pass the original error
+    // -----------------------------------------------------
+    // Never refresh these requests
+    // -----------------------------------------------------
+
     if (
-      status === 401 &&
-      (isLoginRequest || requestUrl.includes("/auth/register"))
+      status !== 401 ||
+      isRefreshRequest ||
+      isLoginRequest ||
+      isLogoutRequest ||
+      isPublicRequest ||
+      originalRequest._retry
     ) {
-      // Return the original error with full response data
       return Promise.reject(error);
     }
 
-    if (
-      status === 401 &&
-      !originalRequest._retry &&
-      !isRefreshRequest &&
-      !isLoginRequest &&
-      !isCurrentUserRequest &&
-      !isPublicRequest
-    ) {
-      originalRequest._retry = true;
+    // -----------------------------------------------------
+    // Mark the original request so we don't create
+    // an infinite 401 → refresh → retry loop.
+    // -----------------------------------------------------
 
-      try {
-        await apiClient.post("/auth/refresh");
-        return apiClient(originalRequest);
-      } catch (refreshError) {
-        // Return the refresh error
-        return Promise.reject(refreshError);
-      }
+    originalRequest._retry = true;
+
+    try {
+      // Wait for the existing refresh request if another
+      // API call is already refreshing the session.
+      await refreshSession();
+
+      // The backend has now replaced the HttpOnly cookies.
+      // Retry the original request.
+      return apiClient(originalRequest);
+    } catch (refreshError) {
+      // Refresh token is expired/revoked/invalid.
+      //
+      // Don't try to refresh again.
+      // Let the authentication layer handle the logout.
+      return Promise.reject(refreshError);
     }
-
-    // For all other errors, pass the original error with response
-    return Promise.reject(error);
   },
 );
 

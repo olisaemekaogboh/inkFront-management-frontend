@@ -31,16 +31,6 @@ export default function LoginSuccessPage() {
         return;
       }
 
-      // Check for token in URL (if backend sends it directly)
-      const token = searchParams.get("token");
-      const refreshToken = searchParams.get("refreshToken");
-
-      if (token) {
-        localStorage.setItem("auth_token", token);
-        if (refreshToken)
-          localStorage.setItem("auth_refresh_token", refreshToken);
-      }
-
       try {
         // Try to refresh the user session
         const refreshedUser = await refreshCurrentUser();
