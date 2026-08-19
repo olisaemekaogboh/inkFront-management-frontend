@@ -10,8 +10,9 @@ function text(...values) {
   );
 }
 
-// Map portfolio project slugs to your images (same as list page)
-const portfolioImageMap = {
+// ==================== IMAGE MAP ====================
+
+const PORTFOLIO_IMAGE_MAP = {
   "edubridge-school-platform": "/images/portfolio/school.png",
   "quickship-logistics-dashboard": "/images/portfolio/logistics.png",
   "halamart-marketplace": "/images/portfolio/market.png",
@@ -24,15 +25,31 @@ const portfolioImageMap = {
   "skillbridge-learning-platform": "/images/portfolio/learn.png",
   "eventwave-ticketing-platform": "/images/portfolio/ticket.png",
   "churchflow-ministry-platform": "/images/portfolio/realEstate.png",
+  "business-management": "/images/portfolio/business.png",
 };
 
+// ==================== IMAGE UTILITY ====================
+
 function getPortfolioDetailImage(project) {
-  // Skip AI-generated images, use local instead
-  if (project.slug && portfolioImageMap[project.slug]) {
-    return portfolioImageMap[project.slug];
+  // 1. First check if we have a mapped image for this slug
+  if (project.slug && PORTFOLIO_IMAGE_MAP[project.slug]) {
+    return PORTFOLIO_IMAGE_MAP[project.slug];
   }
 
-  // Try to match by category
+  // 2. Check if project has a cover image that's not from AI
+  const projectImage = text(
+    project.coverImageUrl,
+    project.imageUrl,
+    project.heroImageUrl,
+    project.featuredImageUrl,
+    project.thumbnailUrl,
+  );
+
+  if (projectImage && !projectImage.includes("pollinations")) {
+    return projectImage;
+  }
+
+  // 3. Try to match by category or title
   const category = (
     project.clientIndustry ||
     project.category ||
@@ -40,29 +57,56 @@ function getPortfolioDetailImage(project) {
   ).toLowerCase();
   const title = (project.title || "").toLowerCase();
 
-  if (category.includes("agric") || title.includes("farm")) {
+  if (
+    category.includes("agric") ||
+    title.includes("farm") ||
+    title.includes("agric")
+  ) {
     return "/images/portfolio/agric.png";
   }
   if (
     category.includes("fintech") ||
     title.includes("bank") ||
-    title.includes("finance")
+    title.includes("finance") ||
+    title.includes("pay")
   ) {
     return "/images/portfolio/banking.png";
   }
-  if (category.includes("ecommerce") || title.includes("market")) {
+  if (
+    category.includes("ecommerce") ||
+    title.includes("market") ||
+    title.includes("shop") ||
+    title.includes("store")
+  ) {
     return "/images/portfolio/market.png";
   }
-  if (category.includes("logistics")) {
+  if (
+    category.includes("logistics") ||
+    title.includes("ship") ||
+    title.includes("delivery")
+  ) {
     return "/images/portfolio/logistics.png";
   }
-  if (category.includes("health")) {
+  if (
+    category.includes("health") ||
+    title.includes("medical") ||
+    title.includes("hospital")
+  ) {
     return "/images/portfolio/health.png";
   }
-  if (category.includes("education")) {
+  if (
+    category.includes("education") ||
+    title.includes("learn") ||
+    title.includes("course") ||
+    title.includes("school")
+  ) {
     return "/images/portfolio/learn.png";
   }
-  if (category.includes("entertainment") || title.includes("music")) {
+  if (
+    category.includes("entertainment") ||
+    title.includes("music") ||
+    title.includes("stream")
+  ) {
     return "/images/portfolio/music.png";
   }
   if (category.includes("estate") || title.includes("property")) {
@@ -72,34 +116,82 @@ function getPortfolioDetailImage(project) {
     return "/images/portfolio/ticket.png";
   }
 
+  // 4. Default fallback
   return "/images/portfolio/business.png";
 }
 
-function PortfolioDetailImage({ src, alt }) {
-  const [imageError, setImageError] = useState(false);
+// ==================== OPTIMIZED IMAGE COMPONENT ====================
 
+function PortfolioDetailImage({ src, alt, priority = false }) {
+  const [imageError, setImageError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // If there's an error or no src, show placeholder
   if (!src || imageError) {
     return (
-      <div className="premium-detail-placeholder">
-        <span>📁</span>
+      <div className="premium-detail-placeholder" style={{ minHeight: 300 }}>
+        <span style={{ fontSize: "4rem" }}>📁</span>
+        <p style={{ marginTop: 8, color: "#666" }}>No image available</p>
       </div>
     );
   }
 
   return (
-    <img
-      src={src}
-      alt={alt}
-      loading="lazy"
-      style={{ width: "100%", height: "auto", borderRadius: "16px" }}
-      onError={(event) => {
-        console.warn(`Failed to load detail image: ${src}`);
-        setImageError(true);
-        event.currentTarget.style.display = "none";
-      }}
-    />
+    <div
+      className="premium-detail-media-wrapper"
+      style={{ position: "relative", minHeight: 300 }}
+    >
+      {!isLoaded && (
+        <div
+          className="image-loading-placeholder"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+            borderRadius: "16px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1,
+          }}
+        >
+          <span style={{ fontSize: "2rem" }}>🔄</span>
+        </div>
+      )}
+      <img
+        src={src}
+        alt={alt || "Project image"}
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : "auto"}
+        decoding="async"
+        style={{
+          width: "100%",
+          height: "auto",
+          borderRadius: "16px",
+          opacity: isLoaded ? 1 : 0,
+          transition: "opacity 0.4s ease-in-out",
+          display: "block",
+        }}
+        onLoad={() => setIsLoaded(true)}
+        onError={(e) => {
+          console.warn(`Failed to load image: ${src}`);
+          setImageError(true);
+          e.currentTarget.style.display = "none";
+          // Try to load a fallback after error
+          const fallback = "/images/portfolio/business.png";
+          if (src !== fallback) {
+            e.currentTarget.src = fallback;
+          }
+        }}
+      />
+    </div>
   );
 }
+
+// ==================== MAIN COMPONENT ====================
 
 export default function PortfolioDetailPage() {
   const { slug } = useParams();
@@ -129,27 +221,38 @@ export default function PortfolioDetailPage() {
     };
   }, [slug, language]);
 
-  if (loading)
+  if (loading) {
     return (
       <main className="premium-public-page">
         <section className="premium-section">
           <div className="premium-container">
-            <div className="premium-loading">
-              {t("states.loadingPage", "Loading project...")}
+            <div
+              className="premium-loading"
+              style={{ textAlign: "center", padding: "4rem 0" }}
+            >
+              <span style={{ fontSize: "2rem" }}>⏳</span>
+              <p>{t("states.loadingPage", "Loading project...")}</p>
             </div>
           </div>
         </section>
       </main>
     );
+  }
 
-  if (!project)
+  if (!project) {
     return (
       <main className="premium-public-page">
         <section className="premium-section">
           <div className="premium-container">
-            <div className="premium-empty-card">
+            <div
+              className="premium-empty-card"
+              style={{ textAlign: "center", padding: "4rem 0" }}
+            >
               <strong>{t("portfolio.notFound", "Project not found")}</strong>
-              <Link to="/portfolio" style={{ display: "block", marginTop: 16 }}>
+              <Link
+                to="/portfolio"
+                style={{ display: "inline-block", marginTop: 16 }}
+              >
                 ← {t("common.backToList", "Back to portfolio")}
               </Link>
             </div>
@@ -157,23 +260,29 @@ export default function PortfolioDetailPage() {
         </section>
       </main>
     );
+  }
 
   const title = text(
     project.title,
     project.name,
     t("portfolio.untitled", "Untitled Project"),
   );
+
   const description = text(
     project.description,
     project.summary,
     t("portfolio.noDescription", "No project description available."),
   );
+
   const imageUrl = getPortfolioDetailImage(project);
   const tag = text(
     project.projectType,
     project.clientIndustry,
     t("portfolio.caseStudy", "Case Study"),
   );
+
+  // Debug log to see what image is being used
+  console.log(`📸 Project: ${title}, Image URL: ${imageUrl}`);
 
   return (
     <main className="premium-public-page">
@@ -190,7 +299,7 @@ export default function PortfolioDetailPage() {
             </div>
           </div>
           <div className="premium-detail-media">
-            <PortfolioDetailImage src={imageUrl} alt={title} />
+            <PortfolioDetailImage src={imageUrl} alt={title} priority={true} />
           </div>
         </div>
       </section>

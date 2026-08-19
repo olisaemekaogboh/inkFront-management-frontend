@@ -198,7 +198,10 @@ function getCategoryMatch(category, title) {
   return null;
 }
 
+// ==================== FIXED: getPortfolioImage ====================
+
 function getPortfolioImage(project, index) {
+  // 1. Check for database image that is VALID and NOT from AI
   const projectImage = text(
     project.coverImageUrl,
     project.imageUrl,
@@ -207,14 +210,26 @@ function getPortfolioImage(project, index) {
     project.featuredImageUrl,
   );
 
-  if (projectImage && !projectImage.includes("pollinations")) {
+  // Only use database image if:
+  // - It exists
+  // - Not from pollinations/AI
+  // - Is a valid HTTP URL (not empty or relative path)
+  if (
+    projectImage &&
+    !projectImage.includes("pollinations") &&
+    !projectImage.includes("ai-generated") &&
+    (projectImage.startsWith("http") || projectImage.startsWith("/"))
+  ) {
+    // If it's a relative path, it might be your own image
     return projectImage;
   }
 
+  // 2. Check if we have a mapped local image for this slug
   if (project.slug && PORTFOLIO_IMAGE_MAP[project.slug]) {
     return PORTFOLIO_IMAGE_MAP[project.slug];
   }
 
+  // 3. Try to match by category
   const categoryMatch = getCategoryMatch(project.clientIndustry, project.title);
   if (categoryMatch) {
     const matchedKey = Object.keys(PORTFOLIO_IMAGE_MAP).find((key) =>
@@ -225,6 +240,7 @@ function getPortfolioImage(project, index) {
     }
   }
 
+  // 4. Default fallback using index
   return DEFAULT_IMAGES[index % DEFAULT_IMAGES.length];
 }
 
@@ -264,6 +280,7 @@ const OptimizedImage = memo(function OptimizedImage({
           if (onLoad) onLoad();
         }}
         onError={() => {
+          console.warn(`Failed to load image: ${optimizedSrc}`);
           setImageError(true);
         }}
       />
@@ -614,187 +631,3 @@ export default function PortfolioListPage() {
     </LazyMotion>
   );
 }
-
-// ==================== CSS CLASSES NEEDED ====================
-/* 
-  Add these CSS classes to your stylesheet:
-
-  .optimized-image-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-
-  .image-placeholder {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    border-radius: inherit;
-    z-index: 1;
-  }
-
-  .skeleton-card {
-    background: #f8f9fa;
-    border-radius: 12px;
-    overflow: hidden;
-  }
-
-  .skeleton-image {
-    width: 100%;
-    height: 200px;
-    background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-  }
-
-  .skeleton-text {
-    height: 14px;
-    background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    border-radius: 4px;
-    margin-bottom: 8px;
-  }
-
-  .skeleton-title {
-    height: 20px;
-    width: 70%;
-  }
-
-  .skeleton-description {
-    width: 90%;
-  }
-
-  @keyframes shimmer {
-    0% {
-      background-position: -200% 0;
-    }
-    100% {
-      background-position: 200% 0;
-    }
-  }
-
-  .portfolio-image-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-
-  .portfolio-image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .portfolio-card-wrapper {
-    height: 100%;
-  }
-
-  .premium-work-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    background: #ffffff;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .premium-work-card:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    transform: translateY(-4px);
-  }
-
-  .premium-work-card__images {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    padding-top: 62.5%;
-  }
-
-  .premium-work-card__img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .premium-work-card__placeholder {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    background: #f0f0f5;
-  }
-
-  .premium-work-card__content {
-    padding: 1.5rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .premium-work-card__content h3 {
-    font-size: 1.125rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: #1a1a2e;
-  }
-
-  .premium-work-card__content p {
-    font-size: 0.875rem;
-    color: #4a4a5a;
-    line-height: 1.6;
-    margin-bottom: 1rem;
-    flex: 1;
-  }
-
-  .premium-text-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #6c63ff;
-    font-weight: 500;
-    text-decoration: none;
-    transition: gap 0.3s ease;
-  }
-
-  .premium-text-link:hover {
-    gap: 0.75rem;
-    text-decoration: underline;
-  }
-
-  .premium-work-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
-  }
-
-  .premium-detail-media {
-    position: relative;
-    overflow: hidden;
-    min-height: 200px;
-    border-radius: 12px;
-  }
-
-  .premium-detail-media__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-*/
