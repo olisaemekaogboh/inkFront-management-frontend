@@ -473,7 +473,18 @@ export default function ProductBlueprintPage() {
               className="premium-info-panel"
             >
               <span>05</span>
+
               <h2>{t("products.useCases", "Use Cases")}</h2>
+
+              <div className="premium-info-panel__image">
+                <OptimizedImage
+                  src={imageUrl}
+                  alt={`${title} use cases`}
+                  loading="lazy"
+                  objectFit="cover"
+                />
+              </div>
+
               <ul className="premium-bullet-list">
                 {useCasesList.map((useCase, index) => (
                   <li key={index}>{useCase.replace(/^[•\-]\s*/, "")}</li>
