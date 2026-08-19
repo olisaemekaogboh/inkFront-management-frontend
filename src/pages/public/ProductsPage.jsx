@@ -22,6 +22,8 @@ const STAGGER_VARIANTS = {
 };
 
 // ==================== PRODUCT IMAGE MAP ====================
+// ==================== PRODUCT IMAGE MAP ====================
+
 const PRODUCT_IMAGE_MAP = {
   "business-website-blueprint":
     "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=80",
@@ -35,6 +37,7 @@ const PRODUCT_IMAGE_MAP = {
   "school-management-blueprint":
     "https://www.templeschoolng.com/wp-content/uploads/2021/02/Secondary-Classroom.jpg",
 
+  // CARD 05
   "e-commerce-blueprint":
     "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1400&q=80",
 
@@ -85,18 +88,24 @@ function getImageUrl(item) {
 }
 
 function optimizeImageUrl(url) {
-  if (!url) return url;
-
-  if (url.includes("images.unsplash.com")) {
-    const hasParams = url.includes("?");
-    return `${url}${hasParams ? "&" : "?"}auto=format&fit=crop&w=1200&q=80`;
-  }
-
-  if (url.includes("cloudinary.com")) {
+  if (!url || typeof url !== "string") {
     return url;
   }
 
-  return url;
+  const cleanUrl = url.trim();
+
+  // Do NOT modify Unsplash URLs.
+  // They already contain their own optimization parameters.
+  if (cleanUrl.includes("images.unsplash.com")) {
+    return cleanUrl;
+  }
+
+  // Cloudinary URLs should also be left untouched.
+  if (cleanUrl.includes("cloudinary.com")) {
+    return cleanUrl;
+  }
+
+  return cleanUrl;
 }
 
 function getProcessedTitle(product, t) {
@@ -120,39 +129,45 @@ function getProcessedSummary(product, t) {
 // ==================== FIXED: getProcessedImageUrl ====================
 
 function getProcessedImageUrl(product, index) {
-  // 1. Check for database image that is VALID and NOT from AI
+  const slug = product?.slug?.trim();
+
+  // --------------------------------------------------
+  // 1. ALWAYS use our controlled image for known products
+  // --------------------------------------------------
+  if (slug && PRODUCT_IMAGE_MAP[slug]) {
+    return PRODUCT_IMAGE_MAP[slug];
+  }
+
+  // --------------------------------------------------
+  // 2. Database image fallback
+  // --------------------------------------------------
   const dbImage = text(
-    product.heroImageUrl,
-    product.imageUrl,
-    product.coverImageUrl,
-    product.thumbnailUrl,
-    product.featuredImageUrl,
+    product?.heroImageUrl,
+    product?.imageUrl,
+    product?.coverImageUrl,
+    product?.thumbnailUrl,
+    product?.featuredImageUrl,
   );
 
-  // Only use database image if:
-  // - It exists
-  // - Not from pollinations/AI
-  // - Is a valid URL (http or relative path)
   if (
     dbImage &&
     !dbImage.includes("pollinations") &&
     !dbImage.includes("ai-generated") &&
     !dbImage.includes("placeholder") &&
-    (dbImage.startsWith("http") || dbImage.startsWith("/"))
+    (dbImage.startsWith("http://") ||
+      dbImage.startsWith("https://") ||
+      dbImage.startsWith("/"))
   ) {
-    return dbImage;
+    return dbImage.trim();
   }
 
-  // 2. Check if we have a mapped local image for this slug
-  if (product.slug && PRODUCT_IMAGE_MAP[product.slug]) {
-    return PRODUCT_IMAGE_MAP[product.slug];
-  }
-
-  // 3. Try to match by title/category keywords
-  const title = (product.title || "").toLowerCase();
+  // --------------------------------------------------
+  // 3. Keyword fallback
+  // --------------------------------------------------
+  const title = (product?.title || "").toLowerCase();
   const category = (
-    product.category ||
-    product.clientIndustry ||
+    product?.category ||
+    product?.clientIndustry ||
     ""
   ).toLowerCase();
 
@@ -164,6 +179,7 @@ function getProcessedImageUrl(product, index) {
   ) {
     return "/images/products/school.png";
   }
+
   if (
     title.includes("church") ||
     title.includes("ministry") ||
@@ -171,14 +187,17 @@ function getProcessedImageUrl(product, index) {
   ) {
     return "/images/products/church.png";
   }
+
   if (
     title.includes("ecommerce") ||
+    title.includes("e-commerce") ||
     title.includes("store") ||
     title.includes("shop") ||
     title.includes("market")
   ) {
     return "/images/products/ecommerce.png";
   }
+
   if (
     title.includes("estate") ||
     title.includes("property") ||
@@ -186,6 +205,7 @@ function getProcessedImageUrl(product, index) {
   ) {
     return "/images/products/realestate.png";
   }
+
   if (
     title.includes("logistic") ||
     title.includes("ship") ||
@@ -194,6 +214,7 @@ function getProcessedImageUrl(product, index) {
   ) {
     return "/images/products/logistics.png";
   }
+
   if (
     title.includes("health") ||
     title.includes("medical") ||
@@ -202,6 +223,7 @@ function getProcessedImageUrl(product, index) {
   ) {
     return "/images/products/healthcare.png";
   }
+
   if (
     title.includes("learning") ||
     title.includes("course") ||
@@ -210,6 +232,7 @@ function getProcessedImageUrl(product, index) {
   ) {
     return "/images/products/lms.png";
   }
+
   if (
     title.includes("ticket") ||
     title.includes("event") ||
@@ -217,6 +240,7 @@ function getProcessedImageUrl(product, index) {
   ) {
     return "/images/products/ticketing.png";
   }
+
   if (
     title.includes("fintech") ||
     title.includes("payment") ||
@@ -225,6 +249,7 @@ function getProcessedImageUrl(product, index) {
   ) {
     return "/images/products/fintech.png";
   }
+
   if (
     title.includes("agric") ||
     title.includes("farm") ||
@@ -234,10 +259,11 @@ function getProcessedImageUrl(product, index) {
     return "/images/products/agritech.png";
   }
 
-  // 4. Default fallback using index
+  // --------------------------------------------------
+  // 4. Final fallback
+  // --------------------------------------------------
   return DEFAULT_PRODUCT_IMAGES[index % DEFAULT_PRODUCT_IMAGES.length];
 }
-
 function getBlueprintNumber(index) {
   return String(index + 1).padStart(2, "0");
 }
@@ -253,33 +279,97 @@ const OptimizedImage = memo(function OptimizedImage({
   placeholder = true,
   objectFit = "cover",
 }) {
-  const [imageError, setImageError] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const optimizedSrc = useMemo(() => optimizeImageUrl(src), [src]);
+  const FALLBACK_IMAGE = "/images/products/default.png";
 
-  if (!src || imageError) return null;
+  const [imageSrc, setImageSrc] = useState(src);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [usingFallback, setUsingFallback] = useState(false);
+
+  useEffect(() => {
+    setImageSrc(src);
+    setIsLoaded(false);
+    setUsingFallback(false);
+  }, [src]);
+
+  if (!imageSrc) {
+    return (
+      <div
+        className={className}
+        style={{
+          width: "100%",
+          height: "100%",
+          minHeight: "200px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#f3f4f6",
+        }}
+      />
+    );
+  }
 
   return (
-    <div className="optimized-image-wrapper">
-      {placeholder && !isLoaded && <div className="image-placeholder" />}
+    <div
+      className="optimized-image-wrapper"
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "100%",
+        overflow: "hidden",
+      }}
+    >
+      {placeholder && !isLoaded && (
+        <div
+          className="image-placeholder"
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+            zIndex: 1,
+          }}
+        />
+      )}
+
       <img
-        src={optimizedSrc}
-        alt={alt || ""}
+        src={imageSrc}
+        alt={alt || "Product image"}
         loading={priority ? "eager" : "lazy"}
         fetchPriority={priority ? "high" : "auto"}
         decoding="async"
         className={className}
         style={{
+          width: "100%",
+          height: "100%",
+          objectFit,
           opacity: isLoaded ? 1 : 0,
-          transition: "opacity 0.3s ease-in-out",
+          transition: "opacity 0.3s ease",
+          position: "relative",
+          zIndex: 2,
+          display: "block",
         }}
         onLoad={() => {
           setIsLoaded(true);
-          if (onLoad) onLoad();
+
+          if (onLoad) {
+            onLoad();
+          }
         }}
         onError={() => {
-          console.warn(`Failed to load image: ${optimizedSrc}`);
-          setImageError(true);
+          console.error("Product image failed:", imageSrc);
+
+          // Only fallback once
+          if (!usingFallback && imageSrc !== FALLBACK_IMAGE) {
+            setUsingFallback(true);
+            setImageSrc(FALLBACK_IMAGE);
+            setIsLoaded(false);
+            return;
+          }
+
+          // If even the fallback fails,
+          // show a visible placeholder instead of disappearing.
+          setIsLoaded(true);
         }}
       />
     </div>
@@ -365,7 +455,7 @@ const ProductCard = memo(function ProductCard({ product, index, t }) {
             src={imageUrl}
             alt={title}
             className="premium-product-image"
-            priority={false}
+            priority={index < 6}
             placeholder={true}
             objectFit="cover"
           />
